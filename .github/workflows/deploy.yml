@@ -38,6 +38,9 @@ jobs:
       - name: Configure Pages
         id: pages
         uses: actions/configure-pages@v5
+        with:
+          # auto-enable Pages on first run so the repo doesn't need a manual toggle
+          enablement: true
 
       - name: Build site
         # configure-pages resolves the correct URL:
