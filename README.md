@@ -79,9 +79,8 @@ gotcha, edit the relevant `content/stages/*.md`.
 One path. Everything automated via `.github/workflows/deploy.yml`.
 
 1. Push this repo to GitHub (`github.com/7nolikov/ohmoveagain`).
-2. Repo → **Settings → Pages → Source: GitHub Actions**.
-3. Push to `main` → workflow builds Hugo and deploys automatically.
-4. Site comes up at `https://7nolikov.github.io/ohmoveagain/`, or at
+2. Push to `main` → workflow auto-enables Pages (first run only) and deploys.
+3. Site comes up at `https://7nolikov.github.io/ohmoveagain/`, or at
    `https://7nolikov.dev/ohmoveagain/` once the custom domain is set up
    (done once on your user-page repo `7nolikov.github.io` — not here).
 
@@ -105,7 +104,6 @@ Weaker than real headers (no `frame-ancestors` enforcement in meta) but sufficie
 - [ ] `baseURL` in `hugo.toml` matches where the site will live (default: `https://7nolikov.dev/ohmoveagain/`).
 - [ ] `formspreeID` in `hugo.toml` is set to a real Formspree form ID.
 - [ ] `githubURL` in `hugo.toml` points to the actual repo.
-- [ ] Repo → Settings → Pages → Source = **GitHub Actions**.
 - [ ] First push to `main` succeeds (green check on the `Build & Deploy` workflow).
 - [ ] OG image renders correctly — Twitter / Telegram / Slack unfurl.
 - [ ] Lighthouse (mobile) ≥ 90 across perf / a11y / best-practices / SEO.
