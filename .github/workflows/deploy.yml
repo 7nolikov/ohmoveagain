@@ -16,25 +16,37 @@ concurrency:
 
 env:
   HUGO_VERSION: "0.160.1"
+  # no TZ-dependent template logic, but pinning keeps lastmod stable
+  TZ: UTC
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-      - name: Install Hugo
-        run: |
-          wget -q -O /tmp/hugo.deb "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
-          sudo dpkg -i /tmp/hugo.deb
+          fetch-depth: 1
+          submodules: false
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: ${{ env.HUGO_VERSION }}
+          extended: true
+
       - name: Configure Pages
         id: pages
         uses: actions/configure-pages@v5
-      - name: Build
-        # baseURL is picked up from hugo.toml. If you later switch from
-        # 7nolikov.dev/ohmoveagain/ to a custom root domain, just edit hugo.toml.
-        run: hugo --gc --minify
+
+      - name: Build site
+        # configure-pages resolves the correct URL:
+        #   - github.io project site → https://<user>.github.io/<repo>/
+        #   - custom domain configured → https://7nolikov.dev/ohmoveagain/
+        # Hugo --baseURL overrides hugo.toml so the site is never broken,
+        # even before the custom domain is wired up.
+        run: hugo --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

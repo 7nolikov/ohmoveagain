@@ -12,7 +12,7 @@ disableKinds = ["taxonomy", "term"]
 
 [params]
   description = "The engineering playbook for senior devs relocating to Croatia. Tax math, residency checklists, and a calculator that outputs shareable runway deltas."
-  ogImage = "/og.svg"
+  ogImage = "og.svg"
   formspreeID = "REPLACE_WITH_FORMSPREE_ID"
   githubURL = "https://github.com/7nolikov/ohmoveagain"
 
