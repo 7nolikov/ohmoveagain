@@ -1,0 +1,15 @@
+{{ define "main" }}
+<section>
+  <div class="tagline">// premium artifacts · early access</div>
+  <h1>{{ .Title }}</h1>
+  <p class="subtitle">
+    tax-optimization playbook for solo-SaaS founders in Croatia · document bundles (apostille packet, rental contract template, OIB walkthrough) ·
+    closed community for serious movers. no newsletter. no spam. one email when it ships.
+  </p>
+  {{ partial "subscribe-form.html" . }}
+  <p class="muted" style="margin-top:30px;font-size:0.85rem;">
+    // delivery: via Formspree → a single inbox on our end. no analytics, no cookies, no trackers.
+    ask us to purge via GitHub issue.
+  </p>
+</section>
+{{ end }}

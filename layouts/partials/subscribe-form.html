@@ -1,0 +1,23 @@
+{{/*
+  Formspree drop-in. Replace `formspreeID` in hugo.toml with your endpoint.
+  When unconfigured we render a harmless mailto: fallback so nothing breaks on localhost.
+*/}}
+{{- $id := site.Params.formspreeID -}}
+{{- $action := "mailto:hello@ohmoveagain.dev" -}}
+{{- $method := "get" -}}
+{{- if and $id (ne $id "REPLACE_WITH_FORMSPREE_ID") -}}
+  {{- $action = printf "https://formspree.io/f/%s" $id -}}
+  {{- $method = "post" -}}
+{{- end -}}
+<form class="form" action="{{ $action }}" method="{{ $method }}" accept-charset="utf-8">
+  <div>
+    <label for="email">$ echo $EMAIL</label>
+    <input id="email" name="email" type="email" required placeholder="you@domain.dev" autocomplete="email" inputmode="email">
+  </div>
+  <input type="hidden" name="_subject" value="ohmoveagain waitlist signup">
+  <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <button class="btn" type="submit">./subscribe.sh</button>
+  <p class="muted" style="font-size:0.8rem;margin-top:4px;">
+    // one email when premium artifacts drop. no newsletter. unsubscribe with a PR.
+  </p>
+</form>

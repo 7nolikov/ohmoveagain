@@ -1,0 +1,46 @@
+baseURL = "https://7nolikov.dev/ohmoveagain/"
+languageCode = "en-us"
+title = "ohmoveagain — relocation as a deployment pipeline"
+
+# canonifyURLs = false is the default. All internal links must use
+# relURL/absURL helpers so they resolve correctly under the /ohmoveagain/ subpath.
+relativeURLs = false
+
+enableRobotsTXT = true
+enableGitInfo = false
+disableKinds = ["taxonomy", "term"]
+
+[params]
+  description = "The engineering playbook for senior devs relocating to Croatia. Tax math, residency checklists, and a calculator that outputs shareable runway deltas."
+  ogImage = "/og.svg"
+  formspreeID = "REPLACE_WITH_FORMSPREE_ID"
+  githubURL = "https://github.com/7nolikov/ohmoveagain"
+
+[markup.goldmark.renderer]
+  unsafe = true
+
+[markup.tableOfContents]
+  startLevel = 2
+  endLevel = 3
+
+[outputs]
+  home = ["HTML", "RSS"]
+  section = ["HTML"]
+
+[sitemap]
+  changefreq = "weekly"
+  priority = 0.7
+
+[minify]
+  disableHTML = false
+  disableCSS = false
+  disableJS = false
+
+[build]
+  writeStats = false
+
+[security.exec]
+  allow = ["^(dart-)?sass(-embedded)?$", "^go$", "^npx$", "^postcss$"]
+
+[permalinks]
+  stages = "/stage/:slug/"

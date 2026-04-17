@@ -1,0 +1,37 @@
+# countries.yaml — tax + cost-of-living baselines for the runway calculator.
+#
+# `effectiveTaxRate` is a blended income + social baseline for a contractor-style
+# SaaS founder. `costOfLivingEUR` is a single-person reasonable-comfort monthly baseline.
+# Edge cases (reduced rates, special regimes, DTA mechanics) are intentionally out of scope.
+#
+# Contributors: open a PR. Cite primary sources in the PR body.
+- code: HR
+  name: Croatia
+  flag: "🇭🇷"
+  effectiveTaxRate: 0.23
+  costOfLivingEUR: 2100
+  note: "Paušalni obrt structure for solo SaaS. Zagreb has a real IT scene."
+- code: MNE
+  name: Montenegro
+  flag: "🇲🇪"
+  effectiveTaxRate: 0.15
+  costOfLivingEUR: 1700
+  note: "Lowest headline rate in the region; weakest banking and EU-market access."
+- code: DE
+  name: Germany
+  flag: "🇩🇪"
+  effectiveTaxRate: 0.42
+  costOfLivingEUR: 2800
+  note: "Strong market, heavy tax load, rigorous bureaucracy. Blue Card friendly."
+- code: PT
+  name: Portugal
+  flag: "🇵🇹"
+  effectiveTaxRate: 0.28
+  costOfLivingEUR: 2200
+  note: "NHR replaced by IFICI — narrower scope, still attractive for specific professions."
+- code: EE
+  name: Estonia
+  flag: "🇪🇪"
+  effectiveTaxRate: 0.20
+  costOfLivingEUR: 1900
+  note: "e-Residency is NOT tax residency. Corporate structure is elegant; personal side is standard."

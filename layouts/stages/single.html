@@ -1,0 +1,74 @@
+{{ define "main" }}
+<section class="stage-head">
+  <div class="tagline">// stage · exit {{ default 0 .Params.exitCode }}{{ with .Params.duration }} · {{ . }}{{ end }}</div>
+  <h1>{{ .Title }}</h1>
+  {{ with .Params.subtitle }}<p class="subtitle">{{ . }}</p>{{ end }}
+  {{ with .Params.command }}
+  <div class="terminal" aria-hidden="true">
+    <span class="prompt">$</span> <span class="cmd">{{ . }}</span>
+    {{ with $.Params.duration }}<span class="out">// duration: {{ . }}</span>{{ end }}
+    <span class="out">// exit:     {{ default 0 $.Params.exitCode }}</span>
+  </div>
+  {{ end }}
+  {{ .Content }}
+</section>
+
+{{ with .Params.checklist }}
+<section aria-labelledby="ck-h">
+  <h2 id="ck-h"># checklist</h2>
+  <ul class="checklist">
+    {{ range . }}
+    <li>
+      <div class="label">{{ .label }}</div>
+      {{ with .note }}<div class="note">// {{ . }}</div>{{ end }}
+    </li>
+    {{ end }}
+  </ul>
+</section>
+{{ end }}
+
+{{ with .Params.gotchas }}
+<section class="gotchas" aria-labelledby="g-h">
+  <h3 id="g-h">// gotchas</h3>
+  <ul>
+    {{ range . }}<li>{{ . }}</li>{{ end }}
+  </ul>
+</section>
+{{ end }}
+
+{{ with .Params.artifacts }}
+<section aria-labelledby="a-h">
+  <h2 id="a-h"># artifacts</h2>
+  <div class="artifacts">
+    {{ range . }}
+    {{- $href := .href -}}
+    {{- if hasPrefix $href "/" -}}{{ $href = $href | relURL }}{{- end -}}
+    <a href="{{ $href }}">
+      <span class="kind">[{{ .kind }}]</span>{{ .name }}
+    </a>
+    {{ end }}
+  </div>
+</section>
+{{ end }}
+
+{{ $cur := .Weight }}
+{{ $stages := (where site.RegularPages "Section" "stages").ByWeight }}
+{{ $prev := "" }}{{ $next := "" }}
+{{ range $stages }}
+  {{ if eq .Weight (sub $cur 1) }}{{ $prev = . }}{{ end }}
+  {{ if eq .Weight (add $cur 1) }}{{ $next = . }}{{ end }}
+{{ end }}
+
+<nav class="stage-nav" aria-label="pipeline navigation">
+  {{ if $prev }}
+    <a href="{{ $prev.RelPermalink }}">← {{ $prev.Title }}</a>
+  {{ else }}
+    <a href="{{ "/" | relURL }}#pipeline">← back to pipeline</a>
+  {{ end }}
+  {{ if $next }}
+    <a href="{{ $next.RelPermalink }}">{{ $next.Title }} →</a>
+  {{ else }}
+    <a href="{{ "/calculator/" | relURL }}">run calculator →</a>
+  {{ end }}
+</nav>
+{{ end }}

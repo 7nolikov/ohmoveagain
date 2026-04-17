@@ -1,0 +1,53 @@
+{{ define "main" }}
+<section class="hero">
+  <div class="tagline">// relocation as a deployment pipeline. engineered, not improvised.</div>
+  <h1>ship yourself to Croatia without <code>exit 1</code>.</h1>
+  <p class="subtitle">
+    for senior devs, Blue Card holders, and solo-SaaS founders doing the math on their next tax residency.
+    terminal-grade checklists, a runway calculator that outputs shareable deltas, and zero travel-blog filler.
+  </p>
+  <div class="terminal" aria-hidden="true">
+    <span class="prompt">$</span> <span class="cmd">./move.sh --to=zagreb --dry-run</span>
+    <span class="out">stage 1/5  assessment        ok (exit 0)</span>
+    <span class="out">stage 2/5  pre-flight        ok (exit 0)</span>
+    <span class="out">stage 3/5  migration         ok (exit 0)</span>
+    <span class="out">stage 4/5  initialization    ok (exit 0)</span>
+    <span class="out">stage 5/5  scaling           ok (exit 0)</span>
+    <span class="out">all green. ready to <a href="{{ "/calculator/" | relURL }}">apply for real</a>.</span>
+  </div>
+  <p>
+    <a class="btn" href="{{ "/calculator/" | relURL }}" style="display:inline-block;width:auto;padding:12px 18px;text-decoration:none;">run the calculator →</a>
+  </p>
+</section>
+
+<section id="pipeline" aria-labelledby="pipeline-h">
+  <h2 id="pipeline-h"># the pipeline</h2>
+  <p class="dim">five stages. each one has an exit code, a checklist, and the gotchas that will bite you.</p>
+  <div class="pipeline">
+    {{ $stages := where site.RegularPages "Section" "stages" }}
+    {{ range $stages.ByWeight }}
+    <a class="stage-card" href="{{ .RelPermalink }}">
+      <div class="step">stage {{ .Weight }}/5{{ with .Params.duration }} · {{ . }}{{ end }}</div>
+      <div class="name">{{ .Title }}</div>
+      <div class="desc">{{ .Params.subtitle }}</div>
+      {{ with .Params.command }}<div class="cmd">$ {{ . }}</div>{{ end }}
+    </a>
+    {{ end }}
+  </div>
+</section>
+
+<section aria-labelledby="why-h">
+  <h2 id="why-h"># why this exists</h2>
+  <p class="dim">
+    most relocation content is SEO sludge written by people who've never filed an apostille.
+    this is a GitOps wiki maintained by devs who have. open-source. PR-driven.
+    the calculator is the lead magnet; the premium artifacts are the business model.
+  </p>
+</section>
+
+<section aria-labelledby="cta-h">
+  <h2 id="cta-h"># waitlist</h2>
+  <p class="dim">get pinged when the paid tax-optimization playbook and document templates drop. no newsletter. no spam.</p>
+  {{ partial "subscribe-form.html" . }}
+</section>
+{{ end }}

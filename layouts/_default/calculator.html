@@ -1,0 +1,146 @@
+{{ define "main" }}
+{{ $countries := hugo.Data.countries }}
+<section x-data="calcApp()">
+  <div class="tagline">// runway calculator · directional, not legal advice</div>
+  <h1>how many months of runway does the move buy you?</h1>
+  <p class="subtitle">
+    same annual gross, two jurisdictions. we blend the headline effective tax rate with a local
+    cost-of-living baseline to output a runway delta (months per year). pure client-side math —
+    no tracking, no server round-trip.
+  </p>
+
+  <form class="form" @submit.prevent="run" novalidate>
+    <div>
+      <label for="gross">$ GROSS_EUR <span class="muted">// annual gross income</span></label>
+      <input id="gross" x-model.number="gross" type="number" min="1" max="10000000" step="1000" required placeholder="e.g. 90000" inputmode="numeric">
+    </div>
+    <div class="row">
+      <div>
+        <label for="from">$ FROM</label>
+        <select id="from" x-model="fromCode" required>
+          {{ range $countries }}<option value="{{ .code }}">{{ .flag }} {{ .name }} ({{ .code }})</option>{{ end }}
+        </select>
+      </div>
+      <div>
+        <label for="to">$ TO</label>
+        <select id="to" x-model="toCode" required>
+          {{ range $countries }}<option value="{{ .code }}" {{ if eq .code "HR" }}selected{{ end }}>{{ .flag }} {{ .name }} ({{ .code }})</option>{{ end }}
+        </select>
+      </div>
+    </div>
+    <button class="btn" type="submit">./calculate.sh</button>
+  </form>
+
+  <template x-if="error">
+    <div class="error" role="alert" x-text="'exit 1: ' + error"></div>
+  </template>
+
+  <template x-if="result">
+    <div class="result" role="region" aria-label="calculation result">
+      <h2>// diff: <span x-text="result.from.flag + ' ' + result.from.name"></span> → <span x-text="result.to.flag + ' ' + result.to.name"></span></h2>
+      <div class="delta" :class="{ neg: !result.positive }">
+        <span x-text="fmtDelta(result.deltaMonths)"></span> months/year runway
+      </div>
+      <table>
+        <tbody>
+          <tr><th>annual gross</th><td colspan="2" x-text="money(result.gross)"></td></tr>
+          <tr><th>net income</th><td x-text="money(result.fromNet)"></td><td x-text="money(result.toNet)"></td></tr>
+          <tr><th>runway/year (months)</th><td x-text="result.fromRunway.toFixed(1)"></td><td x-text="result.toRunway.toFixed(1)"></td></tr>
+          <tr><th>net Δ (annual)</th><td colspan="2" :class="result.positive ? 'acc' : 'dim'" x-text="fmtSign(result.deltaSavings)"></td></tr>
+        </tbody>
+      </table>
+      <div class="share" title="tap to select · copy · share" x-text="result.shareLine" @click="copyShare"></div>
+      <p class="muted" style="font-size:0.8rem;margin-top:10px;">
+        // directional only. effective tax rate = blended income + social at contractor-style SaaS founder baseline.
+        verify with a local accountant before acting.
+      </p>
+      <template x-if="copied">
+        <div class="success" role="status">exit 0: copied to clipboard.</div>
+      </template>
+    </div>
+  </template>
+</section>
+
+<section style="margin-top:40px;">
+  <h2># reference: tax &amp; CoL baselines</h2>
+  <div class="result">
+    <table>
+      <thead>
+        <tr><th>country</th><th>eff. tax</th><th>monthly CoL</th><th>note</th></tr>
+      </thead>
+      <tbody>
+        {{ range $countries }}
+        <tr>
+          <td>{{ .flag }} {{ .name }}</td>
+          <td>{{ mul .effectiveTaxRate 100 | printf "%.0f" }}%</td>
+          <td>€{{ lang.FormatNumber 0 .costOfLivingEUR }}</td>
+          <td class="dim">{{ .note }}</td>
+        </tr>
+        {{ end }}
+      </tbody>
+    </table>
+    <p class="muted" style="font-size:0.8rem;margin-top:10px;">
+      // rates are single-person blended baselines for a contractor-style SaaS founder.
+      edge cases (reduced rates, special regimes, double-taxation treaties) are intentionally out of scope.
+    </p>
+  </div>
+</section>
+
+<script>
+  window.OHMA_COUNTRIES = {{ $countries | jsonify }};
+  function calcApp() {
+    return {
+      gross: null,
+      fromCode: '',
+      toCode: 'HR',
+      result: null,
+      error: '',
+      copied: false,
+      init() {
+        // Default FROM to first country (excluding HR) if not set.
+        if (!this.fromCode) {
+          const first = (window.OHMA_COUNTRIES || []).find(c => c.code !== 'HR');
+          if (first) this.fromCode = first.code;
+        }
+      },
+      run() {
+        this.error = '';
+        this.result = null;
+        this.copied = false;
+        const gross = Number(this.gross);
+        if (!gross || gross <= 0) { this.error = 'enter a positive annual gross.'; return; }
+        if (gross > 10_000_000) { this.error = 'keep it under 10M — this tool is for mortals.'; return; }
+        if (!this.fromCode || !this.toCode) { this.error = 'pick both countries.'; return; }
+        if (this.fromCode === this.toCode) { this.error = 'pick two *different* countries — Δ vs itself is 0.'; return; }
+        const countries = window.OHMA_COUNTRIES || [];
+        const from = countries.find(c => c.code === this.fromCode);
+        const to = countries.find(c => c.code === this.toCode);
+        if (!from || !to) { this.error = 'unknown country code.'; return; }
+        const fromNet = Math.round(gross * (1 - from.effectiveTaxRate));
+        const toNet = Math.round(gross * (1 - to.effectiveTaxRate));
+        const fromRunway = from.costOfLivingEUR > 0 ? fromNet / from.costOfLivingEUR : 0;
+        const toRunway = to.costOfLivingEUR > 0 ? toNet / to.costOfLivingEUR : 0;
+        const deltaMonths = toRunway - fromRunway;
+        const deltaSavings = toNet - fromNet;
+        const positive = deltaMonths >= 0;
+        const shareLine = `${to.name} buys me ${this.fmtSign(deltaMonths, 1)} months of runway/year vs ${from.name} (net Δ ${this.fmtSign(deltaSavings)} €). — via ohmoveagain`;
+        this.result = { gross, from, to, fromNet, toNet, fromRunway, toRunway, deltaMonths, deltaSavings, positive, shareLine };
+      },
+      money(v) { return '€' + Math.round(v).toLocaleString('en-US'); },
+      fmtSign(v, digits) {
+        const n = digits == null ? Math.round(v) : Number(v).toFixed(digits);
+        return (v >= 0 ? '+' : '') + n;
+      },
+      fmtDelta(v) { return (v >= 0 ? '+' : '') + Number(v).toFixed(1); },
+      copyShare() {
+        if (!this.result) return;
+        if (!navigator.clipboard) return;
+        navigator.clipboard.writeText(this.result.shareLine).then(() => {
+          this.copied = true;
+          setTimeout(() => this.copied = false, 2500);
+        }).catch(() => { /* silent */ });
+      }
+    };
+  }
+</script>
+{{ end }}
