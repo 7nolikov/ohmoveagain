@@ -218,6 +218,19 @@ header.top {
 }
 .artifacts a:hover { border-color: var(--accent-dim); text-decoration: none; }
 .artifacts a .kind { color: var(--fg-muted); margin-right: 6px; }
+.artifact-wip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  color: var(--fg-muted);
+  font-size: 0.85rem;
+  opacity: 0.55;
+}
+.artifact-wip .kind { color: var(--fg-muted); margin-right: 6px; }
+.artifact-wip .wip-badge { margin-left: 8px; font-size: 0.75rem; color: var(--warn); }
 
 .stage-nav {
   display: flex;
@@ -246,7 +259,7 @@ header.top {
   width: 100%;
   padding: 12px 14px;
   font-family: var(--mono);
-  font-size: 1rem;
+  font-size: 16px; /* >= 16px prevents iOS auto-zoom on focus */
   background: var(--bg-card);
   color: var(--fg);
   border: 1px solid var(--border-bright);

@@ -97,10 +97,16 @@
       error: '',
       copied: false,
       init() {
-        // Default FROM to first country (excluding HR) if not set.
+        const p = new URLSearchParams(window.location.search);
+        if (p.get('gross')) this.gross = Number(p.get('gross'));
+        if (p.get('from')) this.fromCode = p.get('from');
+        if (p.get('to')) this.toCode = p.get('to');
         if (!this.fromCode) {
           const first = (window.OHMA_COUNTRIES || []).find(c => c.code !== 'HR');
           if (first) this.fromCode = first.code;
+        }
+        if (p.get('gross') && p.get('from') && p.get('to')) {
+          this.$nextTick(() => this.run());
         }
       },
       run() {
@@ -123,7 +129,12 @@
         const deltaMonths = toRunway - fromRunway;
         const deltaSavings = toNet - fromNet;
         const positive = deltaMonths >= 0;
-        const shareLine = `${to.name} buys me ${this.fmtSign(deltaMonths, 1)} months of runway/year vs ${from.name} (net Δ ${this.fmtSign(deltaSavings)} €). — via ohmoveagain`;
+        const url = new URL(window.location.href);
+        url.searchParams.set('from', this.fromCode);
+        url.searchParams.set('to', this.toCode);
+        url.searchParams.set('gross', String(gross));
+        history.replaceState(null, '', url.toString());
+        const shareLine = `${to.name} buys me ${this.fmtSign(deltaMonths, 1)} months/yr runway vs ${from.name} (net Δ ${this.fmtSign(deltaSavings)} €/yr). try yours: ${url.toString()}`;
         this.result = { gross, from, to, fromNet, toNet, fromRunway, toRunway, deltaMonths, deltaSavings, positive, shareLine };
       },
       money(v) { return '€' + Math.round(v).toLocaleString('en-US'); },

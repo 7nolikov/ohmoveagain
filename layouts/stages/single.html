@@ -1,4 +1,6 @@
 {{ define "main" }}
+{{- $ld := dict "@context" "https://schema.org" "@type" "TechArticle" "headline" .Title "description" (default .Params.subtitle .Description) "url" .Permalink "isPartOf" (dict "@type" "WebSite" "name" site.Title "url" site.BaseURL) | jsonify -}}
+{{ printf "<script type=\"application/ld+json\">%s</script>" $ld | safeHTML }}
 <section class="stage-head">
   <div class="tagline">// stage · exit {{ default 0 .Params.exitCode }}{{ with .Params.duration }} · {{ . }}{{ end }}</div>
   <h1>{{ .Title }}</h1>
@@ -42,10 +44,12 @@
   <div class="artifacts">
     {{ range . }}
     {{- $href := .href -}}
+    {{- if eq $href "#" -}}
+    <span class="artifact-wip"><span class="kind">[{{ .kind }}]</span>{{ .name }}<span class="wip-badge">// wip</span></span>
+    {{- else -}}
     {{- if hasPrefix $href "/" -}}{{ $href = strings.TrimPrefix "/" $href | relURL }}{{- end -}}
-    <a href="{{ $href }}">
-      <span class="kind">[{{ .kind }}]</span>{{ .name }}
-    </a>
+    <a href="{{ $href }}"><span class="kind">[{{ .kind }}]</span>{{ .name }}</a>
+    {{- end -}}
     {{ end }}
   </div>
 </section>
