@@ -3,15 +3,65 @@
 <head>
 {{- partial "head.html" . -}}
 </head>
-<body{{ with .Params.bodyClass }} class="{{ . }}"{{ end }}{{ with .Params.alpine }} x-data{{ end }}>
+<body{{ with .Params.bodyClass }} class="{{ . }}"{{ end }} x-data>
 <a href="#main" class="sr-only">Skip to content</a>
 {{- partial "header.html" . -}}
 <main id="main" class="wrap">
 {{ block "main" . }}{{ end }}
 </main>
 {{- partial "footer.html" . -}}
-{{- if .Params.alpine -}}
+<script>
+// ohma progress store — localStorage-backed, zero network.
+document.addEventListener('alpine:init', () => {
+  const KEY = 'ohma.v1';
+  let data;
+  try { data = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { data = {}; }
+  if (!data.stages || typeof data.stages !== 'object') data.stages = {};
+  const persist = () => {
+    data.ts = Date.now();
+    try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {}
+  };
+  Alpine.store('prog', {
+    toggle(stage, idx) {
+      const s = String(stage);
+      if (!data.stages[s]) data.stages[s] = {};
+      data.stages[s][idx] = !data.stages[s][idx];
+      persist();
+    },
+    isChecked(stage, idx) {
+      const s = data.stages[String(stage)];
+      return !!(s && s[idx]);
+    },
+    count(stage) {
+      const s = data.stages[String(stage)] || {};
+      return Object.values(s).filter(Boolean).length;
+    },
+    status(stage, total) {
+      const c = this.count(stage);
+      if (total > 0 && c === total) return 'exit 0';
+      if (c > 0) return 'running';
+      return 'not started';
+    },
+    pct(stage, total) {
+      return total > 0 ? (100 * this.count(stage) / total) : 0;
+    },
+    totalDone() {
+      let n = 0;
+      for (const k in data.stages) n += Object.values(data.stages[k]).filter(Boolean).length;
+      return n;
+    },
+    resetStage(stage) {
+      delete data.stages[String(stage)];
+      persist();
+    },
+    resetAll() {
+      data.stages = {};
+      persist();
+    },
+    touched() { return data.ts || 0; }
+  });
+});
+</script>
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
-{{- end -}}
 </body>
 </html>

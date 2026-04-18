@@ -192,10 +192,54 @@ header.top {
   margin-bottom: 8px;
   background: var(--bg-alt);
   border-radius: 0 var(--radius) var(--radius) 0;
+  transition: border-color 0.15s, background 0.15s;
 }
-.checklist li .label { color: var(--fg); }
-.checklist li .label::before { content: "[ ] "; color: var(--fg-muted); }
-.checklist li .note  { color: var(--fg-dim); font-size: 0.85rem; margin-top: 4px; }
+.checklist li label {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  width: 100%;
+}
+.checklist li input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--border-bright);
+  border-radius: 3px;
+  background: var(--bg);
+  margin-top: 2px;
+  flex-shrink: 0;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.1s, border-color 0.1s;
+}
+.checklist li input[type="checkbox"]:hover { border-color: var(--accent-dim); }
+.checklist li input[type="checkbox"]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.checklist li input[type="checkbox"]:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.checklist li input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 1px;
+  width: 5px;
+  height: 10px;
+  border: solid #08110b;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.checklist li .label-text { flex: 1; min-width: 0; }
+.checklist li .label { color: var(--fg); display: block; }
+.checklist li .note  { color: var(--fg-dim); font-size: 0.85rem; margin-top: 4px; display: block; }
+.checklist li.done { border-left-color: var(--accent-dim); background: rgba(126,231,135,0.04); }
+.checklist li.done .label { color: var(--fg-dim); text-decoration: line-through; }
 
 .gotchas {
   border: 1px dashed var(--warn);
@@ -231,6 +275,105 @@ header.top {
 }
 .artifact-wip .kind { color: var(--fg-muted); margin-right: 6px; }
 .artifact-wip .wip-badge { margin-left: 8px; font-size: 0.75rem; color: var(--warn); }
+
+/* ---------- Progress visualization ---------- */
+
+.progress-bar {
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  width: 100%;
+}
+.progress-bar.wide { height: 8px; }
+.progress-bar .fill {
+  height: 100%;
+  width: 0%;
+  background: var(--fg-muted);
+  transition: width 0.25s ease, background 0.2s ease;
+}
+
+.pipeline-summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin: 16px 0 20px;
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}
+.pipeline-summary .progress-bar { flex: 1 1 120px; min-width: 100px; }
+.pipeline-summary .summary-txt { white-space: nowrap; }
+
+.card-progress {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.card-progress .progress-label {
+  font-size: 0.75rem;
+  color: var(--fg-muted);
+}
+.stage-card.partial {
+  border-color: rgba(245, 166, 35, 0.35);
+}
+.stage-card.partial .card-progress .fill { background: var(--warn); }
+.stage-card.partial .card-progress .progress-label { color: var(--warn); }
+.stage-card.passed {
+  border-color: var(--accent-dim);
+  background: linear-gradient(180deg, rgba(126,231,135,0.05), var(--bg-card));
+}
+.stage-card.passed .card-progress .fill { background: var(--accent); }
+.stage-card.passed .card-progress .progress-label { color: var(--accent); }
+.stage-card.passed .name::after { content: " ✓"; color: var(--accent); }
+
+.checklist-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+.checklist-head h2 { margin: 0; }
+.stage-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.8rem;
+  color: var(--fg-muted);
+  flex: 1 1 180px;
+  min-width: 0;
+}
+.stage-status .progress-bar { flex: 1 1 80px; min-width: 60px; max-width: 220px; }
+.stage-status .status-txt { white-space: nowrap; }
+.stage-status[data-status="running"] .fill { background: var(--warn); }
+.stage-status[data-status="running"] .status-txt { color: var(--warn); }
+.stage-status[data-status="passed"] .fill { background: var(--accent); }
+.stage-status[data-status="passed"] .status-txt { color: var(--accent); }
+
+.privacy-note {
+  font-size: 0.75rem;
+  margin: -2px 0 14px;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border-bright);
+  color: var(--fg-dim);
+  padding: 4px 10px;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn-ghost:hover { color: var(--fg); border-color: var(--accent-dim); }
+.btn-ghost:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 .stage-nav {
   display: flex;

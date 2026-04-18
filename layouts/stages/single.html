@@ -16,13 +16,31 @@
 </section>
 
 {{ with .Params.checklist }}
-<section aria-labelledby="ck-h">
-  <h2 id="ck-h"># checklist</h2>
+{{- $total := len . -}}
+{{- $weight := $.Weight -}}
+<section aria-labelledby="ck-h" x-data="{ t: {{ $total }}, s: '{{ $weight }}' }">
+  <div class="checklist-head">
+    <h2 id="ck-h"># checklist</h2>
+    <div class="stage-status" :data-status="$store.prog.status(s, t) === 'exit 0' ? 'passed' : $store.prog.status(s, t) === 'running' ? 'running' : 'idle'">
+      <div class="progress-bar" aria-hidden="true"><div class="fill" :style="`width:${$store.prog.pct(s, t)}%`"></div></div>
+      <span class="status-txt" x-cloak>
+        <span x-text="$store.prog.count(s)"></span>/<span x-text="t"></span>
+        · <span x-text="$store.prog.status(s, t)"></span>
+      </span>
+      <button class="btn-ghost" type="button" @click="$store.prog.resetStage(s)" x-show="$store.prog.count(s) > 0" x-cloak>reset</button>
+    </div>
+  </div>
+  <p class="muted privacy-note">// state is local to your browser. nothing sent anywhere.</p>
   <ul class="checklist">
-    {{ range . }}
-    <li>
-      <div class="label">{{ .label }}</div>
-      {{ with .note }}<div class="note">// {{ . }}</div>{{ end }}
+    {{ range $i, $item := . }}
+    <li :class="$store.prog.isChecked(s, {{ $i }}) ? 'done' : ''">
+      <label>
+        <input type="checkbox" :checked="$store.prog.isChecked(s, {{ $i }})" @change="$store.prog.toggle(s, {{ $i }})">
+        <span class="label-text">
+          <span class="label">{{ $item.label }}</span>
+          {{ with $item.note }}<span class="note">// {{ . }}</span>{{ end }}
+        </span>
+      </label>
     </li>
     {{ end }}
   </ul>

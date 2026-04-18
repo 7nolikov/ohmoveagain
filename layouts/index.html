@@ -22,15 +22,38 @@
 
 <section id="pipeline" aria-labelledby="pipeline-h">
   <h2 id="pipeline-h"># the pipeline</h2>
-  <p class="dim">five stages. each one has an exit code, a checklist, and the gotchas that will bite you.</p>
+  <p class="dim">five stages. each one has an exit code, a checklist, and the gotchas that will bite you. track your progress — <span class="acc">100% local</span>, nothing sent anywhere.</p>
+
+  {{ $stages := (where site.RegularPages "Section" "stages").ByWeight }}
+  {{ $grand := 0 }}
+  {{ range $stages }}{{ $grand = add $grand (len .Params.checklist) }}{{ end }}
+
+  <div class="pipeline-summary" x-data="{ total: {{ $grand }} }">
+    <div class="progress-bar wide" aria-hidden="true"><div class="fill" :style="`width:${total ? 100 * $store.prog.totalDone() / total : 0}%`"></div></div>
+    <span class="dim summary-txt" x-cloak>
+      <span x-text="$store.prog.totalDone()"></span>/<span x-text="total"></span> checks
+      · <span x-text="total ? Math.round(100 * $store.prog.totalDone() / total) : 0"></span>%
+    </span>
+    <button class="btn-ghost" type="button" @click="if (confirm('reset all checklist progress?')) $store.prog.resetAll()" x-show="$store.prog.totalDone() > 0" x-cloak>reset all</button>
+  </div>
+
   <div class="pipeline">
-    {{ $stages := where site.RegularPages "Section" "stages" }}
-    {{ range $stages.ByWeight }}
-    <a class="stage-card" href="{{ .RelPermalink }}">
+    {{ range $stages }}
+    {{- $c := len .Params.checklist -}}
+    <a class="stage-card" href="{{ .RelPermalink }}"
+       x-data="{ t: {{ $c }}, s: '{{ .Weight }}' }"
+       :class="$store.prog.count(s) === t && t > 0 ? 'passed' : $store.prog.count(s) > 0 ? 'partial' : ''">
       <div class="step">stage {{ .Weight }}/5{{ with .Params.duration }} · {{ . }}{{ end }}</div>
       <div class="name">{{ .Title }}</div>
       <div class="desc">{{ .Params.subtitle }}</div>
       {{ with .Params.command }}<div class="cmd">$ {{ . }}</div>{{ end }}
+      <div class="card-progress">
+        <div class="progress-bar" aria-hidden="true"><div class="fill" :style="`width:${$store.prog.pct(s, t)}%`"></div></div>
+        <span class="progress-label" x-cloak>
+          <span x-text="$store.prog.count(s)"></span>/<span x-text="t"></span>
+          · <span x-text="$store.prog.status(s, t)"></span>
+        </span>
+      </div>
     </a>
     {{ end }}
   </div>
