@@ -1,0 +1,27 @@
+{{- $stages := (where site.RegularPages "Section" "stages").ByWeight -}}
+{{- $grand := 0 -}}
+{{- range $stages -}}{{- range .Params.checklist -}}{{- $grand = add $grand (len .items) -}}{{- end -}}{{- end -}}
+<div class="global-progress" x-data="{ total: {{ $grand }} }" role="navigation" aria-label="pipeline progress">
+  <div class="global-progress-inner">
+    <div class="stage-dots" role="group" aria-label="stage status">
+      {{- range $stages -}}
+      {{- $c := 0 -}}
+      {{- range .Params.checklist -}}{{- $c = add $c (len .items) -}}{{- end -}}
+      <a class="stage-dot"
+         href="{{ .RelPermalink }}"
+         aria-label="stage {{ .Weight }} {{ .Title }}"
+         x-data="{ t: {{ $c }}, s: '{{ .Weight }}' }"
+         :class="$store.prog.count(s) === t && t > 0 ? 'passed' : $store.prog.count(s) > 0 ? 'partial' : ''"
+         :title="`stage {{ .Weight }} · {{ .Title }} · ${$store.prog.count(s)}/${t}`">
+        <span>{{ .Weight }}</span>
+      </a>
+      {{- end -}}
+    </div>
+    <div class="progress-bar" aria-hidden="true"><div class="fill" :style="`width:${total ? 100 * $store.prog.totalDone() / total : 0}%`"></div></div>
+    <span class="prog-txt" x-cloak>
+      <span x-text="$store.prog.totalDone()"></span>/<span x-text="total"></span>
+      · <span x-text="total ? Math.round(100 * $store.prog.totalDone() / total) : 0"></span>%
+    </span>
+    <button type="button" class="prog-help" data-hk-open aria-label="keyboard shortcuts" title="? for hotkeys" onclick="document.documentElement.classList.add('hk-open')">?</button>
+  </div>
+</div>

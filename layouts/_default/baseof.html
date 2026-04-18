@@ -6,39 +6,52 @@
 <body{{ with .Params.bodyClass }} class="{{ . }}"{{ end }} x-data>
 <a href="#main" class="sr-only">Skip to content</a>
 {{- partial "header.html" . -}}
+{{- partial "global-progress.html" . -}}
 <main id="main" class="wrap">
 {{ block "main" . }}{{ end }}
 </main>
 {{- partial "footer.html" . -}}
+{{- partial "hotkeys-help.html" . -}}
 <script>
-// ohma progress store — localStorage-backed, zero network.
+// ohma progress store — localStorage-backed, zero network, fully reactive.
 document.addEventListener('alpine:init', () => {
   const KEY = 'ohma.v1';
-  let data;
-  try { data = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { data = {}; }
-  if (!data.stages || typeof data.stages !== 'object') data.stages = {};
-  const persist = () => {
-    data.ts = Date.now();
-    try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {}
-  };
+  let initial;
+  try { initial = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { initial = {}; }
+  if (!initial || typeof initial !== 'object') initial = {};
+  if (!initial.stages || typeof initial.stages !== 'object') initial.stages = {};
+
   Alpine.store('prog', {
-    toggle(stage, idx) {
-      const s = String(stage);
-      if (!data.stages[s]) data.stages[s] = {};
-      data.stages[s][idx] = !data.stages[s][idx];
-      persist();
+    data: initial,
+    _persist() {
+      this.data.ts = Date.now();
+      try { localStorage.setItem(KEY, JSON.stringify(this.data)); } catch (e) {}
     },
-    isChecked(stage, idx) {
-      const s = data.stages[String(stage)];
-      return !!(s && s[idx]);
+    toggle(stage, key) {
+      const s = String(stage);
+      if (!this.data.stages[s]) this.data.stages[s] = {};
+      this.data.stages[s][key] = !this.data.stages[s][key];
+      this._persist();
+    },
+    isChecked(stage, key) {
+      const s = this.data.stages[String(stage)];
+      return !!(s && s[key]);
     },
     count(stage) {
-      const s = data.stages[String(stage)] || {};
-      return Object.values(s).filter(Boolean).length;
+      const s = this.data.stages[String(stage)] || {};
+      let n = 0;
+      for (const k in s) if (s[k]) n++;
+      return n;
+    },
+    countIn(stage, keys) {
+      const s = this.data.stages[String(stage)] || {};
+      let n = 0;
+      for (const k of keys) if (s[k]) n++;
+      return n;
     },
     status(stage, total) {
       const c = this.count(stage);
-      if (total > 0 && c === total) return 'exit 0';
+      if (total > 0 && c >= total) return 'exit 0';
       if (c > 0) return 'running';
       return 'not started';
     },
@@ -47,21 +60,107 @@ document.addEventListener('alpine:init', () => {
     },
     totalDone() {
       let n = 0;
-      for (const k in data.stages) n += Object.values(data.stages[k]).filter(Boolean).length;
+      const st = this.data.stages;
+      for (const k in st) {
+        const s = st[k];
+        for (const j in s) if (s[j]) n++;
+      }
       return n;
     },
     resetStage(stage) {
-      delete data.stages[String(stage)];
-      persist();
+      delete this.data.stages[String(stage)];
+      this._persist();
     },
     resetAll() {
-      data.stages = {};
-      persist();
-    },
-    touched() { return data.ts || 0; }
+      this.data.stages = {};
+      this._persist();
+    }
   });
 });
 </script>
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
+<script>
+// hotkeys — vim + GitHub flavor. Disabled while typing.
+(function () {
+  const base = {{ "/" | relURL | jsonify }};
+  const stages = {
+    '1': 'stage/assessment/',
+    '2': 'stage/pre-flight/',
+    '3': 'stage/migration/',
+    '4': 'stage/initialization/',
+    '5': 'stage/scaling/'
+  };
+  const slugToWeight = { 'assessment': 1, 'pre-flight': 2, 'migration': 3, 'initialization': 4, 'scaling': 5 };
+  let gPrefix = false;
+  let gTimer;
+  const clearG = () => { gPrefix = false; clearTimeout(gTimer); };
+  const inEditable = (el) => !el ? false : (el.tagName === 'INPUT' && el.type !== 'checkbox') || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT' || el.isContentEditable;
+  const nav = (path) => { window.location.href = base + path; };
+  const go = (hash) => { window.location.href = base + hash; };
+  const openHelp = () => document.documentElement.classList.add('hk-open');
+  const closeHelp = () => document.documentElement.classList.remove('hk-open');
+  const items = () => Array.from(document.querySelectorAll('.checklist input[type=checkbox]'));
+  const focusBy = (dir) => {
+    const all = items();
+    if (!all.length) return;
+    const cur = document.activeElement;
+    let i = all.indexOf(cur);
+    if (i === -1) { i = dir > 0 ? -1 : all.length; }
+    i = (i + dir + all.length) % all.length;
+    all[i].focus();
+    all[i].scrollIntoView({ block: 'center', behavior: 'smooth' });
+  };
+  const navStage = (dir) => {
+    const m = window.location.pathname.match(/stage\/([^\/]+)\/?/);
+    if (!m) return;
+    const w = slugToWeight[m[1]];
+    if (!w) return;
+    const next = w + dir;
+    if (stages[next]) nav(stages[next]);
+  };
+
+  document.addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === 'Escape') { closeHelp(); clearG(); return; }
+    if (inEditable(e.target)) return;
+    if (e.key === '?') { e.preventDefault(); openHelp(); return; }
+
+    if (gPrefix) {
+      const k = e.key;
+      clearG();
+      if (k === 'h') { nav(''); return; }
+      if (k === 'p') { go('#pipeline'); return; }
+      if (k === 'c') { nav('calculator/'); return; }
+      if (k === 'w') { nav('waitlist/'); return; }
+      if (stages[k]) { nav(stages[k]); return; }
+      return;
+    }
+
+    if (e.key === 'g') {
+      gPrefix = true;
+      gTimer = setTimeout(clearG, 1500);
+      return;
+    }
+
+    switch (e.key) {
+      case 'j': e.preventDefault(); focusBy(+1); return;
+      case 'k': e.preventDefault(); focusBy(-1); return;
+      case 'x':
+      case ' ':
+        if (document.activeElement && document.activeElement.type === 'checkbox' && document.activeElement.closest('.checklist')) {
+          e.preventDefault();
+          document.activeElement.click();
+        }
+        return;
+      case 'n': navStage(+1); return;
+      case 'N': navStage(-1); return;
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (e.target && e.target.matches('[data-hk-close]')) closeHelp();
+  });
+})();
+</script>
 </body>
 </html>

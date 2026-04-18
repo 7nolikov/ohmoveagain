@@ -26,7 +26,7 @@
 
   {{ $stages := (where site.RegularPages "Section" "stages").ByWeight }}
   {{ $grand := 0 }}
-  {{ range $stages }}{{ $grand = add $grand (len .Params.checklist) }}{{ end }}
+  {{ range $stages }}{{ range .Params.checklist }}{{ $grand = add $grand (len .items) }}{{ end }}{{ end }}
 
   <div class="pipeline-summary" x-data="{ total: {{ $grand }} }">
     <div class="progress-bar wide" aria-hidden="true"><div class="fill" :style="`width:${total ? 100 * $store.prog.totalDone() / total : 0}%`"></div></div>
@@ -39,7 +39,8 @@
 
   <div class="pipeline">
     {{ range $stages }}
-    {{- $c := len .Params.checklist -}}
+    {{- $c := 0 -}}
+    {{- range .Params.checklist -}}{{- $c = add $c (len .items) -}}{{- end -}}
     <a class="stage-card" href="{{ .RelPermalink }}"
        x-data="{ t: {{ $c }}, s: '{{ .Weight }}' }"
        :class="$store.prog.count(s) === t && t > 0 ? 'passed' : $store.prog.count(s) > 0 ? 'partial' : ''">

@@ -1,0 +1,35 @@
+<div class="hk-modal" role="dialog" aria-modal="true" aria-labelledby="hk-title">
+  <div class="hk-backdrop" data-hk-close></div>
+  <div class="hk-card">
+    <header class="hk-head">
+      <h2 id="hk-title"># hotkeys</h2>
+      <button type="button" class="btn-ghost" data-hk-close aria-label="close">Esc</button>
+    </header>
+    <section>
+      <h3>navigation</h3>
+      <dl class="hk-grid">
+        <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>home</dd>
+        <dt><kbd>g</kbd> <kbd>p</kbd></dt><dd>pipeline</dd>
+        <dt><kbd>g</kbd> <kbd>c</kbd></dt><dd>calculator</dd>
+        <dt><kbd>g</kbd> <kbd>w</kbd></dt><dd>waitlist</dd>
+        <dt><kbd>g</kbd> <kbd>1</kbd>–<kbd>5</kbd></dt><dd>jump to stage N</dd>
+      </dl>
+    </section>
+    <section>
+      <h3>on a stage page</h3>
+      <dl class="hk-grid">
+        <dt><kbd>j</kbd> / <kbd>k</kbd></dt><dd>next / prev checklist item</dd>
+        <dt><kbd>x</kbd> / <kbd>Space</kbd></dt><dd>toggle focused item</dd>
+        <dt><kbd>n</kbd> / <kbd>N</kbd></dt><dd>next / prev stage</dd>
+      </dl>
+    </section>
+    <section>
+      <h3>help</h3>
+      <dl class="hk-grid">
+        <dt><kbd>?</kbd></dt><dd>show this help</dd>
+        <dt><kbd>Esc</kbd></dt><dd>close help / cancel g-prefix</dd>
+      </dl>
+    </section>
+    <p class="muted">// progress is stored locally (<code>localStorage.ohma.v1</code>). nothing sent anywhere.</p>
+  </div>
+</div>

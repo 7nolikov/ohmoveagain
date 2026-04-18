@@ -16,7 +16,8 @@
 </section>
 
 {{ with .Params.checklist }}
-{{- $total := len . -}}
+{{- $total := 0 -}}
+{{- range . -}}{{- $total = add $total (len .items) -}}{{- end -}}
 {{- $weight := $.Weight -}}
 <section aria-labelledby="ck-h" x-data="{ t: {{ $total }}, s: '{{ $weight }}' }">
   <div class="checklist-head">
@@ -27,23 +28,46 @@
         <span x-text="$store.prog.count(s)"></span>/<span x-text="t"></span>
         · <span x-text="$store.prog.status(s, t)"></span>
       </span>
-      <button class="btn-ghost" type="button" @click="$store.prog.resetStage(s)" x-show="$store.prog.count(s) > 0" x-cloak>reset</button>
+      <button type="button" class="btn-ghost" @click="if (confirm('reset this stage?')) $store.prog.resetStage(s)" x-show="$store.prog.count(s) > 0" x-cloak>reset</button>
     </div>
   </div>
-  <p class="muted privacy-note">// state is local to your browser. nothing sent anywhere.</p>
-  <ul class="checklist">
-    {{ range $i, $item := . }}
-    <li :class="$store.prog.isChecked(s, {{ $i }}) ? 'done' : ''">
-      <label>
-        <input type="checkbox" :checked="$store.prog.isChecked(s, {{ $i }})" @change="$store.prog.toggle(s, {{ $i }})">
-        <span class="label-text">
-          <span class="label">{{ $item.label }}</span>
-          {{ with $item.note }}<span class="note">// {{ . }}</span>{{ end }}
-        </span>
-      </label>
-    </li>
-    {{ end }}
-  </ul>
+  <p class="muted privacy-note">// state is local to your browser. nothing sent anywhere. hit <kbd>?</kbd> for hotkeys.</p>
+
+  {{ range $ci, $cat := . }}
+  {{- $catItems := .items -}}
+  {{- $catLen := len $catItems -}}
+  {{- $keys := slice -}}
+  {{- range $ii, $it := $catItems -}}{{- $keys = $keys | append (printf "%d.%d" $ci $ii) -}}{{- end -}}
+  <div class="checklist-group">
+    <div class="group-head">
+      <h3 class="group-name">## {{ .name }}</h3>
+      <div class="group-status" x-cloak>
+        <span x-text="$store.prog.countIn(s, {{ $keys | jsonify }})"></span>/{{ $catLen }}
+      </div>
+    </div>
+    <ul class="checklist">
+      {{ range $ii, $item := $catItems }}
+      {{- $key := printf "%d.%d" $ci $ii -}}
+      <li :class="$store.prog.isChecked(s, '{{ $key }}') ? 'done' : ''">
+        <label>
+          <input type="checkbox" :checked="$store.prog.isChecked(s, '{{ $key }}')" @change="$store.prog.toggle(s, '{{ $key }}')">
+          <span class="label-text">
+            <span class="label">{{ $item.label }}</span>
+            {{ with $item.note }}<span class="note">// {{ . }}</span>{{ end }}
+            {{ with $item.source }}
+            {{- $url := .url -}}
+            {{- if hasPrefix $url "/" -}}{{- $url = strings.TrimPrefix "/" $url | relURL -}}{{- end -}}
+            <a class="source" href="{{ $url }}"{{ if hasPrefix .url "http" }} rel="noopener" target="_blank"{{ end }}>
+              ⟶ {{ .label }}{{ with .asOf }} · <span class="asof">last verified {{ . }}</span>{{ end }}
+            </a>
+            {{ end }}
+          </span>
+        </label>
+      </li>
+      {{ end }}
+    </ul>
+  </div>
+  {{ end }}
 </section>
 {{ end }}
 
