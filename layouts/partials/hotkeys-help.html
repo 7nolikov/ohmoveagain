@@ -6,7 +6,7 @@
       <button type="button" class="btn-ghost" data-hk-close aria-label="close">Esc</button>
     </header>
     <section>
-      <h3>navigation</h3>
+      <h3>go to</h3>
       <dl class="hk-grid">
         <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>home</dd>
         <dt><kbd>g</kbd> <kbd>p</kbd></dt><dd>pipeline</dd>
@@ -16,18 +16,30 @@
       </dl>
     </section>
     <section>
-      <h3>on a stage page</h3>
+      <h3>stage traversal — everywhere</h3>
+      <dl class="hk-grid">
+        <dt><kbd>h</kbd> / <kbd>l</kbd></dt><dd>prev / next stage</dd>
+      </dl>
+    </section>
+    <section>
+      <h3>pipeline page</h3>
+      <dl class="hk-grid">
+        <dt><kbd>j</kbd> / <kbd>k</kbd></dt><dd>focus prev / next stage card</dd>
+        <dt><kbd>Space</kbd></dt><dd>open focused stage</dd>
+      </dl>
+    </section>
+    <section>
+      <h3>stage page</h3>
       <dl class="hk-grid">
         <dt><kbd>j</kbd> / <kbd>k</kbd></dt><dd>next / prev checklist item</dd>
         <dt><kbd>x</kbd> / <kbd>Space</kbd></dt><dd>toggle focused item</dd>
-        <dt><kbd>n</kbd> / <kbd>N</kbd></dt><dd>next / prev stage</dd>
       </dl>
     </section>
     <section>
       <h3>help</h3>
       <dl class="hk-grid">
-        <dt><kbd>?</kbd></dt><dd>show this help</dd>
-        <dt><kbd>Esc</kbd></dt><dd>close help / cancel g-prefix</dd>
+        <dt><kbd>?</kbd></dt><dd>show / hide this panel</dd>
+        <dt><kbd>Esc</kbd></dt><dd>close / cancel g prefix</dd>
       </dl>
     </section>
     <p class="muted">// progress is stored locally (<code>localStorage.ohma.v1</code>). nothing sent anywhere.</p>

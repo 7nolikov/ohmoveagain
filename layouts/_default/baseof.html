@@ -149,24 +149,57 @@ document.addEventListener('alpine:init', () => {
   const go = (hash) => { window.location.href = base + hash; };
   const openHelp = () => document.documentElement.classList.add('hk-open');
   const closeHelp = () => document.documentElement.classList.remove('hk-open');
-  const items = () => Array.from(document.querySelectorAll('.checklist input[type=checkbox]'));
-  const focusBy = (dir) => {
-    const all = items();
-    if (!all.length) return;
-    const cur = document.activeElement;
-    let i = all.indexOf(cur);
-    if (i === -1) { i = dir > 0 ? -1 : all.length; }
-    i = (i + dir + all.length) % all.length;
-    all[i].focus();
-    all[i].scrollIntoView({ block: 'center', behavior: 'smooth' });
+
+  // Page-type detection
+  const isHomePage = () => {
+    const p = window.location.pathname.replace(/\/$/, '');
+    return p === base.replace(/\/$/, '') || p === '';
   };
+  const stageWeight = () => {
+    const m = window.location.pathname.match(/\/stage\/([^\/]+)\/?/);
+    return m ? (slugToWeight[m[1]] || 0) : 0;
+  };
+
+  // h/l: prev/next stage — works on every page.
+  // h on stage 1 → home; l on non-stage → stage 1.
   const navStage = (dir) => {
-    const m = window.location.pathname.match(/stage\/([^\/]+)\/?/);
-    if (!m) return;
-    const w = slugToWeight[m[1]];
-    if (!w) return;
-    const next = w + dir;
-    if (stages[next]) nav(stages[next]);
+    const w = stageWeight();
+    if (dir < 0) {
+      if (w > 1) { nav(stages[w - 1]); return; }
+      if (w === 1) { nav(''); return; }
+    } else {
+      if (w > 0 && stages[w + 1]) { nav(stages[w + 1]); return; }
+      if (w === 0 && stages[1]) { nav(stages[1]); return; }
+    }
+  };
+
+  // j/k: context-aware — stage cards on home, checkboxes on stage pages.
+  const checkboxes = () => Array.from(document.querySelectorAll('.checklist input[type=checkbox]'));
+  const cards = () => Array.from(document.querySelectorAll('.stage-card'));
+  const focusBy = (dir) => {
+    const list = isHomePage() ? cards() : checkboxes();
+    if (!list.length) return;
+    const cur = document.activeElement;
+    let i = list.indexOf(cur);
+    if (i === -1) { i = dir > 0 ? -1 : list.length; }
+    i = (i + dir + list.length) % list.length;
+    list[i].focus();
+    list[i].scrollIntoView({ block: 'center', behavior: 'smooth' });
+  };
+
+  // Space/x: open focused stage card (home) or toggle focused checkbox (stage page).
+  const activateFocused = (e) => {
+    const el = document.activeElement;
+    if (!el) return;
+    if (isHomePage() && el.classList.contains('stage-card')) {
+      e.preventDefault();
+      window.location.href = el.href;
+      return;
+    }
+    if (el.type === 'checkbox' && el.closest('.checklist')) {
+      e.preventDefault();
+      el.click();
+    }
   };
 
   document.addEventListener('keydown', (e) => {
@@ -195,15 +228,10 @@ document.addEventListener('alpine:init', () => {
     switch (e.key) {
       case 'j': e.preventDefault(); focusBy(+1); return;
       case 'k': e.preventDefault(); focusBy(-1); return;
+      case 'h': navStage(-1); return;
+      case 'l': navStage(+1); return;
       case 'x':
-      case ' ':
-        if (document.activeElement && document.activeElement.type === 'checkbox' && document.activeElement.closest('.checklist')) {
-          e.preventDefault();
-          document.activeElement.click();
-        }
-        return;
-      case 'n': navStage(+1); return;
-      case 'N': navStage(-1); return;
+      case ' ': activateFocused(e); return;
     }
   });
 
