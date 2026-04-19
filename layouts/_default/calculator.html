@@ -87,7 +87,7 @@
 </section>
 
 <script>
-  window.OHMA_COUNTRIES = {{ $countries | jsonify }};
+  window.OHMA_COUNTRIES = {{ $countries | jsonify | safeJS }};
   function calcApp() {
     return {
       gross: null,
