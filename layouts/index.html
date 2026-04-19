@@ -1,4 +1,11 @@
 {{ define "main" }}
+{{- $ld := dict
+  "@context" "https://schema.org"
+  "@type"    "WebSite"
+  "name"     site.Title
+  "url"      site.BaseURL
+  "description" site.Params.description | jsonify -}}
+{{ printf "<script type=\"application/ld+json\">%s</script>" $ld | safeHTML }}
 <section class="hero">
   <div class="tagline">// relocation as a deployment pipeline. engineered, not improvised.</div>
   <h1>ship yourself to Croatia without <code>exit 1</code>.</h1>
@@ -65,14 +72,14 @@
   <h2 id="why-h"># why this exists</h2>
   <p class="dim">
     most relocation content is SEO sludge written by people who've never filed an apostille.
-    this is a GitOps wiki maintained by devs who have. open-source. PR-driven.
-    the calculator is the lead magnet; the premium artifacts are the business model.
+    this is a GitOps wiki maintained by devs who have — <span class="acc">free, open-source, PR-driven</span>.
+    every source is cited with an "as of" date. if something's wrong, open an issue; if it's missing, open a PR.
   </p>
 </section>
 
 <section aria-labelledby="cta-h">
-  <h2 id="cta-h"># waitlist</h2>
-  <p class="dim">get pinged when the paid tax-optimization playbook and document templates drop. no newsletter. no spam.</p>
+  <h2 id="cta-h"># stay in the loop</h2>
+  <p class="dim">one email when a new stage, calculator country, or playbook lands. no newsletter, no drip, no upsell.</p>
   {{ partial "subscribe-form.html" . }}
 </section>
 

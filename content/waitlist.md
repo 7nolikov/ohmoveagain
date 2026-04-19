@@ -1,6 +1,6 @@
 ---
-title: "Premium Artifacts waitlist"
-subtitle: "Get pinged when the paid artifacts drop."
-description: "Tax-optimization playbook for solo-SaaS founders in Croatia. Document bundles. Closed community. One email when it ships."
+title: "Stay in the loop"
+subtitle: "One email when a new stage, playbook, or calculator drops."
+description: "Croatia relocation pipeline for senior devs. Free, open-source, maintained. Get pinged when new content ships — no newsletter, no drip, no upsell."
 layout: "waitlist"
 ---

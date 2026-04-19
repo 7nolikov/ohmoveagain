@@ -183,8 +183,17 @@ function exportCurrentStage() {
   const inEditable = (el) => !el ? false : (el.tagName === 'INPUT' && el.type !== 'checkbox') || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT' || el.isContentEditable;
   const nav = (path) => { window.location.href = base + path; };
   const go = (hash) => { window.location.href = base + hash; };
-  const openHelp = () => document.documentElement.classList.add('hk-open');
-  const closeHelp = () => document.documentElement.classList.remove('hk-open');
+  const modal = () => document.querySelector('.hk-modal');
+  const openHelp = () => {
+    document.documentElement.classList.add('hk-open');
+    const m = modal();
+    if (m) { m.hidden = false; m.setAttribute('aria-hidden', 'false'); }
+  };
+  const closeHelp = () => {
+    document.documentElement.classList.remove('hk-open');
+    const m = modal();
+    if (m) { m.hidden = true; m.setAttribute('aria-hidden', 'true'); }
+  };
 
   // Page-type detection
   const isHomePage = () => {
@@ -272,7 +281,10 @@ function exportCurrentStage() {
   });
 
   document.addEventListener('click', (e) => {
-    if (e.target && e.target.matches('[data-hk-close]')) closeHelp();
+    const t = e.target;
+    if (!t) return;
+    if (t.matches('[data-hk-close]')) closeHelp();
+    else if (t.closest && t.closest('[data-hk-open]')) openHelp();
   });
 })();
 </script>

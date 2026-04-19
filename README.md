@@ -110,13 +110,13 @@ Weaker than real headers (no `frame-ancestors` enforcement in meta) but sufficie
 - [ ] Submit `/sitemap.xml` to Google Search Console once the domain is live.
 - [ ] Post the calculator screenshot with a sharp dev-voice tweet. That's the launch.
 
-## Premium Artifacts (roadmap)
+## Roadmap (all free, open-source)
 
 - Full HR tax-optimization playbook for solo-SaaS founders (paušalni obrt vs j.d.o.o. vs d.o.o.)
 - Apostille packet generator (PDFs pre-filled from a short form)
-- Closed community for serious movers (Discord / forum / whatever has the lowest ops cost)
+- Additional country pairs in the calculator
 
-Waitlist lives at `/waitlist/`. Email capture goes to Formspree. That is the entire funnel.
+Subscribe form lives at `/waitlist/` (URL kept for link stability). Email capture goes to Formspree. One ping per new stage or playbook. See [DECISIONS.md](./DECISIONS.md) for the locked business model.
 
 ## License
 

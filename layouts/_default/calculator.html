@@ -1,5 +1,16 @@
 {{ define "main" }}
 {{ $countries := hugo.Data.countries }}
+{{- $ld := dict
+  "@context"        "https://schema.org"
+  "@type"           "WebApplication"
+  "name"            (printf "%s — runway calculator" site.Title)
+  "url"             .Permalink
+  "applicationCategory" "FinanceApplication"
+  "operatingSystem" "Web"
+  "description"     (default site.Params.description .Description)
+  "offers"          (dict "@type" "Offer" "price" "0" "priceCurrency" "EUR")
+  "isPartOf"        (dict "@type" "WebSite" "name" site.Title "url" site.BaseURL) | jsonify -}}
+{{ printf "<script type=\"application/ld+json\">%s</script>" $ld | safeHTML }}
 <section x-data="calcApp()">
   <div class="tagline">// runway calculator · directional, not legal advice</div>
   <h1>how many months of runway does the move buy you?</h1>
@@ -50,13 +61,19 @@
         </tbody>
       </table>
       <div class="share" title="tap to select · copy · share" x-text="result.shareLine" @click="copyShare"></div>
+      <div class="share-ctas">
+        <button type="button" class="btn-ghost" @click="copyShare">
+          <span x-text="copied ? 'copied ✓' : '↪ copy line'"></span>
+        </button>
+        <a class="btn-ghost" :href="result.tweetUrl" target="_blank" rel="noopener">↪ tweet it</a>
+        <button type="button" class="btn-ghost" @click="copyUrl">
+          <span x-text="urlCopied ? 'url copied ✓' : '↪ copy link'"></span>
+        </button>
+      </div>
       <p class="muted" style="font-size:0.8rem;margin-top:10px;">
         // directional only. effective tax rate = blended income + social at contractor-style SaaS founder baseline.
         verify with a local accountant before acting.
       </p>
-      <template x-if="copied">
-        <div class="success" role="status">exit 0: copied to clipboard.</div>
-      </template>
     </div>
   </template>
 </section>
@@ -96,6 +113,7 @@
       result: null,
       error: '',
       copied: false,
+      urlCopied: false,
       init() {
         const p = new URLSearchParams(window.location.search);
         if (p.get('gross')) this.gross = Number(p.get('gross'));
@@ -135,7 +153,8 @@
         url.searchParams.set('gross', String(gross));
         history.replaceState(null, '', url.toString());
         const shareLine = `${to.name} buys me ${this.fmtSign(deltaMonths, 1)} months/yr runway vs ${from.name} (net Δ ${this.fmtSign(deltaSavings)} €/yr). try yours: ${url.toString()}`;
-        this.result = { gross, from, to, fromNet, toNet, fromRunway, toRunway, deltaMonths, deltaSavings, positive, shareLine };
+        const tweetUrl = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareLine);
+        this.result = { gross, from, to, fromNet, toNet, fromRunway, toRunway, deltaMonths, deltaSavings, positive, shareLine, tweetUrl, shareUrl: url.toString() };
       },
       money(v) { return '€' + Math.round(v).toLocaleString('en-US'); },
       fmtSign(v, digits) {
@@ -144,12 +163,18 @@
       },
       fmtDelta(v) { return (v >= 0 ? '+' : '') + Number(v).toFixed(1); },
       copyShare() {
-        if (!this.result) return;
-        if (!navigator.clipboard) return;
+        if (!this.result || !navigator.clipboard) return;
         navigator.clipboard.writeText(this.result.shareLine).then(() => {
           this.copied = true;
           setTimeout(() => this.copied = false, 2500);
-        }).catch(() => { /* silent */ });
+        }).catch(() => {});
+      },
+      copyUrl() {
+        if (!this.result || !navigator.clipboard) return;
+        navigator.clipboard.writeText(this.result.shareUrl).then(() => {
+          this.urlCopied = true;
+          setTimeout(() => this.urlCopied = false, 2500);
+        }).catch(() => {});
       }
     };
   }

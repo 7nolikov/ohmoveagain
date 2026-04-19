@@ -72,7 +72,7 @@ artifacts:
   - name: "SaaS structure decision tree (HR)"
     kind: "doc"
     href: "#"
-  - name: "Premium: full tax-optimization playbook"
+  - name: "Full tax-optimization playbook (wip, free)"
     kind: "link"
     href: "/waitlist/"
 ---

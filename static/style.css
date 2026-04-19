@@ -104,12 +104,21 @@ header.top {
   letter-spacing: -0.01em;
   color: var(--accent);
   white-space: nowrap;
+  display: inline-block;
+  padding: 4px 0;
+  line-height: 1.3;
 }
 .brand .caret { color: var(--fg-dim); }
 .brand .blink { animation: blink 1.1s steps(2, start) infinite; color: var(--accent); }
 @keyframes blink { to { visibility: hidden; } }
-.nav { display: flex; gap: 14px; flex-wrap: wrap; }
-.nav a { color: var(--fg-dim); }
+.nav { display: flex; gap: 10px; flex-wrap: wrap; }
+.nav a {
+  color: var(--fg-dim);
+  padding: 4px 6px;
+  border-radius: var(--radius);
+  display: inline-block;
+  line-height: 1.3;
+}
 .nav a:hover { color: var(--fg); }
 
 /* ---------- Hero ---------- */
@@ -365,9 +374,10 @@ header.top {
   background: transparent;
   border: 1px solid var(--border-bright);
   color: var(--fg-dim);
-  padding: 4px 10px;
+  padding: 6px 12px;
+  min-height: 28px;
   font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   border-radius: var(--radius);
   cursor: pointer;
   white-space: nowrap;
@@ -467,6 +477,13 @@ header.top {
   user-select: all;
   word-break: break-word;
 }
+.share-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+.share-ctas .btn-ghost { text-decoration: none; }
 
 .error, .success {
   padding: 10px 14px;
@@ -489,7 +506,11 @@ footer.foot {
   font-size: 0.85rem;
   text-align: center;
 }
-footer.foot a { color: var(--fg-dim); }
+footer.foot a {
+  color: var(--fg-dim);
+  display: inline-block;
+  padding: 4px 6px;
+}
 footer.foot p { margin: 0 0 0.6em; }
 
 /* ---------- Utility ---------- */
@@ -521,11 +542,10 @@ footer.foot p { margin: 0 0 0.6em; }
   padding: 8px 16px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  flex-wrap: nowrap;
+  gap: 10px;
+  flex-wrap: wrap;
   font-size: 0.8rem;
   color: var(--fg-muted);
-  overflow-x: auto;
 }
 .stage-dots {
   display: flex;
@@ -537,13 +557,13 @@ footer.foot p { margin: 0 0 0.6em; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   border: 1px solid var(--border-bright);
   background: var(--bg-alt);
   color: var(--fg-muted);
-  font-size: 0.7rem;
+  font-size: 0.78rem;
   font-weight: 600;
   text-decoration: none;
   transition: border-color 0.15s, background 0.15s, color 0.15s;
@@ -576,8 +596,8 @@ footer.foot p { margin: 0 0 0.6em; }
   display: flex;
   align-items: center;
   gap: 6px;
-  flex-shrink: 0;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
+  min-width: 0;
 }
 .persona-label {
   font-size: 0.72rem;
@@ -591,30 +611,38 @@ footer.foot p { margin: 0 0 0.6em; }
   border: 1px solid var(--border-bright);
   border-radius: var(--radius);
   font-family: var(--mono);
-  font-size: 0.72rem;
-  padding: 2px 6px;
+  font-size: 0.78rem;
+  padding: 6px 8px;
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
   min-width: 0;
-  max-width: 110px;
+  max-width: 140px;
+  min-height: 32px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.persona-select:focus { outline: 1px solid var(--accent); border-color: var(--accent); }
+.persona-select:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
 .persona-select:hover { border-color: var(--accent-dim); color: var(--fg); }
 
 @media (max-width: 680px) {
-  .persona-picker { display: none; }
+  .persona-picker {
+    flex-basis: 100%;
+    order: 10;
+    padding-top: 4px;
+    border-top: 1px dashed var(--border);
+  }
+  .persona-select { flex: 1 1 auto; max-width: none; font-size: 16px; min-height: 36px; }
+  .persona-label { width: 100%; margin-bottom: 2px; }
 }
 
 .prog-help {
   background: transparent;
   border: 1px solid var(--border-bright);
   color: var(--fg-dim);
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   font-family: var(--mono);
   font-size: 0.85rem;
@@ -711,12 +739,13 @@ html.hk-open { overflow: hidden; }
   margin-bottom: 10px;
 }
 .hk-head h2 { margin: 0; }
-.hk-card section { margin-top: 14px; }
-.hk-card section h3 {
+.hk-section { margin-top: 14px; }
+.hk-section-title {
   margin: 0 0 8px;
   color: var(--fg-dim);
   font-size: 0.85rem;
   font-weight: 500;
+  font-family: var(--mono);
 }
 .hk-grid {
   display: grid;
