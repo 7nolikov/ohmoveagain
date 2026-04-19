@@ -16,17 +16,49 @@
 // ohma progress store — localStorage-backed, zero network, fully reactive.
 document.addEventListener('alpine:init', () => {
   const KEY = 'ohma.v1';
+  const PKEY = 'ohma.profile.v1';
+
   let initial;
   try { initial = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { initial = {}; }
   if (!initial || typeof initial !== 'object') initial = {};
   if (!initial.stages || typeof initial.stages !== 'object') initial.stages = {};
 
+  let profile = { visa: 'all', family: 'all', pets: 'all' };
+  try {
+    const p = JSON.parse(localStorage.getItem(PKEY) || '{}');
+    if (p.visa) profile.visa = p.visa;
+    if (p.family) profile.family = p.family;
+    if (p.pets) profile.pets = p.pets;
+  } catch (e) {}
+  const _qs = new URLSearchParams(window.location.search);
+  if (_qs.get('visa')) profile.visa = _qs.get('visa');
+  if (_qs.get('family')) profile.family = _qs.get('family');
+  if (_qs.get('pets')) profile.pets = _qs.get('pets');
+
   Alpine.store('prog', {
     data: initial,
+    profile: profile,
+
     _persist() {
       this.data.ts = Date.now();
       try { localStorage.setItem(KEY, JSON.stringify(this.data)); } catch (e) {}
     },
+    setProfile(key, val) {
+      this.profile[key] = val;
+      try { localStorage.setItem(PKEY, JSON.stringify(this.profile)); } catch (e) {}
+      const u = new URL(window.location);
+      if (val === 'all') u.searchParams.delete(key);
+      else u.searchParams.set(key, val);
+      history.replaceState(null, '', u);
+    },
+    matchesProfile(ao) {
+      if (!ao) return true;
+      if (ao.visa   && ao.visa.length   && this.profile.visa   !== 'all' && !ao.visa.includes(this.profile.visa))     return false;
+      if (ao.family && ao.family.length && this.profile.family !== 'all' && !ao.family.includes(this.profile.family)) return false;
+      if (ao.pets   && ao.pets.length   && this.profile.pets   !== 'all' && !ao.pets.includes(this.profile.pets))     return false;
+      return true;
+    },
+
     toggle(stage, key) {
       const s = String(stage);
       if (!this.data.stages[s]) this.data.stages[s] = {};
@@ -37,16 +69,12 @@ document.addEventListener('alpine:init', () => {
       const s = this.data.stages[String(stage)];
       return !!(s && s[key]);
     },
+
+    // Unfiltered — used by home page stage cards and global dots
     count(stage) {
       const s = this.data.stages[String(stage)] || {};
       let n = 0;
       for (const k in s) if (s[k]) n++;
-      return n;
-    },
-    countIn(stage, keys) {
-      const s = this.data.stages[String(stage)] || {};
-      let n = 0;
-      for (const k of keys) if (s[k]) n++;
       return n;
     },
     status(stage, total) {
@@ -61,12 +89,34 @@ document.addEventListener('alpine:init', () => {
     totalDone() {
       let n = 0;
       const st = this.data.stages;
-      for (const k in st) {
-        const s = st[k];
-        for (const j in s) if (s[j]) n++;
-      }
+      for (const k in st) { const s = st[k]; for (const j in s) if (s[j]) n++; }
       return n;
     },
+
+    // Profile-filtered — used by stage pages
+    totalF(meta) {
+      let n = 0;
+      for (const m of meta) if (this.matchesProfile(m.ao)) n++;
+      return n;
+    },
+    countF(stage, meta) {
+      const s = this.data.stages[String(stage)] || {};
+      let n = 0;
+      for (const m of meta) if (this.matchesProfile(m.ao) && s[m.key]) n++;
+      return n;
+    },
+    pctF(stage, meta) {
+      const t = this.totalF(meta);
+      return t > 0 ? 100 * this.countF(stage, meta) / t : 0;
+    },
+    statusF(stage, meta) {
+      const t = this.totalF(meta);
+      const c = this.countF(stage, meta);
+      if (t > 0 && c >= t) return 'exit 0';
+      if (c > 0) return 'running';
+      return 'not started';
+    },
+
     resetStage(stage) {
       delete this.data.stages[String(stage)];
       this._persist();
@@ -82,7 +132,7 @@ document.addEventListener('alpine:init', () => {
 <script>
 // hotkeys — vim + GitHub flavor. Disabled while typing.
 (function () {
-  const base = {{ "/" | relURL | jsonify }};
+  const base = {{ site.Home.RelPermalink }};
   const stages = {
     '1': 'stage/assessment/',
     '2': 'stage/pre-flight/',

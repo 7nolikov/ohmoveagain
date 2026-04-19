@@ -37,6 +37,28 @@ checklist:
           url: "https://www.hnb.hr/en"
           label: "HNB — Croatian National Bank"
           asOf: "2026-01-01"
+  - name: "pets in transit"
+    items:
+      - label: "Vet health certificate signed within 10 days of travel date"
+        note: "The clock starts from the vet's signature date, not your travel booking. Schedule the vet appointment last."
+        appliesTo:
+          pets: [dog-cat]
+        source:
+          url: "https://food.ec.europa.eu/animals/movement-pets_en"
+          label: "EU — health certificate validity"
+          asOf: "2026-03-01"
+      - label: "Pet booking confirmed with airline (reference number in hand)"
+        note: "Reconfirm 48h before travel. Airlines cancel pet slots without notice."
+        appliesTo:
+          pets: [dog-cat, other]
+        source:
+          url: "https://www.iata.org/en/programs/cargo/live-animals/"
+          label: "IATA — live animals transport"
+          asOf: "2026-01-01"
+      - label: "Carrier dimensions verified at check-in vs airline's current spec"
+        note: "Staff measure on the day. If your carrier is 1cm over, the pet goes cargo or stays home."
+        appliesTo:
+          pets: [dog-cat]
 gotchas:
   - "Your old country's bank may freeze cards on geo-change. Notify in advance, or carry a backup bank."
   - "Croatia switched to EUR in 2023 — old kuna cash is no longer legal tender."

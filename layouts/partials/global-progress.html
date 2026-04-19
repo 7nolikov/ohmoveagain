@@ -22,6 +22,31 @@
       <span x-text="$store.prog.totalDone()"></span>/<span x-text="total"></span>
       · <span x-text="total ? Math.round(100 * $store.prog.totalDone() / total) : 0"></span>%
     </span>
+    <div class="persona-picker" x-data>
+      <label class="persona-label" for="pp-visa">path:</label>
+      <select id="pp-visa" class="persona-select" aria-label="visa type" @change="$store.prog.setProfile('visa', $event.target.value)">
+        <option value="all"                  :selected="$store.prog.profile.visa==='all'">any visa</option>
+        <option value="digital-nomad"        :selected="$store.prog.profile.visa==='digital-nomad'">digital nomad</option>
+        <option value="blue-card"            :selected="$store.prog.profile.visa==='blue-card'">EU blue card</option>
+        <option value="work-permit"          :selected="$store.prog.profile.visa==='work-permit'">work permit</option>
+        <option value="self-employment"      :selected="$store.prog.profile.visa==='self-employment'">self-employed</option>
+        <option value="family-reunification" :selected="$store.prog.profile.visa==='family-reunification'">family reun.</option>
+        <option value="eu-eea"               :selected="$store.prog.profile.visa==='eu-eea'">EU/EEA citizen</option>
+      </select>
+      <select class="persona-select" aria-label="family composition" @change="$store.prog.setProfile('family', $event.target.value)">
+        <option value="all"         :selected="$store.prog.profile.family==='all'">any family</option>
+        <option value="solo"        :selected="$store.prog.profile.family==='solo'">solo</option>
+        <option value="spouse"      :selected="$store.prog.profile.family==='spouse'">+ partner</option>
+        <option value="kids"        :selected="$store.prog.profile.family==='kids'">+ kids</option>
+        <option value="spouse-kids" :selected="$store.prog.profile.family==='spouse-kids'">+ partner &amp; kids</option>
+      </select>
+      <select class="persona-select" aria-label="pets" @change="$store.prog.setProfile('pets', $event.target.value)">
+        <option value="all"     :selected="$store.prog.profile.pets==='all'">any pets</option>
+        <option value="none"    :selected="$store.prog.profile.pets==='none'">no pets</option>
+        <option value="dog-cat" :selected="$store.prog.profile.pets==='dog-cat'">dog / cat</option>
+        <option value="other"   :selected="$store.prog.profile.pets==='other'">other pet</option>
+      </select>
+    </div>
     <button type="button" class="prog-help" data-hk-open aria-label="keyboard shortcuts" title="? for hotkeys" onclick="document.documentElement.classList.add('hk-open')">?</button>
   </div>
 </div>

@@ -16,39 +16,45 @@
 </section>
 
 {{ with .Params.checklist }}
-{{- $total := 0 -}}
-{{- range . -}}{{- $total = add $total (len .items) -}}{{- end -}}
 {{- $weight := $.Weight -}}
-<section aria-labelledby="ck-h" x-data="{ t: {{ $total }}, s: '{{ $weight }}' }">
+{{- $stageMeta := slice -}}
+{{- range $ci, $cat := . -}}
+  {{- range $ii, $item := $cat.items -}}
+    {{- $stageMeta = $stageMeta | append (dict "key" (printf "%d.%d" $ci $ii) "ao" $item.appliesTo) -}}
+  {{- end -}}
+{{- end -}}
+<section aria-labelledby="ck-h" x-data="{ meta: {{ $stageMeta | jsonify }}, s: '{{ $weight }}' }">
   <div class="checklist-head">
     <h2 id="ck-h"># checklist</h2>
-    <div class="stage-status" :data-status="$store.prog.status(s, t) === 'exit 0' ? 'passed' : $store.prog.status(s, t) === 'running' ? 'running' : 'idle'">
-      <div class="progress-bar" aria-hidden="true"><div class="fill" :style="`width:${$store.prog.pct(s, t)}%`"></div></div>
+    <div class="stage-status" :data-status="$store.prog.statusF(s, meta) === 'exit 0' ? 'passed' : $store.prog.statusF(s, meta) === 'running' ? 'running' : 'idle'">
+      <div class="progress-bar" aria-hidden="true"><div class="fill" :style="`width:${$store.prog.pctF(s, meta)}%`"></div></div>
       <span class="status-txt" x-cloak>
-        <span x-text="$store.prog.count(s)"></span>/<span x-text="t"></span>
-        · <span x-text="$store.prog.status(s, t)"></span>
+        <span x-text="$store.prog.countF(s, meta)"></span>/<span x-text="$store.prog.totalF(meta)"></span>
+        · <span x-text="$store.prog.statusF(s, meta)"></span>
       </span>
-      <button type="button" class="btn-ghost" @click="if (confirm('reset this stage?')) $store.prog.resetStage(s)" x-show="$store.prog.count(s) > 0" x-cloak>reset</button>
+      <button type="button" class="btn-ghost" @click="if (confirm('reset this stage?')) $store.prog.resetStage(s)" x-show="$store.prog.countF(s, meta) > 0" x-cloak>reset</button>
     </div>
   </div>
   <p class="muted privacy-note">// state is local to your browser. nothing sent anywhere. hit <kbd>?</kbd> for hotkeys.</p>
 
   {{ range $ci, $cat := . }}
   {{- $catItems := .items -}}
-  {{- $catLen := len $catItems -}}
-  {{- $keys := slice -}}
-  {{- range $ii, $it := $catItems -}}{{- $keys = $keys | append (printf "%d.%d" $ci $ii) -}}{{- end -}}
-  <div class="checklist-group">
+  {{- $catMeta := slice -}}
+  {{- range $ii, $item := $catItems -}}
+    {{- $catMeta = $catMeta | append (dict "key" (printf "%d.%d" $ci $ii) "ao" $item.appliesTo) -}}
+  {{- end -}}
+  <div class="checklist-group" x-data="{ catMeta: {{ $catMeta | jsonify }} }">
     <div class="group-head">
       <h3 class="group-name">## {{ .name }}</h3>
       <div class="group-status" x-cloak>
-        <span x-text="$store.prog.countIn(s, {{ $keys | jsonify }})"></span>/{{ $catLen }}
+        <span x-text="$store.prog.countF(s, catMeta)"></span>/<span x-text="$store.prog.totalF(catMeta)"></span>
       </div>
     </div>
     <ul class="checklist">
       {{ range $ii, $item := $catItems }}
       {{- $key := printf "%d.%d" $ci $ii -}}
-      <li :class="$store.prog.isChecked(s, '{{ $key }}') ? 'done' : ''">
+      {{- $ao := $item.appliesTo | jsonify -}}
+      <li x-show="$store.prog.matchesProfile({{ $ao }})" :class="$store.prog.isChecked(s, '{{ $key }}') ? 'done' : ''">
         <label>
           <input type="checkbox" :checked="$store.prog.isChecked(s, '{{ $key }}')" @change="$store.prog.toggle(s, '{{ $key }}')">
           <span class="label-text">
