@@ -15,12 +15,28 @@ checklist:
           url: "https://www.hok.hr/en/"
           label: "HOK — Croatian Chamber of Trades & Crafts"
           asOf: "2026-02-01"
-      - label: "Business structure selected"
-        note: "Paušalni obrt / obrt / j.d.o.o. / d.o.o. — pick by revenue and liability appetite."
+      - label: "Business structure selected: paušalni obrt / obrt / j.d.o.o. / d.o.o."
+        note: "Pick by revenue, liability appetite, and visa route. Self-employed permit holders must keep their registered entity active."
         source:
           url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
           label: "Porezna uprava — business taxation"
           asOf: "2026-03-01"
+      - label: "Verify Blue Card does not restrict side-income or second employment"
+        note: "Blue Card ties you to a specific employer for the first 2 years. Side projects may require separate authorisation."
+        appliesTo:
+          visa: [blue-card]
+        source:
+          url: "https://home-affairs.ec.europa.eu/policies/migration-and-asylum/legal-migration-and-integration/work_en"
+          label: "EU Commission — Blue Card conditions"
+          asOf: "2026-01-01"
+      - label: "Confirm Digital Nomad Visa renewal conditions (income + non-HR employer)"
+        note: "Renewal requires same income proof. Working for a HR client voids the visa — your employer must remain foreign."
+        appliesTo:
+          visa: [digital-nomad]
+        source:
+          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+          label: "MUP — digital nomad renewal"
+          asOf: "2026-02-15"
       - label: "VAT registration threshold understood"
         note: "Mandatory registration above the annual threshold (EUR 39,816 in 2025); voluntary below for EU B2B."
         source:

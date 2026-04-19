@@ -41,12 +41,30 @@ checklist:
           url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
           label: "MUP — residency application docs"
           asOf: "2026-02-15"
-      - label: "Proof of funds / employment contract / Blue Card offer"
-        note: "Blue Card gross minimum updates annually — verify current threshold."
+      - label: "Employment contract / Blue Card offer letter from HR employer"
+        note: "Blue Card gross minimum updates annually — verify current threshold before signing."
+        appliesTo:
+          visa: [blue-card, work-permit]
         source:
           url: "https://home-affairs.ec.europa.eu/policies/migration-and-asylum/legal-migration-and-integration/work_en"
-          label: "EU Commission — legal migration"
+          label: "EU Commission — Blue Card documentation"
           asOf: "2026-01-01"
+      - label: "Proof of remote income for Digital Nomad application (bank statements / client contracts)"
+        note: "3–6 months of statements showing consistent income above the MUP threshold. Foreign employer letter or freelance contracts accepted."
+        appliesTo:
+          visa: [digital-nomad]
+        source:
+          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+          label: "MUP — digital nomad income proof"
+          asOf: "2026-02-15"
+      - label: "Croatian business registration (obrt or d.o.o.) complete before permit application"
+        note: "Must have a registered entity before applying for self-employment residency. Obrt registration is faster (~3 days)."
+        appliesTo:
+          visa: [self-employment]
+        source:
+          url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
+          label: "Porezna uprava — trade registration"
+          asOf: "2026-03-01"
   - name: "logistics dry-run"
     items:
       - label: "International health insurance with 90-day EU coverage"

@@ -35,12 +35,54 @@ checklist:
           url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
           label: "MUP — stay in Croatia"
           asOf: "2026-02-15"
-      - label: "Confirm EU Blue Card threshold (if employee route)"
-        note: "Thresholds update annually. Verify current gross minimum before assuming eligibility."
+      - label: "Confirm EU Blue Card gross salary threshold"
+        note: "Thresholds update annually — verify the current minimum before assuming eligibility. Employer must be based in HR or willing to sponsor."
+        appliesTo:
+          visa: [blue-card]
         source:
           url: "https://home-affairs.ec.europa.eu/policies/migration-and-asylum/legal-migration-and-integration/work_en"
-          label: "EU Commission — legal migration (Blue Card)"
+          label: "EU Commission — Blue Card eligibility"
           asOf: "2026-01-01"
+      - label: "Confirm Digital Nomad Visa income requirement"
+        note: "Minimum monthly income threshold applies (currently ~2.5× HR average net wage). Must be employed or self-employed outside Croatia."
+        appliesTo:
+          visa: [digital-nomad]
+        source:
+          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+          label: "MUP — digital nomad visa"
+          asOf: "2026-02-15"
+      - label: "Confirm work permit employer sponsorship path"
+        note: "Standard work permit requires employer to prove no suitable HR/EU candidate exists first (labour market test)."
+        appliesTo:
+          visa: [work-permit]
+        source:
+          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+          label: "MUP — work permits"
+          asOf: "2026-02-15"
+      - label: "Register obrt or d.o.o. scope and income structure"
+        note: "Self-employed path bypasses employer sponsorship. Paušalni obrt is the simplest structure under the revenue cap."
+        appliesTo:
+          visa: [self-employment]
+        source:
+          url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
+          label: "Porezna uprava — self-employment registration"
+          asOf: "2026-03-01"
+      - label: "EU/EEA citizens: right of free movement applies — no visa required"
+        note: "Register at MUP within 8 days of arrival. No quota, no employer test, no income threshold."
+        appliesTo:
+          visa: [eu-eea]
+        source:
+          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+          label: "MUP — EU citizen registration"
+          asOf: "2026-02-15"
+      - label: "Confirm family reunification sponsor income requirement"
+        note: "Primary applicant must show sufficient stable income to cover all dependents. Threshold is per MUP and adjusts annually."
+        appliesTo:
+          visa: [family-reunification]
+        source:
+          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+          label: "MUP — family reunification"
+          asOf: "2026-02-15"
   - name: "reality check"
     items:
       - label: "Audit career market density (local + remote)"
