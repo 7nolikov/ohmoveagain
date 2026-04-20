@@ -1,11 +1,18 @@
 ---
 title: "Migration"
-subtitle: "Physical relocation. The only irreversible step."
-description: "Border crossing, temporary accommodation, first 72 hours. Keep documents on your person, not in checked luggage."
+subtitle: "The physical move — border crossing, first 72 hours, no undo button."
+description: "Border crossing, temporary accommodation, first 72 hours on the ground. Keep every original document on your person, not in checked luggage."
 weight: 3
-exitCode: 0
 duration: "3–10 days"
-command: "git push origin zagreb --force-with-lease"
+requires:
+  - "Stage 2 complete: every apostilled document, translation, and visa paper is assembled and in your cabin bag."
+  - "First 30 days of accommodation booked in writing."
+  - "Ground transport, SIM / eSIM, and a cash buffer arranged before departure."
+documents:
+  - "All originals from Stage 2, carried in your cabin bag — never in checked luggage."
+  - "Printed proof of onward accommodation and funds for border control."
+  - "Travel insurance policy and emergency contact list."
+  - "If moving with pets: signed vet health certificate (within 10 days of travel) and airline booking reference."
 checklist:
   - name: "border crossing"
     items:
@@ -68,4 +75,4 @@ artifacts:
     href: "#"
 ---
 
-Border crossing, temporary accommodation, first 72 hours. Keep documents on your person, not in checked luggage. Budget for 2× the expected friction.
+Border crossing, temporary accommodation, first 72 hours. Keep every original document on your person, not in checked luggage. Expect delays, confused staff, and unexpected fees — plan for twice the friction you budgeted for.

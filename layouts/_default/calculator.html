@@ -12,78 +12,78 @@
   "isPartOf"        (dict "@type" "WebSite" "name" site.Title "url" site.BaseURL) | jsonify -}}
 {{ printf "<script type=\"application/ld+json\">%s</script>" $ld | safeHTML }}
 <section x-data="calcApp()">
-  <div class="tagline">// runway calculator · directional, not legal advice</div>
-  <h1>how many months of runway does the move buy you?</h1>
+  <div class="tagline">Runway calculator · directional, not legal advice</div>
+  <h1>How many extra months of runway does the move buy you?</h1>
   <p class="subtitle">
-    same annual gross, two jurisdictions. we blend the headline effective tax rate with a local
-    cost-of-living baseline to output a runway delta (months per year). pure client-side math —
-    no tracking, no server round-trip.
+    For the same annual gross income, we compare the effective tax rate and typical cost of living
+    between two countries and show the difference in months of runway per year. All math runs in
+    your browser — no tracking, no server round-trip.
   </p>
 
   <form class="form" @submit.prevent="run" novalidate>
     <div>
-      <label for="gross">$ GROSS_EUR <span class="muted">// annual gross income</span></label>
+      <label for="gross">Annual gross income (EUR)</label>
       <input id="gross" x-model.number="gross" type="number" min="1" max="10000000" step="1000" required placeholder="e.g. 90000" inputmode="numeric">
     </div>
     <div class="row">
       <div>
-        <label for="from">$ FROM</label>
+        <label for="from">Moving from</label>
         <select id="from" x-model="fromCode" required>
           {{ range $countries }}<option value="{{ .code }}">{{ .flag }} {{ .name }} ({{ .code }})</option>{{ end }}
         </select>
       </div>
       <div>
-        <label for="to">$ TO</label>
+        <label for="to">Moving to</label>
         <select id="to" x-model="toCode" required>
           {{ range $countries }}<option value="{{ .code }}" {{ if eq .code "HR" }}selected{{ end }}>{{ .flag }} {{ .name }} ({{ .code }})</option>{{ end }}
         </select>
       </div>
     </div>
-    <button class="btn" type="submit">./calculate.sh</button>
+    <button class="btn" type="submit">Calculate</button>
   </form>
 
   <template x-if="error">
-    <div class="error" role="alert" x-text="'exit 1: ' + error"></div>
+    <div class="error" role="alert" x-text="error"></div>
   </template>
 
   <template x-if="result">
     <div class="result" role="region" aria-label="calculation result">
-      <h2>// diff: <span x-text="result.from.flag + ' ' + result.from.name"></span> → <span x-text="result.to.flag + ' ' + result.to.name"></span></h2>
+      <h2><span x-text="result.from.flag + ' ' + result.from.name"></span> → <span x-text="result.to.flag + ' ' + result.to.name"></span></h2>
       <div class="delta" :class="{ neg: !result.positive }">
-        <span x-text="fmtDelta(result.deltaMonths)"></span> months/year runway
+        <span x-text="fmtDelta(result.deltaMonths)"></span> months/year of runway
       </div>
       <table>
         <tbody>
-          <tr><th>annual gross</th><td colspan="2" x-text="money(result.gross)"></td></tr>
-          <tr><th>net income</th><td x-text="money(result.fromNet)"></td><td x-text="money(result.toNet)"></td></tr>
-          <tr><th>runway/year (months)</th><td x-text="result.fromRunway.toFixed(1)"></td><td x-text="result.toRunway.toFixed(1)"></td></tr>
-          <tr><th>net Δ (annual)</th><td colspan="2" :class="result.positive ? 'acc' : 'dim'" x-text="fmtSign(result.deltaSavings)"></td></tr>
+          <tr><th>Annual gross</th><td colspan="2" x-text="money(result.gross)"></td></tr>
+          <tr><th>Net income</th><td x-text="money(result.fromNet)"></td><td x-text="money(result.toNet)"></td></tr>
+          <tr><th>Runway per year (months)</th><td x-text="result.fromRunway.toFixed(1)"></td><td x-text="result.toRunway.toFixed(1)"></td></tr>
+          <tr><th>Net difference (per year)</th><td colspan="2" :class="result.positive ? 'acc' : 'dim'" x-text="fmtSign(result.deltaSavings) + ' €'"></td></tr>
         </tbody>
       </table>
-      <div class="share" title="tap to select · copy · share" x-text="result.shareLine" @click="copyShare"></div>
+      <div class="share" title="Tap to select, copy, and share" x-text="result.shareLine" @click="copyShare"></div>
       <div class="share-ctas">
         <button type="button" class="btn-ghost" @click="copyShare">
-          <span x-text="copied ? 'copied ✓' : '↪ copy line'"></span>
+          <span x-text="copied ? 'Copied ✓' : 'Copy share line'"></span>
         </button>
-        <a class="btn-ghost" :href="result.tweetUrl" target="_blank" rel="noopener">↪ tweet it</a>
+        <a class="btn-ghost" :href="result.tweetUrl" target="_blank" rel="noopener">Share on X / Twitter</a>
         <button type="button" class="btn-ghost" @click="copyUrl">
-          <span x-text="urlCopied ? 'url copied ✓' : '↪ copy link'"></span>
+          <span x-text="urlCopied ? 'Link copied ✓' : 'Copy link to this result'"></span>
         </button>
       </div>
       <p class="muted" style="font-size:0.8rem;margin-top:10px;">
-        // directional only. effective tax rate = blended income + social at contractor-style SaaS founder baseline.
-        verify with a local accountant before acting.
+        Directional only. The effective tax rate is a single-person blended baseline (income tax + typical social contributions).
+        Verify with a local accountant before making decisions.
       </p>
     </div>
   </template>
 </section>
 
 <section style="margin-top:40px;">
-  <h2># reference: tax &amp; CoL baselines</h2>
+  <h2>Reference: tax &amp; cost-of-living baselines</h2>
   <div class="result">
     <table>
       <thead>
-        <tr><th>country</th><th>eff. tax</th><th>monthly CoL</th><th>note</th></tr>
+        <tr><th>Country</th><th>Effective tax</th><th>Monthly cost of living</th><th>Notes</th></tr>
       </thead>
       <tbody>
         {{ range $countries }}
@@ -97,8 +97,7 @@
       </tbody>
     </table>
     <p class="muted" style="font-size:0.8rem;margin-top:10px;">
-      // rates are single-person blended baselines for a contractor-style SaaS founder.
-      edge cases (reduced rates, special regimes, double-taxation treaties) are intentionally out of scope.
+      Rates are single-person blended baselines. Edge cases (reduced rates, special regimes, double-taxation treaties) are intentionally out of scope.
     </p>
   </div>
 </section>
@@ -132,14 +131,14 @@
         this.result = null;
         this.copied = false;
         const gross = Number(this.gross);
-        if (!gross || gross <= 0) { this.error = 'enter a positive annual gross.'; return; }
-        if (gross > 10_000_000) { this.error = 'keep it under 10M — this tool is for mortals.'; return; }
-        if (!this.fromCode || !this.toCode) { this.error = 'pick both countries.'; return; }
-        if (this.fromCode === this.toCode) { this.error = 'pick two *different* countries — Δ vs itself is 0.'; return; }
+        if (!gross || gross <= 0) { this.error = 'Please enter a positive annual gross income.'; return; }
+        if (gross > 10_000_000) { this.error = 'Please keep the amount under 10 million — this tool is aimed at individual earners.'; return; }
+        if (!this.fromCode || !this.toCode) { this.error = 'Please pick both a starting and target country.'; return; }
+        if (this.fromCode === this.toCode) { this.error = 'Please pick two different countries — the difference vs itself is zero.'; return; }
         const countries = window.OHMA_COUNTRIES || [];
         const from = countries.find(c => c.code === this.fromCode);
         const to = countries.find(c => c.code === this.toCode);
-        if (!from || !to) { this.error = 'unknown country code.'; return; }
+        if (!from || !to) { this.error = 'Unknown country code.'; return; }
         const fromNet = Math.round(gross * (1 - from.effectiveTaxRate));
         const toNet = Math.round(gross * (1 - to.effectiveTaxRate));
         const fromRunway = from.costOfLivingEUR > 0 ? fromNet / from.costOfLivingEUR : 0;
@@ -152,7 +151,7 @@
         url.searchParams.set('to', this.toCode);
         url.searchParams.set('gross', String(gross));
         history.replaceState(null, '', url.toString());
-        const shareLine = `${to.name} buys me ${this.fmtSign(deltaMonths, 1)} months/yr runway vs ${from.name} (net Δ ${this.fmtSign(deltaSavings)} €/yr). try yours: ${url.toString()}`;
+        const shareLine = `Moving to ${to.name} buys me ${this.fmtSign(deltaMonths, 1)} months/year of runway vs ${from.name} (net difference ${this.fmtSign(deltaSavings)} € / year). Try your own: ${url.toString()}`;
         const tweetUrl = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareLine);
         this.result = { gross, from, to, fromNet, toNet, fromRunway, toRunway, deltaMonths, deltaSavings, positive, shareLine, tweetUrl, shareUrl: url.toString() };
       },

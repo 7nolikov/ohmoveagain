@@ -1,11 +1,15 @@
 ---
 title: "Assessment"
-subtitle: "Is this move a net-positive commit?"
-description: "Model tax residency, cost of living, career optionality, and the real cost of staying — before you run the border."
+subtitle: "Decide whether the move is worth it — tax, cost of living, career, and family impact."
+description: "Model tax residency, cost of living, career optionality, and the real cost of staying before you commit to a Croatia move."
 weight: 1
-exitCode: 0
 duration: "2–6 weeks"
-command: "./move.sh --dry-run"
+requires:
+  - "Nothing — this is the starting point of the pipeline."
+documents:
+  - "A written comparison of your current vs. target tax residency (spreadsheet or short document)."
+  - "A runway estimate (months of savings covered) in both countries."
+  - "A shortlist of visa / residency pathways you are eligible for."
 checklist:
   - name: "tax math"
     items:
@@ -102,4 +106,4 @@ artifacts:
     href: "/calculator/"
 ---
 
-Run the numbers before you run the border. Model tax residency, cost of living, career optionality, and the real cost of *staying*. If the diff is negative, rollback.
+Work the numbers before you commit. Model tax residency, cost of living, career optionality, and the real cost of *staying where you are*. If the comparison does not come out positive, the right call is to stop here — not to move.

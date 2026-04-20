@@ -1,7 +1,7 @@
 ---
 title: "The Pipeline"
-subtitle: "five stages · exit codes · checklists"
-description: "The five-stage relocation pipeline: assessment, pre-flight, migration, initialization, scaling."
+subtitle: "Five stages, in order. Each with a checklist, documents, and the pitfalls that trip people up."
+description: "The five-stage relocation pipeline for Croatia: assessment, pre-flight, migration, initialization, scaling."
 ---
 
-five stages. each one has an exit code, a checklist, and the gotchas that will bite you.
+Five stages. Each one has prerequisites, the documents you will end up with, a detailed checklist, and the common pitfalls that trip people up. Follow them in order — later stages assume the earlier ones are done.

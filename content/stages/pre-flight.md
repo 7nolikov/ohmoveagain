@@ -1,11 +1,22 @@
 ---
 title: "Pre-Flight"
-subtitle: "Document pipeline, apostilles, logistics dry-run."
-description: "Everything you need before you board. Apostilles, criminal background checks, translated diplomas, proof of accommodation."
+subtitle: "Collect and apostille every document before you board a plane."
+description: "Everything you need before you board. Apostilles, criminal background checks, translated diplomas, proof of accommodation, pet and family paperwork."
 weight: 2
-exitCode: 0
 duration: "4–12 weeks"
-command: "make pre-flight"
+requires:
+  - "Stage 1 complete: you have chosen a visa pathway and confirmed you meet its income / employer requirements."
+  - "A target move month (used to count back apostille and vaccine deadlines)."
+documents:
+  - "Passport with at least 18 months validity past the move date."
+  - "Apostilled birth certificate with sworn translation into Croatian."
+  - "Apostilled criminal background check, issued less than 6 months before use."
+  - "Diploma with apostille and — if your profession is regulated — formal recognition."
+  - "Signed employment contract, Blue Card offer, income proof, or business registration (depending on visa path)."
+  - "Registered rental contract or proof of accommodation with landlord's consent to register your address."
+  - "International health insurance covering your first 90 days in the EU."
+  - "If moving with pets: EU Pet Passport, microchip record, rabies vaccination certificate, and (if required) titer test result."
+  - "If moving with family: apostilled marriage and/or birth certificates with sworn translations, plus sponsor income proof."
 checklist:
   - name: "travel docs"
     items:
@@ -183,4 +194,4 @@ artifacts:
     href: "#"
 ---
 
-Everything you need *before* you board. Apostilled birth certificates, criminal background checks, translated diplomas, pet paperwork, housing shortlist, bank account reconnaissance.
+Everything you need *before* you board. Apostilled birth certificates, criminal background checks, translated diplomas, pet paperwork, housing shortlist, and an initial look at banks. Expect this stage to take roughly twice as long as you first estimate.

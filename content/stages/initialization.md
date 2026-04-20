@@ -1,11 +1,21 @@
 ---
 title: "Initialization"
-subtitle: "OIB, address registration, bank account, health card."
-description: "Bootstrapping local identity in Croatia: OIB first, address registration, bank, health insurance. Order matters."
+subtitle: "Set up local identity in Croatia: OIB, address, bank, health insurance — in that order."
+description: "Establishing your local identity in Croatia after arrival: OIB first, then address registration, then bank account, then health insurance. Order matters — each step unlocks the next."
 weight: 4
-exitCode: 0
 duration: "2–6 weeks post-arrival"
-command: "./init.sh --country=hr"
+requires:
+  - "Stage 3 complete: you are physically in Croatia with your documents in hand."
+  - "A residential address where the landlord has agreed, in writing, to register you with MUP."
+documents:
+  - "OIB (personal identification number) certificate issued by Porezna uprava."
+  - "Address registration confirmation (prijava boravišta) from MUP."
+  - "Residency permit card issued by MUP."
+  - "Local bank account opening confirmation and IBAN."
+  - "HZZO health insurance enrolment confirmation."
+  - "Tax residency certificate in writing (needed later for double-taxation-treaty claims)."
+  - "If moving with family: OIB and HZZO enrolment for each dependent, plus school enrolment confirmation for children."
+  - "If moving with pets: Croatian vet registration, Lysacan microchip record, and municipal dog registration where applicable."
 checklist:
   - name: "identity bootstrap"
     items:
@@ -119,4 +129,4 @@ artifacts:
     href: "#"
 ---
 
-Bootstrapping local identity. In Croatia: OIB first, address registration second, bank third, health insurance fourth. Order matters — each unblocks the next.
+Setting up your local identity. In Croatia the sequence is fixed: OIB first, address registration second, bank account third, health insurance fourth. Each step unlocks the next — skipping ahead wastes weeks.

@@ -1,6 +1,6 @@
 baseURL = "https://7nolikov.dev/ohmoveagain/"
 languageCode = "en-us"
-title = "ohmoveagain — relocation as a deployment pipeline"
+title = "ohmoveagain — the community playbook for moving to Croatia"
 
 # canonifyURLs = false is the default. All internal links must use
 # relURL/absURL helpers so they resolve correctly under the /ohmoveagain/ subpath.
@@ -11,7 +11,7 @@ enableGitInfo = false
 disableKinds = ["taxonomy", "term"]
 
 [params]
-  description = "The engineering playbook for senior devs relocating to Croatia. Tax math, residency checklists, and a calculator that outputs shareable runway deltas."
+  description = "A community-maintained playbook for moving to Croatia. Five stages, sourced checklists, prerequisites, required documents, and a runway calculator. Free and open source."
   ogImage = "og.png"
   formspreeID = "REPLACE_WITH_FORMSPREE_ID"
   githubURL = "https://github.com/7nolikov/ohmoveagain"

@@ -1,11 +1,18 @@
 ---
 title: "Scaling"
-subtitle: "Tax optimization, SaaS structure, community integration."
-description: "Croatia's paušalni obrt for solo SaaS, d.o.o. / j.d.o.o. above the cap. Verify with a local accountant."
+subtitle: "Settle in: optimize taxes, pick a business structure, integrate with the local community."
+description: "Now that you are resident: pick the right business structure, plan taxes, build a local network. Verify every tax decision with a licensed Croatian accountant."
 weight: 5
-exitCode: 0
 duration: "ongoing"
-command: "helm upgrade life --set country=hr"
+requires:
+  - "Stage 4 complete: you have OIB, registered address, residency card, bank account, and HZZO coverage."
+  - "A realistic estimate of your annual gross income for the next 12 months."
+documents:
+  - "Signed engagement with a local accountant (knjigovođa)."
+  - "Business-structure registration confirmation: paušalni obrt, standard obrt, j.d.o.o., or d.o.o."
+  - "Invoicing and bookkeeping software configured for Croatian fiscalization rules."
+  - "Written pension contribution plan (voluntary second-pillar top-ups where relevant)."
+  - "A short list of local professional groups, meetups, or communities you have joined."
 checklist:
   - name: "structure & filing"
     items:
@@ -77,4 +84,4 @@ artifacts:
     href: "/waitlist/"
 ---
 
-Now that you're resident, optimize. Croatia's paušalni obrt (lump-sum trade) is often the right structure for solo SaaS under the revenue cap. Above it: d.o.o. or j.d.o.o. Talk to a local accountant — not a Reddit comment.
+Now that you are resident, make the setup sustainable. Croatia's paušalni obrt (lump-sum trade) is often the right structure for solo work under the revenue cap. Above the cap, a d.o.o. or j.d.o.o. is usually the better fit. Decisions in this stage compound for years — talk to a licensed local accountant, not to a forum thread.

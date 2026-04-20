@@ -1,15 +1,14 @@
 {{ define "main" }}
 <section>
-  <div class="tagline">// {{ .Section }}</div>
   <h1>{{ .Title }}</h1>
+  {{ with .Params.subtitle }}<p class="subtitle">{{ . }}</p>{{ end }}
   {{ .Content }}
   <div class="pipeline">
     {{ range .Pages.ByWeight }}
     <a class="stage-card" href="{{ .RelPermalink }}">
-      <div class="step">{{ with .Weight }}stage {{ . }}/{{ len $.Pages }}{{ end }}{{ with .Params.duration }} · {{ . }}{{ end }}</div>
+      <div class="step">{{ with .Weight }}Stage {{ . }} of {{ len $.Pages }}{{ end }}{{ with .Params.duration }} · {{ . }}{{ end }}</div>
       <div class="name">{{ .Title }}</div>
       <div class="desc">{{ .Params.subtitle }}</div>
-      {{ with .Params.command }}<div class="cmd">$ {{ . }}</div>{{ end }}
     </a>
     {{ end }}
   </div>

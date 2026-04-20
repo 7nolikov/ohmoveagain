@@ -3,20 +3,20 @@
 {{- if $live -}}
 <form class="form" action="https://formspree.io/f/{{ $id }}" method="post" accept-charset="utf-8">
   <div>
-    <label for="email">$ echo $EMAIL</label>
-    <input id="email" name="email" type="email" required placeholder="you@domain.dev" autocomplete="email" inputmode="email">
+    <label for="email">Email address</label>
+    <input id="email" name="email" type="email" required placeholder="you@example.com" autocomplete="email" inputmode="email">
   </div>
   <input type="hidden" name="_subject" value="ohmoveagain subscribe">
   <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
-  <button class="btn" type="submit">./subscribe.sh</button>
+  <button class="btn" type="submit">Subscribe</button>
   <p class="muted" style="font-size:0.8rem;margin-top:4px;">
-    // one email when new stages or playbooks ship. no newsletter. unsubscribe with a PR.
+    One email when a new stage or guide is published. No newsletter. Unsubscribe any time by replying to the email.
   </p>
 </form>
 {{- else -}}
 <p class="muted">
-  // subscribe form not wired yet.
-  <a href="{{ site.Params.githubURL }}/issues/new?title=subscribe&body=add+me+to+the+list">open a GitHub issue</a>
-  to get on the list manually.
+  The subscribe form is not wired up yet.
+  <a href="{{ site.Params.githubURL }}/issues/new?title=subscribe&body=add+me+to+the+list">Open a GitHub issue</a>
+  to be added manually.
 </p>
 {{- end -}}
