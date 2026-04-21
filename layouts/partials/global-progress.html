@@ -3,22 +3,19 @@
 {{- range $stages -}}{{- range .Params.checklist -}}{{- $grand = add $grand (len .items) -}}{{- end -}}{{- end -}}
 <div class="global-progress" x-data="{ total: {{ $grand }}, collapsed: false }" role="region" aria-label="pipeline progress">
   <div class="global-progress-inner">
-    <div class="stage-dots-row">
-      <div class="stage-dots" role="group" aria-label="stage status">
-        {{- range $stages -}}
-        {{- $c := 0 -}}
-        {{- range .Params.checklist -}}{{- $c = add $c (len .items) -}}{{- end -}}
-        <a class="stage-dot"
-           href="{{ .RelPermalink }}"
-           aria-label="stage {{ .Weight }} {{ .Title }}"
-           x-data="{ t: {{ $c }}, s: '{{ .Weight }}' }"
-           :class="$store.prog.count(s) === t && t > 0 ? 'passed' : $store.prog.count(s) > 0 ? 'partial' : ''"
-           :title="`stage {{ .Weight }} · {{ .Title }} · ${$store.prog.count(s)}/${t}`">
-          <span>{{ .Weight }}</span>
-        </a>
-        {{- end -}}
-      </div>
-      <button type="button" class="prog-help" data-hk-open aria-label="Keyboard shortcuts" title="Press ? for keyboard shortcuts">?</button>
+    <div class="stage-dots" role="group" aria-label="stage status">
+      {{- range $stages -}}
+      {{- $c := 0 -}}
+      {{- range .Params.checklist -}}{{- $c = add $c (len .items) -}}{{- end -}}
+      <a class="stage-dot"
+         href="{{ .RelPermalink }}"
+         aria-label="stage {{ .Weight }} {{ .Title }}"
+         x-data="{ t: {{ $c }}, s: '{{ .Weight }}' }"
+         :class="$store.prog.count(s) === t && t > 0 ? 'passed' : $store.prog.count(s) > 0 ? 'partial' : ''"
+         :title="`stage {{ .Weight }} · {{ .Title }} · ${$store.prog.count(s)}/${t}`">
+        <span>{{ .Weight }}</span>
+      </a>
+      {{- end -}}
     </div>
     <div class="progress-bar" aria-hidden="true"><div class="fill" :style="`width:${total ? 100 * $store.prog.totalDone() / total : 0}%`"></div></div>
     <span class="prog-txt" x-cloak>
@@ -56,5 +53,6 @@
         <option value="other"   :selected="$store.prog.profile.pets==='other'">Other pet</option>
       </select>
     </div>
+    <button type="button" class="prog-help" data-hk-open aria-label="Keyboard shortcuts" title="Press ? for keyboard shortcuts">?</button>
   </div>
 </div>
