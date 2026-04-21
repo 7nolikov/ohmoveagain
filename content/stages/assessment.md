@@ -96,13 +96,13 @@ checklist:
         source:
           url: "https://survey.stackoverflow.co/"
           label: "Stack Overflow developer survey"
-          asOf: "2025-06-01"
+          asOf: "2026-04-01"
       - label: "Stress-test decision with partner / dependents"
         note: "Misaligned expectations are the leading cause of failed relocations — more common than visa rejections or tax issues."
         source:
           url: "https://www.oecd.org/els/mig/World-Migration-in-Figures.pdf"
           label: "OECD — international migration patterns"
-          asOf: "2025-01-01"
+          asOf: "2026-04-01"
 gotchas:
   - "Croatia's tax residency triggers at 183 days OR center-of-life — you can become resident before you realize."
   - "Double-taxation treaties don't eliminate paperwork — they cap exposure. Both filings still happen."

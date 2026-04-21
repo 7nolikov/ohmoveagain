@@ -35,6 +35,9 @@ jobs:
           hugo-version: ${{ env.HUGO_VERSION }}
           extended: true
 
+      - name: Check source freshness (asOf dates)
+        run: node scripts/check-staleness.mjs
+
       - name: Configure Pages
         id: pages
         uses: actions/configure-pages@v5

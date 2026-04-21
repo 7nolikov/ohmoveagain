@@ -795,6 +795,17 @@ footer.foot p { margin: 0 0 0.6em; }
   font-size: 0.85em;
 }
 
+/* freshness signal — green <6mo, yellow 6-12mo, red >12mo */
+.asof-fresh { color: var(--accent); }
+.asof-aging { color: var(--warn); }
+.asof-stale { color: var(--err); font-weight: 600; }
+.asof-stale::after { content: " (stale)"; }
+
+.verified-note.asof-aging { border-color: var(--warn); background: rgba(245,166,35,0.08); }
+.verified-note.asof-aging strong { color: var(--warn); }
+.verified-note.asof-stale { border-color: var(--err); background: rgba(255,107,107,0.08); }
+.verified-note.asof-stale strong { color: var(--err); }
+
 /* ---------- Hotkeys modal ---------- */
 
 .hk-modal {

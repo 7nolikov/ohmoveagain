@@ -3,13 +3,20 @@
 {{ printf "<script type=\"application/ld+json\">%s</script>" $ld | safeHTML }}
 {{- $latestAsOf := "" -}}
 {{- range .Params.checklist -}}{{- range .items -}}{{- with .source -}}{{- with .asOf -}}{{- if gt . $latestAsOf -}}{{- $latestAsOf = . -}}{{- end -}}{{- end -}}{{- end -}}{{- end -}}{{- end -}}
+{{- $latestClass := "" -}}
+{{- if $latestAsOf -}}
+  {{- $latestDays := div (sub now.Unix (time.AsTime $latestAsOf).Unix) 86400 -}}
+  {{- if gt $latestDays 365 -}}{{- $latestClass = "asof-stale" -}}
+  {{- else if gt $latestDays 180 -}}{{- $latestClass = "asof-aging" -}}
+  {{- else -}}{{- $latestClass = "asof-fresh" -}}{{- end -}}
+{{- end -}}
 <section class="stage-head">
   <div class="tagline">Stage {{ .Weight }} of 5{{ with .Params.duration }} · typical duration: {{ . }}{{ end }}</div>
   <h1>{{ .Title }}</h1>
   {{ with .Params.subtitle }}<p class="subtitle">{{ . }}</p>{{ end }}
   {{ .Content }}
   {{- if $latestAsOf }}
-  <p class="verified-note">Sources last verified: <strong>{{ $latestAsOf }}</strong> · <a href="{{ site.Params.githubURL }}/issues/new?title=stale+source+stage+{{ .Weight }}&body=Stage+{{ .Weight }}+has+a+stale+source" rel="noopener noreferrer">flag a stale source</a></p>
+  <p class="verified-note {{ $latestClass }}">Sources last verified: <strong>{{ $latestAsOf }}</strong> · <a href="{{ site.Params.githubURL }}/issues/new?title=stale+source+stage+{{ .Weight }}&body=Stage+{{ .Weight }}+has+a+stale+source" rel="noopener noreferrer">flag a stale source</a></p>
   {{- end }}
 </section>
 
@@ -90,7 +97,10 @@
             {{- $url := .url -}}
             {{- if hasPrefix $url "/" -}}{{- $url = strings.TrimPrefix "/" $url | relURL -}}{{- end -}}
             <a class="source" href="{{ $url }}"{{ if hasPrefix .url "http" }} rel="noopener noreferrer" target="_blank"{{ end }}>
-              Source: {{ .label }}{{ with .asOf }} · <span class="asof">last verified {{ . }}</span>{{ end }}
+              Source: {{ .label }}{{ with .asOf -}}
+              {{- $d := div (sub now.Unix (time.AsTime .).Unix) 86400 -}}
+              {{- $cls := cond (gt $d 365) "asof-stale" (cond (gt $d 180) "asof-aging" "asof-fresh") -}}
+               · <span class="asof {{ $cls }}">last verified {{ . }}</span>{{ end }}
             </a>
             {{ end }}
           </span>

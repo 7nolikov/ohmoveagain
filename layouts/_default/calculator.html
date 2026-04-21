@@ -97,7 +97,14 @@
             <td>{{ .flag }} {{ .name }}</td>
             <td>{{ mul .effectiveTaxRate 100 | printf "%.0f" }}%</td>
             <td>€{{ lang.FormatNumber 0 .costOfLivingEUR }}</td>
-            <td class="dim ref-note">{{ .note }}</td>
+            <td class="dim ref-note">
+              {{ .note }}
+              {{- with .source }}
+              {{- $d := div (sub now.Unix (time.AsTime .asOf).Unix) 86400 -}}
+              {{- $cls := cond (gt $d 365) "asof-stale" (cond (gt $d 180) "asof-aging" "asof-fresh") }}
+              <br><a class="source" href="{{ .url }}" rel="noopener noreferrer" target="_blank">Source: {{ .label }}{{ with .asOf }} · <span class="asof {{ $cls }}">verified {{ . }}</span>{{ end }}</a>
+              {{- end }}
+            </td>
           </tr>
           {{ end }}
         </tbody>

@@ -1,0 +1,53 @@
+name: Link check (weekly)
+
+# Cron-only — no `push:` trigger.
+# Hits dozens of government source URLs; we don't want to bombard them on every commit.
+# Trigger manually via the Actions tab if a one-off check is needed.
+on:
+  schedule:
+    - cron: '0 6 * * 0'  # Sundays 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  link-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "0.160.1"
+          extended: true
+
+      - name: Build site
+        run: hugo --gc --minify --baseURL "https://7nolikov.dev/ohmoveagain/"
+
+      - name: Link Checker
+        id: lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          # accept 200/206 (ok), 403/429 (gov sites blocking bots — URL still valid)
+          args: >-
+            --no-progress
+            --max-concurrency 4
+            --exclude-mail
+            --accept 200,206,403,429
+            --timeout 20
+            './public/**/*.html'
+          fail: false
+          output: ./lychee/out.md
+
+      - name: Open issue if links broken
+        if: env.lychee_exit_code != '0'
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: "Broken source links detected by weekly link check"
+          content-filepath: ./lychee/out.md
+          labels: |
+            broken-links
+            maintenance
