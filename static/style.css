@@ -118,6 +118,19 @@ header.top {
 }
 .nav a:hover { color: var(--fg); }
 
+@media (max-width: 500px) {
+  .nav {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+    max-width: calc(100vw - 150px);
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav a { white-space: nowrap; }
+}
+
 /* ---------- Hero ---------- */
 
 .hero { padding: 28px 0 12px; }
@@ -661,6 +674,30 @@ footer.foot p { margin: 0 0 0.6em; }
   }
   .persona-select { flex: 1 1 auto; max-width: none; font-size: 16px; min-height: 36px; }
   .persona-label { width: 100%; margin-bottom: 2px; }
+  .persona-label-compact { display: inline-block; }
+}
+
+.persona-label-compact { display: none; }
+
+.strip-toggle {
+  display: none;
+  background: transparent;
+  border: 1px solid var(--border-bright);
+  color: var(--fg-muted);
+  padding: 2px 8px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  line-height: 1.6;
+}
+.strip-toggle:hover { color: var(--fg); border-color: var(--accent-dim); }
+.strip-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+@media (max-width: 680px) {
+  .strip-toggle { display: inline-block; }
 }
 
 .prog-help {
