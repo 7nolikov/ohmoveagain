@@ -16,5 +16,11 @@
 # misc
 *.log
 
+# Node (used by scripts/ only)
+node_modules/
+package-lock.json
+package.json
+gen-og.mjs
+
 .claude/
 EXECUTION_PLAN.md
