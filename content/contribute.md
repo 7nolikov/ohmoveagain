@@ -9,7 +9,7 @@ description: "How to contribute to ohmoveagain — the community-maintained Croa
 
 Relocation rules change constantly. Every stage in this pipeline cites an official source and a verified-on date. The longer those dates slip, the less useful the playbook becomes. Contributors are what keep it honest.
 
-There is no paid tier, no affiliate program, no gatekeeper. Every improvement ships as a public commit under the contributor's name.
+Every improvement ships as a public commit under the contributor's name.
 
 ## Who this is for
 
@@ -57,7 +57,6 @@ To keep the playbook trustworthy, contributions should meet a few ground rules:
 - **Set the `asOf` date** to the day you verified the link. This is how readers know how fresh a rule is.
 - **Be specific.** "Apostilled birth certificate" is better than "birth certificate paperwork." "≥ 21 days before travel" is better than "a few weeks before travel."
 - **Write in plain English.** Short sentences. Active voice. No jargon that a non-native English speaker would have to look up.
-- **No affiliate links, no referral codes, no paid placements.** Ever.
 
 ## What this playbook is *not*
 

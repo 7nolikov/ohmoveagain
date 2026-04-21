@@ -483,7 +483,12 @@ header.top {
   margin: 10px 0;
 }
 .result .delta.neg { color: var(--err); }
+.result .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .result table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.9rem; }
+@media (max-width: 480px) {
+  .result table th, .result table td { padding: 5px 6px; font-size: 0.82rem; }
+  .result .ref-note { display: none; }
+}
 .result th, .result td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
 .result th { color: var(--fg-dim); font-weight: 500; }
 .result .share {

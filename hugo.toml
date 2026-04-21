@@ -13,7 +13,7 @@ disableKinds = ["taxonomy", "term"]
 [params]
   description = "A community-maintained playbook for moving to Croatia. Five stages, sourced checklists, prerequisites, required documents, and a runway calculator. Free and open source."
   ogImage = "og.png"
-  formspreeID = "REPLACE_WITH_FORMSPREE_ID"
+  formspreeID = "mjgjelyd"
   githubURL = "https://github.com/7nolikov/ohmoveagain"
 
 [markup.goldmark.renderer]

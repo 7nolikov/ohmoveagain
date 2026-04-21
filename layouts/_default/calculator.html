@@ -52,14 +52,16 @@
       <div class="delta" :class="{ neg: !result.positive }">
         <span x-text="fmtDelta(result.deltaMonths)"></span> months/year of runway
       </div>
-      <table>
-        <tbody>
-          <tr><th>Annual gross</th><td colspan="2" x-text="money(result.gross)"></td></tr>
-          <tr><th>Net income</th><td x-text="money(result.fromNet)"></td><td x-text="money(result.toNet)"></td></tr>
-          <tr><th>Runway per year (months)</th><td x-text="result.fromRunway.toFixed(1)"></td><td x-text="result.toRunway.toFixed(1)"></td></tr>
-          <tr><th>Net difference (per year)</th><td colspan="2" :class="result.positive ? 'acc' : 'dim'" x-text="fmtSign(result.deltaSavings) + ' €'"></td></tr>
-        </tbody>
-      </table>
+      <div class="table-wrap">
+        <table>
+          <tbody>
+            <tr><th>Annual gross</th><td colspan="2" x-text="money(result.gross)"></td></tr>
+            <tr><th>Net income</th><td x-text="money(result.fromNet)"></td><td x-text="money(result.toNet)"></td></tr>
+            <tr><th>Runway per year (months)</th><td x-text="result.fromRunway.toFixed(1)"></td><td x-text="result.toRunway.toFixed(1)"></td></tr>
+            <tr><th>Net difference (per year)</th><td colspan="2" :class="result.positive ? 'acc' : 'dim'" x-text="fmtSign(result.deltaSavings) + ' €'"></td></tr>
+          </tbody>
+        </table>
+      </div>
       <div class="share" title="Tap to select, copy, and share" x-text="result.shareLine" @click="copyShare"></div>
       <div class="share-ctas">
         <button type="button" class="btn-ghost" @click="copyShare">
@@ -81,21 +83,23 @@
 <section style="margin-top:40px;">
   <h2>Reference: tax &amp; cost-of-living baselines</h2>
   <div class="result">
-    <table>
-      <thead>
-        <tr><th>Country</th><th>Effective tax</th><th>Monthly cost of living</th><th>Notes</th></tr>
-      </thead>
-      <tbody>
-        {{ range $countries }}
-        <tr>
-          <td>{{ .flag }} {{ .name }}</td>
-          <td>{{ mul .effectiveTaxRate 100 | printf "%.0f" }}%</td>
-          <td>€{{ lang.FormatNumber 0 .costOfLivingEUR }}</td>
-          <td class="dim">{{ .note }}</td>
-        </tr>
-        {{ end }}
-      </tbody>
-    </table>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Country</th><th>Effective tax</th><th>Monthly CoL</th><th class="ref-note">Notes</th></tr>
+        </thead>
+        <tbody>
+          {{ range $countries }}
+          <tr>
+            <td>{{ .flag }} {{ .name }}</td>
+            <td>{{ mul .effectiveTaxRate 100 | printf "%.0f" }}%</td>
+            <td>€{{ lang.FormatNumber 0 .costOfLivingEUR }}</td>
+            <td class="dim ref-note">{{ .note }}</td>
+          </tr>
+          {{ end }}
+        </tbody>
+      </table>
+    </div>
     <p class="muted" style="font-size:0.8rem;margin-top:10px;">
       Rates are single-person blended baselines. Edge cases (reduced rates, special regimes, double-taxation treaties) are intentionally out of scope.
     </p>
