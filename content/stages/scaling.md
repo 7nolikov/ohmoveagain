@@ -76,9 +76,6 @@ gotchas:
   - "Paušalni obrt has annual revenue caps — crossing mid-year is messy."
   - "Tax residency + client location + IP ownership determine where you owe. Don't freelance this."
 artifacts:
-  - name: "SaaS structure decision tree (HR)"
-    kind: "doc"
-    href: "#"
   - name: "Full tax-optimization playbook (wip, free)"
     kind: "link"
     href: "/waitlist/"

@@ -69,10 +69,6 @@ checklist:
 gotchas:
   - "Your old country's bank may freeze cards on geo-change. Notify in advance, or carry a backup bank."
   - "Croatia switched to EUR in 2023 — old kuna cash is no longer legal tender."
-artifacts:
-  - name: "72-hour landing runbook"
-    kind: "doc"
-    href: "#"
 ---
 
 Border crossing, temporary accommodation, first 72 hours. Keep every original document on your person, not in checked luggage. Expect delays, confused staff, and unexpected fees — plan for twice the friction you budgeted for.

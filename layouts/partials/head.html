@@ -10,6 +10,9 @@
 <title>{{ $title }}</title>
 <meta name="description" content="{{ $desc }}">
 <link rel="canonical" href="{{ $canonical }}">
+{{- if .Params.noindex }}
+<meta name="robots" content="noindex,follow">
+{{- end }}
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="{{ $title }}">
@@ -21,14 +24,23 @@
 <meta name="twitter:title" content="{{ $title }}">
 <meta name="twitter:description" content="{{ $desc }}">
 <meta name="twitter:image" content="{{ $ogImage }}">
+{{ with site.Params.twitterHandle -}}
+<meta name="twitter:site" content="{{ . }}">
+<meta name="twitter:creator" content="{{ . }}">
+{{- end }}
 
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="icon" href="{{ "favicon.svg" | relURL }}" type="image/svg+xml">
 <link rel="stylesheet" href="{{ "style.css" | relURL }}">
 
-<!-- GH Pages can't set response headers, so CSP + friends live here. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://formspree.io; form-action 'self' https://formspree.io; base-uri 'self'; frame-ancestors 'none'">
+{{- /* GH Pages can't set response headers, so a real CSP isn't possible without a build-time
+       hash pipeline. Rather than ship a fake CSP with unsafe-inline + unsafe-eval (which
+       negates the policy entirely), we omit it and rely on SRI for the one external script. */ -}}
 <meta name="referrer" content="strict-origin-when-cross-origin">
+
+{{- with site.Params.plausibleDomain }}
+<script defer data-domain="{{ . }}" src="https://plausible.io/js/script.js"></script>
+{{- end }}
 
 {{ with .OutputFormats.Get "RSS" -}}
 <link rel="alternate" type="application/rss+xml" href="{{ .RelPermalink }}" title="{{ site.Title }}">

@@ -72,6 +72,9 @@
           <span x-text="urlCopied ? 'Link copied ✓' : 'Copy link to this result'"></span>
         </button>
       </div>
+      <template x-if="copyError">
+        <div class="error" role="alert" style="margin-top:8px;">Copy failed — please select the text above manually and copy.</div>
+      </template>
       <p class="muted" style="font-size:0.8rem;margin-top:10px;">
         Directional only. The effective tax rate is a single-person blended baseline (income tax + typical social contributions).
         Verify with a local accountant before making decisions.
@@ -117,6 +120,7 @@
       error: '',
       copied: false,
       urlCopied: false,
+      copyError: false,
       init() {
         const p = new URLSearchParams(window.location.search);
         if (p.get('gross')) this.gross = Number(p.get('gross'));
@@ -165,19 +169,43 @@
         return (v >= 0 ? '+' : '') + n;
       },
       fmtDelta(v) { return (v >= 0 ? '+' : '') + Number(v).toFixed(1); },
+      _fallbackCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+        document.body.appendChild(ta);
+        ta.focus(); ta.select();
+        try { document.execCommand('copy'); return true; } catch(e) { return false; } finally { document.body.removeChild(ta); }
+      },
       copyShare() {
-        if (!this.result || !navigator.clipboard) return;
-        navigator.clipboard.writeText(this.result.shareLine).then(() => {
-          this.copied = true;
-          setTimeout(() => this.copied = false, 2500);
-        }).catch(() => {});
+        if (!this.result) return;
+        const text = this.result.shareLine;
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(text).then(() => {
+            this.copied = true; setTimeout(() => this.copied = false, 2500);
+          }).catch(() => {
+            if (this._fallbackCopy(text)) { this.copied = true; setTimeout(() => this.copied = false, 2500); }
+            else { this.copyError = true; setTimeout(() => this.copyError = false, 3000); }
+          });
+        } else {
+          if (this._fallbackCopy(text)) { this.copied = true; setTimeout(() => this.copied = false, 2500); }
+          else { this.copyError = true; setTimeout(() => this.copyError = false, 3000); }
+        }
       },
       copyUrl() {
-        if (!this.result || !navigator.clipboard) return;
-        navigator.clipboard.writeText(this.result.shareUrl).then(() => {
-          this.urlCopied = true;
-          setTimeout(() => this.urlCopied = false, 2500);
-        }).catch(() => {});
+        if (!this.result) return;
+        const text = this.result.shareUrl;
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(text).then(() => {
+            this.urlCopied = true; setTimeout(() => this.urlCopied = false, 2500);
+          }).catch(() => {
+            if (this._fallbackCopy(text)) { this.urlCopied = true; setTimeout(() => this.urlCopied = false, 2500); }
+            else { this.copyError = true; setTimeout(() => this.copyError = false, 3000); }
+          });
+        } else {
+          if (this._fallbackCopy(text)) { this.urlCopied = true; setTimeout(() => this.urlCopied = false, 2500); }
+          else { this.copyError = true; setTimeout(() => this.copyError = false, 3000); }
+        }
       }
     };
   }

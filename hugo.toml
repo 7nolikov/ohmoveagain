@@ -7,7 +7,8 @@ title = "ohmoveagain — the community playbook for moving to Croatia"
 relativeURLs = false
 
 enableRobotsTXT = true
-enableGitInfo = false
+enableGitInfo = true
+disableHugoGeneratorInject = true
 disableKinds = ["taxonomy", "term"]
 
 [params]
@@ -15,6 +16,8 @@ disableKinds = ["taxonomy", "term"]
   ogImage = "og.png"
   formspreeID = "mjgjelyd"
   githubURL = "https://github.com/7nolikov/ohmoveagain"
+  twitterHandle = "@7nolikov"
+  plausibleDomain = "7nolikov.dev"
 
 [markup.goldmark.renderer]
   unsafe = true
@@ -29,7 +32,7 @@ disableKinds = ["taxonomy", "term"]
 
 [sitemap]
   changefreq = "weekly"
-  priority = 0.7
+  priority = 0.5
 
 [minify]
   disableHTML = false
@@ -40,7 +43,7 @@ disableKinds = ["taxonomy", "term"]
   writeStats = false
 
 [security.exec]
-  allow = ["^(dart-)?sass(-embedded)?$", "^go$", "^npx$", "^postcss$"]
+  allow = ["^(dart-)?sass(-embedded)?$", "^go$", "^npx$", "^postcss$", "^git$"]
 
 [permalinks]
   stages = "/stage/:slug/"

@@ -185,13 +185,6 @@ checklist:
 gotchas:
   - "The apostille is on the document, not on the translation. Order matters."
   - "Some consulates require originals AND notarized copies. Bring both."
-artifacts:
-  - name: "Apostille checklist (printable)"
-    kind: "doc"
-    href: "#"
-  - name: "Document tracker (spreadsheet)"
-    kind: "template"
-    href: "#"
 ---
 
 Everything you need *before* you board. Apostilled birth certificates, criminal background checks, translated diplomas, pet paperwork, housing shortlist, and an initial look at banks. Expect this stage to take roughly twice as long as you first estimate.
