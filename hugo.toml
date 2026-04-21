@@ -17,7 +17,7 @@ disableKinds = ["taxonomy", "term"]
   formspreeID = "mjgjelyd"
   githubURL = "https://github.com/7nolikov/ohmoveagain"
   twitterHandle = "@7nolikov"
-  plausibleDomain = "7nolikov.dev"
+  cfAnalyticsToken = "0813f8e9b0fe443ea2b3fb64f64f9893"
 
 [markup.goldmark.renderer]
   unsafe = true

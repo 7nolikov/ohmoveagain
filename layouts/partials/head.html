@@ -38,8 +38,8 @@
        negates the policy entirely), we omit it and rely on SRI for the one external script. */ -}}
 <meta name="referrer" content="strict-origin-when-cross-origin">
 
-{{- with site.Params.plausibleDomain }}
-<script defer data-domain="{{ . }}" src="https://plausible.io/js/script.js"></script>
+{{- with site.Params.cfAnalyticsToken }}
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"{{ . }}"}'></script>
 {{- end }}
 
 {{ with .OutputFormats.Get "RSS" -}}
