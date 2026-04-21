@@ -47,7 +47,7 @@ checklist:
           label: "MUP — digital nomad renewal"
           asOf: "2026-02-15"
       - label: "VAT registration threshold understood"
-        note: "Mandatory registration above the annual threshold (EUR 39,816 in 2025); voluntary below for EU B2B."
+        note: "Mandatory registration above the current annual threshold (re-verify yearly — figure changes with budget cycle); voluntary below for EU B2B."
         source:
           url: "https://taxation-customs.ec.europa.eu/vat-rules-by-country/croatia_en"
           label: "EU — VAT rules (Croatia)"

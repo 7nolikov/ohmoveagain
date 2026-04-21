@@ -1,0 +1,97 @@
+{{ define "main" }}
+{{- $stages := (where site.RegularPages "Section" "stages").ByWeight -}}
+{{- $countries := hugo.Data.countries -}}
+<section>
+  <div class="tagline">Source freshness · auto-derived from verification dates</div>
+  <h1>{{ .Title }}</h1>
+  {{ with .Params.subtitle }}<p class="subtitle">{{ . }}</p>{{ end }}
+
+  {{- with hugo.Data.build }}
+  {{- with .stats }}
+  <p class="verified-note">
+    <strong>{{ .contributorCount }}</strong> contributor{{ if ne .contributorCount 1 }}s{{ end }} ·
+    last commit <strong>{{ if eq .lastCommitDays 0 }}today{{ else if eq .lastCommitDays 1 }}1 day ago{{ else }}{{ .lastCommitDays }} days ago{{ end }}</strong> ·
+    <strong>{{ .recentUpdates }}</strong> commit{{ if ne .recentUpdates 1 }}s{{ end }} to content/data in the last 90 days
+  </p>
+  {{- end }}
+  {{- end }}
+
+  <h2>Pipeline stages</h2>
+  <p class="dim">Each stage's source verification window. <span class="asof asof-fresh">Green</span> means &lt;6 months old, <span class="asof asof-aging">yellow</span> 6–12 months, <span class="asof asof-stale">red</span> &gt;12 months.</p>
+  <div class="table-wrap">
+    <table class="freshness-table">
+      <thead>
+        <tr><th>Stage</th><th>Items</th><th>Oldest verified</th><th>Newest verified</th></tr>
+      </thead>
+      <tbody>
+        {{- range $stages }}
+        {{- $oldest := "9999-99-99" -}}
+        {{- $newest := "0000-00-00" -}}
+        {{- $itemCount := 0 -}}
+        {{- range .Params.checklist -}}
+          {{- range .items -}}
+            {{- $itemCount = add $itemCount 1 -}}
+            {{- with .source -}}
+              {{- with .asOf -}}
+                {{- if lt . $oldest -}}{{- $oldest = . -}}{{- end -}}
+                {{- if gt . $newest -}}{{- $newest = . -}}{{- end -}}
+              {{- end -}}
+            {{- end -}}
+          {{- end -}}
+        {{- end -}}
+        {{- $oldestCls := "" -}}
+        {{- $newestCls := "" -}}
+        {{- if ne $oldest "9999-99-99" -}}
+          {{- $d := div (sub now.Unix (time.AsTime $oldest).Unix) 86400 -}}
+          {{- $oldestCls = cond (gt $d 365) "asof-stale" (cond (gt $d 180) "asof-aging" "asof-fresh") -}}
+        {{- end -}}
+        {{- if ne $newest "0000-00-00" -}}
+          {{- $d := div (sub now.Unix (time.AsTime $newest).Unix) 86400 -}}
+          {{- $newestCls = cond (gt $d 365) "asof-stale" (cond (gt $d 180) "asof-aging" "asof-fresh") -}}
+        {{- end -}}
+        <tr>
+          <td><a href="{{ .RelPermalink }}"><strong>Stage {{ .Weight }}</strong> · {{ .Title }}</a></td>
+          <td>{{ $itemCount }}</td>
+          <td>{{ if ne $oldest "9999-99-99" }}<span class="asof {{ $oldestCls }}">{{ $oldest }}</span>{{ else }}<span class="dim">—</span>{{ end }}</td>
+          <td>{{ if ne $newest "0000-00-00" }}<span class="asof {{ $newestCls }}">{{ $newest }}</span>{{ else }}<span class="dim">—</span>{{ end }}</td>
+        </tr>
+        {{- end }}
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Country tax data</h2>
+  <p class="dim">Tax rates and cost-of-living baselines used by the <a href="{{ "calculator/" | relURL }}">runway calculator</a>. <code>Valid until</code> marks when the entry must be re-reviewed for the next tax year — the build fails automatically if any date passes.</p>
+  <div class="table-wrap">
+    <table class="freshness-table">
+      <thead>
+        <tr><th>Country</th><th>Verified</th><th>Valid until</th></tr>
+      </thead>
+      <tbody>
+        {{- range $countries }}
+        {{- $cls := "" -}}
+        {{- with .source }}{{- with .asOf -}}
+          {{- $d := div (sub now.Unix (time.AsTime .).Unix) 86400 -}}
+          {{- $cls = cond (gt $d 365) "asof-stale" (cond (gt $d 180) "asof-aging" "asof-fresh") -}}
+        {{- end -}}{{- end -}}
+        {{- $vuCls := "" -}}
+        {{- with .validUntil -}}
+          {{- $d := div (sub (time.AsTime .).Unix now.Unix) 86400 -}}
+          {{- $vuCls = cond (lt $d 0) "asof-stale" (cond (lt $d 90) "asof-aging" "asof-fresh") -}}
+        {{- end -}}
+        <tr>
+          <td>{{ .flag }} {{ .name }}</td>
+          <td>{{ with .source }}{{ with .asOf }}<span class="asof {{ $cls }}">{{ . }}</span>{{ end }}{{ end }}</td>
+          <td>{{ with .validUntil }}<span class="asof {{ $vuCls }}">{{ . }}</span>{{ end }}</td>
+        </tr>
+        {{- end }}
+      </tbody>
+    </table>
+  </div>
+
+  <p class="muted" style="font-size:0.85rem;margin-top:24px;">
+    Spotted something stale or wrong? <a href="{{ site.Params.githubURL }}/issues/new" rel="noopener noreferrer">Open an issue</a> or
+    submit a PR — every fix shows up in the <a href="{{ site.Params.githubURL }}/commits/main" rel="noopener noreferrer">commit history</a>.
+  </p>
+</section>
+{{ end }}

@@ -38,6 +38,9 @@ jobs:
       - name: Check source freshness (asOf dates)
         run: node scripts/check-staleness.mjs
 
+      - name: Generate build data (stats + changelog)
+        run: node scripts/gen-build-data.mjs
+
       - name: Configure Pages
         id: pages
         uses: actions/configure-pages@v5

@@ -582,6 +582,66 @@ footer.foot a {
 }
 footer.foot p { margin: 0 0 0.6em; }
 
+/* footer activity ribbon — terminal-style live signal */
+.activity-ribbon {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1px solid var(--border-bright);
+  border-radius: var(--radius);
+  background: var(--bg-alt);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--fg-dim);
+  margin-bottom: 14px !important;
+}
+.ribbon-prompt { color: var(--accent); font-weight: 700; margin-right: 2px; }
+.ribbon-key { color: var(--fg-muted); }
+.ribbon-val { color: var(--accent); font-weight: 600; }
+.ribbon-sep { color: var(--fg-muted); }
+.ribbon-link { color: var(--link) !important; padding: 0 !important; }
+
+.edit-link {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+}
+.edit-link a { color: var(--link); }
+
+/* freshness page */
+.freshness-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 0.92rem;
+}
+.freshness-table th,
+.freshness-table td {
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.freshness-table th {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--fg-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--bg-alt);
+}
+.freshness-table tbody tr:hover { background: var(--bg-alt); }
+.freshness-table a { color: var(--link); }
+.freshness-table code {
+  font-family: var(--mono);
+  font-size: 0.85em;
+  background: var(--bg-alt);
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
 /* ---------- Utility ---------- */
 
 .muted { color: var(--fg-muted); }

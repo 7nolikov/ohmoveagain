@@ -4,6 +4,9 @@
 # SaaS founder. `costOfLivingEUR` is a single-person reasonable-comfort monthly baseline.
 # Edge cases (reduced rates, special regimes, DTA mechanics) are intentionally out of scope.
 #
+# `validUntil` flags when the calibration must be re-reviewed for the next tax year.
+# scripts/check-staleness.mjs fails the build if today is past any validUntil.
+#
 # Contributors: open a PR. Cite primary sources in the PR body.
 - code: HR
   name: Croatia
@@ -11,6 +14,7 @@
   effectiveTaxRate: 0.23
   costOfLivingEUR: 2100
   note: "Paušalni obrt structure for solo SaaS. Zagreb has a real IT scene."
+  validUntil: "2026-12-31"
   source:
     url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
     label: "Porezna uprava — income tax"
@@ -21,6 +25,7 @@
   effectiveTaxRate: 0.15
   costOfLivingEUR: 1700
   note: "Lowest headline rate in the region; weakest banking and EU-market access."
+  validUntil: "2026-12-31"
   source:
     url: "https://www.tax.gov.me/en"
     label: "Tax Administration of Montenegro"
@@ -31,6 +36,7 @@
   effectiveTaxRate: 0.42
   costOfLivingEUR: 2800
   note: "Strong market, heavy tax load, rigorous bureaucracy. Blue Card friendly."
+  validUntil: "2026-12-31"
   source:
     url: "https://www.bundesfinanzministerium.de/Web/EN/Home/home.html"
     label: "Federal Ministry of Finance — income tax"
@@ -41,6 +47,7 @@
   effectiveTaxRate: 0.28
   costOfLivingEUR: 2200
   note: "NHR replaced by IFICI — narrower scope, still attractive for specific professions."
+  validUntil: "2026-12-31"
   source:
     url: "https://www.portaldasfinancas.gov.pt/at/html/index.html"
     label: "Autoridade Tributária — income tax"
@@ -51,6 +58,7 @@
   effectiveTaxRate: 0.20
   costOfLivingEUR: 1900
   note: "e-Residency is NOT tax residency. Corporate structure is elegant; personal side is standard."
+  validUntil: "2026-12-31"
   source:
     url: "https://www.emta.ee/en"
     label: "Estonian Tax and Customs Board"
@@ -60,7 +68,8 @@
   flag: "🇬🇧"
   effectiveTaxRate: 0.33
   costOfLivingEUR: 2900
-  note: "Outside IR35 Ltd company baseline. Inside IR35 pushes effective rate to ~42%. Post-Brexit visa friction for HR."
+  note: "Outside IR35 Ltd company baseline. Inside IR35 pushes effective rate higher. Post-Brexit visa friction for HR."
+  validUntil: "2026-12-31"
   source:
     url: "https://www.gov.uk/income-tax-rates"
     label: "HMRC — income tax rates"
@@ -71,6 +80,7 @@
   effectiveTaxRate: 0.35
   costOfLivingEUR: 3200
   note: "Federal + mid-tier state + self-employment tax blended. CoL is a mid-tier city (Austin / Denver). Varies wildly by state."
+  validUntil: "2026-12-31"
   source:
     url: "https://www.irs.gov/taxtopics/tc409"
     label: "IRS — tax rates and brackets"
@@ -80,7 +90,8 @@
   flag: "🇳🇱"
   effectiveTaxRate: 0.42
   costOfLivingEUR: 2700
-  note: "ZZP freelancer baseline. Box 1 rates are steep (37–49.5%). 30% ruling for recent arrivals not included."
+  note: "ZZP freelancer baseline. Box 1 rates are steep. 30% ruling for recent arrivals not included."
+  validUntil: "2026-12-31"
   source:
     url: "https://www.belastingdienst.nl/wps/wcm/connect/en/individuals/individuals"
     label: "Belastingdienst — income tax"
@@ -90,7 +101,8 @@
   flag: "🇫🇷"
   effectiveTaxRate: 0.33
   costOfLivingEUR: 2400
-  note: "Micro-entrepreneur / auto-entrepreneur baseline. Portage salarial can push effective rate to ~50%."
+  note: "Micro-entrepreneur / auto-entrepreneur baseline. Portage salarial pushes the effective rate higher."
+  validUntil: "2026-12-31"
   source:
     url: "https://www.impots.gouv.fr/particulier/questions/quels-sont-les-taux-dimposition"
     label: "Direction générale des Finances publiques — tax rates"
@@ -100,7 +112,8 @@
   flag: "🇵🇱"
   effectiveTaxRate: 0.24
   costOfLivingEUR: 1700
-  note: "B2B contractor with flat 19% PIT + ZUS social/health contributions. IP Box (5%) not included."
+  note: "B2B contractor with flat PIT + ZUS social/health contributions. IP Box reduced rate not included."
+  validUntil: "2026-12-31"
   source:
     url: "https://www.gov.pl/web/finanse/podatek-dochodowy-od-osob-fizycznych"
     label: "Ministry of Finance Poland — PIT"
@@ -110,7 +123,8 @@
   flag: "🇨🇿"
   effectiveTaxRate: 0.28
   costOfLivingEUR: 1800
-  note: "OSVČ sole trader: 15% income tax + ~29% social/health on 50% of profit base."
+  note: "OSVČ sole trader: income tax + social/health on a portion of profit base."
+  validUntil: "2026-12-31"
   source:
     url: "https://www.financnisprava.cz/en/individuals"
     label: "Czech Financial Administration — personal tax"
@@ -120,7 +134,8 @@
   flag: "🇷🇸"
   effectiveTaxRate: 0.20
   costOfLivingEUR: 1400
-  note: "Flat 10% PIT + capped contributions. Gaining traction with remote devs. No EU single market."
+  note: "Flat PIT + capped contributions. Gaining traction with remote devs. No EU single market."
+  validUntil: "2026-12-31"
   source:
     url: "https://www.purs.gov.rs/eng.html"
     label: "Tax Administration of Serbia — income tax"
