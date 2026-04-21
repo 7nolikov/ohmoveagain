@@ -26,7 +26,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0
           submodules: false
 
       - name: Setup Hugo
@@ -43,12 +43,7 @@ jobs:
           enablement: true
 
       - name: Build site
-        # configure-pages resolves the correct URL:
-        #   - github.io project site → https://<user>.github.io/<repo>/
-        #   - custom domain configured → https://7nolikov.dev/ohmoveagain/
-        # Hugo --baseURL overrides hugo.toml so the site is never broken,
-        # even before the custom domain is wired up.
-        run: hugo --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
+        run: hugo --gc --minify --baseURL "https://7nolikov.dev/ohmoveagain/"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

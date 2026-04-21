@@ -35,3 +35,45 @@
   effectiveTaxRate: 0.20
   costOfLivingEUR: 1900
   note: "e-Residency is NOT tax residency. Corporate structure is elegant; personal side is standard."
+- code: GB
+  name: United Kingdom
+  flag: "🇬🇧"
+  effectiveTaxRate: 0.33
+  costOfLivingEUR: 2900
+  note: "Outside IR35 Ltd company baseline. Inside IR35 pushes effective rate to ~42%. Post-Brexit visa friction for HR."
+- code: US
+  name: United States
+  flag: "🇺🇸"
+  effectiveTaxRate: 0.35
+  costOfLivingEUR: 3200
+  note: "Federal + mid-tier state + self-employment tax blended. CoL is a mid-tier city (Austin / Denver). Varies wildly by state."
+- code: NL
+  name: Netherlands
+  flag: "🇳🇱"
+  effectiveTaxRate: 0.42
+  costOfLivingEUR: 2700
+  note: "ZZP freelancer baseline. Box 1 rates are steep (37–49.5%). 30% ruling for recent arrivals not included."
+- code: FR
+  name: France
+  flag: "🇫🇷"
+  effectiveTaxRate: 0.33
+  costOfLivingEUR: 2400
+  note: "Micro-entrepreneur / auto-entrepreneur baseline. Portage salarial can push effective rate to ~50%."
+- code: PL
+  name: Poland
+  flag: "🇵🇱"
+  effectiveTaxRate: 0.24
+  costOfLivingEUR: 1700
+  note: "B2B contractor with flat 19% PIT + ZUS social/health contributions. IP Box (5%) not included."
+- code: CZ
+  name: Czech Republic
+  flag: "🇨🇿"
+  effectiveTaxRate: 0.28
+  costOfLivingEUR: 1800
+  note: "OSVČ sole trader: 15% income tax + ~29% social/health on 50% of profit base."
+- code: RS
+  name: Serbia
+  flag: "🇷🇸"
+  effectiveTaxRate: 0.20
+  costOfLivingEUR: 1400
+  note: "Flat 10% PIT + capped contributions. Gaining traction with remote devs. No EU single market."

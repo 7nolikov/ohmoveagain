@@ -122,7 +122,6 @@ checklist:
 gotchas:
   - "Some banks refuse non-EU passport holders without a permanent residency card — shortlist EU-friendly banks before arrival."
   - "Address registration requires landlord's notarized signature in some municipalities."
-artifacts:
 ---
 
 Setting up your local identity. In Croatia the sequence is fixed: OIB first, address registration second, bank account third, health insurance fourth. Each step unlocks the next — skipping ahead wastes weeks.
