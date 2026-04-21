@@ -114,7 +114,7 @@
   function calcApp() {
     return {
       gross: null,
-      fromCode: '',
+      fromCode: 'DE',
       toCode: 'HR',
       result: null,
       error: '',
@@ -126,10 +126,7 @@
         if (p.get('gross')) this.gross = Number(p.get('gross'));
         if (p.get('from')) this.fromCode = p.get('from');
         if (p.get('to')) this.toCode = p.get('to');
-        if (!this.fromCode) {
-          const first = (window.OHMA_COUNTRIES || []).find(c => c.code !== 'HR');
-          if (first) this.fromCode = first.code;
-        }
+        if (!this.fromCode) this.fromCode = 'DE';
         if (p.get('gross') && p.get('from') && p.get('to')) {
           this.$nextTick(() => this.run());
         }

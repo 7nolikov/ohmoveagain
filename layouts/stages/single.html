@@ -79,7 +79,8 @@
       {{ range $ii, $item := $catItems }}
       {{- $key := printf "%d.%d" $ci $ii -}}
       {{- $ao := $item.appliesTo | jsonify -}}
-      <li x-show="$store.prog.matchesProfile({{ $ao }})" :class="$store.prog.isChecked(s, '{{ $key }}') ? 'done' : ''">
+      <template x-if="$store.prog.matchesProfile({{ $ao }})">
+      <li :class="$store.prog.isChecked(s, '{{ $key }}') ? 'done' : ''">
         <label>
           <input type="checkbox" :checked="$store.prog.isChecked(s, '{{ $key }}')" @change="$store.prog.toggle(s, '{{ $key }}')">
           <span class="label-text">
@@ -95,6 +96,7 @@
           </span>
         </label>
       </li>
+      </template>
       {{ end }}
     </ul>
   </div>

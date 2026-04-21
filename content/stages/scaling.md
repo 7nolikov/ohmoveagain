@@ -78,9 +78,9 @@ gotchas:
   - "Paušalni obrt has annual revenue caps — crossing mid-year is messy."
   - "Tax residency + client location + IP ownership determine where you owe. Don't freelance this."
 artifacts:
-  - name: "Full tax-optimization playbook (wip, free)"
+  - name: "Tax optimization deep-dive"
     kind: "link"
-    href: "/waitlist/"
+    href: "#"
 ---
 
 Now that you are resident, make the setup sustainable. Croatia's paušalni obrt (lump-sum trade) is often the right structure for solo work under the revenue cap. Above the cap, a d.o.o. or j.d.o.o. is usually the better fit. Decisions in this stage compound for years — talk to a licensed local accountant, not to a forum thread.
