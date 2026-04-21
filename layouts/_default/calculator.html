@@ -67,7 +67,7 @@
         <button type="button" class="btn-ghost" @click="copyShare">
           <span x-text="copied ? 'Copied ✓' : 'Copy share line'"></span>
         </button>
-        <a class="btn-ghost" :href="result.tweetUrl" target="_blank" rel="noopener">Share on X / Twitter</a>
+        <a class="btn-ghost" :href="result.tweetUrl" target="_blank" rel="noopener noreferrer">Share on X / Twitter</a>
         <button type="button" class="btn-ghost" @click="copyUrl">
           <span x-text="urlCopied ? 'Link copied ✓' : 'Copy link to this result'"></span>
         </button>

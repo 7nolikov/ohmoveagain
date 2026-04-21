@@ -1,4 +1,6 @@
 {{ define "main" }}
+{{- $ld := dict "@context" "https://schema.org" "@type" "WebPage" "name" .Title "description" (default site.Params.description .Description) "url" .Permalink "isPartOf" (dict "@type" "WebSite" "name" site.Title "url" site.BaseURL) | jsonify -}}
+{{ printf "<script type=\"application/ld+json\">%s</script>" $ld | safeHTML }}
 <section>
   <div class="tagline">Email updates · no newsletter, no spam</div>
   <h1>{{ .Title }}</h1>
@@ -6,7 +8,7 @@
     One email when a new stage is published, the calculator adds a country, or a significant
     update lands. The project is <span class="acc">free and open-source</span> — no paywall, no
     upsell, no newsletter drip. If you would rather follow on GitHub,
-    <a href="{{ site.Params.githubURL }}" rel="noopener">star the repository</a> instead.
+    <a href="{{ site.Params.githubURL }}" rel="noopener noreferrer">star the repository</a> instead.
   </p>
   {{ partial "subscribe-form.html" . }}
   <p class="muted" style="margin-top:30px;font-size:0.85rem;">

@@ -22,7 +22,7 @@ checklist:
       - label: "Calculate 3-year runway delta"
         note: "Same annual gross → how many more months of runway does the target country buy you?"
         source:
-          url: "/calculator/"
+          url: "https://7nolikov.dev/ohmoveagain/calculator/"
           label: "ohmoveagain — runway calculator"
           asOf: "2026-04-18"
       - label: "Audit exit taxes from source jurisdiction"
@@ -96,7 +96,11 @@ checklist:
           label: "Stack Overflow developer survey"
           asOf: "2025-06-01"
       - label: "Stress-test decision with partner / dependents"
-        note: "Solo moves are easy mode. Family moves are distributed systems."
+        note: "Misaligned expectations are the leading cause of failed relocations — more common than visa rejections or tax issues."
+        source:
+          url: "https://www.oecd.org/els/mig/World-Migration-in-Figures.pdf"
+          label: "OECD — international migration patterns"
+          asOf: "2025-01-01"
 gotchas:
   - "Croatia's tax residency triggers at 183 days OR center-of-life — you can become resident before you realize."
   - "Double-taxation treaties don't eliminate paperwork — they cap exposure. Both filings still happen."

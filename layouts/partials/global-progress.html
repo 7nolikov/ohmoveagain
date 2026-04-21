@@ -33,14 +33,16 @@
         <option value="family-reunification" :selected="$store.prog.profile.visa==='family-reunification'">Family reunification</option>
         <option value="eu-eea"               :selected="$store.prog.profile.visa==='eu-eea'">EU / EEA citizen</option>
       </select>
-      <select class="persona-select" aria-label="Family composition" @change="$store.prog.setProfile('family', $event.target.value)">
+      <label class="sr-only" for="pp-family">Family composition</label>
+      <select id="pp-family" class="persona-select" aria-label="Family composition" @change="$store.prog.setProfile('family', $event.target.value)">
         <option value="all"         :selected="$store.prog.profile.family==='all'">Any family</option>
         <option value="solo"        :selected="$store.prog.profile.family==='solo'">Solo</option>
         <option value="spouse"      :selected="$store.prog.profile.family==='spouse'">With partner</option>
         <option value="kids"        :selected="$store.prog.profile.family==='kids'">With kids</option>
         <option value="spouse-kids" :selected="$store.prog.profile.family==='spouse-kids'">Partner &amp; kids</option>
       </select>
-      <select class="persona-select" aria-label="Pets" @change="$store.prog.setProfile('pets', $event.target.value)">
+      <label class="sr-only" for="pp-pets">Pets</label>
+      <select id="pp-pets" class="persona-select" aria-label="Pets" @change="$store.prog.setProfile('pets', $event.target.value)">
         <option value="all"     :selected="$store.prog.profile.pets==='all'">Any pets</option>
         <option value="none"    :selected="$store.prog.profile.pets==='none'">No pets</option>
         <option value="dog-cat" :selected="$store.prog.profile.pets==='dog-cat'">Dog or cat</option>
