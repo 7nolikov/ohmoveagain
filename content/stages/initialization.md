@@ -3,6 +3,8 @@ title: "Initialization"
 subtitle: "Set up local identity in Croatia: OIB, address, bank, health insurance — in that order."
 description: "Establishing your local identity in Croatia after arrival: OIB first, then address registration, then bank account, then health insurance. Order matters — each step unlocks the next."
 weight: 4
+sitemap:
+  priority: 0.9
 duration: "2–6 weeks post-arrival"
 requires:
   - "Stage 3 complete: you are physically in Croatia with your documents in hand."

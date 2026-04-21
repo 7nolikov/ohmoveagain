@@ -3,6 +3,8 @@ title: "Migration"
 subtitle: "The physical move — border crossing, first 72 hours, no undo button."
 description: "Border crossing, temporary accommodation, first 72 hours on the ground. Keep every original document on your person, not in checked luggage."
 weight: 3
+sitemap:
+  priority: 0.9
 duration: "3–10 days"
 requires:
   - "Stage 2 complete: every apostilled document, translation, and visa paper is assembled and in your cabin bag."

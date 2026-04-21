@@ -3,6 +3,8 @@ title: "Assessment"
 subtitle: "Decide whether the move is worth it — tax, cost of living, career, and family impact."
 description: "Model tax residency, cost of living, career optionality, and the real cost of staying before you commit to a Croatia move."
 weight: 1
+sitemap:
+  priority: 0.9
 duration: "2–6 weeks"
 requires:
   - "Nothing — this is the starting point of the pipeline."

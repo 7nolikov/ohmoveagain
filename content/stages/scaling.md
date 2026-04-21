@@ -3,6 +3,8 @@ title: "Scaling"
 subtitle: "Settle in: optimize taxes, pick a business structure, integrate with the local community."
 description: "Now that you are resident: pick the right business structure, plan taxes, build a local network. Verify every tax decision with a licensed Croatian accountant."
 weight: 5
+sitemap:
+  priority: 0.9
 duration: "ongoing"
 requires:
   - "Stage 4 complete: you have OIB, registered address, residency card, bank account, and HZZO coverage."

@@ -3,6 +3,8 @@ title: "Pre-Flight"
 subtitle: "Collect and apostille every document before you board a plane."
 description: "Everything you need before you board. Apostilles, criminal background checks, translated diplomas, proof of accommodation, pet and family paperwork."
 weight: 2
+sitemap:
+  priority: 0.9
 duration: "4–12 weeks"
 requires:
   - "Stage 1 complete: you have chosen a visa pathway and confirmed you meet its income / employer requirements."
