@@ -54,14 +54,14 @@ content/
   stages/             # five Pipeline stages — STRINGS ONLY (title, labels, notes, gotchas)
                       # one <slug>.md per language (e.g. assessment.md, assessment.ru.md)
   calculator.md       # front-matter only; rendered by layouts/_default/calculator.html
-  waitlist.md         # front-matter only; rendered by layouts/_default/waitlist.html
+  subscribe.md        # front-matter only; rendered by layouts/_default/subscribe.html
   contribute.md       # contribution guide
 data/
   countries.yaml      # tax + cost-of-living baselines (calculator source of truth)
   stages/             # five Pipeline stages — STRUCTURAL FACTS (language-neutral)
     <slug>.yaml       # item IDs, source URLs, asOf dates, appliesTo persona filters
 layouts/
-  _default/           # baseof, single, list, calculator, waitlist, freshness
+  _default/           # baseof, single, list, calculator, subscribe, freshness
   stages/             # stage single override — merges data/ + content/ by item ID
   partials/           # head, header, footer, subscribe-form, global-progress, hotkeys-help
 static/

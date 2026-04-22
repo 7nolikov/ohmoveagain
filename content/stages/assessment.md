@@ -39,7 +39,7 @@ itemStrings:
     sourceLabel: "EU Commission — Blue Card eligibility"
   dnv-income:
     label: "Confirm Digital Nomad Visa income requirement"
-    note: "Minimum monthly income threshold applies (currently ~2.5× HR average net wage). Must be employed or self-employed outside Croatia."
+    note: "Minimum monthly income threshold applies — verify the current figure with MUP before committing (updates annually). Must be employed or self-employed outside Croatia."
     sourceLabel: "MUP — digital nomad visa"
   work-permit-sponsor:
     label: "Confirm work permit employer sponsorship path"
