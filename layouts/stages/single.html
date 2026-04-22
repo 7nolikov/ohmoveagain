@@ -1,8 +1,14 @@
 {{ define "main" }}
+{{- $slug := .File.ContentBaseName -}}
+{{- $data := index hugo.Data.stages $slug -}}
+{{- $itemStrings := .Params.itemStrings -}}
+{{- $categoryNames := .Params.categoryNames -}}
+{{- $artifactNames := .Params.artifactNames -}}
+
 {{- $ld := dict "@context" "https://schema.org" "@type" "TechArticle" "headline" .Title "description" (default .Params.subtitle .Description) "url" .Permalink "isPartOf" (dict "@type" "WebSite" "name" site.Title "url" site.BaseURL) | jsonify -}}
 {{ printf "<script type=\"application/ld+json\">%s</script>" $ld | safeHTML }}
 {{- $latestAsOf := "" -}}
-{{- range .Params.checklist -}}{{- range .items -}}{{- with .source -}}{{- with .asOf -}}{{- if gt . $latestAsOf -}}{{- $latestAsOf = . -}}{{- end -}}{{- end -}}{{- end -}}{{- end -}}{{- end -}}
+{{- with $data -}}{{- range .checklist -}}{{- range .items -}}{{- with .source -}}{{- with .asOf -}}{{- if gt . $latestAsOf -}}{{- $latestAsOf = . -}}{{- end -}}{{- end -}}{{- end -}}{{- end -}}{{- end -}}{{- end -}}
 {{- $latestClass := "" -}}
 {{- if $latestAsOf -}}
   {{- $latestDays := div (sub now.Unix (time.AsTime $latestAsOf).Unix) 86400 -}}
@@ -40,19 +46,22 @@
 </section>
 {{ end }}
 
-{{ with .Params.checklist }}
+{{ with $data }}{{ with .checklist }}
 {{- $weight := $.Weight -}}
 {{- $stageMeta := slice -}}
 {{- $stageFull := slice -}}
 {{- range $ci, $cat := . -}}
   {{- $items := slice -}}
   {{- range $ii, $item := $cat.items -}}
-    {{- $stageMeta = $stageMeta | append (dict "key" (printf "%d.%d" $ci $ii) "ao" $item.appliesTo) -}}
+    {{- $key := printf "%d.%d" $ci $ii -}}
+    {{- $strings := index $itemStrings $item.id -}}
+    {{- $stageMeta = $stageMeta | append (dict "key" $key "ao" $item.appliesTo) -}}
     {{- $src := dict -}}
-    {{- with $item.source -}}{{- $src = dict "url" .url "label" .label "asOf" .asOf -}}{{- end -}}
-    {{- $items = $items | append (dict "key" (printf "%d.%d" $ci $ii) "label" $item.label "note" $item.note "source" $src) -}}
+    {{- with $item.source -}}{{- $src = dict "url" .url "label" (index $strings "sourceLabel") "asOf" .asOf -}}{{- end -}}
+    {{- $items = $items | append (dict "key" $key "label" (index $strings "label") "note" (index $strings "note") "source" $src) -}}
   {{- end -}}
-  {{- $stageFull = $stageFull | append (dict "name" $cat.name "items" $items) -}}
+  {{- $catName := index $categoryNames $cat.id -}}
+  {{- $stageFull = $stageFull | append (dict "name" $catName "items" $items) -}}
 {{- end -}}
 <section aria-labelledby="ck-h" x-data="{ meta: {{ $stageMeta | jsonify }}, s: '{{ $weight }}' }">
   <div class="checklist-head">
@@ -75,9 +84,10 @@
   {{- range $ii, $item := $catItems -}}
     {{- $catMeta = $catMeta | append (dict "key" (printf "%d.%d" $ci $ii) "ao" $item.appliesTo) -}}
   {{- end -}}
+  {{- $catName := index $categoryNames $cat.id -}}
   <div class="checklist-group" x-data="{ catMeta: {{ $catMeta | jsonify }} }">
     <div class="group-head">
-      <h3 class="group-name">{{ .name }}</h3>
+      <h3 class="group-name">{{ $catName }}</h3>
       <div class="group-status" x-cloak>
         <span x-text="$store.prog.countF(s, catMeta)"></span> / <span x-text="$store.prog.totalF(catMeta)"></span>
       </div>
@@ -86,18 +96,19 @@
       {{ range $ii, $item := $catItems }}
       {{- $key := printf "%d.%d" $ci $ii -}}
       {{- $ao := $item.appliesTo | jsonify -}}
+      {{- $strings := index $itemStrings $item.id -}}
       <template x-if="$store.prog.matchesProfile({{ $ao }})">
       <li :class="$store.prog.isChecked(s, '{{ $key }}') ? 'done' : ''">
         <label>
           <input type="checkbox" :checked="$store.prog.isChecked(s, '{{ $key }}')" @change="$store.prog.toggle(s, '{{ $key }}')">
           <span class="label-text">
-            <span class="label">{{ $item.label }}</span>
-            {{ with $item.note }}<span class="note">{{ . }}</span>{{ end }}
+            <span class="label">{{ index $strings "label" }}</span>
+            {{ with (index $strings "note") }}<span class="note">{{ . }}</span>{{ end }}
             {{ with $item.source }}
             {{- $url := .url -}}
             {{- if hasPrefix $url "/" -}}{{- $url = strings.TrimPrefix "/" $url | relURL -}}{{- end -}}
             <a class="source" href="{{ $url }}"{{ if hasPrefix .url "http" }} rel="noopener noreferrer" target="_blank"{{ end }}>
-              Source: {{ .label }}{{ with .asOf -}}
+              Source: {{ index $strings "sourceLabel" }}{{ with .asOf -}}
               {{- $d := div (sub now.Unix (time.AsTime .).Unix) 86400 -}}
               {{- $cls := cond (gt $d 365) "asof-stale" (cond (gt $d 180) "asof-aging" "asof-fresh") -}}
                · <span class="asof {{ $cls }}">last verified {{ . }}</span>{{ end }}
@@ -113,7 +124,7 @@
   {{ end }}
 </section>
 <script>window.OHMA_STAGE_DATA={w:{{ $weight }},t:{{ $.Title | jsonify | safeJS }},c:{{ $stageFull | jsonify | safeJS }}};</script>
-{{ end }}
+{{ end }}{{ end }}
 
 {{ with .Params.gotchas }}
 <section class="gotchas" aria-labelledby="g-h">
@@ -124,22 +135,23 @@
 </section>
 {{ end }}
 
-{{ with .Params.artifacts }}
+{{ with $data }}{{ with .artifacts }}
 <section aria-labelledby="a-h">
   <h2 id="a-h">Resources for this stage</h2>
   <div class="artifacts">
     {{ range . }}
+    {{- $name := index $artifactNames .id -}}
     {{- $href := .href -}}
     {{- if eq $href "#" -}}
-    <span class="artifact-wip"><span class="kind">{{ .kind }}</span>{{ .name }}<span class="wip-badge">in progress</span></span>
+    <span class="artifact-wip"><span class="kind">{{ .kind }}</span>{{ $name }}<span class="wip-badge">in progress</span></span>
     {{- else -}}
     {{- if hasPrefix $href "/" -}}{{ $href = strings.TrimPrefix "/" $href | relURL }}{{- end -}}
-    <a href="{{ $href }}"><span class="kind">{{ .kind }}</span>{{ .name }}</a>
+    <a href="{{ $href }}"><span class="kind">{{ .kind }}</span>{{ $name }}</a>
     {{- end -}}
     {{ end }}
   </div>
 </section>
-{{ end }}
+{{ end }}{{ end }}
 
 {{ $cur := .Weight }}
 {{ $stages := (where site.RegularPages "Section" "stages").ByWeight }}

@@ -1,0 +1,128 @@
+# Structural data for stage: Pre-Flight
+# Language-neutral. Strings live in content/stages/pre-flight.md.
+
+checklist:
+  - id: "travel-docs"
+    items:
+      - id: "passport-validity"
+        source:
+          url: "https://mup.gov.hr/"
+          asOf: "2026-02-15"
+      - id: "birth-cert-apostilled"
+        source:
+          url: "https://www.hcch.net/en/instruments/conventions/specialised-sections/apostille"
+          asOf: "2026-01-01"
+      - id: "criminal-background"
+        source:
+          url: "https://pravosudje.gov.hr/"
+          asOf: "2026-02-01"
+  - id: "eligibility-proof"
+    items:
+      - id: "diploma-recognition"
+        source:
+          url: "https://mzo.gov.hr/"
+          asOf: "2026-02-01"
+      - id: "accommodation-proof"
+        source:
+          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+          asOf: "2026-02-15"
+      - id: "employment-contract"
+        appliesTo:
+          visa: [blue-card, work-permit]
+        source:
+          url: "https://home-affairs.ec.europa.eu/policies/migration-and-asylum/legal-migration-and-integration/work_en"
+          asOf: "2026-01-01"
+      - id: "dnv-income-proof"
+        appliesTo:
+          visa: [digital-nomad]
+        source:
+          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+          asOf: "2026-02-15"
+      - id: "business-registration"
+        appliesTo:
+          visa: [self-employment]
+        source:
+          url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
+          asOf: "2026-03-01"
+  - id: "logistics-dry-run"
+    items:
+      - id: "intl-health-insurance"
+        source:
+          url: "https://hzzo.hr/en"
+          asOf: "2026-02-15"
+      - id: "landlord-registration-consent"
+        source:
+          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+          asOf: "2026-02-15"
+  - id: "pets-pre-travel"
+    items:
+      - id: "pet-microchip"
+        appliesTo:
+          pets: [dog-cat]
+        source:
+          url: "https://food.ec.europa.eu/animals/movement-pets_en"
+          asOf: "2026-03-01"
+      - id: "pet-rabies"
+        appliesTo:
+          pets: [dog-cat]
+        source:
+          url: "https://food.ec.europa.eu/animals/movement-pets_en"
+          asOf: "2026-03-01"
+      - id: "pet-titer-test"
+        appliesTo:
+          pets: [dog-cat]
+        source:
+          url: "https://food.ec.europa.eu/animals/movement-pets/non-eu-countries-listed_en"
+          asOf: "2026-03-01"
+      - id: "pet-passport"
+        appliesTo:
+          pets: [dog-cat]
+        source:
+          url: "https://food.ec.europa.eu/animals/movement-pets_en"
+          asOf: "2026-03-01"
+      - id: "airline-pet-policy"
+        appliesTo:
+          pets: [dog-cat, other]
+        source:
+          url: "https://www.iata.org/en/programs/cargo/live-animals/"
+          asOf: "2026-01-01"
+      - id: "cites-docs"
+        appliesTo:
+          pets: [other]
+        source:
+          url: "https://cites.org/eng/disc/what.php"
+          asOf: "2026-01-01"
+  - id: "family-pre-travel"
+    items:
+      - id: "marriage-cert"
+        appliesTo:
+          family: [spouse, spouse-kids]
+        source:
+          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+          asOf: "2026-04-22"
+      - id: "child-birth-certs"
+        appliesTo:
+          family: [kids, spouse-kids]
+        source:
+          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+          asOf: "2026-02-15"
+      - id: "spouse-work-status"
+        appliesTo:
+          family: [spouse, spouse-kids]
+        source:
+          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+          asOf: "2026-02-15"
+      - id: "school-shortlist"
+        appliesTo:
+          family: [kids, spouse-kids]
+        source:
+          url: "https://mzo.gov.hr/"
+          asOf: "2026-02-01"
+      - id: "sponsor-income"
+        appliesTo:
+          family: [spouse, kids, spouse-kids]
+        source:
+          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+          asOf: "2026-02-15"
+
+artifacts: []

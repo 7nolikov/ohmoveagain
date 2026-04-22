@@ -1,12 +1,16 @@
 {{- $stages := (where site.RegularPages "Section" "stages").ByWeight -}}
 {{- $grand := 0 -}}
-{{- range $stages -}}{{- range .Params.checklist -}}{{- $grand = add $grand (len .items) -}}{{- end -}}{{- end -}}
+{{- range $stages -}}
+  {{- $d := index hugo.Data.stages .File.ContentBaseName -}}
+  {{- with $d }}{{- range .checklist -}}{{- $grand = add $grand (len .items) -}}{{- end -}}{{- end -}}
+{{- end -}}
 <div class="global-progress" x-data="{ total: {{ $grand }}, collapsed: false }" role="region" aria-label="pipeline progress">
   <div class="global-progress-inner">
     <div class="stage-dots" role="group" aria-label="stage status">
       {{- range $stages -}}
       {{- $c := 0 -}}
-      {{- range .Params.checklist -}}{{- $c = add $c (len .items) -}}{{- end -}}
+      {{- $d := index hugo.Data.stages .File.ContentBaseName -}}
+      {{- with $d }}{{- range .checklist -}}{{- $c = add $c (len .items) -}}{{- end -}}{{- end -}}
       <a class="stage-dot"
          href="{{ .RelPermalink }}"
          aria-label="stage {{ .Weight }} {{ .Title }}"

@@ -18,107 +18,64 @@ documents:
   - "Tax residency status determined — only request a written certificate if you need one (foreign income, DTA claim, proof of non-residency elsewhere). If all your income is Croatian and you live here, you likely don't need to ask for one."
   - "If moving with family: OIB and HZZO enrolment for each dependent, plus school enrolment confirmation for children."
   - "If moving with pets: Croatian vet registration, Lysacan microchip record, and municipal dog registration where applicable."
-checklist:
-  - name: "identity bootstrap"
-    items:
-      - label: "OIB (personal identification number) issued"
-        note: "Free, ~same-day at Porezna uprava. Prerequisite for everything else."
-        source:
-          url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
-          label: "Porezna uprava — OIB issuance"
-          asOf: "2026-03-01"
-      - label: "Address registration (prijava boravišta)"
-        note: "MUP (police administration). Required for residency card."
-        source:
-          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
-          label: "MUP — address registration"
-          asOf: "2026-02-15"
-      - label: "Residency permit card issued"
-        note: "Plastic card; biometric appointment may be needed."
-        source:
-          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
-          label: "MUP — residency permits"
-          asOf: "2026-02-15"
-  - name: "financial & medical"
-    items:
-      - label: "Local bank account opened"
-        note: "Revolut / Wise work as bridges but aren't SEPA-native for salary. Zagrebačka, Erste, PBZ are EU-friendly."
-        source:
-          url: "https://www.hanfa.hr/en/"
-          label: "HANFA — HR financial services authority"
-          asOf: "2026-02-01"
-      - label: "Health insurance (HZZO) enrolled"
-        note: "Mandatory. Kicks in from registration date."
-        source:
-          url: "https://hzzo.hr/en"
-          label: "HZZO — Croatian health insurance"
-          asOf: "2026-02-15"
-      - label: "Tax residency status confirmed (certificate only if you need one)"
-        note: "Residency is determined by the 183-day rule + center-of-life test, not by requesting a certificate. You only need a written certificate for specific situations: claiming a double-taxation treaty, proving non-residency to your origin country, or reporting foreign income. If all your income is Croatian and you live here full-time, don't default to asking — the office may (correctly) tell you it's unnecessary."
-        source:
-          url: "https://porezna-uprava.gov.hr/en/determination-of-residency-status/7378"
-          label: "Porezna uprava — residency determination criteria"
-          asOf: "2026-04-22"
-  - name: "family registration"
-    items:
-      - label: "OIB issued for each dependent (spouse + each child)"
-        note: "Each family member needs their own OIB. Same Porezna uprava appointment can cover all."
-        appliesTo:
-          family: [spouse, kids, spouse-kids]
-        source:
-          url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
-          label: "Porezna uprava — OIB for dependents"
-          asOf: "2026-03-01"
-      - label: "HZZO family coverage registered for spouse and children"
-        note: "Dependents must be added explicitly — they don't inherit your coverage automatically."
-        appliesTo:
-          family: [spouse, kids, spouse-kids]
-        source:
-          url: "https://hzzo.hr/en"
-          label: "HZZO — family health insurance"
-          asOf: "2026-02-15"
-      - label: "Children enrolled in school (requires OIB + registered address)"
-        note: "Public school: OIB + address + health card. International school: waiting list may already be long."
-        appliesTo:
-          family: [kids, spouse-kids]
-        source:
-          url: "https://mzo.gov.hr/"
-          label: "Ministry of Education — enrolment"
-          asOf: "2026-02-01"
-      - label: "If your spouse is non-EU: family reunification application submitted to MUP"
-        note: "Skip if your spouse is an EU/EEA citizen (they register independently). Otherwise: apply after the primary applicant has the residency card. Spouse can remain on tourist exemption (90 days) while waiting."
-        appliesTo:
-          family: [spouse, spouse-kids]
-        source:
-          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
-          label: "MUP — family reunification application"
-          asOf: "2026-02-15"
-  - name: "pets post-arrival"
-    items:
-      - label: "Croatian official vet visit within 10 days of arrival"
-        note: "Required for any follow-up vaccinations. Also establishes your local vet relationship."
-        appliesTo:
-          pets: [dog-cat, other]
-        source:
-          url: "https://veterinarstvo.hr/"
-          label: "Veterinary Directorate (HR)"
-          asOf: "2026-02-01"
-      - label: "Microchip registered in Croatian database (Lysacan)"
-        note: "Even with an EU Pet Passport, you must register the chip in HR's national database."
-        appliesTo:
-          pets: [dog-cat]
-        source:
-          url: "https://www.lysacan.hr/"
-          label: "Lysacan — HR pet microchip registry"
-          asOf: "2026-02-01"
-      - label: "Dog registered with local municipality (e.g. City of Zagreb)"
-        note: "Annual registration fee applies. Fine for non-compliance is significant."
-        appliesTo:
-          pets: [dog-cat]
-        source:
-          url: "https://www.zagreb.hr/"
-          label: "City of Zagreb — dog registration"
-          asOf: "2026-03-01"
+categoryNames:
+  identity-bootstrap: "identity bootstrap"
+  financial-medical: "financial & medical"
+  family-registration: "family registration"
+  pets-post-arrival: "pets post-arrival"
+itemStrings:
+  oib-issued:
+    label: "OIB (personal identification number) issued"
+    note: "Free, ~same-day at Porezna uprava. Prerequisite for everything else."
+    sourceLabel: "Porezna uprava — OIB issuance"
+  address-registration:
+    label: "Address registration (prijava boravišta)"
+    note: "MUP (police administration). Required for residency card."
+    sourceLabel: "MUP — address registration"
+  residency-card:
+    label: "Residency permit card issued"
+    note: "Plastic card; biometric appointment may be needed."
+    sourceLabel: "MUP — residency permits"
+  bank-account:
+    label: "Local bank account opened"
+    note: "Revolut / Wise work as bridges but aren't SEPA-native for salary. Zagrebačka, Erste, PBZ are EU-friendly."
+    sourceLabel: "HANFA — HR financial services authority"
+  hzzo-enrolled:
+    label: "Health insurance (HZZO) enrolled"
+    note: "Mandatory. Kicks in from registration date."
+    sourceLabel: "HZZO — Croatian health insurance"
+  tax-residency:
+    label: "Tax residency status confirmed (certificate only if you need one)"
+    note: "Residency is determined by the 183-day rule + center-of-life test, not by requesting a certificate. You only need a written certificate for specific situations: claiming a double-taxation treaty, proving non-residency to your origin country, or reporting foreign income. If all your income is Croatian and you live here full-time, don't default to asking — the office may (correctly) tell you it's unnecessary."
+    sourceLabel: "Porezna uprava — residency determination criteria"
+  oib-dependents:
+    label: "OIB issued for each dependent (spouse + each child)"
+    note: "Each family member needs their own OIB. Same Porezna uprava appointment can cover all."
+    sourceLabel: "Porezna uprava — OIB for dependents"
+  hzzo-family:
+    label: "HZZO family coverage registered for spouse and children"
+    note: "Dependents must be added explicitly — they don't inherit your coverage automatically."
+    sourceLabel: "HZZO — family health insurance"
+  school-enrolment:
+    label: "Children enrolled in school (requires OIB + registered address)"
+    note: "Public school: OIB + address + health card. International school: waiting list may already be long."
+    sourceLabel: "Ministry of Education — enrolment"
+  non-eu-spouse-reunification:
+    label: "If your spouse is non-EU: family reunification application submitted to MUP"
+    note: "Skip if your spouse is an EU/EEA citizen (they register independently). Otherwise: apply after the primary applicant has the residency card. Spouse can remain on tourist exemption (90 days) while waiting."
+    sourceLabel: "MUP — family reunification application"
+  vet-visit-10d:
+    label: "Croatian official vet visit within 10 days of arrival"
+    note: "Required for any follow-up vaccinations. Also establishes your local vet relationship."
+    sourceLabel: "Veterinary Directorate (HR)"
+  microchip-registered:
+    label: "Microchip registered in Croatian database (Lysacan)"
+    note: "Even with an EU Pet Passport, you must register the chip in HR's national database."
+    sourceLabel: "Lysacan — HR pet microchip registry"
+  dog-municipal-reg:
+    label: "Dog registered with local municipality (e.g. City of Zagreb)"
+    note: "Annual registration fee applies. Fine for non-compliance is significant."
+    sourceLabel: "City of Zagreb — dog registration"
 gotchas:
   - "Without a Croatian work contract or residency card, expect most banks to offer only a non-resident account (limited features, no salary deposits). Get the work contract first, then open the full account."
   - "Address registration requires landlord's notarized signature in some municipalities."

@@ -28,7 +28,9 @@
         {{- $oldest := "9999-99-99" -}}
         {{- $newest := "0000-00-00" -}}
         {{- $itemCount := 0 -}}
-        {{- range .Params.checklist -}}
+        {{- $sd := index hugo.Data.stages .File.ContentBaseName -}}
+        {{- with $sd -}}
+        {{- range .checklist -}}
           {{- range .items -}}
             {{- $itemCount = add $itemCount 1 -}}
             {{- with .source -}}
@@ -38,6 +40,7 @@
               {{- end -}}
             {{- end -}}
           {{- end -}}
+        {{- end -}}
         {{- end -}}
         {{- $oldestCls := "" -}}
         {{- $newestCls := "" -}}

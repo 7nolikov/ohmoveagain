@@ -30,7 +30,10 @@
 
   {{ $stages := (where site.RegularPages "Section" "stages").ByWeight }}
   {{ $grand := 0 }}
-  {{ range $stages }}{{ range .Params.checklist }}{{ $grand = add $grand (len .items) }}{{ end }}{{ end }}
+  {{ range $stages }}
+    {{- $d := index hugo.Data.stages .File.ContentBaseName -}}
+    {{- with $d }}{{ range .checklist }}{{ $grand = add $grand (len .items) }}{{ end }}{{ end -}}
+  {{ end }}
 
   <div class="pipeline-summary" x-data="{ total: {{ $grand }} }">
     <div class="progress-bar wide" aria-hidden="true"><div class="fill" :style="`width:${total ? 100 * $store.prog.totalDone() / total : 0}%`"></div></div>
@@ -45,7 +48,8 @@
   <div class="pipeline">
     {{ range $stages }}
     {{- $c := 0 -}}
-    {{- range .Params.checklist -}}{{- $c = add $c (len .items) -}}{{- end -}}
+    {{- $d := index hugo.Data.stages .File.ContentBaseName -}}
+    {{- with $d }}{{- range .checklist -}}{{- $c = add $c (len .items) -}}{{- end -}}{{- end -}}
     <a class="stage-card" href="{{ .RelPermalink }}"
        x-data="{ t: {{ $c }}, s: '{{ .Weight }}' }"
        :class="$store.prog.count(s) === t && t > 0 ? 'passed' : $store.prog.count(s) > 0 ? 'partial' : ''">
@@ -84,20 +88,28 @@
   {{ partial "subscribe-form.html" . }}
 </section>
 
-{{/* Embed full checklist structure for client-side export */}}
+{{/* Embed full checklist structure for client-side export — merges data file + page strings */}}
 {{- $allStages := slice -}}
 {{- range $stages -}}
+  {{- $page := . -}}
+  {{- $d := index hugo.Data.stages .File.ContentBaseName -}}
+  {{- $itemStrings := .Params.itemStrings -}}
+  {{- $categoryNames := .Params.categoryNames -}}
   {{- $cats := slice -}}
-  {{- range $ci, $cat := .Params.checklist -}}
+  {{- with $d -}}
+  {{- range $ci, $cat := .checklist -}}
     {{- $items := slice -}}
     {{- range $ii, $item := $cat.items -}}
+      {{- $strings := index $itemStrings $item.id -}}
       {{- $src := dict -}}
-      {{- with $item.source -}}{{- $src = dict "url" .url "label" .label "asOf" .asOf -}}{{- end -}}
-      {{- $items = $items | append (dict "key" (printf "%d.%d" $ci $ii) "label" $item.label "note" $item.note "source" $src) -}}
+      {{- with $item.source -}}{{- $src = dict "url" .url "label" (index $strings "sourceLabel") "asOf" .asOf -}}{{- end -}}
+      {{- $items = $items | append (dict "key" (printf "%d.%d" $ci $ii) "label" (index $strings "label") "note" (index $strings "note") "source" $src) -}}
     {{- end -}}
-    {{- $cats = $cats | append (dict "name" $cat.name "items" $items) -}}
+    {{- $catName := index $categoryNames $cat.id -}}
+    {{- $cats = $cats | append (dict "name" $catName "items" $items) -}}
   {{- end -}}
-  {{- $allStages = $allStages | append (dict "title" .Title "weight" .Weight "cats" $cats) -}}
+  {{- end -}}
+  {{- $allStages = $allStages | append (dict "title" $page.Title "weight" $page.Weight "cats" $cats) -}}
 {{- end -}}
 <script>
 window.OHMA_STAGES = {{ $allStages | jsonify | safeJS }};

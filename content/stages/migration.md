@@ -15,59 +15,46 @@ documents:
   - "Printed proof of onward accommodation and funds for border control."
   - "Travel insurance policy and emergency contact list."
   - "If moving with pets: signed vet health certificate (within 10 days of travel) and airline booking reference."
-checklist:
-  - name: "border crossing"
-    items:
-      - label: "Confirm border crossing method (air / land / sea)"
-        note: "Croatia joined Schengen in 2023. Schengen vs non-Schengen routes have different stamp implications."
-        source:
-          url: "https://home-affairs.ec.europa.eu/policies/schengen_en"
-          label: "EU — Schengen area"
-          asOf: "2026-01-01"
-      - label: "All originals in cabin bag — never checked"
-        note: "Lost luggage + lost apostille = restart the pre-flight loop."
-      - label: "Customs: proof of onward accommodation + funds, printed"
-        note: "Customs may request both on entry. Digital copies are not universally accepted."
-        source:
-          url: "https://carina.gov.hr/en"
-          label: "Carinska uprava (HR customs)"
-          asOf: "2026-02-01"
-  - name: "first 72 hours"
-    items:
-      - label: "First 30 days of accommodation booked"
-        note: "Long enough to secure a registered lease without panic."
-      - label: "Ground transport from airport pre-booked"
-        note: "Uber / Bolt coverage is spotty outside Zagreb."
-      - label: "EU-compatible SIM (eSIM preferred) active on arrival"
-        note: "eSIM on arrival beats airport kiosks."
-      - label: "Emergency cash buffer (€2–3K) in local currency"
-        note: "Card fraud geo-locks happen. Croatia uses EUR since 2023."
-        source:
-          url: "https://www.hnb.hr/en"
-          label: "HNB — Croatian National Bank"
-          asOf: "2026-01-01"
-  - name: "pets in transit"
-    items:
-      - label: "Vet health certificate signed within 10 days of travel date"
-        note: "The clock starts from the vet's signature date, not your travel booking. Schedule the vet appointment last."
-        appliesTo:
-          pets: [dog-cat]
-        source:
-          url: "https://food.ec.europa.eu/animals/movement-pets_en"
-          label: "EU — health certificate validity"
-          asOf: "2026-03-01"
-      - label: "Pet booking confirmed with airline (reference number in hand)"
-        note: "Reconfirm 48h before travel. Airlines cancel pet slots without notice."
-        appliesTo:
-          pets: [dog-cat, other]
-        source:
-          url: "https://www.iata.org/en/programs/cargo/live-animals/"
-          label: "IATA — live animals transport"
-          asOf: "2026-01-01"
-      - label: "Carrier dimensions verified at check-in vs airline's current spec"
-        note: "Staff measure on the day. If your carrier is 1cm over, the pet goes cargo or stays home."
-        appliesTo:
-          pets: [dog-cat]
+categoryNames:
+  border-crossing: "border crossing"
+  first-72-hours: "first 72 hours"
+  pets-in-transit: "pets in transit"
+itemStrings:
+  border-method:
+    label: "Confirm border crossing method (air / land / sea)"
+    note: "Croatia joined Schengen in 2023. Schengen vs non-Schengen routes have different stamp implications."
+    sourceLabel: "EU — Schengen area"
+  originals-cabin:
+    label: "All originals in cabin bag — never checked"
+    note: "Lost luggage + lost apostille = restart the pre-flight loop."
+  customs-proof:
+    label: "Customs: proof of onward accommodation + funds, printed"
+    note: "Customs may request both on entry. Digital copies are not universally accepted."
+    sourceLabel: "Carinska uprava (HR customs)"
+  accommodation-30d:
+    label: "First 30 days of accommodation booked"
+    note: "Long enough to secure a registered lease without panic."
+  ground-transport:
+    label: "Ground transport from airport pre-booked"
+    note: "Uber / Bolt coverage is spotty outside Zagreb."
+  eu-sim:
+    label: "EU-compatible SIM (eSIM preferred) active on arrival"
+    note: "eSIM on arrival beats airport kiosks."
+  emergency-cash:
+    label: "Emergency cash buffer (€2–3K) in local currency"
+    note: "Card fraud geo-locks happen. Croatia uses EUR since 2023."
+    sourceLabel: "HNB — Croatian National Bank"
+  vet-health-cert:
+    label: "Vet health certificate signed within 10 days of travel date"
+    note: "The clock starts from the vet's signature date, not your travel booking. Schedule the vet appointment last."
+    sourceLabel: "EU — health certificate validity"
+  airline-booking:
+    label: "Pet booking confirmed with airline (reference number in hand)"
+    note: "Reconfirm 48h before travel. Airlines cancel pet slots without notice."
+    sourceLabel: "IATA — live animals transport"
+  carrier-dimensions:
+    label: "Carrier dimensions verified at check-in vs airline's current spec"
+    note: "Staff measure on the day. If your carrier is 1cm over, the pet goes cargo or stays home."
 gotchas:
   - "Your old country's bank may freeze cards on geo-change. Notify in advance, or carry a backup bank."
   - "Croatia switched to EUR in 2023 — old kuna cash is no longer legal tender."
