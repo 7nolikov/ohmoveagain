@@ -4,6 +4,58 @@
 {{- $itemStrings := .Params.itemStrings -}}
 {{- $categoryNames := .Params.categoryNames -}}
 
+{{- $trust := newScratch -}}
+{{- $trust.Set "total" 0 -}}
+{{- $trust.Set "count" 0 -}}
+{{- with $data }}
+  {{- range .claims }}
+    {{- $claim := . -}}
+    {{- $src := dict -}}
+    {{- range $data.sources }}
+      {{- if eq .id $claim.sourceId }}{{ $src = . }}{{ end }}
+    {{- end }}
+
+    {{- $s := newScratch -}}
+    {{- $base := mul (default 3 $src.authorityScore) 20 -}}
+    {{- $s.Set "score" $base -}}
+
+    {{- if eq $claim.uncertainty "medium" -}}
+      {{- $s.Add "score" -15 -}}
+    {{- else if eq $claim.uncertainty "high" -}}
+      {{- $s.Add "score" -30 -}}
+    {{- end -}}
+
+    {{- with $src.lastChecked -}}
+      {{- $days := div (sub now.Unix (time.AsTime .).Unix) 86400 -}}
+      {{- if gt $days 365 -}}
+        {{- $s.Add "score" -25 -}}
+      {{- else if gt $days 180 -}}
+        {{- $s.Add "score" -10 -}}
+      {{- end -}}
+    {{- end -}}
+
+    {{- with $claim.conflictNote -}}
+      {{- $s.Add "score" -10 -}}
+    {{- end -}}
+
+    {{- $itemScore := $s.Get "score" -}}
+    {{- if lt $itemScore 0 }}{{- $itemScore = 0 -}}{{- end -}}
+    {{- $trust.Add "total" $itemScore -}}
+    {{- $trust.Add "count" 1 -}}
+  {{- end }}
+{{- end }}
+
+{{- $avg := 0 -}}
+{{- if gt ($trust.Get "count") 0 -}}
+  {{- $avg = div ($trust.Get "total") ($trust.Get "count") -}}
+{{- end -}}
+{{- $stageScoreLabel := i18n "trust_score_low" -}}
+{{- if ge $avg 80 -}}
+  {{- $stageScoreLabel = i18n "trust_score_high" -}}
+{{- else if ge $avg 55 -}}
+  {{- $stageScoreLabel = i18n "trust_score_medium" -}}
+{{- end -}}
+
 <section class="stage-head">
   <h1>{{ .Title }}</h1>
   {{ .Content }}
@@ -11,7 +63,7 @@
 
 <section class="trust-block">
   <strong>{{ i18n "trust_summary" }}</strong><br>
-  {{ i18n "trust_score" }}: {{ i18n "trust_score_medium" }}
+  {{ i18n "trust_score" }}: {{ $stageScoreLabel }} · {{ $avg }}/100
 </section>
 
 {{ with .Params.requires }}
@@ -56,7 +108,6 @@
 
         {{ if $claim }}
         <div class="trust-block">
-
           <div class="trust-line">
             <strong>{{ i18n "trust_confidence" }}:</strong>
             {{ if eq $src.type "official" }}{{ i18n "trust_score_high" }}
@@ -85,17 +136,14 @@
           <div class="trust-line">{{ i18n "trust_explanation" }}: {{ . }}</div>
           {{ end }}
 
-          <a class="source" href="{{ $src.url }}" target="_blank">
+          <a class="source" href="{{ $src.url }}" target="_blank" rel="noopener noreferrer">
             {{ i18n "source_label" }}: {{ i18n (printf "trust_source_type_%s" $src.type) }} · {{ $src.lastChecked }}
           </a>
-
         </div>
         {{ end }}
-
       </li>
     {{ end }}
   </ul>
-
   {{ end }}
 </section>
 {{ end }}{{ end }}
