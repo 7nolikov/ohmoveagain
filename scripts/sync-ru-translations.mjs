@@ -4,7 +4,7 @@ import { STAGES_DIR, listEnglishStageFiles, localizedPath, loadStage, saveStage,
 
 const token = process.env.GITHUB_TOKEN;
 const model = process.env.GITHUB_MODELS_MODEL || 'openai/gpt-4o';
-const glossary = JSON.parse(fs.readFileSync('data/i18n/glossary.ru.json','utf8'));
+const glossary = JSON.parse(fs.readFileSync('data/i18n/glossary.ru.json', 'utf8'));
 
 if (!token) {
   console.error('GITHUB_TOKEN is required');
@@ -12,8 +12,55 @@ if (!token) {
 }
 
 function gitSha() {
-  try { return execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(); }
-  catch { return process.env.GITHUB_SHA || 'unknown'; }
+  try {
+    return execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+  } catch {
+    return process.env.GITHUB_SHA || 'unknown';
+  }
+}
+
+function cleanStrings(value) {
+  if (Array.isArray(value)) return value.map(cleanStrings);
+  if (value && typeof value === 'object') {
+    const out = {};
+    for (const [key, nested] of Object.entries(value)) out[key] = cleanStrings(nested);
+    return out;
+  }
+  if (typeof value === 'string') {
+    return value
+      .replace(/\u00a0/g, ' ')
+      .replace(/[ \t]+/g, ' ')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
+  }
+  return value;
+}
+
+function enforceGlossaryInString(text) {
+  let out = text;
+  for (const [source, target] of Object.entries(glossary)) {
+    const escaped = source.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    out = out.replace(new RegExp(escaped, 'g'), target);
+  }
+  return out;
+}
+
+function enforceGlossary(value) {
+  if (Array.isArray(value)) return value.map(enforceGlossary);
+  if (value && typeof value === 'object') {
+    const out = {};
+    for (const [key, nested] of Object.entries(value)) out[key] = enforceGlossary(nested);
+    return out;
+  }
+  if (typeof value === 'string') return enforceGlossaryInString(value);
+  return value;
+}
+
+function validateTranslatedPayload(payload) {
+  if (!payload || typeof payload !== 'object') throw new Error('translation payload missing');
+  if (!payload.title || typeof payload.title !== 'string') throw new Error('translated title missing');
+  if (!payload.itemStrings || typeof payload.itemStrings !== 'object') throw new Error('translated itemStrings missing');
+  if (typeof payload.body !== 'string') throw new Error('translated body missing');
 }
 
 async function translatePayload(englishPayload, existingRuPayload) {
@@ -29,27 +76,39 @@ async function translatePayload(englishPayload, existingRuPayload) {
     '- Clear, concise, product language',
     '- Avoid bureaucratic tone',
     '- Prefer natural Russian phrasing',
+    '- Preserve already-good existing Russian wording when possible',
+    '- If translation already exists, improve it instead of rewriting everything from scratch',
     '',
     'Terminology:',
     'Use this glossary strictly:',
     JSON.stringify(glossary, null, 2),
-    'If a term exists in glossary — use it exactly.',
+    'If a term exists in glossary, use it exactly.',
+    'Keep product name ohmoveagain unchanged.',
+    'Keep Pipeline capitalized when it is the branded product name.',
+    'Preserve abbreviations and program names such as OIB, HZZO, MUP, OECD, EU, EEA, Blue Card, Digital Nomad Visa, obrt, d.o.o., paušalni obrt.',
     '',
     'Critical:',
-    'Output must be valid JSON'
+    'Output must be valid JSON.'
   ].join('\n');
 
-  const user = JSON.stringify({ englishPayload, existingRuPayload: existingRuPayload || null }, null, 2);
+  const user = JSON.stringify(
+    {
+      englishPayload,
+      existingRuPayload: existingRuPayload || null
+    },
+    null,
+    2
+  );
 
   const res = await fetch('https://models.github.ai/inference/chat/completions', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+      Authorization: `Bearer ${token}`
     },
     body: JSON.stringify({
       model,
-      temperature: 0.2,
+      temperature: 0.15,
       messages: [
         { role: 'system', content: system },
         { role: 'user', content: user }
@@ -62,7 +121,8 @@ async function translatePayload(englishPayload, existingRuPayload) {
   const text = data?.choices?.[0]?.message?.content?.trim();
   if (!text) throw new Error('empty model response');
 
-  return JSON.parse(text);
+  const parsed = JSON.parse(text);
+  return enforceGlossary(cleanStrings(parsed));
 }
 
 const commit = gitSha();
@@ -83,10 +143,25 @@ for (const file of listEnglishStageFiles()) {
     if (existing.frontMatter?.translationMeta?.sourceHash === hash) continue;
   }
 
-  const translated = await translatePayload(enPayload, existingPayload);
-  const shapeErrors = compareShape(enPayload, translated);
+  let translated;
+  try {
+    translated = await translatePayload(enPayload, existingPayload);
+    validateTranslatedPayload(translated);
+  } catch (error) {
+    if (existingPayload) {
+      console.warn(`translation failed for ${file}; keeping existing Russian copy: ${error.message}`);
+      continue;
+    }
+    throw error;
+  }
 
+  const shapeErrors = compareShape(enPayload, translated);
   if (shapeErrors.length) {
+    if (existingPayload) {
+      console.warn(`shape mismatch for ${file}; keeping existing Russian copy`);
+      for (const e of shapeErrors) console.warn(`- ${e}`);
+      continue;
+    }
     console.error(`shape mismatch for ${file}`);
     for (const e of shapeErrors) console.error(`- ${e}`);
     process.exit(1);
@@ -103,7 +178,7 @@ for (const file of listEnglishStageFiles()) {
       sourceFile: enPath,
       sourceHash: hash,
       sourceCommit: commit,
-      status: 'auto-generated'
+      status: existingPayload ? 'auto-updated' : 'auto-generated'
     }
   };
 
