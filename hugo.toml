@@ -1,6 +1,6 @@
 baseURL = "https://7nolikov.dev/ohmoveagain/"
 languageCode = "en-us"
-title = "ohmoveagain — the community playbook for moving to Croatia"
+title = "ohmoveagain — the open-source Pipeline for moving to Croatia"
 
 # canonifyURLs = false is the default. All internal links must use
 # relURL/absURL helpers so they resolve correctly under the /ohmoveagain/ subpath.
@@ -12,7 +12,7 @@ disableHugoGeneratorInject = true
 disableKinds = ["taxonomy", "term"]
 
 [params]
-  description = "A community-maintained playbook for moving to Croatia. Five stages, sourced checklists, prerequisites, required documents, and a runway calculator. Free and open source."
+  description = "The open-source Pipeline for moving to Croatia: five stages, sourced checklists, prerequisites, required documents, and a runway calculator. Community-maintained. Free."
   ogImage = "og.png"
   formspreeID = "mjgjelyd"
   githubURL = "https://github.com/7nolikov/ohmoveagain"

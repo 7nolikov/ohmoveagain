@@ -1,10 +1,12 @@
 # ohmoveagain
 
-A community-maintained, open-source playbook for moving to Croatia. Five stages, sourced checklists, prerequisites, required documents, and a runway calculator. Free and open source.
+**ohmoveagain** publishes **the Pipeline** — the open-source, five-stage relocation Pipeline for moving to Croatia. Sourced checklists, prerequisites, required documents, a runway calculator. Community-maintained. Free.
+
+> Think of the Pipeline as CI/CD for your relocation: ordered stages, declared prerequisites, verifiable artifacts, re-runnable. `ohmoveagain` is the brand; the Pipeline is the product.
 
 **Live site:** [https://7nolikov.dev/ohmoveagain/](https://7nolikov.dev/ohmoveagain/)
 
-## What it covers
+## What the Pipeline covers
 
 Five sequential stages for a Croatia relocation:
 
@@ -49,24 +51,82 @@ hugo --gc --minify
 
 ```
 content/
-  stages/         # five pipeline stages, one .md each
-  calculator.md   # front-matter only; rendered by layouts/_default/calculator.html
-  waitlist.md     # front-matter only; rendered by layouts/_default/waitlist.html
-  contribute.md   # contribution guide
+  stages/             # five Pipeline stages — STRINGS ONLY (title, labels, notes, gotchas)
+                      # one <slug>.md per language (e.g. assessment.md, assessment.ru.md)
+  calculator.md       # front-matter only; rendered by layouts/_default/calculator.html
+  waitlist.md         # front-matter only; rendered by layouts/_default/waitlist.html
+  contribute.md       # contribution guide
 data/
-  countries.yaml  # tax + cost-of-living baselines (calculator source of truth)
+  countries.yaml      # tax + cost-of-living baselines (calculator source of truth)
+  stages/             # five Pipeline stages — STRUCTURAL FACTS (language-neutral)
+    <slug>.yaml       # item IDs, source URLs, asOf dates, appliesTo persona filters
 layouts/
-  _default/       # baseof, single, list, calculator, waitlist
-  stages/         # stage single override
-  partials/       # head, header, footer, subscribe-form, global-progress, hotkeys-help
+  _default/           # baseof, single, list, calculator, waitlist, freshness
+  stages/             # stage single override — merges data/ + content/ by item ID
+  partials/           # head, header, footer, subscribe-form, global-progress, hotkeys-help
 static/
-  style.css       # ~7KB, mobile-first, dark mono
+  style.css           # ~7KB, mobile-first, dark mono
   favicon.svg
-  og.png          # Open Graph image
+  og.png              # Open Graph image
 .github/
   workflows/
-    deploy.yml    # build Hugo + deploy to GitHub Pages
+    deploy.yml        # build Hugo + deploy to GitHub Pages
+    linkcheck.yml     # weekly lychee source-URL check (opens auto-issue on breakage)
 ```
+
+## Content architecture — data / strings split
+
+The Pipeline separates **structural facts** (language-neutral, canonical) from **translatable strings** (per-language). They are merged at build time by stable item IDs.
+
+| Layer | Location | Contains | Per-language? |
+| --- | --- | --- | --- |
+| Structural data | `data/stages/<slug>.yaml` | item IDs, source URLs, `asOf` dates, `appliesTo` persona filters, artifact refs | **No** — one canonical file |
+| Translatable strings | `content/stages/<slug>.<lang>.md` front-matter | `title`, `subtitle`, `itemStrings.<id>.{label, note, sourceLabel}`, `categoryNames.<id>`, `gotchas`, `artifactNames.<id>` | **Yes** — one file per language |
+| Merger | `layouts/stages/single.html` | `{{ $data := index hugo.Data.stages .File.ContentBaseName }}` → `{{ index $itemStrings $item.id }}` | — |
+
+**Why this split matters.** When a rule or URL changes, you update *one* YAML file and every language is instantly consistent. A translator only ever touches strings — they cannot accidentally drift a URL or date. No duplicate source-of-truth across languages.
+
+### Example
+
+```yaml
+# data/stages/initialization.yaml  (language-neutral)
+checklist:
+  - id: "identity-bootstrap"
+    items:
+      - id: "oib-issued"
+        source:
+          url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
+          asOf: "2026-03-01"
+```
+
+```yaml
+# content/stages/initialization.md  (English strings)
+categoryNames:
+  identity-bootstrap: "identity bootstrap"
+itemStrings:
+  oib-issued:
+    label: "OIB (Croatian tax number) issued"
+    note: "Required for bank, rental, employment contract, utilities."
+    sourceLabel: "Porezna uprava — Croatian Tax Administration"
+```
+
+To add a Russian translation: create `content/stages/initialization.ru.md`, copy the strings block, translate values only. URLs, dates, item IDs, and persona filters stay in the YAML and apply automatically.
+
+## Language support
+
+**Today:** English only (`content/stages/<slug>.md`). The data/strings split is in place, so adding a language is a strings-only PR — no structural forks.
+
+**Planned (no ETA; waiting on launch signal):**
+
+1. **Croatian (`hr`)** — highest value: partners, family members, Croatian officials who verify our claims.
+2. **Russian (`ru`)** — large incoming cohort per contributor feedback.
+3. **German (`de`)** — Blue Card / EU mobility audience.
+
+**Tooling to land alongside the first non-English language:**
+
+- **Parity lint** (`scripts/check-i18n-parity.mjs`) — fails the build if `itemStrings`, `categoryNames`, or `artifactNames` keys diverge between `content/stages/<slug>.md` and `content/stages/<slug>.<lang>.md`.
+- **LLM-assisted translation draft** — GitHub Actions workflow on `pull_request` with `paths: ['content/stages/*.md']`. Uses GitHub Models free tier (`permissions: models: read`, built-in `GITHUB_TOKEN`, no PAT) to post a draft translation as a PR comment. Human translator edits and commits. Content changes are infrequent enough to stay within the daily rate limit.
+- **`hugo.toml [languages]`** config block + `lang` switcher in the header partial.
 
 ## Contributing
 
@@ -79,7 +139,7 @@ Content is the product. The bar for a good contribution:
 
 See [/contribute/](https://7nolikov.dev/ohmoveagain/contribute/) for the full contributor guide, or open a GitHub issue to flag a stale source, broken link, or missing checklist item.
 
-To add a checklist item, edit the relevant `content/stages/*.md`. To update the calculator's tax baselines, edit `data/countries.yaml`.
+**Where to edit:** item IDs, source URLs, and `asOf` dates live in `data/stages/<slug>.yaml`. Labels, notes, and `sourceLabel` text live in `content/stages/<slug>.md` under `itemStrings.<item-id>`. See the *Content architecture* section above for the data/strings split. Calculator tax baselines live in `data/countries.yaml`.
 
 ## Deploy (GitHub Pages via GitHub Actions)
 
@@ -117,10 +177,11 @@ All site-level knobs live in `hugo.toml → [params]`:
 
 ## Roadmap
 
-- Full HR tax-optimization playbook (paušalni obrt vs j.d.o.o. vs d.o.o.)
+- Full HR tax-optimization deep-dive (paušalni obrt vs j.d.o.o. vs d.o.o.)
 - Apostille document checklist as a printable PDF
 - Additional country pairs in the calculator
-- Croatian translation of key checklist items
+- First non-English language (`hr` or `ru`) + parity-lint CI step
+- LLM-assisted translation drafts via GitHub Models free tier (content-change trigger)
 
 ## License
 

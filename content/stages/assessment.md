@@ -7,7 +7,7 @@ sitemap:
   priority: 0.9
 duration: "2–6 weeks"
 requires:
-  - "Nothing — this is the starting point of the pipeline."
+  - "Nothing — this is the starting point of the Pipeline."
 documents:
   - "A written comparison of your current vs. target tax residency (spreadsheet or short document)."
   - "A runway estimate (months of savings covered) in both countries."
