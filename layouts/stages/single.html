@@ -9,6 +9,25 @@
   {{ .Content }}
 </section>
 
+<section class="trust-block">
+  <strong>{{ i18n "trust_summary" }}</strong><br>
+  {{ i18n "trust_score" }}: {{ i18n "trust_score_medium" }}
+</section>
+
+{{ with .Params.requires }}
+<section>
+  <h2>{{ i18n "before_you_start" }}</h2>
+  <ul>{{ range . }}<li>{{ . }}</li>{{ end }}</ul>
+</section>
+{{ end }}
+
+{{ with .Params.documents }}
+<section>
+  <h2>{{ i18n "documents_you_will_need" }}</h2>
+  <ul>{{ range . }}<li>{{ . }}</li>{{ end }}</ul>
+</section>
+{{ end }}
+
 {{ with $data }}{{ with .checklist }}
 <section>
   {{ range $ci, $cat := . }}
@@ -39,39 +58,35 @@
         <div class="trust-block">
 
           <div class="trust-line">
-            <strong>Confidence:</strong>
-            {{ if eq $src.type "official" }}HIGH
-            {{ else if eq $src.type "supranational" }}HIGH
-            {{ else if eq $src.type "research" }}MEDIUM
-            {{ else }}LOW{{ end }}
+            <strong>{{ i18n "trust_confidence" }}:</strong>
+            {{ if eq $src.type "official" }}{{ i18n "trust_score_high" }}
+            {{ else if eq $src.type "supranational" }}{{ i18n "trust_score_high" }}
+            {{ else if eq $src.type "research" }}{{ i18n "trust_score_medium" }}
+            {{ else }}{{ i18n "trust_score_low" }}{{ end }}
           </div>
 
           <div class="trust-line">
-            <strong>Risk:</strong> {{ $claim.riskLevel }}
+            <strong>{{ i18n "trust_risk" }}:</strong> {{ i18n (printf "trust_risk_%s" $claim.riskLevel) }}
           </div>
 
           <div class="trust-line">
-            <strong>Impact:</strong> {{ $claim.impact }}
+            <strong>{{ i18n "trust_impact" }}:</strong> {{ $claim.impact }}
           </div>
 
           <div class="trust-line">
-            <strong>Uncertainty:</strong> {{ $claim.uncertainty }}
+            <strong>{{ i18n "trust_uncertainty" }}:</strong> {{ i18n (printf "trust_uncertainty_%s" $claim.uncertainty) }}
           </div>
 
           {{ with $claim.conflictNote }}
-          <div class="trust-line">
-            ⚠ {{ . }}
-          </div>
+          <div class="trust-line">⚠ {{ i18n "trust_conflict" }}: {{ . }}</div>
           {{ end }}
 
           {{ with $claim.explanation }}
-          <div class="trust-line">
-            {{ . }}
-          </div>
+          <div class="trust-line">{{ i18n "trust_explanation" }}: {{ . }}</div>
           {{ end }}
 
           <a class="source" href="{{ $src.url }}" target="_blank">
-            Source: {{ $src.type }} · {{ $src.lastChecked }}
+            {{ i18n "source_label" }}: {{ i18n (printf "trust_source_type_%s" $src.type) }} · {{ $src.lastChecked }}
           </a>
 
         </div>
@@ -84,4 +99,12 @@
   {{ end }}
 </section>
 {{ end }}{{ end }}
+
+{{ with .Params.gotchas }}
+<section>
+  <h2>{{ i18n "common_pitfalls" }}</h2>
+  <ul>{{ range . }}<li>{{ . }}</li>{{ end }}</ul>
+</section>
+{{ end }}
+
 {{ end }}
