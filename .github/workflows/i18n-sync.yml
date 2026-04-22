@@ -1,0 +1,29 @@
+name: i18n sync
+
+on:
+  push:
+    branches: [feature/i18n-lean]
+    paths:
+      - 'content/stages/**'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      - run: echo 'sync placeholder'
+      - uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: bot/i18n
+          title: auto i18n sync
+          commit-message: auto i18n sync
