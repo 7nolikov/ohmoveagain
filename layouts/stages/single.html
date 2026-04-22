@@ -3,174 +3,68 @@
 {{- $data := index hugo.Data.stages $slug -}}
 {{- $itemStrings := .Params.itemStrings -}}
 {{- $categoryNames := .Params.categoryNames -}}
-{{- $artifactNames := .Params.artifactNames -}}
 
-{{- $ld := dict "@context" "https://schema.org" "@type" "TechArticle" "headline" .Title "description" (default .Params.subtitle .Description) "url" .Permalink "isPartOf" (dict "@type" "WebSite" "name" site.Title "url" site.BaseURL) | jsonify -}}
-{{ printf "<script type=\"application/ld+json\">%s</script>" $ld | safeHTML }}
-{{- $latestAsOf := "" -}}
-{{- with $data -}}{{- range .checklist -}}{{- range .items -}}{{- with .source -}}{{- with .asOf -}}{{- if gt . $latestAsOf -}}{{- $latestAsOf = . -}}{{- end -}}{{- end -}}{{- end -}}{{- end -}}{{- end -}}{{- end -}}
-{{- $latestClass := "" -}}
-{{- if $latestAsOf -}}
-  {{- $latestDays := div (sub now.Unix (time.AsTime $latestAsOf).Unix) 86400 -}}
-  {{- if gt $latestDays 365 -}}{{- $latestClass = "asof-stale" -}}
-  {{- else if gt $latestDays 180 -}}{{- $latestClass = "asof-aging" -}}
-  {{- else -}}{{- $latestClass = "asof-fresh" -}}{{- end -}}
-{{- end -}}
 <section class="stage-head">
-  <div class="tagline">{{ i18n "stage_of_5" .Weight }}{{ with .Params.duration }} · {{ i18n "typical_duration" . }}{{ end }}</div>
   <h1>{{ .Title }}</h1>
-  {{ with .Params.subtitle }}<p class="subtitle">{{ . }}</p>{{ end }}
   {{ .Content }}
-  {{- if $latestAsOf }}
-  <p class="verified-note {{ $latestClass }}">{{ i18n "sources_last_verified" }}: <strong>{{ $latestAsOf }}</strong> · <a href="{{ site.Params.githubURL }}/issues/new?title=stale+source+stage+{{ .Weight }}&body=Stage+{{ .Weight }}+has+a+stale+source" rel="noopener noreferrer">{{ i18n "flag_stale_source" }}</a></p>
-  {{- end }}
 </section>
-
-{{ with .Params.requires }}
-<section class="stage-block" aria-labelledby="req-h">
-  <h2 id="req-h">{{ i18n "before_you_start" }}</h2>
-  <p class="dim">{{ i18n "before_you_start_desc" }}</p>
-  <ul class="plainlist">
-    {{ range . }}<li>{{ . | markdownify }}</li>{{ end }}
-  </ul>
-</section>
-{{ end }}
-
-{{ with .Params.documents }}
-<section class="stage-block" aria-labelledby="docs-h">
-  <h2 id="docs-h">{{ i18n "documents_you_will_need" }}</h2>
-  <p class="dim">{{ i18n "documents_desc" }}</p>
-  <ul class="plainlist">
-    {{ range . }}<li>{{ . | markdownify }}</li>{{ end }}
-  </ul>
-</section>
-{{ end }}
 
 {{ with $data }}{{ with .checklist }}
-{{- $weight := $.Weight -}}
-{{- $stageMeta := slice -}}
-{{- $stageFull := slice -}}
-{{- range $ci, $cat := . -}}
-  {{- $items := slice -}}
-  {{- range $ii, $item := $cat.items -}}
-    {{- $key := printf "%d.%d" $ci $ii -}}
-    {{- $strings := index $itemStrings $item.id -}}
-    {{- $stageMeta = $stageMeta | append (dict "key" $key "ao" $item.appliesTo) -}}
-    {{- $src := dict -}}
-    {{- with $item.source -}}{{- $src = dict "url" .url "label" (index $strings "sourceLabel") "asOf" .asOf -}}{{- end -}}
-    {{- $items = $items | append (dict "key" $key "label" (index $strings "label") "note" (index $strings "note") "source" $src) -}}
-  {{- end -}}
-  {{- $catName := index $categoryNames $cat.id -}}
-  {{- $stageFull = $stageFull | append (dict "name" $catName "items" $items) -}}
-{{- end -}}
-<section aria-labelledby="ck-h" x-data="{ meta: {{ $stageMeta | jsonify }}, s: '{{ $weight }}' }">
-  <div class="checklist-head">
-    <h2 id="ck-h">{{ i18n "checklist" }}</h2>
-    <div class="stage-status" :data-status="$store.prog.statusF(s, meta) === 'complete' ? 'passed' : $store.prog.statusF(s, meta) === 'in progress' ? 'running' : 'idle'">
-      <div class="progress-bar" aria-hidden="true"><div class="fill" :style="`width:${$store.prog.pctF(s, meta)}%`"></div></div>
-      <span class="status-txt" x-cloak>
-        <span x-text="$store.prog.countF(s, meta)"></span> {{ i18n "of_n" }} <span x-text="$store.prog.totalF(meta)"></span>
-        · <span x-text="$store.prog.statusF(s, meta)"></span>
-      </span>
-      <button type="button" class="btn-ghost" @click="if (confirm({{ i18n "reset_stage_confirm" | jsonify }})) $store.prog.resetStage(s)" x-show="$store.prog.countF(s, meta) > 0" x-cloak>{{ i18n "reset_stage" }}</button>
-      <button type="button" class="btn-ghost" @click="exportCurrentStage()" title="{{ i18n "export_stage_title" }}">{{ i18n "export_stage" }}</button>
-    </div>
-  </div>
-  <p class="muted privacy-note">{{ i18n "privacy_note" }}</p>
-
+<section>
   {{ range $ci, $cat := . }}
-  {{- $catItems := .items -}}
-  {{- $catMeta := slice -}}
-  {{- range $ii, $item := $catItems -}}
-    {{- $catMeta = $catMeta | append (dict "key" (printf "%d.%d" $ci $ii) "ao" $item.appliesTo) -}}
-  {{- end -}}
   {{- $catName := index $categoryNames $cat.id -}}
-  <div class="checklist-group" x-data="{ catMeta: {{ $catMeta | jsonify }} }">
-    <div class="group-head">
-      <h3 class="group-name">{{ $catName }}</h3>
-      <div class="group-status" x-cloak>
-        <span x-text="$store.prog.countF(s, catMeta)"></span> / <span x-text="$store.prog.totalF(catMeta)"></span>
-      </div>
-    </div>
-    <ul class="checklist">
-      {{ range $ii, $item := $catItems }}
-      {{- $key := printf "%d.%d" $ci $ii -}}
-      {{- $ao := $item.appliesTo | jsonify -}}
+  <h2>{{ $catName }}</h2>
+
+  <ul class="checklist">
+    {{ range $item := $cat.items }}
       {{- $strings := index $itemStrings $item.id -}}
-      <template x-if="$store.prog.matchesProfile({{ $ao }})">
-      <li :class="$store.prog.isChecked(s, '{{ $key }}') ? 'done' : ''">
-        <label>
-          <input type="checkbox" :checked="$store.prog.isChecked(s, '{{ $key }}')" @change="$store.prog.toggle(s, '{{ $key }}')">
-          <span class="label-text">
-            <span class="label">{{ index $strings "label" }}</span>
-            {{ with (index $strings "note") }}<span class="note">{{ . }}</span>{{ end }}
-            {{ with $item.source }}
-            {{- $url := .url -}}
-            {{- if hasPrefix $url "/" -}}{{- $url = strings.TrimPrefix "/" $url | relURL -}}{{- end -}}
-            <a class="source" href="{{ $url }}"{{ if hasPrefix .url "http" }} rel="noopener noreferrer" target="_blank"{{ end }}>
-              {{ i18n "source_label" }}: {{ index $strings "sourceLabel" }}{{ with .asOf -}}
-              {{- $d := div (sub now.Unix (time.AsTime .).Unix) 86400 -}}
-              {{- $cls := cond (gt $d 365) "asof-stale" (cond (gt $d 180) "asof-aging" "asof-fresh") -}}
-               · <span class="asof {{ $cls }}">{{ i18n "last_verified" }} {{ . }}</span>{{ end }}
-            </a>
-            {{ end }}
-          </span>
-        </label>
+
+      {{/* find claim */}}
+      {{- $claim := dict -}}
+      {{- range $data.claims }}
+        {{- if eq .id $item.id }}{{ $claim = . }}{{ end }}
+      {{- end }}
+
+      {{/* find source */}}
+      {{- $src := dict -}}
+      {{- if $claim.sourceId }}
+        {{- range $data.sources }}
+          {{- if eq .id $claim.sourceId }}{{ $src = . }}{{ end }}
+        {{- end }}
+      {{- end }}
+
+      <li>
+        <span class="label">{{ index $strings "label" }}</span>
+
+        {{ if $claim }}
+        <div class="trust-block">
+          <div class="trust-line">
+            <strong>Confidence:</strong>
+            {{ if eq $src.type "official" }}HIGH
+            {{ else if eq $src.type "supranational" }}HIGH
+            {{ else if eq $src.type "research" }}MEDIUM
+            {{ else }}LOW{{ end }}
+          </div>
+
+          <div class="trust-line">
+            <strong>Risk:</strong> {{ $claim.riskLevel }}
+          </div>
+
+          <div class="trust-line">
+            <strong>Impact:</strong> {{ $claim.impact }}
+          </div>
+
+          <a class="source" href="{{ $src.url }}" target="_blank">
+            Source: {{ $src.type }} · {{ $src.lastChecked }}
+          </a>
+        </div>
+        {{ end }}
+
       </li>
-      </template>
-      {{ end }}
-    </ul>
-  </div>
-  {{ end }}
-</section>
-<script>window.OHMA_STAGE_DATA={w:{{ $weight }},t:{{ $.Title | jsonify | safeJS }},c:{{ $stageFull | jsonify | safeJS }}};</script>
-{{ end }}{{ end }}
-
-{{ with .Params.gotchas }}
-<section class="gotchas" aria-labelledby="g-h">
-  <h2 id="g-h">{{ i18n "common_pitfalls" }}</h2>
-  <ul>
-    {{ range . }}<li>{{ . }}</li>{{ end }}
-  </ul>
-</section>
-{{ end }}
-
-{{ with $data }}{{ with .artifacts }}
-<section aria-labelledby="a-h">
-  <h2 id="a-h">{{ i18n "resources_for_stage" }}</h2>
-  <div class="artifacts">
-    {{ range . }}
-    {{- $name := index $artifactNames .id -}}
-    {{- $href := .href -}}
-    {{- if eq $href "#" -}}
-    <span class="artifact-wip"><span class="kind">{{ .kind }}</span>{{ $name }}<span class="wip-badge">{{ i18n "artifact_in_progress" }}</span></span>
-    {{- else -}}
-    {{- if hasPrefix $href "/" -}}{{ $href = strings.TrimPrefix "/" $href | relURL }}{{- end -}}
-    <a href="{{ $href }}"><span class="kind">{{ .kind }}</span>{{ $name }}</a>
-    {{- end -}}
     {{ end }}
-  </div>
+  </ul>
+
+  {{ end }}
 </section>
 {{ end }}{{ end }}
-
-{{ $cur := .Weight }}
-{{ $stages := (where site.RegularPages "Section" "stages").ByWeight }}
-{{ $prev := "" }}{{ $next := "" }}
-{{ range $stages }}
-  {{ if eq .Weight (sub $cur 1) }}{{ $prev = . }}{{ end }}
-  {{ if eq .Weight (add $cur 1) }}{{ $next = . }}{{ end }}
-{{ end }}
-
-<nav class="stage-nav" aria-label="{{ i18n "nav_pipeline" }} navigation">
-  {{ if $prev }}
-    <a href="{{ $prev.RelPermalink }}">{{ i18n "prev_stage" }}: {{ $prev.Title }}</a>
-  {{ else }}
-    <a href="{{ site.Home.RelPermalink }}#pipeline">{{ i18n "back_to_all_stages" }}</a>
-  {{ end }}
-  {{ if $next }}
-    <a href="{{ $next.RelPermalink }}">{{ i18n "next_stage" }}: {{ $next.Title }} →</a>
-  {{ else }}
-    <a href="{{ "calculator/" | relURL }}">{{ i18n "open_calculator" }}</a>
-  {{ end }}
-</nav>
 {{ end }}
