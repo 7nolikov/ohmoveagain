@@ -15,7 +15,7 @@ documents:
   - "Residency permit card issued by MUP."
   - "Local bank account opening confirmation and IBAN."
   - "HZZO health insurance enrolment confirmation."
-  - "Tax residency certificate in writing (needed later for double-taxation-treaty claims)."
+  - "Tax residency status determined — only request a written certificate if you need one (foreign income, DTA claim, proof of non-residency elsewhere). If all your income is Croatian and you live here, you likely don't need to ask for one."
   - "If moving with family: OIB and HZZO enrolment for each dependent, plus school enrolment confirmation for children."
   - "If moving with pets: Croatian vet registration, Lysacan microchip record, and municipal dog registration where applicable."
 checklist:
@@ -53,12 +53,12 @@ checklist:
           url: "https://hzzo.hr/en"
           label: "HZZO — Croatian health insurance"
           asOf: "2026-02-15"
-      - label: "Tax residency status clarified in writing"
-        note: "Request a certificate — needed for DTA claims."
+      - label: "Tax residency status confirmed (certificate only if you need one)"
+        note: "Residency is determined by the 183-day rule + center-of-life test, not by requesting a certificate. You only need a written certificate for specific situations: claiming a double-taxation treaty, proving non-residency to your origin country, or reporting foreign income. If all your income is Croatian and you live here full-time, don't default to asking — the office may (correctly) tell you it's unnecessary."
         source:
-          url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
-          label: "Porezna uprava — tax residency certificate"
-          asOf: "2026-03-01"
+          url: "https://porezna-uprava.gov.hr/en/determination-of-residency-status/7378"
+          label: "Porezna uprava — residency determination criteria"
+          asOf: "2026-04-22"
   - name: "family registration"
     items:
       - label: "OIB issued for each dependent (spouse + each child)"
@@ -85,8 +85,8 @@ checklist:
           url: "https://mzo.gov.hr/"
           label: "Ministry of Education — enrolment"
           asOf: "2026-02-01"
-      - label: "Non-EU spouse: family reunification application submitted to MUP"
-        note: "Apply after primary applicant has residency card. Spouse can remain on tourist exemption (90 days) while waiting."
+      - label: "If your spouse is non-EU: family reunification application submitted to MUP"
+        note: "Skip if your spouse is an EU/EEA citizen (they register independently). Otherwise: apply after the primary applicant has the residency card. Spouse can remain on tourist exemption (90 days) while waiting."
         appliesTo:
           family: [spouse, spouse-kids]
         source:
@@ -120,7 +120,7 @@ checklist:
           label: "City of Zagreb — dog registration"
           asOf: "2026-03-01"
 gotchas:
-  - "Some banks refuse non-EU passport holders without a permanent residency card — shortlist EU-friendly banks before arrival."
+  - "Without a Croatian work contract or residency card, expect most banks to offer only a non-resident account (limited features, no salary deposits). Get the work contract first, then open the full account."
   - "Address registration requires landlord's notarized signature in some municipalities."
 ---
 

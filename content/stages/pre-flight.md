@@ -18,7 +18,7 @@ documents:
   - "Registered rental contract or proof of accommodation with landlord's consent to register your address."
   - "International health insurance covering your first 90 days in the EU."
   - "If moving with pets: EU Pet Passport, microchip record, rabies vaccination certificate, and (if required) titer test result."
-  - "If moving with family: apostilled marriage and/or birth certificates with sworn translations, plus sponsor income proof."
+  - "If moving with family: apostilled marriage and/or birth certificates (issued within last 6 months) with sworn translations, plus sponsor income proof."
 checklist:
   - name: "travel docs"
     items:
@@ -144,14 +144,14 @@ checklist:
           asOf: "2026-01-01"
   - name: "family — pre-travel"
     items:
-      - label: "Marriage / civil partnership certificate — apostilled + sworn translation"
-        note: "Required for spouse residency application. Apostille on the original, not the translation."
+      - label: "Marriage / civil partnership certificate — apostilled + sworn translation, issued within the last 6 months"
+        note: "MUP rejects marriage certificates older than 6 months from the DATE OF ISSUE (not the apostille date — 2023 policy update). Order a fresh copy from your civil registry right before you apply. Apostille goes on the original, not the translation."
         appliesTo:
           family: [spouse, spouse-kids]
         source:
-          url: "https://www.hcch.net/en/instruments/conventions/specialised-sections/apostille"
-          label: "HCCH — Apostille Convention"
-          asOf: "2026-01-01"
+          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+          label: "MUP — family reunification document rules"
+          asOf: "2026-04-22"
       - label: "Birth certificate for each child — apostilled + sworn translation"
         note: "One per child. Each needs its own apostille."
         appliesTo:
