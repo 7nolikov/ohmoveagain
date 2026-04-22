@@ -45,7 +45,4 @@ checklist:
           url: "https://www.meetup.com/find/?location=hr--zagreb&source=EVENTS&keywords=tech"
           asOf: "2026-02-01"
 
-artifacts:
-  - id: "tax-deep-dive"
-    kind: "link"
-    href: "#"
+artifacts: []

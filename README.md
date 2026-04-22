@@ -151,10 +151,6 @@ Everything is automated via `.github/workflows/deploy.yml`.
 
 If you change the domain, edit `baseURL` in `hugo.toml` — that is the only knob.
 
-### GitHub Pages security headers
-
-GitHub Pages does not support custom response headers. CSP and referrer-policy are delivered via `<meta>` tags in `layouts/partials/head.html`. Sufficient for this use case; `frame-ancestors` is not enforceable from meta.
-
 ## Configuration
 
 All site-level knobs live in `hugo.toml → [params]`:
@@ -164,16 +160,6 @@ All site-level knobs live in `hugo.toml → [params]`:
 | `formspreeID` | Formspree form ID (e.g. `mjgjelyd`) — already set |
 | `githubURL` | Full URL to this repository |
 | `ogImage` | Filename of the OG image in `static/` |
-
-## Launch checklist
-
-- [x] `baseURL` in `hugo.toml` set to `https://7nolikov.dev/ohmoveagain/`
-- [x] `formspreeID` set (`mjgjelyd`)
-- [x] `githubURL` points to the actual repo
-- [ ] First push to `main` succeeds (green `Build & Deploy` workflow)
-- [ ] OG image unfurls correctly on Twitter / Telegram / Slack
-- [ ] Lighthouse (mobile) ≥ 90 across perf / a11y / best-practices / SEO
-- [ ] Submit `/sitemap.xml` to Google Search Console
 
 ## Roadmap
 

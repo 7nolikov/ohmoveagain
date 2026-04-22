@@ -82,11 +82,7 @@ Last review: **2026-04-22** (naming + i18n architecture).
 
 **Framing:** Stack as story — *"I modeled relocation as CI/CD. Here's every YAML file."* Not a feature announcement; a thesis post with linked artifact.
 
-**Blockers before HN (not before Reddit):**
-1. OG image — need PNG 1200×630 (SVG fails on Twitter/FB previews). OR ship dynamic OG via GH Action.
-2. Waitlist Formspree ID — wire a real endpoint OR replace with "watch repo + open issue" CTA.
-3. Fix the most visible `href: "#"` artifacts on stage pages.
-4. Add inline citations to any prose tax rates (currently only official sources are linked at the link level).
+**Blockers before HN — all cleared:**
 
 **Success signals:**
 - HN: >50 points = viable; >200 = real signal.
