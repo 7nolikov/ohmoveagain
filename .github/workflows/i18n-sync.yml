@@ -9,6 +9,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  models: read
 
 jobs:
   sync:
@@ -23,11 +24,14 @@ jobs:
 
       - run: npm install
 
-      - run: node scripts/sync-ru-translations.mjs
+      - name: run translation sync
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/sync-ru-translations.mjs
 
       - uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: bot/i18n-sync
-          title: auto i18n sync
-          commit-message: auto i18n sync
+          title: auto i18n sync (ru)
+          commit-message: auto i18n sync (ru)
