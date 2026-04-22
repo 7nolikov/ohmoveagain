@@ -19,13 +19,11 @@
     {{ range $item := $cat.items }}
       {{- $strings := index $itemStrings $item.id -}}
 
-      {{/* find claim */}}
       {{- $claim := dict -}}
       {{- range $data.claims }}
         {{- if eq .id $item.id }}{{ $claim = . }}{{ end }}
       {{- end }}
 
-      {{/* find source */}}
       {{- $src := dict -}}
       {{- if $claim.sourceId }}
         {{- range $data.sources }}
@@ -35,9 +33,11 @@
 
       <li>
         <span class="label">{{ index $strings "label" }}</span>
+        {{ with (index $strings "note") }}<div class="note">{{ . }}</div>{{ end }}
 
         {{ if $claim }}
         <div class="trust-block">
+
           <div class="trust-line">
             <strong>Confidence:</strong>
             {{ if eq $src.type "official" }}HIGH
@@ -54,9 +54,26 @@
             <strong>Impact:</strong> {{ $claim.impact }}
           </div>
 
+          <div class="trust-line">
+            <strong>Uncertainty:</strong> {{ $claim.uncertainty }}
+          </div>
+
+          {{ with $claim.conflictNote }}
+          <div class="trust-line">
+            ⚠ {{ . }}
+          </div>
+          {{ end }}
+
+          {{ with $claim.explanation }}
+          <div class="trust-line">
+            {{ . }}
+          </div>
+          {{ end }}
+
           <a class="source" href="{{ $src.url }}" target="_blank">
             Source: {{ $src.type }} · {{ $src.lastChecked }}
           </a>
+
         </div>
         {{ end }}
 
