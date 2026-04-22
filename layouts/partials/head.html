@@ -32,10 +32,8 @@
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="icon" href="{{ "favicon.svg" | relURL }}" type="image/svg+xml">
 <link rel="stylesheet" href="{{ "style.css" | relURL }}">
+<link rel="stylesheet" href="{{ "trust.css" | relURL }}">
 
-{{- /* GH Pages can't set response headers, so a real CSP isn't possible without a build-time
-       hash pipeline. Rather than ship a fake CSP with unsafe-inline + unsafe-eval (which
-       negates the policy entirely), we omit it and rely on SRI for the one external script. */ -}}
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="google-site-verification" content="nWhMkPqTERFTWAxzrR4mZ2r7E6M5ZtnQbvZFqizGvwQ">
 
