@@ -1,20 +1,37 @@
 baseURL = "https://7nolikov.dev/ohmoveagain/"
-languageCode = "en-us"
-title = "ohmoveagain — the community playbook for moving to Croatia"
+defaultContentLanguage = "en"
+defaultContentLanguageInSubdir = false
+title = "ohmoveagain — the open-source Pipeline for moving to Croatia"
+
+[languages]
+  [languages.en]
+    languageCode = "en-us"
+    languageName = "English"
+    weight = 1
+  [languages.ru]
+    languageCode = "ru"
+    languageName = "Русский"
+    weight = 2
+    title = "ohmoveagain — открытый Pipeline для переезда в Хорватию"
+    [languages.ru.params]
+      description = "Открытый пошаговый Pipeline для переезда в Хорватию: пять этапов, чеклисты с источниками, документы, калькулятор запаса. Поддерживается сообществом. Бесплатно."
 
 # canonifyURLs = false is the default. All internal links must use
 # relURL/absURL helpers so they resolve correctly under the /ohmoveagain/ subpath.
 relativeURLs = false
 
 enableRobotsTXT = true
-enableGitInfo = false
+enableGitInfo = true
+disableHugoGeneratorInject = true
 disableKinds = ["taxonomy", "term"]
 
 [params]
-  description = "A community-maintained playbook for moving to Croatia. Five stages, sourced checklists, prerequisites, required documents, and a runway calculator. Free and open source."
+  description = "The open-source Pipeline for moving to Croatia: five stages, sourced checklists, prerequisites, required documents, and a runway calculator. Community-maintained. Free."
   ogImage = "og.png"
   formspreeID = "mjgjelyd"
   githubURL = "https://github.com/7nolikov/ohmoveagain"
+  twitterHandle = "@7nolikov"
+  cfAnalyticsToken = "0813f8e9b0fe443ea2b3fb64f64f9893"
 
 [markup.goldmark.renderer]
   unsafe = true
@@ -29,7 +46,7 @@ disableKinds = ["taxonomy", "term"]
 
 [sitemap]
   changefreq = "weekly"
-  priority = 0.7
+  priority = 0.5
 
 [minify]
   disableHTML = false
@@ -40,7 +57,7 @@ disableKinds = ["taxonomy", "term"]
   writeStats = false
 
 [security.exec]
-  allow = ["^(dart-)?sass(-embedded)?$", "^go$", "^npx$", "^postcss$"]
+  allow = ["^(dart-)?sass(-embedded)?$", "^go$", "^npx$", "^postcss$", "^git$"]
 
 [permalinks]
   stages = "/stage/:slug/"

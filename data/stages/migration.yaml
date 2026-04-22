@@ -1,0 +1,43 @@
+# Structural data for stage: Migration
+# Language-neutral. Strings live in content/stages/migration.md.
+
+checklist:
+  - id: "border-crossing"
+    items:
+      - id: "border-method"
+        source:
+          url: "https://home-affairs.ec.europa.eu/policies/schengen_en"
+          asOf: "2026-01-01"
+      - id: "originals-cabin"
+      - id: "customs-proof"
+        source:
+          url: "https://carina.gov.hr/en"
+          asOf: "2026-02-01"
+  - id: "first-72-hours"
+    items:
+      - id: "accommodation-30d"
+      - id: "ground-transport"
+      - id: "eu-sim"
+      - id: "emergency-cash"
+        source:
+          url: "https://www.hnb.hr/en"
+          asOf: "2026-01-01"
+  - id: "pets-in-transit"
+    items:
+      - id: "vet-health-cert"
+        appliesTo:
+          pets: [dog-cat]
+        source:
+          url: "https://food.ec.europa.eu/animals/movement-pets_en"
+          asOf: "2026-03-01"
+      - id: "airline-booking"
+        appliesTo:
+          pets: [dog-cat, other]
+        source:
+          url: "https://www.iata.org/en/programs/cargo/live-animals/"
+          asOf: "2026-01-01"
+      - id: "carrier-dimensions"
+        appliesTo:
+          pets: [dog-cat]
+
+artifacts: []

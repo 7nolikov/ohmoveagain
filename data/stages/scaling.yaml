@@ -1,0 +1,48 @@
+# Structural data for stage: Scaling
+# Language-neutral. Strings live in content/stages/scaling.md.
+
+checklist:
+  - id: "structure-filing"
+    items:
+      - id: "accountant"
+        source:
+          url: "https://www.hok.hr/en/"
+          asOf: "2026-02-01"
+      - id: "business-structure"
+        source:
+          url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
+          asOf: "2026-03-01"
+      - id: "blue-card-sideincome"
+        appliesTo:
+          visa: [blue-card]
+        source:
+          url: "https://home-affairs.ec.europa.eu/policies/migration-and-asylum/legal-migration-and-integration/work_en"
+          asOf: "2026-01-01"
+      - id: "dnv-renewal"
+        appliesTo:
+          visa: [digital-nomad]
+        source:
+          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+          asOf: "2026-02-15"
+      - id: "vat-threshold"
+        source:
+          url: "https://taxation-customs.ec.europa.eu/vat-rules-by-country/croatia_en"
+          asOf: "2026-01-01"
+  - id: "operations"
+    items:
+      - id: "invoicing-bookkeeping"
+        source:
+          url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
+          asOf: "2026-03-01"
+      - id: "pension-strategy"
+        source:
+          url: "https://www.regos.hr/en/"
+          asOf: "2026-02-01"
+  - id: "community"
+    items:
+      - id: "it-community"
+        source:
+          url: "https://www.meetup.com/find/?location=hr--zagreb&source=EVENTS&keywords=tech"
+          asOf: "2026-02-01"
+
+artifacts: []

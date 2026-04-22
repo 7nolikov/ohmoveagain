@@ -1,22 +1,58 @@
 {{- $id := site.Params.formspreeID -}}
 {{- $live := and $id (ne $id "REPLACE_WITH_FORMSPREE_ID") -}}
 {{- if $live -}}
-<form class="form" action="https://formspree.io/f/{{ $id }}" method="post" accept-charset="utf-8">
+<form class="form" x-data="subForm()" @submit.prevent="submit" novalidate>
   <div>
-    <label for="email">Email address</label>
-    <input id="email" name="email" type="email" required placeholder="you@example.com" autocomplete="email" inputmode="email">
+    <label for="email">{{ i18n "subscribe_email_label" }}</label>
+    <input id="email" type="email" x-model="email" required placeholder="you@example.com" autocomplete="email" inputmode="email">
   </div>
-  <input type="hidden" name="_subject" value="ohmoveagain subscribe">
-  <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
-  <button class="btn" type="submit">Subscribe</button>
+  <input type="text" x-ref="gotcha" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <button class="btn" type="submit" :disabled="loading" x-text="loading ? {{ i18n "subscribe_loading" | jsonify }} : {{ i18n "subscribe_button" | jsonify }}">{{ i18n "subscribe_button" }}</button>
+  <template x-if="error">
+    <p class="error" role="alert" x-text="error"></p>
+  </template>
   <p class="muted" style="font-size:0.8rem;margin-top:4px;">
-    One email when a new stage or guide is published. No newsletter. Unsubscribe any time by replying to the email.
+    {{ i18n "subscribe_desc" }}
   </p>
 </form>
+<script>
+function subForm() {
+  return {
+    email: '',
+    loading: false,
+    error: '',
+    errGeneric: {{ i18n "subscribe_error_generic" | jsonify }},
+    errNetwork: {{ i18n "subscribe_error_network" | jsonify }},
+    async submit() {
+      this.error = '';
+      if (!this.email) return;
+      if (this.$refs.gotcha && this.$refs.gotcha.value) return;
+      this.loading = true;
+      try {
+        const res = await fetch('https://formspree.io/f/{{ $id }}', {
+          method: 'POST',
+          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: this.email, _subject: 'ohmoveagain subscribe' })
+        });
+        if (res.ok) {
+          window.location.href = '{{ "contribute/" | relURL | safeJS }}';
+        } else {
+          const data = await res.json().catch(() => ({}));
+          this.error = (data.errors || []).map(e => e.message).join(', ') || this.errGeneric;
+        }
+      } catch(e) {
+        this.error = this.errNetwork;
+      } finally {
+        this.loading = false;
+      }
+    }
+  };
+}
+</script>
 {{- else -}}
 <p class="muted">
-  The subscribe form is not wired up yet.
-  <a href="{{ site.Params.githubURL }}/issues/new?title=subscribe&body=add+me+to+the+list">Open a GitHub issue</a>
+  {{ i18n "subscribe_not_wired" }}
+  <a href="{{ site.Params.githubURL }}/issues/new?title=subscribe&body=add+me+to+the+list">{{ i18n "subscribe_github_issue" }}</a>
   to be added manually.
 </p>
 {{- end -}}

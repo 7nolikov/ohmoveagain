@@ -67,11 +67,14 @@
         <button type="button" class="btn-ghost" @click="copyShare">
           <span x-text="copied ? 'Copied ✓' : 'Copy share line'"></span>
         </button>
-        <a class="btn-ghost" :href="result.tweetUrl" target="_blank" rel="noopener">Share on X / Twitter</a>
+        <a class="btn-ghost" :href="result.tweetUrl" target="_blank" rel="noopener noreferrer">Share on X / Twitter</a>
         <button type="button" class="btn-ghost" @click="copyUrl">
           <span x-text="urlCopied ? 'Link copied ✓' : 'Copy link to this result'"></span>
         </button>
       </div>
+      <template x-if="copyError">
+        <div class="error" role="alert" style="margin-top:8px;">Copy failed — please select the text above manually and copy.</div>
+      </template>
       <p class="muted" style="font-size:0.8rem;margin-top:10px;">
         Directional only. The effective tax rate is a single-person blended baseline (income tax + typical social contributions).
         Verify with a local accountant before making decisions.
@@ -94,7 +97,14 @@
             <td>{{ .flag }} {{ .name }}</td>
             <td>{{ mul .effectiveTaxRate 100 | printf "%.0f" }}%</td>
             <td>€{{ lang.FormatNumber 0 .costOfLivingEUR }}</td>
-            <td class="dim ref-note">{{ .note }}</td>
+            <td class="dim ref-note">
+              {{ .note }}
+              {{- with .source }}
+              {{- $d := div (sub now.Unix (time.AsTime .asOf).Unix) 86400 -}}
+              {{- $cls := cond (gt $d 365) "asof-stale" (cond (gt $d 180) "asof-aging" "asof-fresh") }}
+              <br><a class="source" href="{{ .url }}" rel="noopener noreferrer" target="_blank">Source: {{ .label }}{{ with .asOf }} · <span class="asof {{ $cls }}">verified {{ . }}</span>{{ end }}</a>
+              {{- end }}
+            </td>
           </tr>
           {{ end }}
         </tbody>
@@ -111,21 +121,19 @@
   function calcApp() {
     return {
       gross: null,
-      fromCode: '',
+      fromCode: 'DE',
       toCode: 'HR',
       result: null,
       error: '',
       copied: false,
       urlCopied: false,
+      copyError: false,
       init() {
         const p = new URLSearchParams(window.location.search);
         if (p.get('gross')) this.gross = Number(p.get('gross'));
         if (p.get('from')) this.fromCode = p.get('from');
         if (p.get('to')) this.toCode = p.get('to');
-        if (!this.fromCode) {
-          const first = (window.OHMA_COUNTRIES || []).find(c => c.code !== 'HR');
-          if (first) this.fromCode = first.code;
-        }
+        if (!this.fromCode) this.fromCode = 'DE';
         if (p.get('gross') && p.get('from') && p.get('to')) {
           this.$nextTick(() => this.run());
         }
@@ -165,19 +173,43 @@
         return (v >= 0 ? '+' : '') + n;
       },
       fmtDelta(v) { return (v >= 0 ? '+' : '') + Number(v).toFixed(1); },
+      _fallbackCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+        document.body.appendChild(ta);
+        ta.focus(); ta.select();
+        try { document.execCommand('copy'); return true; } catch(e) { return false; } finally { document.body.removeChild(ta); }
+      },
       copyShare() {
-        if (!this.result || !navigator.clipboard) return;
-        navigator.clipboard.writeText(this.result.shareLine).then(() => {
-          this.copied = true;
-          setTimeout(() => this.copied = false, 2500);
-        }).catch(() => {});
+        if (!this.result) return;
+        const text = this.result.shareLine;
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(text).then(() => {
+            this.copied = true; setTimeout(() => this.copied = false, 2500);
+          }).catch(() => {
+            if (this._fallbackCopy(text)) { this.copied = true; setTimeout(() => this.copied = false, 2500); }
+            else { this.copyError = true; setTimeout(() => this.copyError = false, 3000); }
+          });
+        } else {
+          if (this._fallbackCopy(text)) { this.copied = true; setTimeout(() => this.copied = false, 2500); }
+          else { this.copyError = true; setTimeout(() => this.copyError = false, 3000); }
+        }
       },
       copyUrl() {
-        if (!this.result || !navigator.clipboard) return;
-        navigator.clipboard.writeText(this.result.shareUrl).then(() => {
-          this.urlCopied = true;
-          setTimeout(() => this.urlCopied = false, 2500);
-        }).catch(() => {});
+        if (!this.result) return;
+        const text = this.result.shareUrl;
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(text).then(() => {
+            this.urlCopied = true; setTimeout(() => this.urlCopied = false, 2500);
+          }).catch(() => {
+            if (this._fallbackCopy(text)) { this.urlCopied = true; setTimeout(() => this.urlCopied = false, 2500); }
+            else { this.copyError = true; setTimeout(() => this.copyError = false, 3000); }
+          });
+        } else {
+          if (this._fallbackCopy(text)) { this.urlCopied = true; setTimeout(() => this.urlCopied = false, 2500); }
+          else { this.copyError = true; setTimeout(() => this.copyError = false, 3000); }
+        }
       }
     };
   }

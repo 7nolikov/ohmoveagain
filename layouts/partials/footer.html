@@ -1,14 +1,34 @@
 <footer class="foot">
+  {{- with hugo.Data.build }}
+  {{- with .stats }}
+  <p class="activity-ribbon">
+    <span class="ribbon-prompt">$</span>
+    <span class="ribbon-item"><span class="ribbon-key">contributors:</span> <span class="ribbon-val">{{ .contributorCount }}</span></span>
+    <span class="ribbon-sep">·</span>
+    <span class="ribbon-item"><span class="ribbon-key">last commit:</span> <span class="ribbon-val">{{ if eq .lastCommitDays 0 }}today{{ else if eq .lastCommitDays 1 }}1 day ago{{ else }}{{ .lastCommitDays }} days ago{{ end }}</span></span>
+    <span class="ribbon-sep">·</span>
+    <span class="ribbon-item"><span class="ribbon-key">updates (90d):</span> <span class="ribbon-val">{{ .recentUpdates }}</span></span>
+    <span class="ribbon-sep">·</span>
+    <a href="{{ "freshness/" | relURL }}" class="ribbon-link">→ freshness</a>
+  </p>
+  {{- end }}
+  {{- end }}
+  {{- if .File }}
+  <p class="edit-link">
+    <a href="{{ printf "%s/edit/main/content/%s" site.Params.githubURL .File.Path }}" rel="noopener noreferrer">{{ i18n "footer_edit_page" }}</a>
+  </p>
+  {{- end }}
   <p>
-    <strong>ohmoveagain</strong> — a community-maintained, open-source playbook for moving to Croatia.
+    <strong>ohmoveagain</strong> — {{ i18n "footer_community" }}
   </p>
   <p>
-    Content is directional — always verify with an official source or a licensed local professional before taking action on your own move.
+    {{ i18n "footer_disclaimer" }}
   </p>
   <p>
-    <a href="{{ site.Params.githubURL }}">Source code</a> ·
-    <a href="{{ "contribute/" | relURL }}">Contribute</a> ·
-    <a href="{{ "waitlist/" | relURL }}">Subscribe</a> ·
+    <a href="{{ site.Params.githubURL }}">{{ i18n "footer_source_code" }}</a> ·
+    <a href="{{ "contribute/" | relURL }}">{{ i18n "footer_contribute" }}</a> ·
+    <a href="{{ "freshness/" | relURL }}">{{ i18n "footer_freshness" }}</a> ·
+    <a href="{{ "subscribe/" | relURL }}">{{ i18n "footer_subscribe" }}</a> ·
     <a href="{{ "sitemap.xml" | relURL }}">Sitemap</a> ·
     <a href="{{ "index.xml" | relURL }}">RSS</a>
   </p>

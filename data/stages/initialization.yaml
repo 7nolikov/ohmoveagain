@@ -1,0 +1,81 @@
+# Structural data for stage: Initialization
+# Language-neutral. All translatable strings live in content/stages/initialization.md
+# referenced by item id. Pair: every id here MUST have a matching entry in itemStrings / categoryNames / artifactNames.
+
+checklist:
+  - id: "identity-bootstrap"
+    items:
+      - id: "oib-issued"
+        source:
+          url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
+          asOf: "2026-03-01"
+      - id: "address-registration"
+        source:
+          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+          asOf: "2026-02-15"
+      - id: "residency-card"
+        source:
+          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+          asOf: "2026-02-15"
+  - id: "financial-medical"
+    items:
+      - id: "bank-account"
+        source:
+          url: "https://www.hanfa.hr/en/"
+          asOf: "2026-02-01"
+      - id: "hzzo-enrolled"
+        source:
+          url: "https://hzzo.hr/en"
+          asOf: "2026-02-15"
+      - id: "tax-residency"
+        source:
+          url: "https://porezna-uprava.gov.hr/en/determination-of-residency-status/7378"
+          asOf: "2026-04-22"
+  - id: "family-registration"
+    items:
+      - id: "oib-dependents"
+        appliesTo:
+          family: [spouse, kids, spouse-kids]
+        source:
+          url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
+          asOf: "2026-03-01"
+      - id: "hzzo-family"
+        appliesTo:
+          family: [spouse, kids, spouse-kids]
+        source:
+          url: "https://hzzo.hr/en"
+          asOf: "2026-02-15"
+      - id: "school-enrolment"
+        appliesTo:
+          family: [kids, spouse-kids]
+        source:
+          url: "https://mzo.gov.hr/"
+          asOf: "2026-02-01"
+      - id: "non-eu-spouse-reunification"
+        appliesTo:
+          family: [spouse, spouse-kids]
+        source:
+          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+          asOf: "2026-02-15"
+  - id: "pets-post-arrival"
+    items:
+      - id: "vet-visit-10d"
+        appliesTo:
+          pets: [dog-cat, other]
+        source:
+          url: "https://veterinarstvo.hr/"
+          asOf: "2026-02-01"
+      - id: "microchip-registered"
+        appliesTo:
+          pets: [dog-cat]
+        source:
+          url: "https://www.lysacan.hr/"
+          asOf: "2026-02-01"
+      - id: "dog-municipal-reg"
+        appliesTo:
+          pets: [dog-cat]
+        source:
+          url: "https://www.zagreb.hr/"
+          asOf: "2026-03-01"
+
+artifacts: []

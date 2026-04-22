@@ -1,0 +1,17 @@
+{{ define "main" }}
+{{- $ld := dict "@context" "https://schema.org" "@type" "WebPage" "name" .Title "description" (default site.Params.description .Description) "url" .Permalink "isPartOf" (dict "@type" "WebSite" "name" site.Title "url" site.BaseURL) | jsonify -}}
+{{ printf "<script type=\"application/ld+json\">%s</script>" $ld | safeHTML }}
+<section>
+  <div class="tagline">{{ i18n "subscribe_tagline" }}</div>
+  <h1>{{ .Title }}</h1>
+  <p class="subtitle">
+    {{ i18n "subscribe_p" }} <span class="acc">{{ i18n "subscribe_p_accent" }}</span>
+    {{ i18n "subscribe_p2" }}
+    <a href="{{ site.Params.githubURL }}" rel="noopener noreferrer">{{ i18n "subscribe_p_github" }}</a>{{ i18n "subscribe_p3" }}
+  </p>
+  {{ partial "subscribe-form.html" . }}
+  <p class="muted" style="margin-top:30px;font-size:0.85rem;">
+    {{ i18n "subscribe_delivery" }}
+  </p>
+</section>
+{{ end }}
