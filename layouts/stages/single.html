@@ -17,19 +17,19 @@
   {{- else -}}{{- $latestClass = "asof-fresh" -}}{{- end -}}
 {{- end -}}
 <section class="stage-head">
-  <div class="tagline">Stage {{ .Weight }} of 5{{ with .Params.duration }} · typical duration: {{ . }}{{ end }}</div>
+  <div class="tagline">{{ i18n "stage_of_5" .Weight }}{{ with .Params.duration }} · {{ i18n "typical_duration" . }}{{ end }}</div>
   <h1>{{ .Title }}</h1>
   {{ with .Params.subtitle }}<p class="subtitle">{{ . }}</p>{{ end }}
   {{ .Content }}
   {{- if $latestAsOf }}
-  <p class="verified-note {{ $latestClass }}">Sources last verified: <strong>{{ $latestAsOf }}</strong> · <a href="{{ site.Params.githubURL }}/issues/new?title=stale+source+stage+{{ .Weight }}&body=Stage+{{ .Weight }}+has+a+stale+source" rel="noopener noreferrer">flag a stale source</a></p>
+  <p class="verified-note {{ $latestClass }}">{{ i18n "sources_last_verified" }}: <strong>{{ $latestAsOf }}</strong> · <a href="{{ site.Params.githubURL }}/issues/new?title=stale+source+stage+{{ .Weight }}&body=Stage+{{ .Weight }}+has+a+stale+source" rel="noopener noreferrer">{{ i18n "flag_stale_source" }}</a></p>
   {{- end }}
 </section>
 
 {{ with .Params.requires }}
 <section class="stage-block" aria-labelledby="req-h">
-  <h2 id="req-h">Before you start</h2>
-  <p class="dim">Confirm these are already in place — they are prerequisites for the steps below.</p>
+  <h2 id="req-h">{{ i18n "before_you_start" }}</h2>
+  <p class="dim">{{ i18n "before_you_start_desc" }}</p>
   <ul class="plainlist">
     {{ range . }}<li>{{ . | markdownify }}</li>{{ end }}
   </ul>
@@ -38,8 +38,8 @@
 
 {{ with .Params.documents }}
 <section class="stage-block" aria-labelledby="docs-h">
-  <h2 id="docs-h">Documents you will need</h2>
-  <p class="dim">Gather or produce these during this stage. Each is linked in the checklist below with its official source.</p>
+  <h2 id="docs-h">{{ i18n "documents_you_will_need" }}</h2>
+  <p class="dim">{{ i18n "documents_desc" }}</p>
   <ul class="plainlist">
     {{ range . }}<li>{{ . | markdownify }}</li>{{ end }}
   </ul>
@@ -65,18 +65,18 @@
 {{- end -}}
 <section aria-labelledby="ck-h" x-data="{ meta: {{ $stageMeta | jsonify }}, s: '{{ $weight }}' }">
   <div class="checklist-head">
-    <h2 id="ck-h">Checklist</h2>
+    <h2 id="ck-h">{{ i18n "checklist" }}</h2>
     <div class="stage-status" :data-status="$store.prog.statusF(s, meta) === 'complete' ? 'passed' : $store.prog.statusF(s, meta) === 'in progress' ? 'running' : 'idle'">
       <div class="progress-bar" aria-hidden="true"><div class="fill" :style="`width:${$store.prog.pctF(s, meta)}%`"></div></div>
       <span class="status-txt" x-cloak>
-        <span x-text="$store.prog.countF(s, meta)"></span> of <span x-text="$store.prog.totalF(meta)"></span>
+        <span x-text="$store.prog.countF(s, meta)"></span> {{ i18n "of_n" }} <span x-text="$store.prog.totalF(meta)"></span>
         · <span x-text="$store.prog.statusF(s, meta)"></span>
       </span>
-      <button type="button" class="btn-ghost" @click="if (confirm('Reset this stage?')) $store.prog.resetStage(s)" x-show="$store.prog.countF(s, meta) > 0" x-cloak>Reset</button>
-      <button type="button" class="btn-ghost" @click="exportCurrentStage()" title="Download this stage as a Markdown file">↓ Export stage</button>
+      <button type="button" class="btn-ghost" @click="if (confirm({{ i18n "reset_stage_confirm" | jsonify }})) $store.prog.resetStage(s)" x-show="$store.prog.countF(s, meta) > 0" x-cloak>{{ i18n "reset_stage" }}</button>
+      <button type="button" class="btn-ghost" @click="exportCurrentStage()" title="{{ i18n "export_stage_title" }}">{{ i18n "export_stage" }}</button>
     </div>
   </div>
-  <p class="muted privacy-note">State is stored locally in your browser — nothing is sent anywhere. Press <kbd>?</kbd> for keyboard shortcuts.</p>
+  <p class="muted privacy-note">{{ i18n "privacy_note" }}</p>
 
   {{ range $ci, $cat := . }}
   {{- $catItems := .items -}}
@@ -108,10 +108,10 @@
             {{- $url := .url -}}
             {{- if hasPrefix $url "/" -}}{{- $url = strings.TrimPrefix "/" $url | relURL -}}{{- end -}}
             <a class="source" href="{{ $url }}"{{ if hasPrefix .url "http" }} rel="noopener noreferrer" target="_blank"{{ end }}>
-              Source: {{ index $strings "sourceLabel" }}{{ with .asOf -}}
+              {{ i18n "source_label" }}: {{ index $strings "sourceLabel" }}{{ with .asOf -}}
               {{- $d := div (sub now.Unix (time.AsTime .).Unix) 86400 -}}
               {{- $cls := cond (gt $d 365) "asof-stale" (cond (gt $d 180) "asof-aging" "asof-fresh") -}}
-               · <span class="asof {{ $cls }}">last verified {{ . }}</span>{{ end }}
+               · <span class="asof {{ $cls }}">{{ i18n "last_verified" }} {{ . }}</span>{{ end }}
             </a>
             {{ end }}
           </span>
@@ -128,7 +128,7 @@
 
 {{ with .Params.gotchas }}
 <section class="gotchas" aria-labelledby="g-h">
-  <h2 id="g-h">Common pitfalls</h2>
+  <h2 id="g-h">{{ i18n "common_pitfalls" }}</h2>
   <ul>
     {{ range . }}<li>{{ . }}</li>{{ end }}
   </ul>
@@ -137,13 +137,13 @@
 
 {{ with $data }}{{ with .artifacts }}
 <section aria-labelledby="a-h">
-  <h2 id="a-h">Resources for this stage</h2>
+  <h2 id="a-h">{{ i18n "resources_for_stage" }}</h2>
   <div class="artifacts">
     {{ range . }}
     {{- $name := index $artifactNames .id -}}
     {{- $href := .href -}}
     {{- if eq $href "#" -}}
-    <span class="artifact-wip"><span class="kind">{{ .kind }}</span>{{ $name }}<span class="wip-badge">in progress</span></span>
+    <span class="artifact-wip"><span class="kind">{{ .kind }}</span>{{ $name }}<span class="wip-badge">{{ i18n "artifact_in_progress" }}</span></span>
     {{- else -}}
     {{- if hasPrefix $href "/" -}}{{ $href = strings.TrimPrefix "/" $href | relURL }}{{- end -}}
     <a href="{{ $href }}"><span class="kind">{{ .kind }}</span>{{ $name }}</a>
@@ -161,16 +161,16 @@
   {{ if eq .Weight (add $cur 1) }}{{ $next = . }}{{ end }}
 {{ end }}
 
-<nav class="stage-nav" aria-label="Pipeline navigation">
+<nav class="stage-nav" aria-label="{{ i18n "nav_pipeline" }} navigation">
   {{ if $prev }}
-    <a href="{{ $prev.RelPermalink }}">← Previous: {{ $prev.Title }}</a>
+    <a href="{{ $prev.RelPermalink }}">{{ i18n "prev_stage" }}: {{ $prev.Title }}</a>
   {{ else }}
-    <a href="{{ site.Home.RelPermalink }}#pipeline">← Back to all stages</a>
+    <a href="{{ site.Home.RelPermalink }}#pipeline">{{ i18n "back_to_all_stages" }}</a>
   {{ end }}
   {{ if $next }}
-    <a href="{{ $next.RelPermalink }}">Next: {{ $next.Title }} →</a>
+    <a href="{{ $next.RelPermalink }}">{{ i18n "next_stage" }}: {{ $next.Title }} →</a>
   {{ else }}
-    <a href="{{ "calculator/" | relURL }}">Open runway calculator →</a>
+    <a href="{{ "calculator/" | relURL }}">{{ i18n "open_calculator" }}</a>
   {{ end }}
 </nav>
 {{ end }}

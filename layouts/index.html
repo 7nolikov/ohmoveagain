@@ -7,26 +7,22 @@
   "description" site.Params.description | jsonify -}}
 {{ printf "<script type=\"application/ld+json\">%s</script>" $ld | safeHTML }}
 <section class="hero">
-  <div class="tagline">Moving to Croatia · the open-source <strong>Pipeline</strong></div>
-  <h1>Relocate to Croatia without guessing.</h1>
-  <p class="subtitle">
-    <strong>The Pipeline</strong> is a practical, open-source, five-stage guide to moving to Croatia —
-    what to do, in what order, which documents you need, and where the official source says so.
-    Every claim is linked to a government or EU source with a verified date.
-  </p>
+  <div class="tagline">{{ i18n "hero_tagline" }}</div>
+  <h1>{{ i18n "hero_h1" }}</h1>
+  <p class="subtitle">{{ i18n "hero_subtitle" }}</p>
   <p class="hero-byline">
-    I built the Pipeline while moving to Croatia myself. The official portals are fragmented, the blog posts skip the hard parts, and I kept hitting the same questions: <em>which visa, what order, which documents, by when?</em>
-    This is the Pipeline I wish I had — now open-source so it stays accurate.
+    {{ i18n "hero_byline_1" }} <em>{{ i18n "hero_byline_question" }}</em>
+    {{ i18n "hero_byline_2" }}
   </p>
   <div class="hero-actions">
-    <a class="btn" href="#pipeline">See the five stages ↓</a>
-    <a class="btn secondary" href="{{ "calculator/" | relURL }}">Runway calculator</a>
+    <a class="btn" href="#pipeline">{{ i18n "see_five_stages" }}</a>
+    <a class="btn secondary" href="{{ "calculator/" | relURL }}">{{ i18n "runway_calculator" }}</a>
   </div>
 </section>
 
 <section id="pipeline" aria-labelledby="pipeline-h">
-  <h2 id="pipeline-h">The Pipeline · five stages</h2>
-  <p class="dim">Each stage lists its prerequisites, the documents you will need, an actionable checklist with official sources, and the pitfalls most people hit. Progress is stored <span class="acc">locally in your browser</span> — nothing is sent anywhere.</p>
+  <h2 id="pipeline-h">{{ i18n "pipeline_h2" }}</h2>
+  <p class="dim">{{ i18n "pipeline_desc_1" }} <span class="acc">{{ i18n "pipeline_desc_locally" }}</span> {{ i18n "pipeline_desc_2" }}</p>
 
   {{ $stages := (where site.RegularPages "Section" "stages").ByWeight }}
   {{ $grand := 0 }}
@@ -38,11 +34,11 @@
   <div class="pipeline-summary" x-data="{ total: {{ $grand }} }">
     <div class="progress-bar wide" aria-hidden="true"><div class="fill" :style="`width:${total ? 100 * $store.prog.totalDone() / total : 0}%`"></div></div>
     <span class="dim summary-txt" x-cloak>
-      <span x-text="$store.prog.totalDone()"></span> of <span x-text="total"></span> checks
+      <span x-text="$store.prog.totalDone()"></span> {{ i18n "of_n" }} <span x-text="total"></span> {{ i18n "checks" }}
       · <span x-text="total ? Math.round(100 * $store.prog.totalDone() / total) : 0"></span>%
     </span>
-    <button class="btn-ghost" type="button" @click="if (confirm('Reset all checklist progress?')) $store.prog.resetAll()" x-show="$store.prog.totalDone() > 0" x-cloak>Reset all</button>
-    <button class="btn-ghost" type="button" @click="exportPipeline()" x-show="$store.prog.totalDone() > 0" x-cloak title="Download your Pipeline progress as a Markdown file">↓ Export Pipeline as Markdown</button>
+    <button class="btn-ghost" type="button" @click="if (confirm({{ i18n "reset_all_confirm" | jsonify }})) $store.prog.resetAll()" x-show="$store.prog.totalDone() > 0" x-cloak>{{ i18n "reset_all" }}</button>
+    <button class="btn-ghost" type="button" @click="exportPipeline()" x-show="$store.prog.totalDone() > 0" x-cloak title="{{ i18n "export_pipeline_title" }}">{{ i18n "export_pipeline" }}</button>
   </div>
 
   <div class="pipeline">
@@ -53,13 +49,13 @@
     <a class="stage-card" href="{{ .RelPermalink }}"
        x-data="{ t: {{ $c }}, s: '{{ .Weight }}' }"
        :class="$store.prog.count(s) === t && t > 0 ? 'passed' : $store.prog.count(s) > 0 ? 'partial' : ''">
-      <div class="step">Stage {{ .Weight }} of 5{{ with .Params.duration }} · {{ . }}{{ end }}</div>
+      <div class="step">{{ i18n "stage_of_5" .Weight }}{{ with .Params.duration }} · {{ . }}{{ end }}</div>
       <div class="name">{{ .Title }}</div>
       <div class="desc">{{ .Params.subtitle }}</div>
       <div class="card-progress">
         <div class="progress-bar" aria-hidden="true"><div class="fill" :style="`width:${$store.prog.pct(s, t)}%`"></div></div>
         <span class="progress-label" x-cloak>
-          <span x-text="$store.prog.count(s)"></span> of <span x-text="t"></span>
+          <span x-text="$store.prog.count(s)"></span> {{ i18n "of_n" }} <span x-text="t"></span>
           · <span x-text="$store.prog.status(s, t)"></span>
         </span>
       </div>
@@ -69,22 +65,19 @@
 </section>
 
 <section aria-labelledby="why-h">
-  <h2 id="why-h">Why this exists</h2>
+  <h2 id="why-h">{{ i18n "why_exists_h2" }}</h2>
   <p class="dim">
-    Most relocation information is scattered across official portals you have to piece together yourself,
-    or buried in blog posts that skip the hard questions. This site is an
-    <span class="acc">open-source, community-maintained Pipeline</span>: every claim links to an official
-    source with a verified date, anyone can open an issue to flag something stale, and pull requests are
-    welcome.
+    {{ i18n "why_exists_p1" }}
+    <span class="acc">{{ i18n "why_exists_accent" }}</span>{{ i18n "why_exists_p2" }}
   </p>
   <p>
-    <a class="btn secondary" href="{{ "contribute/" | relURL }}" style="display:inline-block;width:auto;padding:12px 18px;text-decoration:none;">How to contribute →</a>
+    <a class="btn secondary" href="{{ "contribute/" | relURL }}" style="display:inline-block;width:auto;padding:12px 18px;text-decoration:none;">{{ i18n "how_to_contribute" }}</a>
   </p>
 </section>
 
 <section aria-labelledby="cta-h">
-  <h2 id="cta-h">Stay in the loop</h2>
-  <p class="dim">One email when a new stage, country, or guide is published. No newsletter, no drip, no upsell.</p>
+  <h2 id="cta-h">{{ i18n "stay_in_loop_h2" }}</h2>
+  <p class="dim">{{ i18n "stay_in_loop_desc" }}</p>
   {{ partial "subscribe-form.html" . }}
 </section>
 
@@ -113,16 +106,23 @@
 {{- end -}}
 <script>
 window.OHMA_STAGES = {{ $allStages | jsonify | safeJS }};
+window.OHMA_I18N_EXPORT = {
+  pipelineTitle: {{ i18n "export_pipeline_md_title" | jsonify }},
+  stagePrefix: {{ i18n "export_stage_md_prefix" | jsonify }},
+  stageOf: {{ i18n "export_stage_md_of" | jsonify }},
+  resetAllConfirm: {{ i18n "reset_all_confirm" | jsonify }},
+};
 function exportPipeline() {
   const stages = window.OHMA_STAGES || [];
+  const t = window.OHMA_I18N_EXPORT;
   let prog = {};
   try { prog = JSON.parse(localStorage.getItem('ohma.v1') || '{}'); } catch(e) {}
   const sd = prog.stages || {};
   const date = new Date().toISOString().slice(0, 10);
-  let md = `# Croatia relocation Pipeline\n> Generated by ohmoveagain · ${date}\n> {{ site.BaseURL }}\n\n`;
+  let md = `# ${t.pipelineTitle}\n> Generated by ohmoveagain · ${date}\n> {{ site.BaseURL }}\n\n`;
   for (const stage of stages) {
     const sp = sd[String(stage.weight)] || {};
-    md += `## Stage ${stage.weight} of 5 · ${stage.title}\n\n`;
+    md += `## ${t.stagePrefix} ${stage.weight} ${t.stageOf} · ${stage.title}\n\n`;
     for (const cat of stage.cats) {
       md += `### ${cat.name}\n\n`;
       for (const item of cat.items) {

@@ -1,6 +1,20 @@
 baseURL = "https://7nolikov.dev/ohmoveagain/"
-languageCode = "en-us"
+defaultContentLanguage = "en"
+defaultContentLanguageInSubdir = false
 title = "ohmoveagain — the open-source Pipeline for moving to Croatia"
+
+[languages]
+  [languages.en]
+    languageCode = "en-us"
+    languageName = "English"
+    weight = 1
+  [languages.ru]
+    languageCode = "ru"
+    languageName = "Русский"
+    weight = 2
+    title = "ohmoveagain — открытый Pipeline для переезда в Хорватию"
+    [languages.ru.params]
+      description = "Открытый пошаговый Pipeline для переезда в Хорватию: пять этапов, чеклисты с источниками, документы, калькулятор запаса. Поддерживается сообществом. Бесплатно."
 
 # canonifyURLs = false is the default. All internal links must use
 # relURL/absURL helpers so they resolve correctly under the /ohmoveagain/ subpath.

@@ -3,16 +3,16 @@
 {{- if $live -}}
 <form class="form" x-data="subForm()" @submit.prevent="submit" novalidate>
   <div>
-    <label for="email">Email address</label>
+    <label for="email">{{ i18n "subscribe_email_label" }}</label>
     <input id="email" type="email" x-model="email" required placeholder="you@example.com" autocomplete="email" inputmode="email">
   </div>
   <input type="text" x-ref="gotcha" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
-  <button class="btn" type="submit" :disabled="loading" x-text="loading ? 'Subscribing…' : 'Subscribe'">Subscribe</button>
+  <button class="btn" type="submit" :disabled="loading" x-text="loading ? {{ i18n "subscribe_loading" | jsonify }} : {{ i18n "subscribe_button" | jsonify }}">{{ i18n "subscribe_button" }}</button>
   <template x-if="error">
     <p class="error" role="alert" x-text="error"></p>
   </template>
   <p class="muted" style="font-size:0.8rem;margin-top:4px;">
-    One email when a new stage or guide is published. No newsletter. Unsubscribe any time by replying to the email.
+    {{ i18n "subscribe_desc" }}
   </p>
 </form>
 <script>
@@ -21,6 +21,8 @@ function subForm() {
     email: '',
     loading: false,
     error: '',
+    errGeneric: {{ i18n "subscribe_error_generic" | jsonify }},
+    errNetwork: {{ i18n "subscribe_error_network" | jsonify }},
     async submit() {
       this.error = '';
       if (!this.email) return;
@@ -36,10 +38,10 @@ function subForm() {
           window.location.href = '{{ "contribute/" | relURL | safeJS }}';
         } else {
           const data = await res.json().catch(() => ({}));
-          this.error = (data.errors || []).map(e => e.message).join(', ') || 'Submission failed — please try again.';
+          this.error = (data.errors || []).map(e => e.message).join(', ') || this.errGeneric;
         }
       } catch(e) {
-        this.error = 'Network error — please try again.';
+        this.error = this.errNetwork;
       } finally {
         this.loading = false;
       }
@@ -49,8 +51,8 @@ function subForm() {
 </script>
 {{- else -}}
 <p class="muted">
-  The subscribe form is not wired up yet.
-  <a href="{{ site.Params.githubURL }}/issues/new?title=subscribe&body=add+me+to+the+list">Open a GitHub issue</a>
+  {{ i18n "subscribe_not_wired" }}
+  <a href="{{ site.Params.githubURL }}/issues/new?title=subscribe&body=add+me+to+the+list">{{ i18n "subscribe_github_issue" }}</a>
   to be added manually.
 </p>
 {{- end -}}

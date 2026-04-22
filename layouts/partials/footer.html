@@ -15,20 +15,20 @@
   {{- end }}
   {{- if .File }}
   <p class="edit-link">
-    <a href="{{ printf "%s/edit/main/content/%s" site.Params.githubURL .File.Path }}" rel="noopener noreferrer">✎ Edit this page on GitHub</a>
+    <a href="{{ printf "%s/edit/main/content/%s" site.Params.githubURL .File.Path }}" rel="noopener noreferrer">{{ i18n "footer_edit_page" }}</a>
   </p>
   {{- end }}
   <p>
-    <strong>ohmoveagain</strong> — the open-source <strong>Pipeline</strong> for moving to Croatia. Community-maintained.
+    <strong>ohmoveagain</strong> — {{ i18n "footer_community" }}
   </p>
   <p>
-    Content is directional — always verify with an official source or a licensed local professional before taking action on your own move.
+    {{ i18n "footer_disclaimer" }}
   </p>
   <p>
-    <a href="{{ site.Params.githubURL }}">Source code</a> ·
-    <a href="{{ "contribute/" | relURL }}">Contribute</a> ·
-    <a href="{{ "freshness/" | relURL }}">Freshness</a> ·
-    <a href="{{ "subscribe/" | relURL }}">Subscribe</a> ·
+    <a href="{{ site.Params.githubURL }}">{{ i18n "footer_source_code" }}</a> ·
+    <a href="{{ "contribute/" | relURL }}">{{ i18n "footer_contribute" }}</a> ·
+    <a href="{{ "freshness/" | relURL }}">{{ i18n "footer_freshness" }}</a> ·
+    <a href="{{ "subscribe/" | relURL }}">{{ i18n "footer_subscribe" }}</a> ·
     <a href="{{ "sitemap.xml" | relURL }}">Sitemap</a> ·
     <a href="{{ "index.xml" | relURL }}">RSS</a>
   </p>
