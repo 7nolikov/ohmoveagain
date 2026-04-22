@@ -4,6 +4,7 @@ import { STAGES_DIR, listEnglishStageFiles, localizedPath, loadStage, saveStage,
 
 const token = process.env.GITHUB_TOKEN;
 const model = process.env.GITHUB_MODELS_MODEL || 'openai/gpt-4o';
+const glossary = JSON.parse(fs.readFileSync('data/i18n/glossary.ru.json','utf8'));
 
 if (!token) {
   console.error('GITHUB_TOKEN is required');
@@ -17,15 +18,25 @@ function gitSha() {
 
 async function translatePayload(englishPayload, existingRuPayload) {
   const system = [
-    'Translate the provided JSON payload from English to Russian.',
+    'You are a professional product translator.',
+    'Translate from English to Russian.',
     'Return JSON only.',
-    'Preserve object keys and structure exactly.',
-    'Translate only human-readable string values.',
-    'Keep product name ohmoveagain unchanged.',
-    'Keep Pipeline capitalized when it is the branded product name.',
-    'Preserve abbreviations and program names such as OIB, HZZO, MUP, OECD, EU, EEA, Blue Card, Digital Nomad Visa, obrt, d.o.o., paušalni obrt.',
-    'Do not invent facts, URLs, dates, or thresholds.',
-    'The body field must remain a string.'
+    'Keep structure EXACTLY the same.',
+    'Do not add or remove fields.',
+    'Do not invent facts.',
+    '',
+    'Style:',
+    '- Clear, concise, product language',
+    '- Avoid bureaucratic tone',
+    '- Prefer natural Russian phrasing',
+    '',
+    'Terminology:',
+    'Use this glossary strictly:',
+    JSON.stringify(glossary, null, 2),
+    'If a term exists in glossary — use it exactly.',
+    '',
+    'Critical:',
+    'Output must be valid JSON'
   ].join('\n');
 
   const user = JSON.stringify({ englishPayload, existingRuPayload: existingRuPayload || null }, null, 2);
@@ -50,6 +61,7 @@ async function translatePayload(englishPayload, existingRuPayload) {
   const data = await res.json();
   const text = data?.choices?.[0]?.message?.content?.trim();
   if (!text) throw new Error('empty model response');
+
   return JSON.parse(text);
 }
 
@@ -73,6 +85,7 @@ for (const file of listEnglishStageFiles()) {
 
   const translated = await translatePayload(enPayload, existingPayload);
   const shapeErrors = compareShape(enPayload, translated);
+
   if (shapeErrors.length) {
     console.error(`shape mismatch for ${file}`);
     for (const e of shapeErrors) console.error(`- ${e}`);
@@ -83,16 +96,7 @@ for (const file of listEnglishStageFiles()) {
     slug: existing?.frontMatter?.slug ?? enDoc.frontMatter.slug,
     weight: existing?.frontMatter?.weight ?? enDoc.frontMatter.weight,
     sitemap: existing?.frontMatter?.sitemap ?? enDoc.frontMatter.sitemap,
-    title: translated.title,
-    subtitle: translated.subtitle,
-    description: translated.description,
-    duration: translated.duration,
-    requires: translated.requires,
-    documents: translated.documents,
-    categoryNames: translated.categoryNames,
-    itemStrings: translated.itemStrings,
-    gotchas: translated.gotchas,
-    artifactNames: translated.artifactNames,
+    ...translated,
     translationMeta: {
       sourceLang: 'en',
       targetLang: 'ru',
