@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'content/stages/**'
+      - "content/stages/**"
 
 permissions:
   contents: write
@@ -26,12 +26,12 @@ jobs:
 
       - name: run translation sync
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
         run: node scripts/sync-ru-translations.mjs
 
       - uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.ACTIONS_TOKEN }}
           branch: bot/i18n-sync
           title: auto i18n sync (ru)
           commit-message: auto i18n sync (ru)
