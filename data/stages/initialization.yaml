@@ -1,81 +1,82 @@
-# Structural data for stage: Initialization
-# Language-neutral. All translatable strings live in content/stages/initialization.md
-# referenced by item id. Pair: every id here MUST have a matching entry in itemStrings / categoryNames / artifactNames.
+version: 2
+
+sources:
+  - id: porezna
+    url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
+    type: official
+    authorityScore: 5
+    lastChecked: "2026-03-01"
+  - id: mup-stay
+    url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+    type: official
+    authorityScore: 5
+    lastChecked: "2026-02-15"
+  - id: hanfa
+    url: "https://www.hanfa.hr/en/"
+    type: official
+    authorityScore: 5
+    lastChecked: "2026-02-01"
+  - id: hzzo
+    url: "https://hzzo.hr/en"
+    type: official
+    authorityScore: 5
+    lastChecked: "2026-02-15"
+  - id: porezna-residency
+    url: "https://porezna-uprava.gov.hr/en/determination-of-residency-status/7378"
+    type: official
+    authorityScore: 5
+    lastChecked: "2026-04-22"
+
+claims:
+  - id: oib-issued
+    riskLevel: high
+    impact: "All downstream steps blocked"
+    uncertainty: low
+    sourceId: porezna
+    explanation: "OIB is the root identifier for almost every administrative action in Croatia."
+  - id: address-registration
+    riskLevel: high
+    impact: "Residency process blocked"
+    uncertainty: low
+    sourceId: mup-stay
+    explanation: "Address registration is a structural dependency for identity and legal presence."
+  - id: residency-card
+    riskLevel: high
+    impact: "Legal status incomplete"
+    uncertainty: low
+    sourceId: mup-stay
+    explanation: "Residency card formalises legal presence and unlocks financial and employment systems."
+  - id: bank-account
+    riskLevel: medium
+    impact: "Financial friction"
+    uncertainty: medium
+    sourceId: hanfa
+    explanation: "Bank access determines salary flow and everyday financial operations."
+    conflictNote: "Non-resident vs resident account conditions differ significantly."
+  - id: hzzo-enrolled
+    riskLevel: medium
+    impact: "Healthcare gap"
+    uncertainty: low
+    sourceId: hzzo
+    explanation: "Public health coverage begins only after registration is complete."
+  - id: tax-residency
+    riskLevel: high
+    impact: "Incorrect tax obligations"
+    uncertainty: medium
+    sourceId: porezna-residency
+    explanation: "Tax residency affects global income reporting and liability."
+    conflictNote: "Residency determination is based on facts, not just certificate requests."
 
 checklist:
-  - id: "identity-bootstrap"
+  - id: identity-bootstrap
     items:
-      - id: "oib-issued"
-        source:
-          url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
-          asOf: "2026-03-01"
-      - id: "address-registration"
-        source:
-          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
-          asOf: "2026-02-15"
-      - id: "residency-card"
-        source:
-          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
-          asOf: "2026-02-15"
-  - id: "financial-medical"
+      - id: oib-issued
+      - id: address-registration
+      - id: residency-card
+  - id: financial-medical
     items:
-      - id: "bank-account"
-        source:
-          url: "https://www.hanfa.hr/en/"
-          asOf: "2026-02-01"
-      - id: "hzzo-enrolled"
-        source:
-          url: "https://hzzo.hr/en"
-          asOf: "2026-02-15"
-      - id: "tax-residency"
-        source:
-          url: "https://porezna-uprava.gov.hr/en/determination-of-residency-status/7378"
-          asOf: "2026-04-22"
-  - id: "family-registration"
-    items:
-      - id: "oib-dependents"
-        appliesTo:
-          family: [spouse, kids, spouse-kids]
-        source:
-          url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
-          asOf: "2026-03-01"
-      - id: "hzzo-family"
-        appliesTo:
-          family: [spouse, kids, spouse-kids]
-        source:
-          url: "https://hzzo.hr/en"
-          asOf: "2026-02-15"
-      - id: "school-enrolment"
-        appliesTo:
-          family: [kids, spouse-kids]
-        source:
-          url: "https://mzo.gov.hr/"
-          asOf: "2026-02-01"
-      - id: "non-eu-spouse-reunification"
-        appliesTo:
-          family: [spouse, spouse-kids]
-        source:
-          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
-          asOf: "2026-02-15"
-  - id: "pets-post-arrival"
-    items:
-      - id: "vet-visit-10d"
-        appliesTo:
-          pets: [dog-cat, other]
-        source:
-          url: "https://veterinarstvo.hr/"
-          asOf: "2026-02-01"
-      - id: "microchip-registered"
-        appliesTo:
-          pets: [dog-cat]
-        source:
-          url: "https://www.lysacan.hr/"
-          asOf: "2026-02-01"
-      - id: "dog-municipal-reg"
-        appliesTo:
-          pets: [dog-cat]
-        source:
-          url: "https://www.zagreb.hr/"
-          asOf: "2026-03-01"
+      - id: bank-account
+      - id: hzzo-enrolled
+      - id: tax-residency
 
 artifacts: []

@@ -1,128 +1,263 @@
-# Structural data for stage: Pre-Flight
-# Language-neutral. Strings live in content/stages/pre-flight.md.
+version: 2
+
+sources:
+  - id: mup-root
+    url: "https://mup.gov.hr/"
+    type: official
+    authorityScore: 5
+    lastChecked: "2026-02-15"
+  - id: hcch-apostille
+    url: "https://www.hcch.net/en/instruments/conventions/specialised-sections/apostille"
+    type: supranational
+    authorityScore: 5
+    lastChecked: "2026-01-01"
+  - id: hr-justice
+    url: "https://pravosudje.gov.hr/"
+    type: official
+    authorityScore: 5
+    lastChecked: "2026-02-01"
+  - id: hr-education
+    url: "https://mzo.gov.hr/"
+    type: official
+    authorityScore: 5
+    lastChecked: "2026-02-01"
+  - id: mup-stay
+    url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+    type: official
+    authorityScore: 5
+    lastChecked: "2026-04-22"
+  - id: eu-blue-card
+    url: "https://home-affairs.ec.europa.eu/policies/migration-and-asylum/legal-migration-and-integration/work_en"
+    type: supranational
+    authorityScore: 5
+    lastChecked: "2026-01-01"
+  - id: porezna
+    url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
+    type: official
+    authorityScore: 5
+    lastChecked: "2026-03-01"
+  - id: hzzo
+    url: "https://hzzo.hr/en"
+    type: official
+    authorityScore: 5
+    lastChecked: "2026-02-15"
+  - id: eu-pets
+    url: "https://food.ec.europa.eu/animals/movement-pets_en"
+    type: supranational
+    authorityScore: 5
+    lastChecked: "2026-03-01"
+  - id: eu-pets-unlisted
+    url: "https://food.ec.europa.eu/animals/movement-pets/non-eu-countries-listed_en"
+    type: supranational
+    authorityScore: 5
+    lastChecked: "2026-03-01"
+  - id: iata-live-animals
+    url: "https://www.iata.org/en/programs/cargo/live-animals/"
+    type: industry
+    authorityScore: 3
+    lastChecked: "2026-01-01"
+  - id: cites
+    url: "https://cites.org/eng/disc/what.php"
+    type: supranational
+    authorityScore: 4
+    lastChecked: "2026-01-01"
+
+claims:
+  - id: passport-validity
+    riskLevel: high
+    impact: "Travel or filing disruption"
+    uncertainty: low
+    sourceId: mup-root
+    explanation: "Passport validity can block boarding, application intake, or permit issuance late in the process."
+  - id: birth-cert-apostilled
+    riskLevel: high
+    impact: "Document rejection"
+    uncertainty: low
+    sourceId: hcch-apostille
+    explanation: "Civil status documents often fail because the apostille and translation chain is done in the wrong order."
+  - id: criminal-background
+    riskLevel: high
+    impact: "Residency application delay or rejection"
+    uncertainty: low
+    sourceId: hr-justice
+    explanation: "Background checks have a short usable life, so timing matters almost as much as the document itself."
+  - id: diploma-recognition
+    riskLevel: medium
+    impact: "Work authorization mismatch"
+    uncertainty: medium
+    sourceId: hr-education
+    explanation: "Recognition is not universal across professions, so this needs category-specific checking."
+    conflictNote: "Regulated professions and ordinary private-sector roles are treated differently."
+  - id: accommodation-proof
+    riskLevel: high
+    impact: "Residency filing blocked"
+    uncertainty: low
+    sourceId: mup-stay
+    explanation: "Address proof is a core filing dependency and weak accommodation documents can stop the process immediately."
+  - id: employment-contract
+    riskLevel: high
+    impact: "Blue Card or work permit ineligibility"
+    uncertainty: medium
+    sourceId: eu-blue-card
+    explanation: "Employer-side documentation defines whether this path exists at all."
+    conflictNote: "Salary thresholds and document expectations can shift across yearly updates."
+  - id: dnv-income-proof
+    riskLevel: high
+    impact: "Digital nomad permit rejection"
+    uncertainty: medium
+    sourceId: mup-stay
+    explanation: "Income proof is the core eligibility gate for remote-income routes."
+    conflictNote: "Threshold interpretation can drift with policy updates and document examples."
+  - id: business-registration
+    riskLevel: high
+    impact: "Self-employment path blocked"
+    uncertainty: medium
+    sourceId: porezna
+    explanation: "You cannot safely assume residency can be filed first and entity paperwork later."
+  - id: intl-health-insurance
+    riskLevel: medium
+    impact: "Coverage gap during arrival phase"
+    uncertainty: low
+    sourceId: hzzo
+    explanation: "There is usually a gap between entry and local public insurance onboarding."
+  - id: landlord-registration-consent
+    riskLevel: high
+    impact: "Address registration failure"
+    uncertainty: low
+    sourceId: mup-stay
+    explanation: "A lease without registration cooperation from the landlord can be useless for residency purposes."
+  - id: pet-microchip
+    riskLevel: high
+    impact: "Pet travel non-compliance"
+    uncertainty: low
+    sourceId: eu-pets
+    explanation: "Microchip sequencing matters because later veterinary documents depend on it."
+  - id: pet-rabies
+    riskLevel: high
+    impact: "Pet denied travel"
+    uncertainty: low
+    sourceId: eu-pets
+    explanation: "Rabies timing rules are strict and are checked mechanically, not generously."
+  - id: pet-titer-test
+    riskLevel: high
+    impact: "Pet entry delay"
+    uncertainty: medium
+    sourceId: eu-pets-unlisted
+    explanation: "This rule creates long lead times, so late discovery breaks the move plan."
+    conflictNote: "Requirement depends on whether the origin country is listed or unlisted."
+  - id: pet-passport
+    riskLevel: medium
+    impact: "Pet document rejection"
+    uncertainty: low
+    sourceId: eu-pets
+    explanation: "Pet documents fail when owners use the wrong kind of veterinarian or incomplete paperwork."
+  - id: airline-pet-policy
+    riskLevel: medium
+    impact: "Flight logistics failure"
+    uncertainty: medium
+    sourceId: iata-live-animals
+    explanation: "Airline-level implementation can override generic assumptions about pet transport."
+    conflictNote: "Carrier rules differ even when the legal import framework is the same."
+  - id: cites-docs
+    riskLevel: high
+    impact: "Exotic pet transport blocked"
+    uncertainty: medium
+    sourceId: cites
+    explanation: "Non-standard species can trigger an entirely different compliance pathway."
+    conflictNote: "Species-specific permit requirements vary more than owners usually expect."
+  - id: marriage-cert
+    riskLevel: high
+    impact: "Family reunification delay"
+    uncertainty: medium
+    sourceId: mup-stay
+    explanation: "Civil status documents are time-sensitive and often rejected when people rely on old copies."
+    conflictNote: "Fresh-issue expectations and local practice can change with administrative guidance."
+  - id: child-birth-certs
+    riskLevel: high
+    impact: "Dependent filing blocked"
+    uncertainty: low
+    sourceId: mup-stay
+    explanation: "Each child creates a separate document dependency chain."
+  - id: spouse-work-status
+    riskLevel: high
+    impact: "Wrong family work assumptions"
+    uncertainty: medium
+    sourceId: mup-stay
+    explanation: "Secondary applicant work rights affect budget, timing, and route selection."
+    conflictNote: "Work rights differ by permit type and cannot be assumed from one visa route to another."
+  - id: school-shortlist
+    riskLevel: medium
+    impact: "Family logistics disruption"
+    uncertainty: medium
+    sourceId: hr-education
+    explanation: "School availability can become a hard relocation blocker for families with children."
+  - id: sponsor-income
+    riskLevel: high
+    impact: "Family reunification ineligibility"
+    uncertainty: medium
+    sourceId: mup-stay
+    explanation: "Income thresholds define whether dependents can realistically be added to the move."
+    conflictNote: "Threshold practice can change and needs rechecking before filing."
 
 checklist:
-  - id: "travel-docs"
+  - id: travel-docs
     items:
-      - id: "passport-validity"
-        source:
-          url: "https://mup.gov.hr/"
-          asOf: "2026-02-15"
-      - id: "birth-cert-apostilled"
-        source:
-          url: "https://www.hcch.net/en/instruments/conventions/specialised-sections/apostille"
-          asOf: "2026-01-01"
-      - id: "criminal-background"
-        source:
-          url: "https://pravosudje.gov.hr/"
-          asOf: "2026-02-01"
-  - id: "eligibility-proof"
+      - id: passport-validity
+      - id: birth-cert-apostilled
+      - id: criminal-background
+  - id: eligibility-proof
     items:
-      - id: "diploma-recognition"
-        source:
-          url: "https://mzo.gov.hr/"
-          asOf: "2026-02-01"
-      - id: "accommodation-proof"
-        source:
-          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
-          asOf: "2026-02-15"
-      - id: "employment-contract"
+      - id: diploma-recognition
+      - id: accommodation-proof
+      - id: employment-contract
         appliesTo:
           visa: [blue-card, work-permit]
-        source:
-          url: "https://home-affairs.ec.europa.eu/policies/migration-and-asylum/legal-migration-and-integration/work_en"
-          asOf: "2026-01-01"
-      - id: "dnv-income-proof"
+      - id: dnv-income-proof
         appliesTo:
           visa: [digital-nomad]
-        source:
-          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
-          asOf: "2026-02-15"
-      - id: "business-registration"
+      - id: business-registration
         appliesTo:
           visa: [self-employment]
-        source:
-          url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
-          asOf: "2026-03-01"
-  - id: "logistics-dry-run"
+  - id: logistics-dry-run
     items:
-      - id: "intl-health-insurance"
-        source:
-          url: "https://hzzo.hr/en"
-          asOf: "2026-02-15"
-      - id: "landlord-registration-consent"
-        source:
-          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
-          asOf: "2026-02-15"
-  - id: "pets-pre-travel"
+      - id: intl-health-insurance
+      - id: landlord-registration-consent
+  - id: pets-pre-travel
     items:
-      - id: "pet-microchip"
+      - id: pet-microchip
         appliesTo:
           pets: [dog-cat]
-        source:
-          url: "https://food.ec.europa.eu/animals/movement-pets_en"
-          asOf: "2026-03-01"
-      - id: "pet-rabies"
+      - id: pet-rabies
         appliesTo:
           pets: [dog-cat]
-        source:
-          url: "https://food.ec.europa.eu/animals/movement-pets_en"
-          asOf: "2026-03-01"
-      - id: "pet-titer-test"
+      - id: pet-titer-test
         appliesTo:
           pets: [dog-cat]
-        source:
-          url: "https://food.ec.europa.eu/animals/movement-pets/non-eu-countries-listed_en"
-          asOf: "2026-03-01"
-      - id: "pet-passport"
+      - id: pet-passport
         appliesTo:
           pets: [dog-cat]
-        source:
-          url: "https://food.ec.europa.eu/animals/movement-pets_en"
-          asOf: "2026-03-01"
-      - id: "airline-pet-policy"
+      - id: airline-pet-policy
         appliesTo:
           pets: [dog-cat, other]
-        source:
-          url: "https://www.iata.org/en/programs/cargo/live-animals/"
-          asOf: "2026-01-01"
-      - id: "cites-docs"
+      - id: cites-docs
         appliesTo:
           pets: [other]
-        source:
-          url: "https://cites.org/eng/disc/what.php"
-          asOf: "2026-01-01"
-  - id: "family-pre-travel"
+  - id: family-pre-travel
     items:
-      - id: "marriage-cert"
+      - id: marriage-cert
         appliesTo:
           family: [spouse, spouse-kids]
-        source:
-          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
-          asOf: "2026-04-22"
-      - id: "child-birth-certs"
+      - id: child-birth-certs
         appliesTo:
           family: [kids, spouse-kids]
-        source:
-          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
-          asOf: "2026-02-15"
-      - id: "spouse-work-status"
+      - id: spouse-work-status
         appliesTo:
           family: [spouse, spouse-kids]
-        source:
-          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
-          asOf: "2026-02-15"
-      - id: "school-shortlist"
+      - id: school-shortlist
         appliesTo:
           family: [kids, spouse-kids]
-        source:
-          url: "https://mzo.gov.hr/"
-          asOf: "2026-02-01"
-      - id: "sponsor-income"
+      - id: sponsor-income
         appliesTo:
           family: [spouse, kids, spouse-kids]
-        source:
-          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
-          asOf: "2026-02-15"
 
 artifacts: []

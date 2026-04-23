@@ -1,42 +1,120 @@
-# Structural data for stage: Migration
-# Language-neutral. Strings live in content/stages/migration.md.
+version: 2
+
+sources:
+  - id: eu-schengen
+    url: "https://home-affairs.ec.europa.eu/policies/schengen_en"
+    type: supranational
+    authorityScore: 5
+    lastChecked: "2026-01-01"
+  - id: hr-customs
+    url: "https://carina.gov.hr/en"
+    type: official
+    authorityScore: 5
+    lastChecked: "2026-02-01"
+  - id: hnb
+    url: "https://www.hnb.hr/en"
+    type: official
+    authorityScore: 5
+    lastChecked: "2026-01-01"
+  - id: eu-pets
+    url: "https://food.ec.europa.eu/animals/movement-pets_en"
+    type: supranational
+    authorityScore: 5
+    lastChecked: "2026-03-01"
+  - id: iata-live-animals
+    url: "https://www.iata.org/en/programs/cargo/live-animals/"
+    type: industry
+    authorityScore: 3
+    lastChecked: "2026-01-01"
+
+claims:
+  - id: border-method
+    riskLevel: medium
+    impact: "Entry assumptions fail at border"
+    uncertainty: medium
+    sourceId: eu-schengen
+    explanation: "Border mechanics affect stamps, proof expectations and travel routing assumptions."
+    conflictNote: "Schengen and non-Schengen routing can change what officers check in practice."
+  - id: originals-cabin
+    riskLevel: high
+    impact: "Critical document loss"
+    uncertainty: low
+    sourceId: hr-customs
+    explanation: "Originals are irreplaceable during the arrival window and lost luggage can collapse the next stage."
+  - id: customs-proof
+    riskLevel: medium
+    impact: "Border delay or additional scrutiny"
+    uncertainty: medium
+    sourceId: hr-customs
+    explanation: "Printed accommodation and funds proof reduce friction when a border check turns manual."
+    conflictNote: "Digital acceptance varies by officer and travel context."
+  - id: accommodation-30d
+    riskLevel: medium
+    impact: "Arrival instability"
+    uncertainty: low
+    sourceId: hr-customs
+    explanation: "Short booking windows create pressure and bad housing decisions right when identity setup begins."
+  - id: ground-transport
+    riskLevel: low
+    impact: "Arrival friction and wasted time"
+    uncertainty: medium
+    sourceId: hr-customs
+    explanation: "First-mile logistics failures compound stress in the first 72 hours."
+    conflictNote: "Ride-hailing coverage differs sharply by city and arrival time."
+  - id: eu-sim
+    riskLevel: low
+    impact: "Connectivity gap on arrival"
+    uncertainty: low
+    sourceId: eu-schengen
+    explanation: "Connectivity is a dependency for banking, landlord contact, transport and emergency changes."
+  - id: emergency-cash
+    riskLevel: medium
+    impact: "Payment failure during arrival"
+    uncertainty: low
+    sourceId: hnb
+    explanation: "Cards fail more often during geo-changes than travellers expect."
+  - id: vet-health-cert
+    riskLevel: high
+    impact: "Pet denied travel"
+    uncertainty: low
+    sourceId: eu-pets
+    explanation: "Health certificate timing is strict and invalid documents fail at check-in or border inspection."
+  - id: airline-booking
+    riskLevel: medium
+    impact: "Pet transport cancellation"
+    uncertainty: medium
+    sourceId: iata-live-animals
+    explanation: "Pet space is operationally scarce and airline handling can diverge from generic pet guidance."
+    conflictNote: "Airline-level pet acceptance changes faster than legal transport rules."
+  - id: carrier-dimensions
+    riskLevel: medium
+    impact: "Check-in failure for pet"
+    uncertainty: medium
+    sourceId: iata-live-animals
+    explanation: "Carrier compliance is enforced physically, not theoretically, at the airport."
+    conflictNote: "Airlines and even staff interpretation can differ on the day of travel."
 
 checklist:
-  - id: "border-crossing"
+  - id: border-crossing
     items:
-      - id: "border-method"
-        source:
-          url: "https://home-affairs.ec.europa.eu/policies/schengen_en"
-          asOf: "2026-01-01"
-      - id: "originals-cabin"
-      - id: "customs-proof"
-        source:
-          url: "https://carina.gov.hr/en"
-          asOf: "2026-02-01"
-  - id: "first-72-hours"
+      - id: border-method
+      - id: originals-cabin
+      - id: customs-proof
+  - id: first-72-hours
     items:
-      - id: "accommodation-30d"
-      - id: "ground-transport"
-      - id: "eu-sim"
-      - id: "emergency-cash"
-        source:
-          url: "https://www.hnb.hr/en"
-          asOf: "2026-01-01"
-  - id: "pets-in-transit"
+      - id: accommodation-30d
+      - id: ground-transport
+      - id: eu-sim
+      - id: emergency-cash
+  - id: pets-in-transit
     items:
-      - id: "vet-health-cert"
+      - id: vet-health-cert
         appliesTo:
           pets: [dog-cat]
-        source:
-          url: "https://food.ec.europa.eu/animals/movement-pets_en"
-          asOf: "2026-03-01"
-      - id: "airline-booking"
+      - id: airline-booking
         appliesTo:
           pets: [dog-cat, other]
-        source:
-          url: "https://www.iata.org/en/programs/cargo/live-animals/"
-          asOf: "2026-01-01"
-      - id: "carrier-dimensions"
+      - id: carrier-dimensions
         appliesTo:
           pets: [dog-cat]
 
