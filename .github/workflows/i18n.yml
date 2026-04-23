@@ -3,16 +3,35 @@ name: i18n: translate + validate content
 on:
   push:
     branches: [main, temp]
+    paths:
+      - 'content/stages/**/*.md'
+      - 'scripts/**'
+      - 'data/i18n/**'
   pull_request:
+    paths:
+      - 'content/stages/**/*.md'
+      - 'scripts/**'
+      - 'data/i18n/**'
+
+concurrency:
+  group: i18n-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   translation-pipeline:
     name: Translation sync + validation
     runs-on: ubuntu-latest
 
+    if: github.actor != 'github-actions[bot]'
+
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -37,12 +56,12 @@ jobs:
           fi
 
       - name: Commit updated translations
-        if: steps.changes.outputs.changed == 'true' && github.actor != 'github-actions[bot]'
+        if: steps.changes.outputs.changed == 'true'
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add .
-          git commit -m "chore(i18n): auto-sync translations"
+          git commit -m "chore(i18n): auto-sync translations [skip ci]"
           git push
 
       - name: Validate translation structure (parity)
