@@ -56,8 +56,14 @@ function enforceGlossary(value) {
   return value;
 }
 
-function validateTranslatedPayload(payload) {
+function validateTranslatedPayload(payload, englishPayload) {
   if (!payload || typeof payload !== 'object') throw new Error('translation payload missing');
+
+  // fallback critical fields if model dropped them
+  payload.title = payload.title || englishPayload.title;
+  payload.itemStrings = payload.itemStrings || englishPayload.itemStrings;
+  payload.body = payload.body || englishPayload.body;
+
   if (!payload.title || typeof payload.title !== 'string') throw new Error('translated title missing');
   if (!payload.itemStrings || typeof payload.itemStrings !== 'object') throw new Error('translated itemStrings missing');
   if (typeof payload.body !== 'string') throw new Error('translated body missing');
@@ -118,10 +124,28 @@ async function translatePayload(englishPayload, existingRuPayload) {
 
   if (!res.ok) throw new Error(`models request failed: ${res.status} ${await res.text()}`);
   const data = await res.json();
-  const text = data?.choices?.[0]?.message?.content?.trim();
+
+  let text = data?.choices?.[0]?.message?.content?.trim();
   if (!text) throw new Error('empty model response');
 
-  const parsed = JSON.parse(text);
+  if (text.startsWith('```')) {
+    text = text.replace(/^```[a-z]*\n?/i, '').replace(/```$/, '').trim();
+  }
+
+  const firstBrace = text.indexOf('{');
+  const lastBrace = text.lastIndexOf('}');
+  if (firstBrace !== -1 && lastBrace !== -1) {
+    text = text.slice(firstBrace, lastBrace + 1);
+  }
+
+  let parsed;
+  try {
+    parsed = JSON.parse(text);
+  } catch (e) {
+    console.error('RAW MODEL RESPONSE:\n', text);
+    throw new Error('Invalid JSON from model');
+  }
+
   return enforceGlossary(cleanStrings(parsed));
 }
 
@@ -146,7 +170,7 @@ for (const file of listEnglishStageFiles()) {
   let translated;
   try {
     translated = await translatePayload(enPayload, existingPayload);
-    validateTranslatedPayload(translated);
+    validateTranslatedPayload(translated, enPayload);
   } catch (error) {
     if (existingPayload) {
       console.warn(`translation failed for ${file}; keeping existing Russian copy: ${error.message}`);
