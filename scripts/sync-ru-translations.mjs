@@ -56,8 +56,14 @@ function enforceGlossary(value) {
   return value;
 }
 
-function validateTranslatedPayload(payload) {
+function validateTranslatedPayload(payload, englishPayload) {
   if (!payload || typeof payload !== 'object') throw new Error('translation payload missing');
+
+  // fallback critical fields if model dropped them
+  payload.title = payload.title || englishPayload.title;
+  payload.itemStrings = payload.itemStrings || englishPayload.itemStrings;
+  payload.body = payload.body || englishPayload.body;
+
   if (!payload.title || typeof payload.title !== 'string') throw new Error('translated title missing');
   if (!payload.itemStrings || typeof payload.itemStrings !== 'object') throw new Error('translated itemStrings missing');
   if (typeof payload.body !== 'string') throw new Error('translated body missing');
@@ -122,7 +128,6 @@ async function translatePayload(englishPayload, existingRuPayload) {
   let text = data?.choices?.[0]?.message?.content?.trim();
   if (!text) throw new Error('empty model response');
 
-  // normalize model output to valid JSON
   if (text.startsWith('```')) {
     text = text.replace(/^```[a-z]*\n?/i, '').replace(/```$/, '').trim();
   }
@@ -165,7 +170,7 @@ for (const file of listEnglishStageFiles()) {
   let translated;
   try {
     translated = await translatePayload(enPayload, existingPayload);
-    validateTranslatedPayload(translated);
+    validateTranslatedPayload(translated, enPayload);
   } catch (error) {
     if (existingPayload) {
       console.warn(`translation failed for ${file}; keeping existing Russian copy: ${error.message}`);
