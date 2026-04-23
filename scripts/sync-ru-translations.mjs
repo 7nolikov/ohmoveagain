@@ -56,14 +56,45 @@ function enforceGlossary(value) {
   return value;
 }
 
-function validateTranslatedPayload(payload, englishPayload) {
+function unwrapTranslatedPayload(payload) {
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) return payload;
+
+  if (payload.englishPayload && payload.existingRuPayload) {
+    if (payload.existingRuPayload && typeof payload.existingRuPayload === 'object') return payload.existingRuPayload;
+    if (payload.englishPayload && typeof payload.englishPayload === 'object') return payload.englishPayload;
+  }
+
+  if (payload.translatedPayload && typeof payload.translatedPayload === 'object') return payload.translatedPayload;
+  if (payload.translation && typeof payload.translation === 'object') return payload.translation;
+  if (payload.ru && typeof payload.ru === 'object') return payload.ru;
+
+  return payload;
+}
+
+function completePayloadShape(payload, englishPayload) {
+  const completed = { ...englishPayload, ...payload };
+
+  for (const field of ['requires', 'documents', 'gotchas']) {
+    if (!Array.isArray(completed[field])) completed[field] = englishPayload[field] || [];
+  }
+
+  for (const field of ['categoryNames', 'itemStrings', 'artifactNames']) {
+    if (!completed[field] || typeof completed[field] !== 'object' || Array.isArray(completed[field])) {
+      completed[field] = englishPayload[field] || {};
+    }
+  }
+
+  if (typeof completed.body !== 'string') completed.body = englishPayload.body || '';
+
+  return completed;
+}
+
+function normalizeTranslatedPayload(payload, englishPayload) {
+  return completePayloadShape(unwrapTranslatedPayload(payload), englishPayload);
+}
+
+function validateTranslatedPayload(payload) {
   if (!payload || typeof payload !== 'object') throw new Error('translation payload missing');
-
-  // fallback critical fields if model dropped them
-  payload.title = payload.title || englishPayload.title;
-  payload.itemStrings = payload.itemStrings || englishPayload.itemStrings;
-  payload.body = payload.body || englishPayload.body;
-
   if (!payload.title || typeof payload.title !== 'string') throw new Error('translated title missing');
   if (!payload.itemStrings || typeof payload.itemStrings !== 'object') throw new Error('translated itemStrings missing');
   if (typeof payload.body !== 'string') throw new Error('translated body missing');
@@ -74,7 +105,10 @@ async function translatePayload(englishPayload, existingRuPayload) {
     'You are a professional product translator.',
     'Translate from English to Russian.',
     'Return JSON only.',
-    'Keep structure EXACTLY the same.',
+    'Keep structure EXACTLY the same as englishPayload.',
+    'Return the translated payload object directly, not a wrapper object.',
+    'The top-level JSON keys must be exactly: title, subtitle, description, duration, requires, documents, categoryNames, itemStrings, gotchas, artifactNames, body.',
+    'Do not return englishPayload, existingRuPayload, translatedPayload, translation, ru, or any other wrapper key.',
     'Do not add or remove fields.',
     'Do not invent facts.',
     '',
@@ -146,7 +180,8 @@ async function translatePayload(englishPayload, existingRuPayload) {
     throw new Error('Invalid JSON from model');
   }
 
-  return enforceGlossary(cleanStrings(parsed));
+  const normalized = normalizeTranslatedPayload(parsed, englishPayload);
+  return enforceGlossary(cleanStrings(normalized));
 }
 
 const commit = gitSha();
@@ -170,7 +205,7 @@ for (const file of listEnglishStageFiles()) {
   let translated;
   try {
     translated = await translatePayload(enPayload, existingPayload);
-    validateTranslatedPayload(translated, enPayload);
+    validateTranslatedPayload(translated);
   } catch (error) {
     if (existingPayload) {
       console.warn(`translation failed for ${file}; keeping existing Russian copy: ${error.message}`);
