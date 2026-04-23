@@ -68,6 +68,7 @@ itemStrings:
 gotchas:
   - "Croatia's tax residency triggers at 183 days OR center-of-life — you can become resident before you realize."
   - "Double-taxation treaties don't eliminate paperwork — they cap exposure. Both filings still happen."
+  - "This stage is critical because it helps to avoid costly mistakes."
 artifactNames:
   runway-calc: "Runway calculator (HR / MNE / DE / PT / EE)"
 ---
