@@ -4,7 +4,6 @@
 {{- $itemStrings := .Params.itemStrings -}}
 {{- $categoryNames := .Params.categoryNames -}}
 
-{{/* score calc (оставляем как есть) */}}
 {{- $trust := newScratch -}}
 {{- $trust.Set "total" 0 -}}
 {{- $trust.Set "count" 0 -}}
@@ -25,7 +24,6 @@
   {{- end }}
 {{- end }}
 {{- $avg := cond (gt ($trust.Get "count") 0) (div ($trust.Get "total") ($trust.Get "count")) 0 -}}
-
 {{- $level := "low" -}}
 {{- if ge $avg 80 }}{{ $level = "high" }}{{ else if ge $avg 55 }}{{ $level = "medium" }}{{ end }}
 
@@ -63,40 +61,47 @@
       {{- end }}
 
       <li>
-        <span class="label">{{ index $strings "label" }}</span>
+        <div class="trust-topline">
+          <span class="label">{{ index $strings "label" }}</span>
+          {{ if $claim }}
+          <div class="trust-badges">
+            <span class="trust-badge" data-level="{{ $claim.riskLevel }}">⚠ {{ i18n (printf "trust_risk_%s" $claim.riskLevel) }}</span>
+            <span class="trust-badge" data-level="{{ $claim.uncertainty }}">≈ {{ i18n (printf "trust_uncertainty_%s" $claim.uncertainty) }}</span>
+          </div>
+          {{ end }}
+        </div>
 
         {{ if $claim }}
-        <div class="trust-block">
+        <details class="trust-details">
+          <summary>{{ i18n "trust_explanation" }}</summary>
 
-          <div class="trust-badges">
-            <span class="trust-badge" data-level="{{ $claim.riskLevel }}">
-              {{ i18n "trust_risk" }}: {{ i18n (printf "trust_risk_%s" $claim.riskLevel) }}
-            </span>
-            <span class="trust-badge" data-level="{{ $claim.uncertainty }}">
-              {{ i18n "trust_uncertainty" }}: {{ i18n (printf "trust_uncertainty_%s" $claim.uncertainty) }}
-            </span>
-            <span class="trust-badge">
-              {{ i18n "trust_source_type" }}: {{ i18n (printf "trust_source_type_%s" $src.type) }}
-            </span>
+          <div class="trust-details-body">
+            <div class="trust-block">
+
+              <div class="trust-grid">
+                <div class="trust-line"><strong>{{ i18n "trust_impact" }}:</strong> {{ $claim.impact }}</div>
+                <div class="trust-line"><strong>{{ i18n "trust_source_type" }}:</strong> {{ i18n (printf "trust_source_type_%s" $src.type) }}</div>
+              </div>
+
+              {{ with $claim.conflictNote }}
+              <div class="trust-warning">⚠ {{ . }}</div>
+              {{ end }}
+
+              {{ with $claim.explanation }}
+              <div class="trust-note">{{ . }}</div>
+              {{ end }}
+
+              <a class="source" href="{{ $src.url }}" target="_blank">
+                {{ i18n "source_label" }} · {{ $src.lastChecked }}
+              </a>
+
+            </div>
           </div>
+        </details>
+        {{ end }}
 
-          <div class="trust-grid">
-            <div class="trust-line"><strong>{{ i18n "trust_impact" }}:</strong> {{ $claim.impact }}</div>
-          </div>
-
-          {{ with $claim.conflictNote }}
-          <div class="trust-warning">⚠ {{ . }}</div>
-          {{ end }}
-
-          {{ with $claim.explanation }}
-          <div class="trust-note">{{ . }}</div>
-          {{ end }}
-
-          <a class="source" href="{{ $src.url }}" target="_blank">
-            {{ i18n "source_label" }} · {{ $src.lastChecked }}
-          </a>
-
-        </div>
+        {{ with (index $strings "note") }}
+        <div class="trust-microcopy">{{ . }}</div>
         {{ end }}
 
       </li>
