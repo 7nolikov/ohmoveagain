@@ -118,10 +118,29 @@ async function translatePayload(englishPayload, existingRuPayload) {
 
   if (!res.ok) throw new Error(`models request failed: ${res.status} ${await res.text()}`);
   const data = await res.json();
-  const text = data?.choices?.[0]?.message?.content?.trim();
+
+  let text = data?.choices?.[0]?.message?.content?.trim();
   if (!text) throw new Error('empty model response');
 
-  const parsed = JSON.parse(text);
+  // normalize model output to valid JSON
+  if (text.startsWith('```')) {
+    text = text.replace(/^```[a-z]*\n?/i, '').replace(/```$/, '').trim();
+  }
+
+  const firstBrace = text.indexOf('{');
+  const lastBrace = text.lastIndexOf('}');
+  if (firstBrace !== -1 && lastBrace !== -1) {
+    text = text.slice(firstBrace, lastBrace + 1);
+  }
+
+  let parsed;
+  try {
+    parsed = JSON.parse(text);
+  } catch (e) {
+    console.error('RAW MODEL RESPONSE:\n', text);
+    throw new Error('Invalid JSON from model');
+  }
+
   return enforceGlossary(cleanStrings(parsed));
 }
 
