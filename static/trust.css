@@ -120,3 +120,54 @@
 .stage-section {
   margin: 18px 0 22px;
 }
+
+.trust-details {
+  margin-top: 8px;
+  border-top: 1px dashed var(--border);
+  padding-top: 8px;
+}
+
+.trust-details > summary {
+  cursor: pointer;
+  list-style: none;
+  color: var(--fg-dim);
+  font-size: 0.78rem;
+  user-select: none;
+}
+
+.trust-details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.trust-details > summary::before {
+  content: "+";
+  display: inline-block;
+  margin-right: 8px;
+  color: var(--link);
+}
+
+.trust-details[open] > summary::before {
+  content: "−";
+}
+
+.trust-details-body {
+  margin-top: 10px;
+}
+
+.trust-topline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.trust-microcopy {
+  margin-top: 6px;
+  color: var(--fg-muted);
+  font-size: 0.78rem;
+}
+
+.checklist > li {
+  padding-bottom: 14px;
+}
