@@ -1,9 +1,9 @@
 name: Build & Deploy (Hugo → GitHub Pages)
 
 on:
-  push:
-    branches: [main]
-  workflow_dispatch:
+  workflow_run:
+    workflows: ["i18n: translate + validate content"]
+    types: [completed]
 
 permissions:
   contents: read
@@ -16,18 +16,17 @@ concurrency:
 
 env:
   HUGO_VERSION: "0.160.1"
-  # no TZ-dependent template logic, but pinning keeps lastmod stable
   TZ: UTC
 
 jobs:
   build:
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          submodules: false
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
@@ -45,7 +44,6 @@ jobs:
         id: pages
         uses: actions/configure-pages@v5
         with:
-          # auto-enable Pages on first run so the repo doesn't need a manual toggle
           enablement: true
 
       - name: Build site
