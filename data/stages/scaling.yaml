@@ -1,48 +1,95 @@
-# Structural data for stage: Scaling
-# Language-neutral. Strings live in content/stages/scaling.md.
+version: 2
+
+sources:
+  - id: hok
+    url: "https://www.hok.hr/en/"
+    type: official
+    authorityScore: 4
+    lastChecked: "2026-02-01"
+  - id: porezna
+    url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
+    type: official
+    authorityScore: 5
+    lastChecked: "2026-03-01"
+  - id: eu-blue-card
+    url: "https://home-affairs.ec.europa.eu/policies/migration-and-asylum/legal-migration-and-integration/work_en"
+    type: supranational
+    authorityScore: 5
+    lastChecked: "2026-01-01"
+  - id: mup-stay
+    url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+    type: official
+    authorityScore: 5
+    lastChecked: "2026-02-15"
+  - id: eu-vat
+    url: "https://taxation-customs.ec.europa.eu/vat-rules-by-country/croatia_en"
+    type: supranational
+    authorityScore: 5
+    lastChecked: "2026-01-01"
+  - id: regos
+    url: "https://www.regos.hr/en/"
+    type: official
+    authorityScore: 4
+    lastChecked: "2026-02-01"
+
+claims:
+  - id: accountant
+    riskLevel: medium
+    impact: "Operational inefficiency"
+    uncertainty: medium
+    sourceId: hok
+    explanation: "Local accounting practices define compliance and reporting structure."
+  - id: business-structure
+    riskLevel: high
+    impact: "Long-term tax inefficiency"
+    uncertainty: medium
+    sourceId: porezna
+    explanation: "Structure decisions compound over years and are hard to reverse cleanly."
+    conflictNote: "Best structure depends on income profile and liability tolerance."
+  - id: blue-card-sideincome
+    riskLevel: high
+    impact: "Permit violation"
+    uncertainty: medium
+    sourceId: eu-blue-card
+    explanation: "Secondary work may conflict with permit conditions."
+    conflictNote: "Interpretation differs across member states and contracts."
+  - id: dnv-renewal
+    riskLevel: high
+    impact: "Visa renewal failure"
+    uncertainty: medium
+    sourceId: mup-stay
+    explanation: "Renewal rules must be satisfied continuously, not just at entry."
+  - id: vat-threshold
+    riskLevel: high
+    impact: "Tax non-compliance"
+    uncertainty: medium
+    sourceId: eu-vat
+    explanation: "VAT obligations change financial reporting and pricing structure."
+    conflictNote: "Threshold values change periodically and require rechecking."
+  - id: invoicing-bookkeeping
+    riskLevel: medium
+    impact: "Operational disruption"
+    uncertainty: medium
+    sourceId: porezna
+    explanation: "Compliance systems must align with Croatian fiscalization requirements."
+  - id: pension-strategy
+    riskLevel: low
+    impact: "Suboptimal long-term planning"
+    uncertainty: medium
+    sourceId: regos
+    explanation: "Pension contributions can be optimized but are often overlooked."
 
 checklist:
-  - id: "structure-filing"
+  - id: structure-filing
     items:
-      - id: "accountant"
-        source:
-          url: "https://www.hok.hr/en/"
-          asOf: "2026-02-01"
-      - id: "business-structure"
-        source:
-          url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
-          asOf: "2026-03-01"
-      - id: "blue-card-sideincome"
-        appliesTo:
-          visa: [blue-card]
-        source:
-          url: "https://home-affairs.ec.europa.eu/policies/migration-and-asylum/legal-migration-and-integration/work_en"
-          asOf: "2026-01-01"
-      - id: "dnv-renewal"
-        appliesTo:
-          visa: [digital-nomad]
-        source:
-          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
-          asOf: "2026-02-15"
-      - id: "vat-threshold"
-        source:
-          url: "https://taxation-customs.ec.europa.eu/vat-rules-by-country/croatia_en"
-          asOf: "2026-01-01"
-  - id: "operations"
+      - id: accountant
+      - id: business-structure
+      - id: blue-card-sideincome
+      - id: dnv-renewal
+      - id: vat-threshold
+  - id: operations
     items:
-      - id: "invoicing-bookkeeping"
-        source:
-          url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
-          asOf: "2026-03-01"
-      - id: "pension-strategy"
-        source:
-          url: "https://www.regos.hr/en/"
-          asOf: "2026-02-01"
-  - id: "community"
-    items:
-      - id: "it-community"
-        source:
-          url: "https://www.meetup.com/find/?location=hr--zagreb&source=EVENTS&keywords=tech"
-          asOf: "2026-02-01"
+      - id: invoicing-bookkeeping
+      - id: pension-strategy
 
 artifacts: []
