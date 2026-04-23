@@ -1,4 +1,4 @@
-name: i18n-auto
+name: i18n: translate + validate content
 
 on:
   push:
@@ -6,24 +6,28 @@ on:
   pull_request:
 
 jobs:
-  i18n:
+  translation-pipeline:
+    name: Translation sync + validation
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - run: npm install
+      - name: Install dependencies
+        run: npm install
 
-      - name: Run translation sync
+      - name: Sync translations (AI)
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
         run: npm run i18n:sync:ru
 
-      - name: Detect changes
+      - name: Detect translation changes
         id: changes
         run: |
           if git diff --quiet; then
@@ -32,7 +36,7 @@ jobs:
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: Commit translations
+      - name: Commit updated translations
         if: steps.changes.outputs.changed == 'true' && github.actor != 'github-actions[bot]'
         run: |
           git config user.name "github-actions"
@@ -41,10 +45,10 @@ jobs:
           git commit -m "chore(i18n): auto-sync translations"
           git push
 
-      - name: Parity check
+      - name: Validate translation structure (parity)
         run: npm run i18n:parity
 
-      - name: Freshness check (strict)
+      - name: Validate translation freshness (strict)
         run: |
           npm run i18n:freshness | tee output.txt
           if grep -q "stale:" output.txt; then
