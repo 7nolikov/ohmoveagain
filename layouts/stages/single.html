@@ -45,7 +45,9 @@
 {{ with $data }}{{ with .checklist }}
 <section class="stage-section">
   {{ range $cat := . }}
-  <h2>{{ index $categoryNames $cat.id }}</h2>
+  {{- $catAos := slice -}}
+  {{- range $cat.items -}}{{- $catAos = $catAos | append .appliesTo -}}{{- end -}}
+  <h2 x-show="{{ $catAos | jsonify | safeJS }}.some(ao => $store.prog.matchesProfile(ao))">{{ index $categoryNames $cat.id }}</h2>
 
   <ul class="checklist">
     {{ range $item := $cat.items }}
@@ -61,7 +63,8 @@
         {{- end }}
       {{- end }}
 
-      <li>
+      {{- $ao := $item.appliesTo | jsonify -}}
+      <li x-show="$store.prog.matchesProfile({{ $ao | safeJS }})">
         <div class="trust-topline">
           <span class="label">{{ index $strings "label" }}</span>
           {{ if $claim.sourceId }}
