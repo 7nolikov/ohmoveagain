@@ -3,6 +3,7 @@
 {{- $data := index hugo.Data.stages $slug -}}
 {{- $itemStrings := .Params.itemStrings -}}
 {{- $categoryNames := .Params.categoryNames -}}
+{{- $claimStrings := .Params.claimStrings | default dict -}}
 
 {{- $trust := newScratch -}}
 {{- $trust.Set "total" 0 -}}
@@ -78,16 +79,17 @@
           <div class="trust-details-body">
             <div class="trust-block">
 
+              {{- $cs := index $claimStrings $claim.id | default dict -}}
               <div class="trust-grid">
-                <div class="trust-line"><strong>{{ i18n "trust_impact" }}:</strong> {{ $claim.impact }}</div>
+                <div class="trust-line"><strong>{{ i18n "trust_impact" }}:</strong> {{ index $cs "impact" | default $claim.impact }}</div>
                 <div class="trust-line"><strong>{{ i18n "trust_source_type" }}:</strong> {{ i18n (printf "trust_source_type_%s" $src.type) }}</div>
               </div>
 
-              {{ with $claim.conflictNote }}
+              {{ with (index $cs "conflictNote" | default $claim.conflictNote) }}
               <div class="trust-warning">⚠ {{ . }}</div>
               {{ end }}
 
-              {{ with $claim.explanation }}
+              {{ with (index $cs "explanation" | default $claim.explanation) }}
               <div class="trust-note">{{ . }}</div>
               {{ end }}
 

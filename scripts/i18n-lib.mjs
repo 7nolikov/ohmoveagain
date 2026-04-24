@@ -47,6 +47,7 @@ export function translationPayload(doc) {
     documents: fm.documents || [],
     categoryNames: fm.categoryNames || {},
     itemStrings: fm.itemStrings || {},
+    claimStrings: fm.claimStrings || {},
     gotchas: fm.gotchas || [],
     artifactNames: fm.artifactNames || {},
     body: doc.body || ''

@@ -79,6 +79,27 @@ itemStrings:
 gotchas:
   - "Without a Croatian work contract or residency card, expect most banks to offer only a non-resident account (limited features, no salary deposits). Get the work contract first, then open the full account."
   - "Address registration requires landlord's notarized signature in some municipalities."
+claimStrings:
+  oib-issued:
+    impact: "All downstream steps blocked"
+    explanation: "OIB is the root identifier for almost every administrative action in Croatia."
+  address-registration:
+    impact: "Residency process blocked"
+    explanation: "Address registration is a structural dependency for identity and legal presence."
+  residency-card:
+    impact: "Legal status incomplete"
+    explanation: "Residency card formalises legal presence and unlocks financial and employment systems."
+  bank-account:
+    impact: "Financial friction"
+    explanation: "Bank access determines salary flow and everyday financial operations."
+    conflictNote: "Non-resident vs resident account conditions differ significantly."
+  hzzo-enrolled:
+    impact: "Healthcare gap"
+    explanation: "Public health coverage begins only after registration is complete."
+  tax-residency:
+    impact: "Incorrect tax obligations"
+    explanation: "Tax residency affects global income reporting and liability."
+    conflictNote: "Residency determination is based on facts, not just certificate requests."
 ---
 
 Setting up your local identity. In Croatia the sequence is fixed: OIB first, address registration second, bank account third, health insurance fourth. Each step unlocks the next — skipping ahead wastes weeks.

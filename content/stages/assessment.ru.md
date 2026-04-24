@@ -92,11 +92,30 @@ gotchas:
     стресса.
 artifactNames:
   runway-calc: Калькулятор запаса (HR / MNE / DE / PT / EE)
+claimStrings:
+  effective-tax-rate:
+    impact: Ошибочное финансовое планирование
+    explanation: Налоговое планирование меняет реальную экономику переезда ещё до выбора
+      визы или правовой структуры.
+    conflictNote: Эффективная ставка зависит от структуры дохода, статуса резидентства
+      и правил взносов.
+  dnv-income:
+    impact: Отказ в визе
+    explanation: Это требование определяет, соответствуете ли вы критериям, прежде чем
+      тратить время и деньги на заявку.
+    conflictNote: Пороги дохода могут меняться ежегодно, поэтому устаревшие цифры создают
+      ложную уверенность.
+  blue-card-salary:
+    impact: Несоответствие требованиям для заявки
+    explanation: Пороги зарплаты — входной барьер для Blue Card, который нужно проверить
+      до того, как вы внесёте допущения в план переезда.
+    conflictNote: Интерпретация порога может различаться в зависимости от года и местной
+      практики.
 translationMeta:
   sourceLang: en
   targetLang: ru
   sourceFile: content/stages/assessment.md
-  sourceHash: 8726f5e5a3a3e2af90a712a0959a6398bae81b060cd44405ea38b07c7b43d049
+  sourceHash: 08db5d6f305db314d5164abee48189b46e251e4986b2f14d1a4caac721ca65d7
   sourceCommit: 4d27954b50afaf25545f923af97b509024d3d363
   status: auto-updated
 ---

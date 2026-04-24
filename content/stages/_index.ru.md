@@ -15,7 +15,7 @@ translationMeta:
   sourceLang: en
   targetLang: ru
   sourceFile: content/stages/_index.md
-  sourceHash: 8720501db452e4d0248cb1dd89eb609ec80f018dc03b5b1e83543bc11bfb123d
+  sourceHash: 3cb5d4c75d10169d6e939db767291ddfd860c8851f5a5353ab758349a6d73d47
   sourceCommit: 4d27954b50afaf25545f923af97b509024d3d363
   status: auto-generated
 ---

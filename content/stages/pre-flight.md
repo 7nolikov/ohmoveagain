@@ -113,6 +113,79 @@ itemStrings:
 gotchas:
   - "The apostille is on the document, not on the translation. Order matters."
   - "Some consulates require originals AND notarized copies. Bring both."
+claimStrings:
+  passport-validity:
+    impact: "Travel or filing disruption"
+    explanation: "Passport validity can block boarding, application intake, or permit issuance late in the process."
+  birth-cert-apostilled:
+    impact: "Document rejection"
+    explanation: "Civil status documents often fail because the apostille and translation chain is done in the wrong order."
+  criminal-background:
+    impact: "Residency application delay or rejection"
+    explanation: "Background checks have a short usable life, so timing matters almost as much as the document itself."
+  diploma-recognition:
+    impact: "Work authorization mismatch"
+    explanation: "Recognition is not universal across professions, so this needs category-specific checking."
+    conflictNote: "Regulated professions and ordinary private-sector roles are treated differently."
+  accommodation-proof:
+    impact: "Residency filing blocked"
+    explanation: "Address proof is a core filing dependency and weak accommodation documents can stop the process immediately."
+  employment-contract:
+    impact: "Blue Card or work permit ineligibility"
+    explanation: "Employer-side documentation defines whether this path exists at all."
+    conflictNote: "Salary thresholds and document expectations can shift across yearly updates."
+  dnv-income-proof:
+    impact: "Digital nomad permit rejection"
+    explanation: "Income proof is the core eligibility gate for remote-income routes."
+    conflictNote: "Threshold interpretation can drift with policy updates and document examples."
+  business-registration:
+    impact: "Self-employment path blocked"
+    explanation: "You cannot safely assume residency can be filed first and entity paperwork later."
+  intl-health-insurance:
+    impact: "Coverage gap during arrival phase"
+    explanation: "There is usually a gap between entry and local public insurance onboarding."
+  landlord-registration-consent:
+    impact: "Address registration failure"
+    explanation: "A lease without registration cooperation from the landlord can be useless for residency purposes."
+  pet-microchip:
+    impact: "Pet travel non-compliance"
+    explanation: "Microchip sequencing matters because later veterinary documents depend on it."
+  pet-rabies:
+    impact: "Pet denied travel"
+    explanation: "Rabies timing rules are strict and are checked mechanically, not generously."
+  pet-titer-test:
+    impact: "Pet entry delay"
+    explanation: "This rule creates long lead times, so late discovery breaks the move plan."
+    conflictNote: "Requirement depends on whether the origin country is listed or unlisted."
+  pet-passport:
+    impact: "Pet document rejection"
+    explanation: "Pet documents fail when owners use the wrong kind of veterinarian or incomplete paperwork."
+  airline-pet-policy:
+    impact: "Flight logistics failure"
+    explanation: "Airline-level implementation can override generic assumptions about pet transport."
+    conflictNote: "Carrier rules differ even when the legal import framework is the same."
+  cites-docs:
+    impact: "Exotic pet transport blocked"
+    explanation: "Non-standard species can trigger an entirely different compliance pathway."
+    conflictNote: "Species-specific permit requirements vary more than owners usually expect."
+  marriage-cert:
+    impact: "Family reunification delay"
+    explanation: "Civil status documents are time-sensitive and often rejected when people rely on old copies."
+    conflictNote: "Fresh-issue expectations and local practice can change with administrative guidance."
+  child-birth-certs:
+    impact: "Dependent filing blocked"
+    explanation: "Each child creates a separate document dependency chain."
+  spouse-work-status:
+    impact: "Wrong family work assumptions"
+    explanation: "Secondary applicant work rights affect budget, timing, and route selection."
+    conflictNote: "Work rights differ by permit type and cannot be assumed from one visa route to another."
+  school-shortlist:
+    impact: "Family logistics disruption"
+    explanation: "School availability can become a hard relocation blocker for families with children."
+  sponsor-income:
+    impact: "Family reunification ineligibility"
+    explanation: "Income thresholds define whether dependents can realistically be added to the move."
+    conflictNote: "Threshold practice can change and needs rechecking before filing."
 ---
 
 Everything you need *before* you board. Apostilled birth certificates, criminal background checks, translated diplomas, pet paperwork, housing shortlist, and an initial look at banks. Expect this stage to take roughly twice as long as you first estimate.

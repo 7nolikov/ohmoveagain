@@ -71,6 +71,19 @@ gotchas:
   - "This stage is critical because it helps to avoid costly mistakes and stress."
 artifactNames:
   runway-calc: "Runway calculator (HR / MNE / DE / PT / EE)"
+claimStrings:
+  effective-tax-rate:
+    impact: "Incorrect financial planning"
+    explanation: "Tax planning changes the real economics of a move before you choose a visa or legal structure."
+    conflictNote: "Effective rate depends on income mix, residency status, and contribution rules."
+  dnv-income:
+    impact: "Visa rejection"
+    explanation: "This requirement determines whether you qualify before you spend time and money on an application."
+    conflictNote: "Income thresholds can change annually, so stale numbers create false confidence."
+  blue-card-salary:
+    impact: "Ineligible application"
+    explanation: "Salary thresholds are a gatekeeper for Blue Card eligibility and need to be checked before signing assumptions into your relocation plan."
+    conflictNote: "Threshold interpretation can vary by year and local implementation details."
 ---
 
 Work the numbers before you commit. Model tax residency, cost of living, career optionality, and the real cost of *staying where you are*. If the comparison does not come out positive, the right call is to stop here — not to move.

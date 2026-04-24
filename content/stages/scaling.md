@@ -55,6 +55,31 @@ itemStrings:
 gotchas:
   - "Paušalni obrt has annual revenue caps — crossing mid-year is messy."
   - "Tax residency + client location + IP ownership determine where you owe. Don't freelance this."
+claimStrings:
+  accountant:
+    impact: "Operational inefficiency"
+    explanation: "Local accounting practices define compliance and reporting structure."
+  business-structure:
+    impact: "Long-term tax inefficiency"
+    explanation: "Structure decisions compound over years and are hard to reverse cleanly."
+    conflictNote: "Best structure depends on income profile and liability tolerance."
+  blue-card-sideincome:
+    impact: "Permit violation"
+    explanation: "Secondary work may conflict with permit conditions."
+    conflictNote: "Interpretation differs across member states and contracts."
+  dnv-renewal:
+    impact: "Visa renewal failure"
+    explanation: "Renewal rules must be satisfied continuously, not just at entry."
+  vat-threshold:
+    impact: "Tax non-compliance"
+    explanation: "VAT obligations change financial reporting and pricing structure."
+    conflictNote: "Threshold values change periodically and require rechecking."
+  invoicing-bookkeeping:
+    impact: "Operational disruption"
+    explanation: "Compliance systems must align with Croatian fiscalization requirements."
+  pension-strategy:
+    impact: "Suboptimal long-term planning"
+    explanation: "Pension contributions can be optimized but are often overlooked."
 ---
 
 Now that you are resident, make the setup sustainable. Croatia's paušalni obrt (lump-sum trade) is often the right structure for solo work under the revenue cap. Above the cap, a d.o.o. or j.d.o.o. is usually the better fit. Decisions in this stage compound for years — talk to a licensed local accountant, not to a forum thread.

@@ -82,7 +82,7 @@ function completePayloadShape(payload, englishPayload) {
     if (!Array.isArray(completed[field])) completed[field] = englishPayload[field] || [];
   }
 
-  for (const field of ['categoryNames', 'itemStrings', 'artifactNames']) {
+  for (const field of ['categoryNames', 'itemStrings', 'claimStrings', 'artifactNames']) {
     if (!(field in englishPayload)) continue;
     if (!completed[field] || typeof completed[field] !== 'object' || Array.isArray(completed[field])) {
       completed[field] = englishPayload[field] || {};
@@ -114,7 +114,7 @@ async function translatePayload(englishPayload, existingRuPayload) {
     'Return JSON only.',
     'Keep structure EXACTLY the same as englishPayload.',
     'Return the translated payload object directly, not a wrapper object.',
-    'The top-level JSON keys must be exactly: title, subtitle, description, duration, requires, documents, categoryNames, itemStrings, gotchas, artifactNames, body.',
+    'The top-level JSON keys must be exactly: title, subtitle, description, duration, requires, documents, categoryNames, itemStrings, claimStrings, gotchas, artifactNames, body.',
     'Do not return englishPayload, existingRuPayload, translatedPayload, translation, ru, or any other wrapper key.',
     'Do not add or remove fields.',
     'Do not invent facts.',

@@ -10,7 +10,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { STAGES_DIR, listEnglishStageFiles, loadStage } from './i18n-lib.mjs';
 
-const OBJECT_FIELDS = ['itemStrings', 'categoryNames', 'artifactNames'];
+const OBJECT_FIELDS = ['itemStrings', 'categoryNames', 'claimStrings', 'artifactNames'];
 const LIST_FIELDS = ['gotchas', 'requires', 'documents'];
 const LANG_RE = /^(.+)\.([a-z]{2})\.md$/i;
 

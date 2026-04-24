@@ -128,23 +128,40 @@ Pull from based on launch signal:
 
 ---
 
-## 9. Language support — plan (2026-04-22, not yet implemented)
+## 9. Language support — plan (2026-04-22, shipped for `ru` 2026-04-23)
 
 **Decision:** English ships first and stays canonical. Non-English languages are additive strings-only files (`content/stages/<slug>.<lang>.md`). No structural fork, no data duplication.
 
 **Priority order when signal justifies translation work:**
 1. Croatian (`hr`) — partners, family, Croatian officials who verify claims.
-2. Russian (`ru`) — large incoming-contributor cohort per feedback.
+2. Russian (`ru`) — large incoming-contributor cohort per feedback. **Shipped.**
 3. German (`de`) — Blue Card / EU mobility audience.
 
-**Required before first non-English language merges:**
-- Parity-lint script (`scripts/check-i18n-parity.mjs`): build fails if `itemStrings` / `categoryNames` / `artifactNames` keys diverge between `<slug>.md` and `<slug>.<lang>.md`. Catches drift mechanically so reviewers don't have to.
-- Hugo `[languages]` block in `hugo.toml`, language switcher in header partial.
-- GitHub Actions workflow on `pull_request: paths: ['content/stages/*.md']` that calls GitHub Models free tier (`permissions: models: read`, built-in `GITHUB_TOKEN`, no PAT) to post a draft translation as a PR comment. Content edits are rare, so daily rate limits are non-binding. Model output is advisory — human translator edits and commits.
-
-**Not in scope:** machine translation without a human-in-the-loop step. Every translated string a reader sees must have been reviewed by a human translator. The LLM drafts first, it does not publish.
+**Not in scope:** fully-manual translation. The original plan of "LLM drafts, human commits" was inverted: the LLM drafts AND commits; a human edits after if quality drifts. Reasoning: for a solo-maintained project, human-in-the-loop on every content change is the actual blocker to language coverage, not quality. Quality is guarded by parity + freshness checks + glossary pins, not by a review gate.
 
 **Trigger:** land the first translation when (a) we have a contributor who reads the target language natively and is willing to own parity for the first 6 months, or (b) waitlist / GitHub-issue signal points at a specific language.
+
+---
+
+## 10. i18n sync pipeline — architecture (shipped 2026-04-23)
+
+**Decision:** LLM auto-translation with mechanical validation, bot-committed. No human-in-the-loop step before publication. Shipped for `ru`.
+
+**Components:**
+- `scripts/i18n-lib.mjs` — shared: `translationPayload`, `sourceHash` (SHA-256 over normalized payload), `compareShape` (recursive structural diff)
+- `scripts/sync-ru-translations.mjs` — walks `content/stages/*.md`, skips if `<slug>.ru.md`'s `translationMeta.sourceHash` matches; otherwise calls GitHub Models `openai/gpt-4o`, normalizes wrapper keys (`translatedPayload`, `translation`, `ru`), fills missing top-level keys from the English payload, enforces glossary via regex pass, validates shape, writes with `{ slug, weight, sitemap, ...frontMatter, translationMeta }` preserving machine keys
+- `scripts/check-i18n-parity.mjs` — build guard: per-language shape must match English
+- `scripts/check-i18n-freshness.mjs` — build guard: `translationMeta.sourceHash` must match current English hash
+- `data/i18n/glossary.ru.json` — terminology pins applied both as model prompt and post-response regex
+- `.github/workflows/i18n.yml` — on `push` to `main` touching `content/stages/**`, runs sync, commits drift with `ACTIONS_TOKEN` (PAT) so downstream `deploy.yml` fires (bot pushes with default `GITHUB_TOKEN` do not trigger workflows)
+
+**Why PAT instead of built-in token:** GitHub Actions suppresses workflow triggers from commits pushed by `GITHUB_TOKEN`. The `deploy.yml` trigger is `push: branches: [main]`, so the translation commit must be authored with a PAT to fire the deploy. Rejected `workflow_run` chaining — adds latency and failure-mode complexity.
+
+**Why SHA-256 over source payload, not git diff:** git diff would re-translate on whitespace-only changes and wouldn't re-translate a Russian file fixed by hand to match an old English version. The content-addressed hash matches translations to source state regardless of commit topology.
+
+**Why no human-in-the-loop:** solo-maintained project. Every manual gate is a broken promise waiting to happen. Quality is guarded structurally: glossary pins + shape validation + freshness checks. Human edits go into `<slug>.ru.md` directly and survive until the English hash next changes.
+
+**Known gap:** `translationPayload` does NOT cover `data/stages/*.yaml` strings (`impact`, `explanation`, `conflictNote` on trust claims; `i18n/ru.yaml` UI strings; `content/_index.ru.md` body). RU pages leak English in trust details and nav. Tracked in `EXECUTION_PLAN.md` Sprints 7 + 8.
 
 ---
 
