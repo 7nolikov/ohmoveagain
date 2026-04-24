@@ -48,8 +48,64 @@ checklist:
   - id: tax-math
     items:
       - id: effective-tax-rate
+      - id: runway-delta
+        source:
+          url: "https://7nolikov.dev/ohmoveagain/calculator/"
+          asOf: "2026-04-18"
+      - id: exit-taxes
+        source:
+          url: "https://www.oecd.org/tax/tax-policy/"
+          asOf: "2026-01-01"
 
   - id: visa-pathway
     items:
-      - id: dnv-income
+      - id: visa-audit
+        source:
+          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+          asOf: "2026-02-15"
       - id: blue-card-salary
+        appliesTo:
+          visa: [blue-card]
+      - id: dnv-income
+        appliesTo:
+          visa: [digital-nomad]
+      - id: work-permit-sponsor
+        appliesTo:
+          visa: [work-permit]
+        source:
+          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+          asOf: "2026-02-15"
+      - id: self-employment-register
+        appliesTo:
+          visa: [self-employment]
+        source:
+          url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
+          asOf: "2026-03-01"
+      - id: eu-eea-free-movement
+        appliesTo:
+          visa: [eu-eea]
+        source:
+          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+          asOf: "2026-02-15"
+      - id: family-reunification-income
+        appliesTo:
+          visa: [family-reunification]
+        source:
+          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+          asOf: "2026-02-15"
+
+  - id: reality-check
+    items:
+      - id: career-market
+        source:
+          url: "https://survey.stackoverflow.co/"
+          asOf: "2026-04-01"
+      - id: partner-alignment
+        source:
+          url: "https://www.oecd.org/els/mig/World-Migration-in-Figures.pdf"
+          asOf: "2026-04-01"
+
+artifacts:
+  - id: runway-calc
+    kind: calc
+    href: "/calculator/"

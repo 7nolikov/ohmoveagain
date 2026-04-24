@@ -73,10 +73,59 @@ checklist:
       - id: oib-issued
       - id: address-registration
       - id: residency-card
+
   - id: financial-medical
     items:
       - id: bank-account
       - id: hzzo-enrolled
       - id: tax-residency
+
+  - id: family-registration
+    items:
+      - id: oib-dependents
+        appliesTo:
+          family: [spouse, kids, spouse-kids]
+        source:
+          url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
+          asOf: "2026-03-01"
+      - id: hzzo-family
+        appliesTo:
+          family: [spouse, kids, spouse-kids]
+        source:
+          url: "https://hzzo.hr/en"
+          asOf: "2026-02-15"
+      - id: school-enrolment
+        appliesTo:
+          family: [kids, spouse-kids]
+        source:
+          url: "https://mzo.gov.hr/"
+          asOf: "2026-02-01"
+      - id: non-eu-spouse-reunification
+        appliesTo:
+          family: [spouse, spouse-kids]
+        source:
+          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+          asOf: "2026-02-15"
+
+  - id: pets-post-arrival
+    items:
+      - id: vet-visit-10d
+        appliesTo:
+          pets: [dog-cat, other]
+        source:
+          url: "https://veterinarstvo.hr/"
+          asOf: "2026-02-01"
+      - id: microchip-registered
+        appliesTo:
+          pets: [dog-cat]
+        source:
+          url: "https://www.lysacan.hr/"
+          asOf: "2026-02-01"
+      - id: dog-municipal-reg
+        appliesTo:
+          pets: [dog-cat]
+        source:
+          url: "https://www.zagreb.hr/"
+          asOf: "2026-03-01"
 
 artifacts: []

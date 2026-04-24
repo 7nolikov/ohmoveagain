@@ -63,7 +63,7 @@
       <li>
         <div class="trust-topline">
           <span class="label">{{ index $strings "label" }}</span>
-          {{ if $claim }}
+          {{ if $claim.sourceId }}
           <div class="trust-badges">
             <span class="trust-badge" data-level="{{ $claim.riskLevel }}">⚠ {{ i18n (printf "trust_risk_%s" $claim.riskLevel) }}</span>
             <span class="trust-badge" data-level="{{ $claim.uncertainty }}">≈ {{ i18n (printf "trust_uncertainty_%s" $claim.uncertainty) }}</span>
@@ -71,7 +71,7 @@
           {{ end }}
         </div>
 
-        {{ if $claim }}
+        {{ if $claim.sourceId }}
         <details class="trust-details">
           <summary>{{ i18n "trust_explanation" }}</summary>
 
@@ -98,6 +98,12 @@
             </div>
           </div>
         </details>
+        {{ else }}
+          {{ with $item.source }}
+          <a class="source" href="{{ .url }}" target="_blank">
+            {{ i18n "source_label" }} · {{ .asOf }}
+          </a>
+          {{ end }}
         {{ end }}
 
         {{ with (index $strings "note") }}
