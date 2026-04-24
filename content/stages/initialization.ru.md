@@ -115,15 +115,11 @@ gotchas:
   - Регистрация адреса в некоторых муниципалитетах требует нотариально
     заверенной подписи арендодателя.
 artifactNames: {}
-body: "Оформление местной идентификации. В Хорватии последовательность
-  фиксированная: сначала OIB, затем регистрация адреса, затем банковский счёт,
-  затем медицинская страховка. Каждый шаг открывает следующий — пропустить
-  порядок означает потерять недели."
 translationMeta:
   sourceLang: en
   targetLang: ru
   sourceFile: content/stages/initialization.md
-  sourceHash: 125c1cb89afa705597dff1e3709b28afff44e5680d51b23d77194bb2c8652479
+  sourceHash: 117d7ca7dab034dc02c14736ea261c1b4f206aee181166fec58055f5ec535179
   sourceCommit: 4d27954b50afaf25545f923af97b509024d3d363
   status: auto-updated
 ---

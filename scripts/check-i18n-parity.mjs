@@ -1,88 +1,76 @@
 #!/usr/bin/env node
-// check-i18n-parity.mjs — fail the build if a translated stage file is missing keys
-// that exist in the English source.
+// Fails the build if a translated stage file drifts from the English source:
+// different set of sub-keys under itemStrings/categoryNames/artifactNames,
+// or different gotchas list length.
 //
-// For each content/stages/<slug>.<lang>.md that exists alongside content/stages/<slug>.md,
-// checks that itemStrings, categoryNames, gotchas, and artifactNames keys all match.
-//
-// Usage:
-//   node scripts/check-i18n-parity.mjs
-//
-// Exit code 1 if any translated file is missing keys present in the English source.
+// Uses the real YAML parser via i18n-lib to avoid false positives on
+// line-wrapped list items produced by yaml.stringify.
 
-import { readdirSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import fs from 'node:fs';
+import path from 'node:path';
+import { STAGES_DIR, listEnglishStageFiles, loadStage } from './i18n-lib.mjs';
 
-const STAGES_DIR = 'content/stages';
+const OBJECT_FIELDS = ['itemStrings', 'categoryNames', 'artifactNames'];
+const LIST_FIELDS = ['gotchas', 'requires', 'documents'];
+const LANG_RE = /^(.+)\.([a-z]{2})\.md$/i;
 
-function extractFrontmatter(src) {
-  const m = src.match(/^---\n([\s\S]*?)\n---/);
-  return m ? m[1] : '';
+function listTranslatedFiles() {
+  return fs.readdirSync(STAGES_DIR).filter((f) => LANG_RE.test(f));
 }
-
-function extractKeys(fm, field) {
-  const section = fm.match(new RegExp(`^${field}:\\s*\\n((?:[ \\t]+.+\\n?)+)`, 'm'));
-  if (!section) return new Set();
-  const keys = new Set();
-  for (const line of section[1].split('\n')) {
-    const m = line.match(/^[ \t]+([a-z][a-z0-9-]*):/);
-    if (m) keys.add(m[1]);
-  }
-  return keys;
-}
-
-function extractList(fm, field) {
-  const section = fm.match(new RegExp(`^${field}:\\s*\\n((?:[ \\t]+-[^\\n]+\\n?)+)`, 'm'));
-  if (!section) return 0;
-  return (section[1].match(/^[ \t]+-/gm) || []).length;
-}
-
-const files = readdirSync(STAGES_DIR).filter(f => f.endsWith('.md'));
-const enFiles = files.filter(f => !f.includes('.') || f.endsWith('.md') && f.split('.').length === 2);
-const langFiles = files.filter(f => f.split('.').length === 3);
 
 let errors = 0;
+const translated = listTranslatedFiles();
 
-for (const langFile of langFiles) {
-  const parts = langFile.split('.');
-  const slug = parts[0];
-  const lang = parts[1];
+if (translated.length === 0) {
+  console.log('i18n parity: no translated stage files found — skipping.');
+  process.exit(0);
+}
+
+const englishSet = new Set(listEnglishStageFiles());
+
+for (const langFile of translated) {
+  const [, slug, lang] = langFile.match(LANG_RE);
   const enFile = `${slug}.md`;
 
-  if (!enFiles.includes(enFile)) {
+  if (!englishSet.has(enFile)) {
     console.log(`WARN: ${langFile} has no English source ${enFile}`);
     continue;
   }
 
-  const enSrc = readFileSync(join(STAGES_DIR, enFile), 'utf8');
-  const langSrc = readFileSync(join(STAGES_DIR, langFile), 'utf8');
-  const enFm = extractFrontmatter(enSrc);
-  const langFm = extractFrontmatter(langSrc);
+  const enDoc = loadStage(path.join(STAGES_DIR, enFile));
+  const langDoc = loadStage(path.join(STAGES_DIR, langFile));
+  const enFm = enDoc.frontMatter || {};
+  const langFm = langDoc.frontMatter || {};
 
-  for (const field of ['itemStrings', 'categoryNames', 'artifactNames']) {
-    const enKeys = extractKeys(enFm, field);
-    const langKeys = extractKeys(langFm, field);
+  for (const field of OBJECT_FIELDS) {
+    const enObj = enFm[field] || {};
+    const langObj = langFm[field] || {};
+    if (typeof enObj !== 'object' || Array.isArray(enObj)) continue;
+    const enKeys = Object.keys(enObj);
+    if (enKeys.length === 0) continue;
     for (const key of enKeys) {
-      if (!langKeys.has(key)) {
+      if (!(key in langObj)) {
         console.log(`FAIL [${lang}] ${slug}: missing ${field}.${key}`);
+        errors++;
+      }
+    }
+    for (const key of Object.keys(langObj)) {
+      if (!(key in enObj)) {
+        console.log(`FAIL [${lang}] ${slug}: unexpected ${field}.${key}`);
         errors++;
       }
     }
   }
 
-  const enGotchas = extractList(enFm, 'gotchas');
-  const langGotchas = extractList(langFm, 'gotchas');
-  if (enGotchas > 0 && langGotchas !== enGotchas) {
-    console.log(`FAIL [${lang}] ${slug}: gotchas count mismatch (en=${enGotchas}, ${lang}=${langGotchas})`);
-    errors++;
+  for (const field of LIST_FIELDS) {
+    const enList = Array.isArray(enFm[field]) ? enFm[field] : [];
+    const langList = Array.isArray(langFm[field]) ? langFm[field] : [];
+    if (enList.length > 0 && langList.length !== enList.length) {
+      console.log(`FAIL [${lang}] ${slug}: ${field} count mismatch (en=${enList.length}, ${lang}=${langList.length})`);
+      errors++;
+    }
   }
 }
 
-if (langFiles.length === 0) {
-  console.log('i18n parity: no translated stage files found — skipping checks.');
-  process.exit(0);
-}
-
-console.log(`\ni18n parity: checked ${langFiles.length} translated file(s) — ${errors} error(s).`);
-if (errors > 0) process.exit(1);
-process.exit(0);
+console.log(`\ni18n parity: checked ${translated.length} translated file(s) — ${errors} error(s).`);
+process.exit(errors > 0 ? 1 : 0);

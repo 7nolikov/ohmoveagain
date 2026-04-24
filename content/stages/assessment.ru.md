@@ -92,15 +92,11 @@ gotchas:
     стресса.
 artifactNames:
   runway-calc: Калькулятор запаса (HR / MNE / DE / PT / EE)
-body: Считайте цифры перед тем, как принять решение. Смоделируйте налоговое
-  резидентство, стоимость жизни, карьерные возможности и реальную цену *остаться
-  там, где вы сейчас*. Если сравнение не выходит в плюс, правильное решение —
-  остановиться здесь, а не переезжать.
 translationMeta:
   sourceLang: en
   targetLang: ru
   sourceFile: content/stages/assessment.md
-  sourceHash: 01fa77143cc6343c576e6a3b5f79992c6273afb2715edc3dbc282f0738a0c058
+  sourceHash: 8726f5e5a3a3e2af90a712a0959a6398bae81b060cd44405ea38b07c7b43d049
   sourceCommit: 4d27954b50afaf25545f923af97b509024d3d363
   status: auto-updated
 ---

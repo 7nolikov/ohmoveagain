@@ -73,15 +73,11 @@ gotchas:
   - Хорватия перешла на EUR в 2023 году — старые куны больше не являются
     законным платёжным средством.
 artifactNames: {}
-body: Пересечение границы, временное жильё, первые 72 часа. Держите все
-  оригиналы при себе, не в зарегистрированном багаже. Рассчитывайте на задержки,
-  растерянных сотрудников и неожиданные расходы — планируйте вдвое больше
-  хлопот, чем ожидаете.
 translationMeta:
   sourceLang: en
   targetLang: ru
   sourceFile: content/stages/migration.md
-  sourceHash: 81c3a9f23c8a9de62a25d4b7571ef602ea6abdd68fd48f2673e98fefeae151f1
+  sourceHash: abadadb88911b9880b9ca363be1a6b96bfef75e968679f4f6b7a9aa5cca789d3
   sourceCommit: 4d27954b50afaf25545f923af97b509024d3d363
   status: auto-updated
 ---

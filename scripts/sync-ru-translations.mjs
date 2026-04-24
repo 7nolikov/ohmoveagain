@@ -72,19 +72,26 @@ function unwrapTranslatedPayload(payload) {
 }
 
 function completePayloadShape(payload, englishPayload) {
-  const completed = { ...englishPayload, ...payload };
+  const completed = {};
+  for (const key of Object.keys(englishPayload)) {
+    completed[key] = Object.prototype.hasOwnProperty.call(payload, key) ? payload[key] : englishPayload[key];
+  }
 
   for (const field of ['requires', 'documents', 'gotchas']) {
+    if (!(field in englishPayload)) continue;
     if (!Array.isArray(completed[field])) completed[field] = englishPayload[field] || [];
   }
 
   for (const field of ['categoryNames', 'itemStrings', 'artifactNames']) {
+    if (!(field in englishPayload)) continue;
     if (!completed[field] || typeof completed[field] !== 'object' || Array.isArray(completed[field])) {
       completed[field] = englishPayload[field] || {};
     }
   }
 
-  if (typeof completed.body !== 'string') completed.body = englishPayload.body || '';
+  if ('body' in englishPayload && typeof completed.body !== 'string') {
+    completed.body = englishPayload.body || '';
+  }
 
   return completed;
 }
@@ -226,11 +233,13 @@ for (const file of listEnglishStageFiles()) {
     process.exit(1);
   }
 
+  const { body: translatedBody, ...translatedFrontmatter } = translated;
+
   const out = {
     slug: existing?.frontMatter?.slug ?? enDoc.frontMatter.slug,
     weight: existing?.frontMatter?.weight ?? enDoc.frontMatter.weight,
     sitemap: existing?.frontMatter?.sitemap ?? enDoc.frontMatter.sitemap,
-    ...translated,
+    ...translatedFrontmatter,
     translationMeta: {
       sourceLang: 'en',
       targetLang: 'ru',
@@ -241,6 +250,6 @@ for (const file of listEnglishStageFiles()) {
     }
   };
 
-  saveStage(ruPath, out, translated.body);
+  saveStage(ruPath, out, translatedBody);
   console.log('updated', ruPath);
 }

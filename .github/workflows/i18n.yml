@@ -1,16 +1,14 @@
-name: "i18n translate + validate content"
+name: i18n translate + validate content
 
 on:
   push:
-    branches: [main, temp]
+    branches: [main]
     paths:
       - 'content/stages/**/*.md'
-      - 'scripts/**'
       - 'data/i18n/**'
   pull_request:
     paths:
       - 'content/stages/**/*.md'
-      - 'scripts/**'
       - 'data/i18n/**'
 
 concurrency:
@@ -19,10 +17,8 @@ concurrency:
 
 jobs:
   translation-pipeline:
-    name: "Translation sync + validation"
+    name: Translation sync + validation
     runs-on: ubuntu-latest
-
-    if: github.actor != 'github-actions[bot]'
 
     permissions:
       contents: write
@@ -32,6 +28,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.ACTIONS_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -39,38 +36,28 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci || npm install
 
       - name: Sync translations (AI)
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
         run: npm run i18n:sync:ru
 
-      - name: Detect translation changes
-        id: changes
-        run: |
-          if git diff --quiet; then
-            echo "changed=false" >> $GITHUB_OUTPUT
-          else
-            echo "changed=true" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Commit updated translations
-        if: steps.changes.outputs.changed == 'true'
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add .
-          git commit -m "chore(i18n): auto-sync translations [skip ci]"
-          git push
-
       - name: Validate translation structure (parity)
         run: npm run i18n:parity
 
       - name: Validate translation freshness (strict)
+        run: npm run i18n:freshness
+
+      - name: Commit updated translations
+        if: github.event_name == 'push'
         run: |
-          npm run i18n:freshness | tee output.txt
-          if grep -q "stale:" output.txt; then
-            echo "Translations are stale"
-            exit 1
+          if git diff --quiet; then
+            echo "no translation changes"
+            exit 0
           fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content/stages
+          git commit -m "chore(i18n): auto-sync translations"
+          git push

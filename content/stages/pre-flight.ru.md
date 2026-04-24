@@ -156,15 +156,11 @@ gotchas:
   - Некоторые консульства требуют оригиналы И нотариально заверенные копии.
     Возьмите и то, и другое.
 artifactNames: {}
-body: Всё, что нужно *до* посадки в самолёт. Апостилированные свидетельства о
-  рождении, справки об отсутствии судимости, переведённые дипломы, документы для
-  питомцев, выбор жилья. Рассчитывайте, что этот этап займёт вдвое больше, чем
-  вы думаете с самого начала.
 translationMeta:
   sourceLang: en
   targetLang: ru
   sourceFile: content/stages/pre-flight.md
-  sourceHash: 7d5cef888dc800cc75638186e696b7cc70534d8b24cbc46e074908a2068fa2df
+  sourceHash: 7e16881edf842d89b37cfdcfec139ec103358cb720c44c5425a333748948a63d
   sourceCommit: 4d27954b50afaf25545f923af97b509024d3d363
   status: auto-updated
 ---

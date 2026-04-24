@@ -11,14 +11,11 @@ categoryNames: {}
 itemStrings: {}
 gotchas: []
 artifactNames: {}
-body: Пять этапов. Каждый включает предварительные требования, документы,
-  которые вы получите, подробный чек-лист и распространенные подводные камни.
-  Следуйте по порядку — последующие этапы предполагают выполнение предыдущих.
 translationMeta:
   sourceLang: en
   targetLang: ru
   sourceFile: content/stages/_index.md
-  sourceHash: 6272259355b31a308bd066e8dd9675887864ad30d15f704b774ef8b3df5fc7f9
+  sourceHash: 8720501db452e4d0248cb1dd89eb609ec80f018dc03b5b1e83543bc11bfb123d
   sourceCommit: 4d27954b50afaf25545f923af97b509024d3d363
   status: auto-generated
 ---

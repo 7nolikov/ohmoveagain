@@ -21,7 +21,7 @@ export function splitFrontMatter(raw) {
   if (!raw.startsWith('---\n')) throw new Error('missing front matter');
   const end = raw.indexOf('\n---\n', 4);
   if (end === -1) throw new Error('missing closing front matter');
-  return { frontMatterRaw: raw.slice(4, end), body: raw.slice(end + 5).replace(/\s+$/, '') };
+  return { frontMatterRaw: raw.slice(4, end), body: raw.slice(end + 5).trim() };
 }
 
 export function loadStage(filePath) {
