@@ -81,23 +81,23 @@ gotchas:
   - "Address registration requires landlord's notarized signature in some municipalities."
 claimStrings:
   oib-issued:
-    impact: "All downstream steps blocked"
+    impact: "operational-delay"
     explanation: "OIB is the root identifier for almost every administrative action in Croatia."
   address-registration:
-    impact: "Residency process blocked"
+    impact: "legal-noncompliance"
     explanation: "Address registration is a structural dependency for identity and legal presence."
   residency-card:
-    impact: "Legal status incomplete"
+    impact: "legal-noncompliance"
     explanation: "Residency card formalises legal presence and unlocks financial and employment systems."
   bank-account:
-    impact: "Financial friction"
+    impact: "financial-cost"
     explanation: "Bank access determines salary flow and everyday financial operations."
     conflictNote: "Non-resident vs resident account conditions differ significantly."
   hzzo-enrolled:
-    impact: "Healthcare gap"
+    impact: "healthcare-gap"
     explanation: "Public health coverage begins only after registration is complete."
   tax-residency:
-    impact: "Incorrect tax obligations"
+    impact: "financial-cost"
     explanation: "Tax residency affects global income reporting and liability."
     conflictNote: "Residency determination is based on facts, not just certificate requests."
 ---

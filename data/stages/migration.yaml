@@ -4,7 +4,7 @@ sources:
   - id: eu-schengen
     url: "https://home-affairs.ec.europa.eu/policies/schengen_en"
     type: supranational
-    authorityScore: 5
+    authorityScore: 3
     lastChecked: "2026-01-01"
   - id: hr-customs
     url: "https://carina.gov.hr/en"
@@ -19,7 +19,7 @@ sources:
   - id: eu-pets
     url: "https://food.ec.europa.eu/animals/movement-pets_en"
     type: supranational
-    authorityScore: 5
+    authorityScore: 3
     lastChecked: "2026-03-01"
   - id: iata-live-animals
     url: "https://www.iata.org/en/programs/cargo/live-animals/"

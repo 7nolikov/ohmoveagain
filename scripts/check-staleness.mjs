@@ -44,7 +44,7 @@ for (const root of ROOTS) {
     if (!/\.(md|ya?ml)$/.test(file)) continue;
     const lines = readFileSync(file, 'utf8').split('\n');
     for (let i = 0; i < lines.length; i++) {
-      const asOf = lines[i].match(/^\s*asOf:\s*["']?(\d{4}-\d{2}-\d{2})["']?/);
+      const asOf = lines[i].match(/^\s*(?:asOf|lastChecked|lastReviewed):\s*["']?(\d{4}-\d{2}-\d{2})["']?/);
       if (asOf) {
         const ts = Date.parse(asOf[1] + 'T00:00:00Z');
         if (Number.isNaN(ts)) continue;

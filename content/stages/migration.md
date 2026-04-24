@@ -60,38 +60,38 @@ gotchas:
   - "Croatia switched to EUR in 2023 — old kuna cash is no longer legal tender."
 claimStrings:
   border-method:
-    impact: "Entry assumptions fail at border"
+    impact: "operational-delay"
     explanation: "Border mechanics affect stamps, proof expectations and travel routing assumptions."
     conflictNote: "Schengen and non-Schengen routing can change what officers check in practice."
   originals-cabin:
-    impact: "Critical document loss"
+    impact: "operational-delay"
     explanation: "Originals are irreplaceable during the arrival window and lost luggage can collapse the next stage."
   customs-proof:
-    impact: "Border delay or additional scrutiny"
+    impact: "operational-delay"
     explanation: "Printed accommodation and funds proof reduce friction when a border check turns manual."
     conflictNote: "Digital acceptance varies by officer and travel context."
   accommodation-30d:
-    impact: "Arrival instability"
+    impact: "suboptimal-planning"
     explanation: "Short booking windows create pressure and bad housing decisions right when identity setup begins."
   ground-transport:
-    impact: "Arrival friction and wasted time"
+    impact: "suboptimal-planning"
     explanation: "First-mile logistics failures compound stress in the first 72 hours."
     conflictNote: "Ride-hailing coverage differs sharply by city and arrival time."
   eu-sim:
-    impact: "Connectivity gap on arrival"
+    impact: "operational-delay"
     explanation: "Connectivity is a dependency for banking, landlord contact, transport and emergency changes."
   emergency-cash:
-    impact: "Payment failure during arrival"
+    impact: "financial-cost"
     explanation: "Cards fail more often during geo-changes than travellers expect."
   vet-health-cert:
-    impact: "Pet denied travel"
+    impact: "operational-delay"
     explanation: "Health certificate timing is strict and invalid documents fail at check-in or border inspection."
   airline-booking:
-    impact: "Pet transport cancellation"
+    impact: "operational-delay"
     explanation: "Pet space is operationally scarce and airline handling can diverge from generic pet guidance."
     conflictNote: "Airline-level pet acceptance changes faster than legal transport rules."
   carrier-dimensions:
-    impact: "Check-in failure for pet"
+    impact: "operational-delay"
     explanation: "Carrier compliance is enforced physically, not theoretically, at the airport."
     conflictNote: "Airlines and even staff interpretation can differ on the day of travel."
 ---

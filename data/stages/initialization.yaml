@@ -64,6 +64,7 @@ claims:
     impact: "Incorrect tax obligations"
     uncertainty: medium
     sourceId: porezna-residency
+    lastReviewed: "2026-04-24"
     explanation: "Tax residency affects global income reporting and liability."
     conflictNote: "Residency determination is based on facts, not just certificate requests."
 

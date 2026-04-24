@@ -57,28 +57,28 @@ gotchas:
   - "Tax residency + client location + IP ownership determine where you owe. Don't freelance this."
 claimStrings:
   accountant:
-    impact: "Operational inefficiency"
+    impact: "suboptimal-planning"
     explanation: "Local accounting practices define compliance and reporting structure."
   business-structure:
-    impact: "Long-term tax inefficiency"
+    impact: "financial-cost"
     explanation: "Structure decisions compound over years and are hard to reverse cleanly."
     conflictNote: "Best structure depends on income profile and liability tolerance."
   blue-card-sideincome:
-    impact: "Permit violation"
+    impact: "legal-noncompliance"
     explanation: "Secondary work may conflict with permit conditions."
     conflictNote: "Interpretation differs across member states and contracts."
   dnv-renewal:
-    impact: "Visa renewal failure"
+    impact: "visa-rejection"
     explanation: "Renewal rules must be satisfied continuously, not just at entry."
   vat-threshold:
-    impact: "Tax non-compliance"
+    impact: "legal-noncompliance"
     explanation: "VAT obligations change financial reporting and pricing structure."
     conflictNote: "Threshold values change periodically and require rechecking."
   invoicing-bookkeeping:
-    impact: "Operational disruption"
+    impact: "operational-delay"
     explanation: "Compliance systems must align with Croatian fiscalization requirements."
   pension-strategy:
-    impact: "Suboptimal long-term planning"
+    impact: "suboptimal-planning"
     explanation: "Pension contributions can be optimized but are often overlooked."
 ---
 

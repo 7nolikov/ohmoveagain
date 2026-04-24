@@ -10,7 +10,7 @@ sources:
   - id: eu-blue-card
     url: "https://home-affairs.ec.europa.eu/policies/migration-and-asylum/legal-migration-and-integration/work_en"
     type: supranational
-    authorityScore: 5
+    authorityScore: 3
     lastChecked: "2026-01-01"
 
   - id: porezna
@@ -33,6 +33,7 @@ claims:
     impact: "Visa rejection"
     uncertainty: medium
     sourceId: mup-main
+    lastReviewed: "2026-04-24"
     explanation: "This requirement determines whether you qualify before you spend time and money on an application."
     conflictNote: "Income thresholds can change annually, so stale numbers create false confidence."
 
@@ -41,6 +42,7 @@ claims:
     impact: "Ineligible application"
     uncertainty: medium
     sourceId: eu-blue-card
+    lastReviewed: "2026-04-24"
     explanation: "Salary thresholds are a gatekeeper for Blue Card eligibility and need to be checked before signing assumptions into your relocation plan."
     conflictNote: "Threshold interpretation can vary by year and local implementation details."
 

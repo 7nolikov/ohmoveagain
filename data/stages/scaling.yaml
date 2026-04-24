@@ -14,7 +14,7 @@ sources:
   - id: eu-blue-card
     url: "https://home-affairs.ec.europa.eu/policies/migration-and-asylum/legal-migration-and-integration/work_en"
     type: supranational
-    authorityScore: 5
+    authorityScore: 3
     lastChecked: "2026-01-01"
   - id: mup-stay
     url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
@@ -24,7 +24,7 @@ sources:
   - id: eu-vat
     url: "https://taxation-customs.ec.europa.eu/vat-rules-by-country/croatia_en"
     type: supranational
-    authorityScore: 5
+    authorityScore: 3
     lastChecked: "2026-01-01"
   - id: regos
     url: "https://www.regos.hr/en/"

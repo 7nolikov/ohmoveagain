@@ -80,8 +80,9 @@
             <div class="trust-block">
 
               {{- $cs := index $claimStrings $claim.id | default dict -}}
+              {{- $impactKey := index $cs "impact" | default $claim.impact -}}
               <div class="trust-grid">
-                <div class="trust-line"><strong>{{ i18n "trust_impact" }}:</strong> {{ index $cs "impact" | default $claim.impact }}</div>
+                <div class="trust-line"><strong>{{ i18n "trust_impact" }}:</strong> {{ i18n (printf "trust_impact_%s" (replace $impactKey "-" "_")) | default $impactKey }}</div>
                 <div class="trust-line"><strong>{{ i18n "trust_source_type" }}:</strong> {{ i18n (printf "trust_source_type_%s" $src.type) }}</div>
               </div>
 
