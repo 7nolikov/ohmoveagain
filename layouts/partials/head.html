@@ -3,7 +3,7 @@
 {{- $desc := default site.Params.description .Description -}}
 {{- $ogSlug := "" -}}
 {{- if eq .Section "stages" -}}{{- $ogSlug = printf "og/stage-%d.png" .Weight -}}{{- end -}}
-{{- if eq .File.ContentBaseName "calculator" -}}{{- $ogSlug = "og/calculator.png" -}}{{- end -}}
+{{- with .File -}}{{- if eq .ContentBaseName "calculator" -}}{{- $ogSlug = "og/calculator.png" -}}{{- end -}}{{- end -}}
 {{- $ogFile := cond (ne $ogSlug "") $ogSlug (default site.Params.ogImage .Params.ogImage) -}}
 {{- $ogImage := absURL $ogFile -}}
 {{- $canonical := .Permalink -}}

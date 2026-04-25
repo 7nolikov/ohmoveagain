@@ -35,7 +35,7 @@
         {{ with .booking }}
         <dt>Booking</dt>
         <dd>
-          <a href="{{ . }}" target="_blank" rel="noopener noreferrer">{{ $.booking | default "Book online ↗" }}Book online ↗</a>
+          <a href="{{ . }}" target="_blank" rel="noopener noreferrer">Book online ↗</a>
           {{ with $.bookingNote }}<br><span class="office-note">{{ . }}</span>{{ end }}
         </dd>
         {{ end }}
