@@ -300,7 +300,7 @@ header.top {
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
-.checklist li .label-text { flex: 1; min-width: 0; }
+.checklist li .label-text { flex: 1; min-width: 0; overflow-wrap: anywhere; }
 .checklist li .label { color: var(--fg); display: block; }
 .checklist li .note  { color: var(--fg-dim); font-size: 0.85rem; margin-top: 4px; display: block; }
 .checklist li.done { border-left-color: var(--accent-dim); background: rgba(126,231,135,0.04); }
@@ -770,7 +770,7 @@ footer.foot p { margin: 0 0 0.6em; }
     padding-top: 4px;
     border-top: 1px dashed var(--border);
   }
-  .persona-select { flex: 1 1 auto; max-width: none; font-size: 16px; min-height: 36px; }
+  .persona-select { flex: 1 1 auto; max-width: none; font-size: 16px; min-height: 44px; }
   .persona-label { width: 100%; margin-bottom: 2px; }
   .persona-label-compact { display: inline-block; }
 }

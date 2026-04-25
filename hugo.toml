@@ -31,6 +31,7 @@ disableKinds = ["taxonomy", "term"]
   githubURL = "https://github.com/7nolikov/ohmoveagain"
   twitterHandle = "@7nolikov"
   cfAnalyticsToken = "0813f8e9b0fe443ea2b3fb64f64f9893"
+  trustAlgoVersion = "1.0"
 
 [markup.goldmark.renderer]
   unsafe = true

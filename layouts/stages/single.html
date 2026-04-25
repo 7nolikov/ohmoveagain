@@ -38,7 +38,7 @@
 <section class="trust-summary">
   <div class="trust-summary-title">{{ i18n "trust_summary" }}</div>
   <div class="trust-summary-row">
-    <span class="trust-score-pill" data-level="{{ $level }}" title="{{ i18n "trust_score" }}: {{ $avg }}/100">
+    <span class="trust-score-pill" data-level="{{ $level }}" title="{{ i18n "trust_score" }}: {{ $avg }}/100 · algo v{{ site.Params.trustAlgoVersion }}">
       {{ i18n (printf "trust_score_%s" $level) }} {{ i18n "trust_confidence" }}
     </span>
   </div>
