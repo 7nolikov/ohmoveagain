@@ -1,0 +1,83 @@
+# Official government forms — links only, no re-hosted content.
+# Each entry: sourceAuthority owns the form; url points to the official source.
+# lastChecked: when the URL and title were last verified.
+
+- id: mup-dn-application
+  title: "Digital Nomad Visa — application form"
+  sourceAuthority: "MUP (Ministry of Interior)"
+  category: visa
+  url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+  note: "Form is not separately downloadable — submitted in person at a MUP office or through an authorised agent. Page lists required documents."
+  lastChecked: "2026-04-22"
+
+- id: mup-blue-card-application
+  title: "EU Blue Card — application via employer"
+  sourceAuthority: "MUP (Ministry of Interior)"
+  category: visa
+  url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+  note: "Employer submits on behalf of the applicant. Link covers the full stay-in-Croatia page with all permit types."
+  lastChecked: "2026-04-22"
+
+- id: porezna-oib1
+  title: "OIB application — Form OIB-1 (personal identification number)"
+  sourceAuthority: "Porezna uprava (Tax Administration)"
+  category: registration
+  url: "https://www.porezna-uprava.hr/en/Pages/oib.aspx"
+  note: "OIB-1 form can be submitted in person at any Porezna uprava office or via the e-Porezna portal for holders of a valid eID."
+  lastChecked: "2026-03-01"
+
+- id: mup-address-registration
+  title: "Address registration — prijava/odjava boravišta"
+  sourceAuthority: "MUP (Ministry of Interior)"
+  category: registration
+  url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+  note: "Must be done at a MUP office within 3 days of taking up residency. Landlord must be present or provide a signed consent. Bring rental contract."
+  lastChecked: "2026-04-22"
+
+- id: hzzo-t1
+  title: "HZZO health insurance enrollment — Form T-1"
+  sourceAuthority: "HZZO (Croatian Health Insurance Fund)"
+  category: health-insurance
+  url: "https://hzzo.hr/en/how-to-become-insured"
+  note: "T-1 form for employees is submitted by the employer. Self-employed submit directly to HZZO."
+  lastChecked: "2026-02-15"
+
+- id: hzzo-t2
+  title: "HZZO family member enrollment — Form T-2"
+  sourceAuthority: "HZZO (Croatian Health Insurance Fund)"
+  category: health-insurance
+  url: "https://hzzo.hr/en/how-to-become-insured"
+  note: "Used to enroll dependents (spouse, children) as insured family members of the primary holder."
+  lastChecked: "2026-02-15"
+
+- id: mup-criminal-background
+  title: "Criminal background check — request (kaznena evidencija)"
+  sourceAuthority: "Ministry of Justice (Ministarstvo pravosuđa)"
+  category: documents
+  url: "https://pravosudje.gov.hr/UserDocsImages/dokumenti/Pristup%20informacijama/Ispisi%20iz%20kaznene%20evidencije/Zahtjev%20za%20ispis%20iz%20kaznene%20evidencije.pdf"
+  note: "Issued from the original country's equivalent authority (not Croatian), then apostilled. Croatia does not issue this for foreign nationals. Request the equivalent from your country's Ministry of Justice."
+  lastChecked: "2026-02-01"
+
+- id: hcch-apostille
+  title: "Apostille — Hague Convention guide"
+  sourceAuthority: "HCCH (Hague Conference on Private International Law)"
+  category: documents
+  url: "https://www.hcch.net/en/instruments/conventions/specialised-sections/apostille"
+  note: "Apostilles are issued by the Competent Authority in the country that issued the original document. Use the HCCH Apostille Section to identify the correct authority in your origin country."
+  lastChecked: "2026-01-01"
+
+- id: eu-pet-passport
+  title: "EU Pet Passport — official guide"
+  sourceAuthority: "EU Commission (DG SANTE)"
+  category: pets
+  url: "https://food.ec.europa.eu/animals/movement-pets_en"
+  note: "Pet passport is issued by an accredited (official) vet in your origin country. Contains microchip number, rabies vaccination record, and (if required) titer test result."
+  lastChecked: "2026-03-01"
+
+- id: fina-business-registration
+  title: "Business registration — paušalni obrt or d.o.o."
+  sourceAuthority: "FINA (Financial Agency)"
+  category: business
+  url: "https://www.fina.hr/en/start-business"
+  note: "Paušalni obrt (sole trader under the flat-rate cap) is the simplest structure for freelancers. FINA processes the registration. OIB is required before you can register."
+  lastChecked: "2026-02-15"

@@ -6,9 +6,13 @@
     "i18n:parity": "node scripts/check-i18n-parity.mjs",
     "i18n:ui:parity": "node scripts/check-ui-i18n-parity.mjs",
     "i18n:freshness": "node scripts/check-i18n-freshness.mjs",
-    "i18n:sync:ru": "node scripts/sync-ru-translations.mjs --all"
+    "i18n:sync:ru": "node scripts/sync-ru-translations.mjs --all",
+    "gen:og": "node scripts/gen-og.mjs"
   },
   "dependencies": {
     "yaml": "2.8.1"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2"
   }
 }

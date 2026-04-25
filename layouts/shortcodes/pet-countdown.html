@@ -1,0 +1,159 @@
+<div class="pet-countdown" x-data="petCountdown()" x-cloak>
+  <h3 class="pet-countdown-title">Pet travel deadline calculator</h3>
+  <p class="pet-countdown-desc">
+    Enter your planned flight date. The calculator works backwards through the mandatory
+    EU pet-passport sequence and shows the deadline for each step.
+  </p>
+
+  <div class="pet-countdown-form">
+    <label for="pc-flight-date">Flight date</label>
+    <input id="pc-flight-date" type="date" x-model="flightDate" :min="today" @change="calc">
+  </div>
+
+  <template x-if="flightDate && deadlines">
+    <div class="pet-countdown-results">
+      <table class="pc-table">
+        <thead>
+          <tr>
+            <th>Step</th>
+            <th>Deadline</th>
+            <th>Days from today</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template x-for="d in deadlines" :key="d.id">
+            <tr :class="d.status">
+              <td>
+                <strong x-text="d.label"></strong>
+                <div class="pc-note" x-text="d.note"></div>
+              </td>
+              <td x-text="d.date"></td>
+              <td x-text="d.daysFromToday > 0 ? '+' + d.daysFromToday + ' days' : d.daysFromToday === 0 ? 'today' : Math.abs(d.daysFromToday) + ' days ago'"></td>
+              <td>
+                <span class="pc-status" x-text="d.statusLabel"></span>
+              </td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+      <p class="pet-countdown-warn" x-show="anyMissed">
+        ⚠ One or more deadlines have already passed for your chosen flight date.
+        Either adjust your flight date or contact a vet immediately.
+      </p>
+      <p class="pet-countdown-source">
+        Sequence based on
+        <a href="https://food.ec.europa.eu/animals/movement-pets_en" target="_blank" rel="noopener noreferrer">EU Commission — movement of pet animals</a>
+        (verified 2026-03-01). Applies when origin country is <strong>not</strong> on the EU listed-country table —
+        check <a href="https://food.ec.europa.eu/animals/movement-pets/non-eu-countries-listed_en" target="_blank" rel="noopener noreferrer">listed countries</a> first.
+        Not legal advice — verify with your vet and the destination country authority.
+      </p>
+    </div>
+  </template>
+</div>
+
+<script>
+function petCountdown() {
+  return {
+    flightDate: '',
+    deadlines: null,
+    anyMissed: false,
+    today: new Date().toISOString().slice(0, 10),
+    fmt(d) {
+      return d.toISOString().slice(0, 10);
+    },
+    daysDiff(isoDate) {
+      const t = new Date(); t.setHours(0,0,0,0);
+      const d = new Date(isoDate); d.setHours(0,0,0,0);
+      return Math.round((d - t) / 86400000);
+    },
+    addDays(isoDate, n) {
+      const d = new Date(isoDate);
+      d.setDate(d.getDate() + n);
+      return this.fmt(d);
+    },
+    subDays(isoDate, n) { return this.addDays(isoDate, -n); },
+    calc() {
+      if (!this.flightDate) { this.deadlines = null; return; }
+      const flight = this.flightDate;
+
+      // Sequence (working backwards from flight date):
+      // 1. Microchip — before anything else; must precede rabies vaccine
+      // 2. Rabies vaccine — must be given after microchip; wait 21 days after vaccination
+      //    → latest rabies vaccine date = flight - 21 days
+      // 3. Titer test (unlisted countries) — at least 3 months (90 days) after rabies vaccine,
+      //    and result must be <12 months old at entry
+      //    → rabies vaccine must be at most flight - 21 - 90 = flight - 111 days
+      //    → titer test can be drawn earliest 90 days after vaccine
+      // 4. EU Pet Passport or veterinary certificate — issued by accredited vet
+      //    → at least 10 days before travel (fits within the 21-day wait), so covered by step 2
+      // 5. Health certificate — issued by official vet within 10 days of travel
+      //    → deadline = flight - 10 days (latest possible)
+
+      // For unlisted-country path (the harder path):
+      const rabiesLatest    = this.subDays(flight, 21);   // latest to get vaccine and still comply
+      const vaccineMust     = this.subDays(flight, 111);  // must vaccinate by here for titer to be valid
+      const titerEarliest   = this.addDays(vaccineMust, 90);
+      const titerLatest     = this.subDays(flight, 30);   // result valid up to 12mo but last lab turnaround buffer
+      const microchipLatest = this.subDays(vaccineMust, 1); // microchip must precede vaccine
+      const healthCertFrom  = this.subDays(flight, 10);
+      const healthCertTo    = this.subDays(flight, 1);
+
+      const today = new Date(); today.setHours(0,0,0,0);
+
+      const statusOf = (isoDate, isRange) => {
+        const diff = this.daysDiff(isoDate);
+        if (diff < 0) return { status: 'pc-missed', statusLabel: '✗ missed' };
+        if (diff <= 14) return { status: 'pc-urgent', statusLabel: '⚡ urgent' };
+        return { status: 'pc-ok', statusLabel: '✓ ok' };
+      };
+
+      const rows = [
+        {
+          id: 'microchip',
+          label: '1 · Microchip (ISO 11784/11785)',
+          note: 'Must be implanted BEFORE the rabies vaccine. If already done, verify the chip number is on the vet records.',
+          date: 'Before ' + microchipLatest,
+          daysFromToday: this.daysDiff(microchipLatest),
+          ...statusOf(microchipLatest),
+        },
+        {
+          id: 'rabies',
+          label: '2 · Rabies vaccination',
+          note: 'Must be given after microchip. For unlisted countries: must be done by ' + vaccineMust + ' to allow 90-day titer wait before flight.',
+          date: 'By ' + vaccineMust,
+          daysFromToday: this.daysDiff(vaccineMust),
+          ...statusOf(vaccineMust),
+        },
+        {
+          id: 'titer',
+          label: '3 · Rabies antibody titer test (unlisted countries)',
+          note: 'Drawn earliest 90 days after vaccine. Result must be ≥0.5 IU/mL. Allow 2–4 weeks for lab results. Skip this step if your origin country is on the EU listed-countries table.',
+          date: titerEarliest + ' – ' + titerLatest,
+          daysFromToday: this.daysDiff(titerEarliest),
+          ...statusOf(titerEarliest),
+        },
+        {
+          id: 'passport',
+          label: '4 · EU Pet Passport or veterinary certificate',
+          note: 'Issued by an accredited (official) vet. Must include microchip number, rabies vaccination record, and titer test result.',
+          date: 'Before ' + rabiesLatest,
+          daysFromToday: this.daysDiff(rabiesLatest),
+          ...statusOf(rabiesLatest),
+        },
+        {
+          id: 'healthcert',
+          label: '5 · Official health certificate (10-day window)',
+          note: 'Issued by an official government vet (not your regular vet). Valid for 10 days from issue date. Book the appointment early — slots are limited.',
+          date: healthCertFrom + ' – ' + healthCertTo,
+          daysFromToday: this.daysDiff(healthCertFrom),
+          ...statusOf(healthCertFrom),
+        },
+      ];
+
+      this.anyMissed = rows.some(r => r.status === 'pc-missed');
+      this.deadlines = rows;
+    }
+  };
+}
+</script>

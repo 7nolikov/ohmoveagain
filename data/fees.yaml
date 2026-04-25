@@ -1,0 +1,74 @@
+# First-year paperwork costs for relocating to Croatia.
+# All amounts in EUR, approximate mid-point of typical range.
+# Source each fee to the official authority where possible.
+# lastChecked: when each fee was last verified.
+
+- id: apostille-origin
+  label: "Apostilles (in origin country, per document)"
+  amountEUR: 30
+  rangeMin: 10
+  rangeMax: 80
+  note: "Varies by origin country and issuing authority. Budget for 3–4 documents."
+  count: 4
+  sourceUrl: "https://www.hcch.net/en/instruments/conventions/specialised-sections/apostille"
+  lastChecked: "2026-01-01"
+
+- id: court-translation
+  label: "Court-certified translations (per page)"
+  amountEUR: 25
+  rangeMin: 15
+  rangeMax: 40
+  note: "Per page. Budget 8–15 pages across all documents."
+  count: 10
+  sourceUrl: "https://sudskitumaci.pravosudje.gov.hr/"
+  lastChecked: "2026-02-01"
+
+- id: criminal-background
+  label: "Criminal background check (origin country)"
+  amountEUR: 20
+  rangeMin: 5
+  rangeMax: 60
+  note: "Fee varies widely by country. May require a notary or apostille."
+  count: 1
+  sourceUrl: "https://pravosudje.gov.hr/"
+  lastChecked: "2026-02-01"
+
+- id: mup-residency-permit
+  label: "Residence permit fee (MUP)"
+  amountEUR: 70
+  rangeMin: 35
+  rangeMax: 130
+  note: "Fee depends on permit type and duration. Digital Nomad Visa approx. 70–100 EUR."
+  count: 1
+  sourceUrl: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+  lastChecked: "2026-04-22"
+
+- id: biometric-card
+  label: "Biometric residence card"
+  amountEUR: 50
+  rangeMin: 40
+  rangeMax: 70
+  note: "Issued separately from the permit decision. Paid at FINA."
+  count: 1
+  sourceUrl: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+  lastChecked: "2026-04-22"
+
+- id: oib-registration
+  label: "OIB registration"
+  amountEUR: 0
+  rangeMin: 0
+  rangeMax: 0
+  note: "Free of charge."
+  count: 1
+  sourceUrl: "https://www.porezna-uprava.hr/en/Pages/oib.aspx"
+  lastChecked: "2026-03-01"
+
+- id: hzzo-retroactive
+  label: "HZZO health insurance — retroactive contributions if late enrollment"
+  amountEUR: 120
+  rangeMin: 0
+  rangeMax: 400
+  note: "Only applies if you were uninsured during a gap period. ~60–80 EUR/month of gap. Budget conservatively."
+  count: 1
+  sourceUrl: "https://hzzo.hr/en/how-to-become-insured"
+  lastChecked: "2026-02-15"

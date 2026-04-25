@@ -1,0 +1,57 @@
+{{ define "main" }}
+{{- $offices := hugo.Data.offices -}}
+{{- $ld := dict "@context" "https://schema.org" "@type" "WebPage" "name" .Title "description" (default site.Params.description .Description) "url" .Permalink "isPartOf" (dict "@type" "WebSite" "name" site.Title "url" site.BaseURL) | jsonify -}}
+{{ printf "<script type=\"application/ld+json\">%s</script>" $ld | safeHTML }}
+
+<section>
+  <div class="tagline">{{ i18n "offices_tagline" }}</div>
+  <h1>{{ .Title }}</h1>
+  <p class="subtitle">{{ .Description }}</p>
+  <p class="stage-disclaimer">{{ i18n "offices_disclaimer" }}</p>
+</section>
+
+{{- $cities := slice -}}
+{{- range $offices -}}
+  {{- if not (in $cities .city) -}}{{- $cities = $cities | append .city -}}{{- end -}}
+{{- end -}}
+
+{{ range $cities }}
+{{- $city := . -}}
+<section aria-labelledby="city-{{ $city | urlize }}">
+  <h2 id="city-{{ $city | urlize }}">{{ $city }}</h2>
+  <div class="office-grid">
+    {{ range $offices }}{{ if eq .city $city }}
+    <div class="office-card">
+      <div class="office-authority">{{ .authority }}</div>
+      <h3 class="office-name">{{ .name }}</h3>
+      <dl class="office-details">
+        <dt>Address</dt>
+        <dd>
+          {{ .address }}
+          {{ with .mapUrl }}· <a href="{{ . }}" target="_blank" rel="noopener noreferrer">Map ↗</a>{{ end }}
+        </dd>
+        {{ with .phone }}<dt>Phone</dt><dd><a href="tel:{{ . }}">{{ . }}</a></dd>{{ end }}
+        <dt>Hours</dt><dd>{{ .hours }}</dd>
+        {{ with .booking }}
+        <dt>Booking</dt>
+        <dd>
+          <a href="{{ . }}" target="_blank" rel="noopener noreferrer">{{ $.booking | default "Book online ↗" }}Book online ↗</a>
+          {{ with $.bookingNote }}<br><span class="office-note">{{ . }}</span>{{ end }}
+        </dd>
+        {{ end }}
+        {{ with .note }}<dt>Note</dt><dd class="office-note">{{ . }}</dd>{{ end }}
+      </dl>
+      <p class="office-verified">Last verified: {{ .lastChecked }}</p>
+    </div>
+    {{ end }}{{ end }}
+  </div>
+</section>
+{{ end }}
+
+<section>
+  <h2>Court translator registry</h2>
+  <p>Only translations by court-certified translators (<em>sudski tumači</em>) are accepted by MUP. Use the official registry to find a translator for your language pair:</p>
+  <p><a class="btn secondary" href="https://sudskitumaci.pravosudje.gov.hr/" target="_blank" rel="noopener noreferrer" style="display:inline-block;width:auto;padding:10px 16px;">Official court translator registry ↗</a></p>
+</section>
+
+{{ end }}

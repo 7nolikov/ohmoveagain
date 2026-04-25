@@ -1,0 +1,47 @@
+{{ define "main" }}
+{{- $forms := hugo.Data.forms -}}
+{{- $ld := dict "@context" "https://schema.org" "@type" "WebPage" "name" .Title "description" (default site.Params.description .Description) "url" .Permalink "isPartOf" (dict "@type" "WebSite" "name" site.Title "url" site.BaseURL) | jsonify -}}
+{{ printf "<script type=\"application/ld+json\">%s</script>" $ld | safeHTML }}
+
+<section>
+  <div class="tagline">{{ i18n "forms_tagline" }}</div>
+  <h1>{{ .Title }}</h1>
+  <p class="subtitle">{{ .Description }}</p>
+  <p class="stage-disclaimer">{{ i18n "forms_disclaimer" }}</p>
+</section>
+
+{{- $categories := dict
+  "visa"             "Visa &amp; residency permits"
+  "registration"     "Registrations (OIB, address)"
+  "health-insurance" "Health insurance"
+  "documents"        "Documents &amp; apostilles"
+  "pets"             "Pets"
+  "business"         "Business registration"
+-}}
+
+{{ range $catKey, $catLabel := $categories }}
+{{- $catForms := slice -}}
+{{- range $forms }}{{- if eq .category $catKey -}}{{- $catForms = $catForms | append . -}}{{- end -}}{{- end -}}
+{{ if $catForms }}
+<section aria-labelledby="cat-{{ $catKey }}">
+  <h2 id="cat-{{ $catKey }}">{{ $catLabel | safeHTML }}</h2>
+  <div class="form-list">
+    {{ range $catForms }}
+    <div class="form-card">
+      <div class="form-authority">{{ .sourceAuthority }}</div>
+      <h3 class="form-title">{{ .title }}</h3>
+      {{ with .note }}<p class="form-note">{{ . }}</p>{{ end }}
+      <div class="form-meta">
+        <a class="btn secondary" href="{{ .url }}" target="_blank" rel="noopener noreferrer" style="display:inline-block;width:auto;padding:6px 12px;font-size:0.85rem;">Official source ↗</a>
+        <span class="form-verified">verified {{ .lastChecked }}</span>
+      </div>
+    </div>
+    {{ end }}
+  </div>
+</section>
+{{ end }}
+{{ end }}
+
+{{ .Content }}
+
+{{ end }}

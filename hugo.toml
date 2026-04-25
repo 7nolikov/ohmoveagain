@@ -28,7 +28,6 @@ disableKinds = ["taxonomy", "term"]
 [params]
   description = "The open-source Pipeline for moving to Croatia: five stages, sourced checklists, prerequisites, required documents, and a runway calculator. Community-maintained. Free."
   ogImage = "og.png"
-  formspreeID = "mjgjelyd"
   githubURL = "https://github.com/7nolikov/ohmoveagain"
   twitterHandle = "@7nolikov"
   cfAnalyticsToken = "0813f8e9b0fe443ea2b3fb64f64f9893"

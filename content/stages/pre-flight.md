@@ -189,3 +189,9 @@ claimStrings:
 ---
 
 Everything you need *before* you board. Apostilled birth certificates, criminal background checks, translated diplomas, pet paperwork, housing shortlist, and an initial look at banks. Expect this stage to take roughly twice as long as you first estimate.
+
+{{< pet-gantt >}}
+
+<div id="pet-countdown"></div>
+
+{{< pet-countdown >}}

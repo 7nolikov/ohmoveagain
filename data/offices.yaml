@@ -1,0 +1,120 @@
+# Croatian government offices — addresses, hours, booking links.
+# lastChecked: when address and hours were last verified against official source.
+# All addresses in Croatian; use Google Maps link for navigation.
+
+- id: mup-zagreb-central
+  authority: "MUP — Ministry of Interior"
+  name: "MUP Zagreb — Foreigners' Department (Odjel za strance)"
+  city: "Zagreb"
+  address: "Petrinjska 30, 10000 Zagreb"
+  phone: "+385 1 3788 100"
+  booking: "https://e-uprava.gov.hr/"
+  bookingNote: "Appointments via e-Građani portal (eID or NIAS required). Walk-in slots limited."
+  hours: "Mon–Fri 08:00–16:00"
+  mapUrl: "https://maps.google.com/?q=Petrinjska+30+Zagreb"
+  lastChecked: "2026-03-15"
+  note: "Main office for residency permits, Digital Nomad Visa, EU Blue Card, address registration. Bring all documents in originals + copies."
+
+- id: mup-split
+  authority: "MUP — Ministry of Interior"
+  name: "MUP Split — Foreigners' Department"
+  city: "Split"
+  address: "Trg Hrvatske bratske zajednice 9, 21000 Split"
+  phone: "+385 21 307 100"
+  booking: "https://e-uprava.gov.hr/"
+  bookingNote: "Appointments via e-Građani portal."
+  hours: "Mon–Fri 08:00–16:00"
+  mapUrl: "https://maps.google.com/?q=Trg+Hrvatske+bratske+zajednice+9+Split"
+  lastChecked: "2026-03-15"
+  note: "Regional MUP office for Dalmatia. Handles all residency permit types."
+
+- id: mup-rijeka
+  authority: "MUP — Ministry of Interior"
+  name: "MUP Rijeka — Foreigners' Department"
+  city: "Rijeka"
+  address: "Verdijeva 4, 51000 Rijeka"
+  phone: "+385 51 214 101"
+  booking: "https://e-uprava.gov.hr/"
+  bookingNote: "Appointments via e-Građani portal."
+  hours: "Mon–Fri 08:00–16:00"
+  mapUrl: "https://maps.google.com/?q=Verdijeva+4+Rijeka"
+  lastChecked: "2026-03-15"
+  note: "Regional MUP office for Kvarner region."
+
+- id: fina-zagreb
+  authority: "FINA — Financial Agency"
+  name: "FINA Zagreb — main office"
+  city: "Zagreb"
+  address: "Ulica grada Vukovara 70, 10000 Zagreb"
+  phone: "+385 1 4688 900"
+  booking: "https://www.fina.hr/kontakt"
+  bookingNote: "Walk-in; no appointment needed for OIB pickup and simple inquiries."
+  hours: "Mon–Fri 08:00–16:00"
+  mapUrl: "https://maps.google.com/?q=Ulica+grada+Vukovara+70+Zagreb"
+  lastChecked: "2026-03-01"
+  note: "OIB pickup (when issued by Porezna uprava), business registration (obrt, d.o.o.), financial statements. Bring original passport."
+
+- id: porezna-zagreb
+  authority: "Porezna uprava — Tax Administration"
+  name: "Porezna uprava Zagreb — Regional Office"
+  city: "Zagreb"
+  address: "Avenija Dubrovnik 32, 10000 Zagreb"
+  phone: "+385 1 6307 999"
+  booking: "https://e-porezna.porezna-uprava.hr/"
+  bookingNote: "Many services via e-Porezna portal. Walk-in for OIB applications (Form OIB-1)."
+  hours: "Mon–Fri 08:00–16:00"
+  mapUrl: "https://maps.google.com/?q=Avenija+Dubrovnik+32+Zagreb"
+  lastChecked: "2026-03-01"
+  note: "Tax registration, OIB application for foreign nationals, paušalni obrt tax filing."
+
+- id: hzzo-zagreb
+  authority: "HZZO — Croatian Health Insurance Fund"
+  name: "HZZO Zagreb — Regional Office"
+  city: "Zagreb"
+  address: "Margaretska 3, 10000 Zagreb"
+  phone: "+385 1 4806 333"
+  booking: "https://hzzo.hr/en/contact"
+  bookingNote: "Walk-in. Employer submits T-1 on your behalf; self-employed submit directly."
+  hours: "Mon–Fri 08:00–15:30"
+  mapUrl: "https://maps.google.com/?q=Margaretska+3+Zagreb"
+  lastChecked: "2026-02-15"
+  note: "Health insurance enrollment (T-1/T-2), switching from private to state coverage, European Health Insurance Card (EHIC) requests."
+
+- id: hzzo-split
+  authority: "HZZO — Croatian Health Insurance Fund"
+  name: "HZZO Split — Regional Office"
+  city: "Split"
+  address: "Livanjska 1, 21000 Split"
+  phone: "+385 21 303 080"
+  booking: "https://hzzo.hr/en/contact"
+  bookingNote: "Walk-in."
+  hours: "Mon–Fri 08:00–15:30"
+  mapUrl: "https://maps.google.com/?q=Livanjska+1+Split"
+  lastChecked: "2026-02-15"
+  note: "Regional HZZO office for Dalmatia."
+
+- id: opcinski-sud-zagreb
+  authority: "Općinski sud Zagreb (Municipal Court)"
+  name: "Zagreb Municipal Court — apostille certification"
+  city: "Zagreb"
+  address: "Trg sv. Marka 4, 10000 Zagreb"
+  phone: "+385 1 4891 888"
+  booking: null
+  bookingNote: "Walk-in only. No appointment system."
+  hours: "Mon–Fri 08:00–14:00"
+  mapUrl: "https://maps.google.com/?q=Trg+sv.+Marka+4+Zagreb"
+  lastChecked: "2026-02-01"
+  note: "Croatian courts issue apostilles for documents originating in Croatia. For foreign documents, apostilles are issued in the country of origin — not here."
+
+- id: translator-zagreb-hofmann
+  authority: "Court translator (sudski tumač)"
+  name: "Sudski tumač — example Zagreb translator office"
+  city: "Zagreb"
+  address: "Ilica 1a, 10000 Zagreb"
+  phone: null
+  booking: "https://sudskit umaci.pravosudje.gov.hr/"
+  bookingNote: "Use the official Ministry of Justice registry to find a certified court translator for your language pair."
+  hours: "By appointment"
+  mapUrl: null
+  lastChecked: "2026-02-01"
+  note: "Only use translators listed in the official court translator registry (sudski tumači). Translations not from the registry are rejected by MUP. Registry search: https://sudskitumaci.pravosudje.gov.hr/"

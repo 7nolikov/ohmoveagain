@@ -1,7 +1,11 @@
 {{- $brand := "ohmoveagain" -}}
 {{- $title := cond (eq .Kind "home") site.Title (printf "%s · %s" .Title $brand) -}}
 {{- $desc := default site.Params.description .Description -}}
-{{- $ogImage := absURL (default site.Params.ogImage .Params.ogImage) -}}
+{{- $ogSlug := "" -}}
+{{- if eq .Section "stages" -}}{{- $ogSlug = printf "og/stage-%d.png" .Weight -}}{{- end -}}
+{{- if eq .File.ContentBaseName "calculator" -}}{{- $ogSlug = "og/calculator.png" -}}{{- end -}}
+{{- $ogFile := cond (ne $ogSlug "") $ogSlug (default site.Params.ogImage .Params.ogImage) -}}
+{{- $ogImage := absURL $ogFile -}}
 {{- $canonical := .Permalink -}}
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -34,6 +38,9 @@
 <link rel="stylesheet" href="{{ "style.css" | relURL }}">
 <link rel="stylesheet" href="{{ "trust.css" | relURL }}">
 
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' cdn.jsdelivr.net static.cloudflareinsights.com blob: 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' cloudflareinsights.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-Frame-Options" content="DENY">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="google-site-verification" content="nWhMkPqTERFTWAxzrR4mZ2r7E6M5ZtnQbvZFqizGvwQ">
 

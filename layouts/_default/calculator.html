@@ -1,5 +1,8 @@
 {{ define "main" }}
 {{ $countries := hugo.Data.countries }}
+{{- $fees := hugo.Data.fees -}}
+{{- $feeTotal := 0 -}}
+{{- range $fees }}{{- $feeTotal = add $feeTotal (mul .amountEUR .count) -}}{{- end -}}
 {{- $ld := dict
   "@context"        "https://schema.org"
   "@type"           "WebApplication"
@@ -39,6 +42,13 @@
         </select>
       </div>
     </div>
+    <div class="fees-toggle">
+      <label>
+        <input type="checkbox" x-model="includeFees">
+        Include first-year paperwork costs (~€{{ $feeTotal }})
+      </label>
+      <span class="fees-hint">apostilles, translations, permits, biometric card, HZZO</span>
+    </div>
     <button class="btn" type="submit">Calculate</button>
   </form>
 
@@ -59,6 +69,12 @@
             <tr><th>Net income</th><td x-text="money(result.fromNet)"></td><td x-text="money(result.toNet)"></td></tr>
             <tr><th>Runway per year (months)</th><td x-text="result.fromRunway.toFixed(1)"></td><td x-text="result.toRunway.toFixed(1)"></td></tr>
             <tr><th>Net difference (per year)</th><td colspan="2" :class="result.positive ? 'acc' : 'dim'" x-text="fmtSign(result.deltaSavings) + ' €'"></td></tr>
+            <template x-if="result.feesEUR > 0">
+              <tr><th>First-year paperwork costs</th><td colspan="2" class="dim" x-text="'−€' + result.feesEUR.toLocaleString()"></td></tr>
+            </template>
+            <template x-if="result.feesEUR > 0">
+              <tr><th>Net year-1 delta (incl. fees)</th><td colspan="2" :class="result.year1Positive ? 'acc' : 'dim'" x-text="fmtSign(result.year1Delta) + ' €'"></td></tr>
+            </template>
           </tbody>
         </table>
       </div>
@@ -118,11 +134,14 @@
 
 <script>
   window.OHMA_COUNTRIES = {{ $countries | jsonify | safeJS }};
+  window.OHMA_FEES_TOTAL = {{ $feeTotal }};
+  window.OHMA_FEES = {{ $fees | jsonify | safeJS }};
   function calcApp() {
     return {
       gross: null,
       fromCode: 'DE',
       toCode: 'HR',
+      includeFees: false,
       result: null,
       error: '',
       copied: false,
@@ -133,6 +152,7 @@
         if (p.get('gross')) this.gross = Number(p.get('gross'));
         if (p.get('from')) this.fromCode = p.get('from');
         if (p.get('to')) this.toCode = p.get('to');
+        if (p.get('fees') === '1') this.includeFees = true;
         if (!this.fromCode) this.fromCode = 'DE';
         if (p.get('gross') && p.get('from') && p.get('to')) {
           this.$nextTick(() => this.run());
@@ -158,14 +178,18 @@
         const deltaMonths = toRunway - fromRunway;
         const deltaSavings = toNet - fromNet;
         const positive = deltaMonths >= 0;
+        const feesEUR = this.includeFees ? (window.OHMA_FEES_TOTAL || 0) : 0;
+        const year1Delta = deltaSavings - feesEUR;
         const url = new URL(window.location.href);
         url.searchParams.set('from', this.fromCode);
         url.searchParams.set('to', this.toCode);
         url.searchParams.set('gross', String(gross));
+        if (this.includeFees) url.searchParams.set('fees', '1');
+        else url.searchParams.delete('fees');
         history.replaceState(null, '', url.toString());
         const shareLine = `Moving to ${to.name} buys me ${this.fmtSign(deltaMonths, 1)} months/year of runway vs ${from.name} (net difference ${this.fmtSign(deltaSavings)} € / year). Try your own: ${url.toString()}`;
         const tweetUrl = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareLine);
-        this.result = { gross, from, to, fromNet, toNet, fromRunway, toRunway, deltaMonths, deltaSavings, positive, shareLine, tweetUrl, shareUrl: url.toString() };
+        this.result = { gross, from, to, fromNet, toNet, fromRunway, toRunway, deltaMonths, deltaSavings, positive, feesEUR, year1Delta, year1Positive: year1Delta >= 0, shareLine, tweetUrl, shareUrl: url.toString() };
       },
       money(v) { return '€' + Math.round(v).toLocaleString('en-US'); },
       fmtSign(v, digits) {

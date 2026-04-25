@@ -33,11 +33,23 @@ jobs:
           hugo-version: ${{ env.HUGO_VERSION }}
           extended: true
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Node dependencies
+        run: npm ci
+
       - name: Check source freshness (asOf dates)
         run: node scripts/check-staleness.mjs
 
       - name: Generate build data (stats + changelog)
         run: node scripts/gen-build-data.mjs
+
+      - name: Generate OG images
+        run: node scripts/gen-og.mjs
 
       - name: Configure Pages
         id: pages

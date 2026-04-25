@@ -79,14 +79,30 @@ why_exists_accent: "open-source, community-maintained Pipeline"
 why_exists_p2: ": every claim links to an official source with a verified date, anyone can open an issue to flag something stale, and pull requests are welcome."
 how_to_contribute: "How to contribute →"
 stay_in_loop_h2: "Stay in the loop"
-stay_in_loop_desc: "One email when a new stage, country, or guide is published. No newsletter, no drip, no upsell."
+stay_in_loop_desc: "Watch the repo on GitHub for updates, or subscribe via RSS. No email collection, no newsletter."
+watch_on_github: "★ Watch on GitHub"
+subscribe_rss: "RSS feed"
+watch_desc: "GitHub Watch → Releases sends one notification per significant update. RSS covers every content change."
 
 # Navigation
 nav_pipeline: "Pipeline"
 nav_calculator: "Calculator"
+nav_offices: "Offices"
+nav_forms: "Forms"
 nav_contribute: "Contribute"
-nav_subscribe: "Subscribe"
+nav_subscribe: "Updates"
 nav_support: "★ Support"
+
+# Offices page
+offices_tagline: "Government offices · addresses &amp; booking"
+offices_disclaimer: "Addresses and hours verified on dates shown. Offices may change schedules without notice — call ahead or check the official website before travelling."
+
+# Forms page
+forms_tagline: "Official forms &amp; helper templates"
+forms_disclaimer: "Links go to the official issuing authority. We do not host copies of government forms. Helper templates are aids — they are not official documents."
+
+# Printable templates
+printable_disclaimer: "This is a helper template, not an official government form. Print and bring to your appointment. Verify current requirements with the issuing authority before submitting."
 
 # Language switcher
 lang_switch: "RU"
@@ -114,6 +130,9 @@ pets_dog_cat: "Dog or cat"
 pets_other: "Other pet"
 filter_show: "▼ filter"
 filter_hide: "▲ filter"
+
+# Stage disclaimer
+stage_disclaimer: "Source links verified on dates shown. Not legal advice — confirm critical steps with MUP, Porezna uprava, HZZO, or a licensed local professional before acting."
 
 # Footer
 footer_community: "Community-maintained."
