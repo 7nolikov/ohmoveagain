@@ -21,6 +21,7 @@
   <h2 id="city-{{ $city | urlize }}">{{ $city }}</h2>
   <div class="office-grid">
     {{ range $offices }}{{ if eq .city $city }}
+    {{- $office := . -}}
     <div class="office-card">
       <div class="office-authority">{{ .authority }}</div>
       <h3 class="office-name">{{ .name }}</h3>
@@ -36,7 +37,7 @@
         <dt>Booking</dt>
         <dd>
           <a href="{{ . }}" target="_blank" rel="noopener noreferrer">Book online ↗</a>
-          {{ with .bookingNote }}<br><span class="office-note">{{ . }}</span>{{ end }}
+          {{ with $office.bookingNote }}<br><span class="office-note">{{ . }}</span>{{ end }}
         </dd>
         {{ end }}
         {{ with .note }}<dt>Note</dt><dd class="office-note">{{ . }}</dd>{{ end }}
