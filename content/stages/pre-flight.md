@@ -1,6 +1,6 @@
 ---
 title: "Pre-Flight"
-subtitle: "Collect and apostille every document before you board a plane."
+subtitle: "Collect and apostille every document before you board."
 description: "Everything you need before you board. Apostilles, criminal background checks, translated diplomas, proof of accommodation, pet and family paperwork."
 weight: 2
 sitemap:
