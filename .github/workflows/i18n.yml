@@ -50,6 +50,8 @@ jobs:
 
       - name: Commit updated translations
         if: github.event_name == 'push'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if git diff --quiet; then
             echo "no translation changes"
@@ -57,6 +59,7 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
           git add content/stages
-          git commit -m "chore(i18n): auto-sync translations"
+          git commit -m "chore(i18n): auto-sync translations [skip ci]"
           git push
