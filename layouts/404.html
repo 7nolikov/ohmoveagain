@@ -1,0 +1,11 @@
+{{ define "main" }}
+<section class="error-page">
+  <div class="tagline">404 — page not found</div>
+  <h1>That page doesn't exist.</h1>
+  <p class="subtitle">It may have moved, or you followed a broken link.</p>
+  <div class="hero-actions">
+    <a class="btn" href="{{ site.Home.RelPermalink }}#pipeline">← Back to the Pipeline</a>
+    <a class="btn secondary" href="{{ "calculator/" | relURL }}">Runway Calculator</a>
+  </div>
+</section>
+{{ end }}

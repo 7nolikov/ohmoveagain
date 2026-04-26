@@ -32,7 +32,7 @@ html, body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--mono);
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -118,6 +118,12 @@ header.top {
 }
 .nav a:hover { color: var(--fg); }
 .nav-star { color: var(--accent) !important; border: 1px solid var(--accent-dim); border-radius: var(--radius); }
+.star-count { font-size: 0.72rem; opacity: 0.75; margin-left: 2px; }
+
+/* Hide keyboard shortcut hint on touch devices */
+@media (pointer: coarse) {
+  [data-hk-open] { display: none !important; }
+}
 
 @media (max-width: 500px) {
   .nav {
@@ -127,6 +133,9 @@ header.top {
     scrollbar-width: none;
     padding-bottom: 2px;
     max-width: calc(100vw - 150px);
+    /* fade indicating more items to the right */
+    -webkit-mask-image: linear-gradient(to right, black calc(100% - 24px), transparent 100%);
+    mask-image: linear-gradient(to right, black calc(100% - 24px), transparent 100%);
   }
   .nav::-webkit-scrollbar { display: none; }
   .nav a { white-space: nowrap; }
@@ -141,7 +150,7 @@ header.top {
   margin-bottom: 10px;
 }
 .hero h1 {
-  font-size: clamp(1.4rem, 4.6vw, 2rem);
+  font-size: clamp(1.6rem, 4.6vw, 2rem);
   margin-bottom: 12px;
 }
 .subtitle { color: var(--fg-dim); margin-bottom: 20px; }

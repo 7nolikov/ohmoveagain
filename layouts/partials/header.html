@@ -8,7 +8,7 @@
       <a href="{{ "forms/" | relURL }}">{{ i18n "nav_forms" }}</a>
       <a href="{{ "contribute/" | relURL }}">{{ i18n "nav_contribute" }}</a>
       <a href="{{ "subscribe/" | relURL }}">{{ i18n "nav_subscribe" }}</a>
-      <a href="{{ site.Params.githubURL }}" rel="noopener noreferrer" class="nav-star" title="Support this project on GitHub">{{ i18n "nav_support" }}</a>
+      <a href="{{ site.Params.githubURL }}" rel="noopener noreferrer" class="nav-star" title="Support this project on GitHub">{{ i18n "nav_support" }}{{- with hugo.Data.build }}{{- with .stats }}{{- if gt .starCount 0 }} <span class="star-count">{{ .starCount }}</span>{{- end }}{{- end }}{{- end -}}</a>
       {{- range .Translations }}
       <a href="{{ .RelPermalink }}" class="nav-lang" lang="{{ .Language.Lang }}" title="{{ i18n "lang_switch_label" }}">{{ i18n "lang_switch" }}</a>
       {{- end }}

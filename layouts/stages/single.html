@@ -1,9 +1,20 @@
 {{ define "main" }}
+{{- $ld := dict
+  "@context"   "https://schema.org"
+  "@type"      "Article"
+  "name"       .Title
+  "headline"   .Title
+  "description" (default site.Params.description .Description)
+  "url"        .Permalink
+  "inLanguage" site.Language.Lang
+  "isPartOf"   (dict "@type" "WebSite" "name" site.Title "url" site.BaseURL) | jsonify -}}
+{{ printf "<script type=\"application/ld+json\">%s</script>" $ld | safeHTML }}
 {{- $slug := .File.ContentBaseName -}}
 {{- $data := index hugo.Data.stages $slug -}}
 {{- $itemStrings := .Params.itemStrings -}}
 {{- $categoryNames := .Params.categoryNames -}}
 {{- $claimStrings := .Params.claimStrings | default dict -}}
+{{- $w := .Weight -}}
 
 {{- $trust := newScratch -}}
 {{- $trust.Set "total" 0 -}}
@@ -45,14 +56,52 @@
 </section>
 
 {{ with $data }}{{ with .checklist }}
+
+{{/* Build meta array and export data in one pass */}}
+{{- $allMeta := slice -}}
+{{- $exportCats := slice -}}
+{{- range $ci, $cat := . -}}
+  {{- $exportItems := slice -}}
+  {{- range $ii, $item := $cat.items -}}
+    {{- $key := printf "%d.%d" $ci $ii -}}
+    {{- $strings := index $itemStrings $item.id -}}
+    {{- $src := dict -}}
+    {{- with $item.source -}}{{- $src = dict "url" .url "label" (index $strings "sourceLabel") "asOf" .asOf -}}{{- end -}}
+    {{- $allMeta = $allMeta | append (dict "key" $key "ao" $item.appliesTo) -}}
+    {{- $exportItems = $exportItems | append (dict "key" $key "label" (index $strings "label") "note" (index $strings "note") "source" $src) -}}
+  {{- end -}}
+  {{- $catName := index $categoryNames $cat.id -}}
+  {{- $exportCats = $exportCats | append (dict "name" $catName "items" $exportItems) -}}
+{{- end -}}
+
 <section class="stage-section">
-  {{ range $cat := . }}
+  <div class="checklist-head">
+    <h2>{{ i18n "checklist" }}</h2>
+    <div class="stage-status"
+         x-data="{{ printf `{ meta: %s, w: %d }` ($allMeta | jsonify | safeJS) $w }}"
+         :data-status="$store.prog.statusF(w, meta)">
+      <div class="progress-bar" aria-hidden="true">
+        <div class="fill" :style="`width:${$store.prog.pctF(w, meta)}%`"></div>
+      </div>
+      <span class="status-txt" x-cloak>
+        <span x-text="$store.prog.countF(w, meta)"></span> {{ i18n "of_n" }} <span x-text="$store.prog.totalF(meta)"></span>
+      </span>
+    </div>
+    <button class="btn-ghost" type="button"
+            @click="if (confirm({{ i18n "reset_stage_confirm" | jsonify }})) $store.prog.resetStage({{ $w }})"
+            x-show="$store.prog.count({{ $w }}) > 0" x-cloak>{{ i18n "reset_stage" }}</button>
+    <button class="btn-ghost" type="button" @click="exportCurrentStage()" title="{{ i18n "export_stage_title" }}">{{ i18n "export_stage" }}</button>
+  </div>
+  <p class="privacy-note dim">{{ i18n "privacy_note" }}</p>
+
+  {{ range $ci, $cat := . }}
   {{- $catAos := slice -}}
   {{- range $cat.items -}}{{- $catAos = $catAos | append .appliesTo -}}{{- end -}}
   <h2 x-show="{{ $catAos | jsonify | safeJS }}.some(ao => $store.prog.matchesProfile(ao))">{{ index $categoryNames $cat.id }}</h2>
 
   <ul class="checklist">
-    {{ range $item := $cat.items }}
+    {{ range $ii, $item := $cat.items }}
+      {{- $key := printf "%d.%d" $ci $ii -}}
       {{- $strings := index $itemStrings $item.id -}}
       {{- $claim := dict -}}
       {{- range $data.claims }}
@@ -66,43 +115,44 @@
       {{- end }}
 
       {{- $ao := $item.appliesTo | jsonify -}}
-      <li x-show="$store.prog.matchesProfile({{ $ao | safeJS }})">
-        <div class="trust-topline">
-          <span class="label">{{ index $strings "label" }}</span>
-          {{ if $claim.sourceId }}
-          <div class="trust-badges">
-            <span class="trust-badge" data-level="{{ $claim.riskLevel }}">⚠ {{ i18n (printf "trust_risk_%s" $claim.riskLevel) }}</span>
-            <span class="trust-badge" data-level="{{ $claim.uncertainty }}">≈ {{ i18n (printf "trust_uncertainty_%s" $claim.uncertainty) }}</span>
+      <li x-show="$store.prog.matchesProfile({{ $ao | safeJS }})"
+          :class="$store.prog.isChecked({{ $w }}, '{{ $key }}') ? 'done' : ''">
+        <label>
+          <input type="checkbox"
+            :checked="$store.prog.isChecked({{ $w }}, '{{ $key }}')"
+            @change="$store.prog.toggle({{ $w }}, '{{ $key }}')"
+          >
+          <div class="label-text">
+            <span class="label">{{ index $strings "label" }}</span>
+            {{ if $claim.sourceId }}
+            <div class="trust-badges">
+              <span class="trust-badge" data-level="{{ $claim.riskLevel }}">⚠ {{ i18n (printf "trust_risk_%s" $claim.riskLevel) }}</span>
+              <span class="trust-badge" data-level="{{ $claim.uncertainty }}">≈ {{ i18n (printf "trust_uncertainty_%s" $claim.uncertainty) }}</span>
+            </div>
+            {{ end }}
           </div>
-          {{ end }}
-        </div>
+        </label>
 
         {{ if $claim.sourceId }}
         <details class="trust-details">
           <summary>{{ i18n "trust_explanation" }}</summary>
-
           <div class="trust-details-body">
             <div class="trust-block">
-
               {{- $cs := index $claimStrings $claim.id | default dict -}}
               {{- $impactKey := index $cs "impact" | default $claim.impact -}}
               <div class="trust-grid">
                 <div class="trust-line"><strong>{{ i18n "trust_impact" }}:</strong> {{ i18n (printf "trust_impact_%s" (replace $impactKey "-" "_")) | default $impactKey }}</div>
                 <div class="trust-line"><strong>{{ i18n "trust_source_type" }}:</strong> {{ i18n (printf "trust_source_type_%s" $src.type) }}</div>
               </div>
-
               {{ with (index $cs "conflictNote" | default $claim.conflictNote) }}
               <div class="trust-warning">⚠ {{ . }}</div>
               {{ end }}
-
               {{ with (index $cs "explanation" | default $claim.explanation) }}
               <div class="trust-note">{{ . }}</div>
               {{ end }}
-
               <a class="source" href="{{ $src.url }}" target="_blank">
                 {{ i18n "source_label" }} · {{ $src.lastChecked }}
               </a>
-
             </div>
           </div>
         </details>
@@ -123,6 +173,29 @@
   </ul>
   {{ end }}
 </section>
+
+{{/* Stage navigation */}}
+{{- $allStages := (where site.RegularPages "Section" "stages").ByWeight -}}
+{{- $prev := index (where $allStages "Weight" "lt" $w) (sub (len (where $allStages "Weight" "lt" $w)) 1) -}}
+{{- $next := index (where $allStages "Weight" "gt" $w) 0 -}}
+<nav class="stage-nav" aria-label="Stage navigation">
+  {{ if $prev }}
+  <a href="{{ $prev.RelPermalink }}">{{ i18n "prev_stage" }} {{ $prev.Title }}</a>
+  {{ else }}
+  <a href="{{ site.Home.RelPermalink }}">{{ i18n "back_to_all_stages" }}</a>
+  {{ end }}
+  {{ if $next }}
+  <a href="{{ $next.RelPermalink }}">{{ i18n "next_stage" }} {{ $next.Title }}</a>
+  {{ else }}
+  <a href="{{ "calculator/" | relURL }}">{{ i18n "open_calculator" }}</a>
+  {{ end }}
+</nav>
+
+{{/* OHMA_STAGE_DATA — used by exportCurrentStage() in baseof.html */}}
+<script>
+window.OHMA_STAGE_DATA = { w: {{ $w }}, t: {{ $.Title | jsonify }}, c: {{ $exportCats | jsonify | safeJS }} };
+</script>
+
 {{ end }}{{ end }}
 
 {{ end }}
