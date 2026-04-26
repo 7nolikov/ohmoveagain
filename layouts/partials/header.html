@@ -3,8 +3,6 @@
 {{- $isPipeline := or .IsHome (eq .Section "stages") -}}
 {{- $isCalculator := eq $pageKey "calculator" -}}
 {{- $isResource := in (slice "offices" "forms" "contribute" "subscribe") $pageKey -}}
-{{- $resourcesLabel := cond (eq site.Language.Lang "ru") "Материалы" "Resources" -}}
-{{- $languageLabel := cond (eq site.Language.Lang "ru") "Язык" "Language" -}}
 <header class="top">
   <div class="top-inner">
     <a class="brand" href="{{ site.Home.RelPermalink }}" aria-label="ohmoveagain home">ohmoveagain</a>
@@ -14,7 +12,7 @@
 
       <details class="nav-menu resources-menu">
         <summary class="nav-link{{ if $isResource }} active{{ end }}"{{ if $isResource }} aria-current="page"{{ end }}>
-          <span>{{ $resourcesLabel }}</span>
+          <span>{{ i18n "nav_resources" }}</span>
           <span class="nav-caret" aria-hidden="true">⌄</span>
         </summary>
         <div class="nav-menu-panel" role="list">
@@ -30,11 +28,11 @@
       {{- $translations := .AllTranslations -}}
       {{- if gt (len $translations) 1 }}
       <details class="nav-menu lang-menu">
-        <summary class="nav-link nav-lang-summary" aria-label="{{ $languageLabel }}: {{ site.Language.LanguageName }}">
+        <summary class="nav-link nav-lang-summary" aria-label="{{ i18n "nav_language" }}: {{ site.Language.LanguageName }}">
           <span class="nav-lang-current">{{ site.Language.Lang | upper }}</span>
           <span class="nav-caret" aria-hidden="true">⌄</span>
         </summary>
-        <div class="nav-menu-panel nav-lang-panel" role="list" aria-label="{{ $languageLabel }}">
+        <div class="nav-menu-panel nav-lang-panel" role="list" aria-label="{{ i18n "nav_language" }}">
           {{- range $translations }}
           <a role="listitem" href="{{ .RelPermalink }}" lang="{{ .Language.Lang }}" hreflang="{{ .Language.Lang }}" class="{{ if eq .Language.Lang site.Language.Lang }}active{{ end }}"{{ if eq .Language.Lang site.Language.Lang }} aria-current="page"{{ end }}>
             <span class="nav-lang-code">{{ .Language.Lang | upper }}</span>
