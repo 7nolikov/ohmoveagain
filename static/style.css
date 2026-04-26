@@ -269,8 +269,9 @@ header.top {
 .checklist li input[type="checkbox"] {
   appearance: none;
   -webkit-appearance: none;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
   border: 1px solid var(--border-bright);
   border-radius: 3px;
   background: var(--bg);
@@ -292,13 +293,21 @@ header.top {
 .checklist li input[type="checkbox"]:checked::after {
   content: "";
   position: absolute;
-  left: 5px;
-  top: 1px;
+  left: 6px;
+  top: 2px;
   width: 5px;
   height: 10px;
   border: solid #08110b;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
+}
+/* Ensure full checklist row is the tap target */
+.checklist li {
+  min-height: 44px;
+}
+.checklist li label {
+  min-height: 44px;
+  padding: 2px 0;
 }
 .checklist li .label-text { flex: 1; min-width: 0; overflow-wrap: anywhere; }
 .checklist li .label { color: var(--fg); display: block; }
@@ -445,8 +454,8 @@ header.top {
   background: transparent;
   border: 1px solid var(--border-bright);
   color: var(--fg-dim);
-  padding: 6px 12px;
-  min-height: 28px;
+  padding: 10px 14px;
+  min-height: 44px;
   font-family: var(--mono);
   font-size: 0.78rem;
   border-radius: var(--radius);
