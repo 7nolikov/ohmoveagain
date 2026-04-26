@@ -171,7 +171,7 @@ function exportCurrentStage() {
 <script>
 // hotkeys — vim + GitHub flavor. Disabled while typing.
 (function () {
-  const base = {{ site.Home.RelPermalink }};
+  const base = {{ site.Home.RelPermalink | jsonify }};
   const stages = {
     '1': 'stage/assessment/',
     '2': 'stage/pre-flight/',
