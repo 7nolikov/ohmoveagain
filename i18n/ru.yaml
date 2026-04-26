@@ -185,6 +185,15 @@ hk_help_toggle: "Показать или скрыть эту панель"
 hk_help_close: "Закрыть панель, отменить префикс g"
 hk_privacy: "Прогресс сохраняется локально в браузере (localStorage). Данные никуда не отправляются."
 
+# Footer activity ribbon
+footer_ribbon_contributors: "контрибьюторов"
+footer_ribbon_last_commit: "последний коммит"
+footer_ribbon_today: "сегодня"
+footer_ribbon_day_ago: "1 день назад"
+footer_ribbon_days_ago: "{{ . }} дней назад"
+footer_ribbon_updates_90d: "правок (90д)"
+footer_ribbon_freshness_link: "→ актуальность"
+
 # Export filenames / markdown headers
 export_pipeline_md_title: "Pipeline переезда в Хорватию"
 export_stage_md_prefix: "Этап"

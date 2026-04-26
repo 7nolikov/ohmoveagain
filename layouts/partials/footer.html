@@ -3,13 +3,13 @@
   {{- with .stats }}
   <p class="activity-ribbon">
     <span class="ribbon-prompt">$</span>
-    <span class="ribbon-item"><span class="ribbon-key">contributors:</span> <span class="ribbon-val">{{ .contributorCount }}</span></span>
+    <span class="ribbon-item"><span class="ribbon-key">{{ i18n "footer_ribbon_contributors" }}:</span> <span class="ribbon-val">{{ .contributorCount }}</span></span>
     <span class="ribbon-sep">·</span>
-    <span class="ribbon-item"><span class="ribbon-key">last commit:</span> <span class="ribbon-val">{{ if eq .lastCommitDays 0 }}today{{ else if eq .lastCommitDays 1 }}1 day ago{{ else }}{{ .lastCommitDays }} days ago{{ end }}</span></span>
+    <span class="ribbon-item"><span class="ribbon-key">{{ i18n "footer_ribbon_last_commit" }}:</span> <span class="ribbon-val">{{ if eq .lastCommitDays 0 }}{{ i18n "footer_ribbon_today" }}{{ else if eq .lastCommitDays 1 }}{{ i18n "footer_ribbon_day_ago" }}{{ else }}{{ i18n "footer_ribbon_days_ago" .lastCommitDays }}{{ end }}</span></span>
     <span class="ribbon-sep">·</span>
-    <span class="ribbon-item"><span class="ribbon-key">updates (90d):</span> <span class="ribbon-val">{{ .recentUpdates }}</span></span>
+    <span class="ribbon-item"><span class="ribbon-key">{{ i18n "footer_ribbon_updates_90d" }}:</span> <span class="ribbon-val">{{ .recentUpdates }}</span></span>
     <span class="ribbon-sep">·</span>
-    <a href="{{ "freshness/" | relURL }}" class="ribbon-link">→ freshness</a>
+    <a href="{{ "freshness/" | relURL }}" class="ribbon-link">{{ i18n "footer_ribbon_freshness_link" }}</a>
   </p>
   {{- end }}
   {{- end }}

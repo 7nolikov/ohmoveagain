@@ -14,7 +14,7 @@
 <title>{{ $title }}</title>
 <meta name="description" content="{{ $desc }}">
 <link rel="canonical" href="{{ $canonical }}">
-{{- if .Params.noindex }}
+{{- if or .Params.noindex (in (slice "taxonomy" "term") .Kind) }}
 <meta name="robots" content="noindex,follow">
 {{- end }}
 

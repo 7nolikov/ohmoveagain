@@ -185,6 +185,15 @@ hk_help_toggle: "Show or hide this panel"
 hk_help_close: "Close panel, cancel g prefix"
 hk_privacy: "Progress is stored locally in your browser (localStorage). Nothing is sent anywhere."
 
+# Footer activity ribbon
+footer_ribbon_contributors: "contributors"
+footer_ribbon_last_commit: "last commit"
+footer_ribbon_today: "today"
+footer_ribbon_day_ago: "1 day ago"
+footer_ribbon_days_ago: "{{ . }} days ago"
+footer_ribbon_updates_90d: "updates (90d)"
+footer_ribbon_freshness_link: "→ freshness"
+
 # Export filenames / markdown headers
 export_pipeline_md_title: "Croatia relocation Pipeline"
 export_stage_md_prefix: "Stage"
