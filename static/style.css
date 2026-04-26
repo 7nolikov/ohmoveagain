@@ -50,9 +50,9 @@ h1, h2, h3, h4 {
   line-height: 1.25;
   margin: 0 0 0.6em;
 }
-h1 { font-size: 1.6rem; color: var(--accent); }
-h2 { font-size: 1.15rem; color: var(--fg); }
-h3 { font-size: 1rem;   color: var(--fg); }
+h1 { font-size: 1.75rem; color: var(--accent); }
+h2 { font-size: 1.25rem; color: var(--fg); }
+h3 { font-size: 1.05rem; color: var(--fg); }
 
 code, pre, kbd {
   font-family: var(--mono);
@@ -118,7 +118,7 @@ header.top {
 }
 .nav a:hover { color: var(--fg); }
 .nav-star { color: var(--accent) !important; border: 1px solid var(--accent-dim); border-radius: var(--radius); }
-.star-count { font-size: 0.72rem; opacity: 0.75; margin-left: 2px; }
+.star-count { font-size: 0.72rem; margin-left: 2px; }
 
 /* Hide keyboard shortcut hint on touch devices */
 @media (pointer: coarse) {
@@ -319,7 +319,7 @@ header.top {
 }
 .checklist li .label-text { flex: 1; min-width: 0; overflow-wrap: anywhere; }
 .checklist li .label { color: var(--fg); display: block; }
-.checklist li .note  { color: var(--fg-dim); font-size: 0.85rem; margin-top: 4px; display: block; }
+.checklist li .note  { color: var(--fg-dim); font-size: 0.85rem; margin-top: 4px; display: block; padding-left: 10px; border-left: 2px solid var(--border); }
 .checklist li.done { border-left-color: var(--accent-dim); background: rgba(126,231,135,0.04); }
 .checklist li.done .label { color: var(--fg-dim); text-decoration: line-through; }
 
@@ -535,6 +535,25 @@ header.top {
   background: transparent;
   color: var(--accent);
   border: 1px solid var(--accent-dim);
+  font-weight: 400;
+}
+
+/* At wide screens, form and result sit side-by-side */
+.calc-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  align-items: start;
+}
+@media (min-width: 720px) {
+  .calc-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 28px;
+  }
+  .calc-layout .form { max-width: none; }
+  /* Error message spans col 2 (beside form), result also col 2 */
+  .calc-layout .error,
+  .calc-layout .result { margin-top: 0; }
 }
 
 .result {
@@ -554,7 +573,7 @@ header.top {
 .result .delta.neg { color: var(--err); }
 .result .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .result table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.9rem; }
-@media (max-width: 480px) {
+@media (max-width: 640px) {
   .result table th, .result table td { padding: 5px 6px; font-size: 0.82rem; }
   .result .ref-note { display: none; }
 }
@@ -907,7 +926,6 @@ footer.foot p { margin: 0 0 0.6em; }
   gap: 10px;
   margin-bottom: 6px;
   padding-bottom: 4px;
-  border-bottom: 1px dashed var(--border);
 }
 .group-name {
   margin: 0;

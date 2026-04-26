@@ -3,8 +3,10 @@
   {{- with .stats }}
   <p class="activity-ribbon">
     <span class="ribbon-prompt">$</span>
+    {{- if gt .contributorCount 1 }}
     <span class="ribbon-item"><span class="ribbon-key">{{ i18n "footer_ribbon_contributors" }}:</span> <span class="ribbon-val">{{ .contributorCount }}</span></span>
     <span class="ribbon-sep">·</span>
+    {{- end }}
     <span class="ribbon-item"><span class="ribbon-key">{{ i18n "footer_ribbon_last_commit" }}:</span> <span class="ribbon-val">{{ if eq .lastCommitDays 0 }}{{ i18n "footer_ribbon_today" }}{{ else if eq .lastCommitDays 1 }}{{ i18n "footer_ribbon_day_ago" }}{{ else }}{{ i18n "footer_ribbon_days_ago" .lastCommitDays }}{{ end }}</span></span>
     <span class="ribbon-sep">·</span>
     <span class="ribbon-item"><span class="ribbon-key">{{ i18n "footer_ribbon_updates_90d" }}:</span> <span class="ribbon-val">{{ .recentUpdates }}</span></span>
