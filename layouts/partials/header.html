@@ -1,17 +1,49 @@
+{{- $pageKey := "" -}}
+{{- with .File }}{{- $pageKey = .ContentBaseName -}}{{- end -}}
+{{- $isPipeline := or .IsHome (eq .Section "stages") -}}
+{{- $isCalculator := eq $pageKey "calculator" -}}
+{{- $isResource := in (slice "offices" "forms" "contribute" "subscribe") $pageKey -}}
 <header class="top">
   <div class="top-inner">
-    <a class="brand" href="{{ site.Home.RelPermalink }}">ohmoveagain</a>
+    <a class="brand" href="{{ site.Home.RelPermalink }}" aria-label="ohmoveagain home">ohmoveagain</a>
     <nav class="nav" aria-label="Primary">
-      <a href="{{ site.Home.RelPermalink }}#pipeline">{{ i18n "nav_pipeline" }}</a>
-      <a href="{{ "calculator/" | relURL }}">{{ i18n "nav_calculator" }}</a>
-      <a href="{{ "offices/" | relURL }}">{{ i18n "nav_offices" }}</a>
-      <a href="{{ "forms/" | relURL }}">{{ i18n "nav_forms" }}</a>
-      <a href="{{ "contribute/" | relURL }}">{{ i18n "nav_contribute" }}</a>
-      <a href="{{ "subscribe/" | relURL }}">{{ i18n "nav_subscribe" }}</a>
-      <a href="{{ site.Params.githubURL }}" rel="noopener noreferrer" class="nav-star" title="Support this project on GitHub">{{ i18n "nav_support" }}{{- with hugo.Data.build }}{{- with .stats }}{{- if gt .starCount 0 }} <span class="star-count">{{ .starCount }}</span>{{- end }}{{- end }}{{- end -}}</a>
-      {{- range .Translations }}
-      <a href="{{ .RelPermalink }}" class="nav-lang" lang="{{ .Language.Lang }}" title="{{ i18n "lang_switch_label" }}">{{ i18n "lang_switch" }}</a>
+      <a class="nav-link{{ if $isPipeline }} active{{ end }}" href="{{ site.Home.RelPermalink }}#pipeline"{{ if $isPipeline }} aria-current="page"{{ end }}>{{ i18n "nav_pipeline" }}</a>
+      <a class="nav-link{{ if $isCalculator }} active{{ end }}" href="{{ "calculator/" | relURL }}"{{ if $isCalculator }} aria-current="page"{{ end }}>{{ i18n "nav_calculator" }}</a>
+
+      <details class="nav-menu resources-menu">
+        <summary class="nav-link{{ if $isResource }} active{{ end }}"{{ if $isResource }} aria-current="page"{{ end }}>
+          <span>{{ i18n "nav_resources" }}</span>
+          <span class="nav-caret" aria-hidden="true">⌄</span>
+        </summary>
+        <div class="nav-menu-panel" role="list">
+          <a role="listitem" class="{{ if eq $pageKey "offices" }}active{{ end }}" href="{{ "offices/" | relURL }}"{{ if eq $pageKey "offices" }} aria-current="page"{{ end }}>{{ i18n "nav_offices" }}</a>
+          <a role="listitem" class="{{ if eq $pageKey "forms" }}active{{ end }}" href="{{ "forms/" | relURL }}"{{ if eq $pageKey "forms" }} aria-current="page"{{ end }}>{{ i18n "nav_forms" }}</a>
+          <a role="listitem" class="{{ if eq $pageKey "contribute" }}active{{ end }}" href="{{ "contribute/" | relURL }}"{{ if eq $pageKey "contribute" }} aria-current="page"{{ end }}>{{ i18n "nav_contribute" }}</a>
+          <a role="listitem" class="{{ if eq $pageKey "subscribe" }}active{{ end }}" href="{{ "subscribe/" | relURL }}"{{ if eq $pageKey "subscribe" }} aria-current="page"{{ end }}>{{ i18n "nav_subscribe" }}</a>
+        </div>
+      </details>
+
+      <span class="nav-spacer" aria-hidden="true"></span>
+
+      {{- $translations := .AllTranslations -}}
+      {{- if gt (len $translations) 1 }}
+      <details class="nav-menu lang-menu">
+        <summary class="nav-link nav-lang-summary" aria-label="{{ i18n "nav_language" }}: {{ site.Language.LanguageName }}">
+          <span class="nav-lang-current">{{ site.Language.Lang | upper }}</span>
+          <span class="nav-caret" aria-hidden="true">⌄</span>
+        </summary>
+        <div class="nav-menu-panel nav-lang-panel" role="list" aria-label="{{ i18n "nav_language" }}">
+          {{- range $translations }}
+          <a role="listitem" href="{{ .RelPermalink }}" lang="{{ .Language.Lang }}" hreflang="{{ .Language.Lang }}" class="{{ if eq .Language.Lang site.Language.Lang }}active{{ end }}"{{ if eq .Language.Lang site.Language.Lang }} aria-current="page"{{ end }}>
+            <span class="nav-lang-code">{{ .Language.Lang | upper }}</span>
+            <span>{{ .Language.LanguageName }}</span>
+          </a>
+          {{- end }}
+        </div>
+      </details>
       {{- end }}
+
+      <a href="{{ site.Params.githubURL }}" rel="noopener noreferrer" class="nav-link nav-star" title="Support this project on GitHub">{{ i18n "nav_support" }}{{- with hugo.Data.build }}{{- with .stats }}{{- if gt .starCount 0 }} <span class="star-count">{{ .starCount }}</span>{{- end }}{{- end }}{{- end -}}</a>
     </nav>
   </div>
 </header>
