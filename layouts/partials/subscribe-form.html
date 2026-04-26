@@ -1,5 +1,47 @@
+{{ if site.Params.formspreeEndpoint }}
+<form
+  class="subscribe-form"
+  x-data="{ email: '', state: 'idle', endpoint: '{{ site.Params.formspreeEndpoint }}' }"
+  @submit.prevent="
+    if (!email || state === 'loading' || state === 'success') return;
+    state = 'loading';
+    fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    }).then(r => {
+      if (r.ok) { state = 'success'; } else { state = 'error_generic'; }
+    }).catch(() => { state = 'error_network'; });
+  "
+  novalidate
+>
+  <p class="dim" style="font-size:0.88rem;margin-bottom:10px;">{{ i18n "subscribe_desc" }}</p>
+  <div class="subscribe-row">
+    <label class="sr-only" for="sub-email">{{ i18n "subscribe_email_label" }}</label>
+    <input
+      id="sub-email"
+      type="email"
+      name="email"
+      x-model="email"
+      :disabled="state === 'loading' || state === 'success'"
+      placeholder="{{ i18n "subscribe_email_label" }}"
+      autocomplete="email"
+      required
+    >
+    <button type="submit" class="btn" :disabled="state === 'loading' || state === 'success'">
+      <span x-show="state !== 'loading'">{{ i18n "subscribe_button" }}</span>
+      <span x-show="state === 'loading'" x-cloak>{{ i18n "subscribe_loading" }}</span>
+    </button>
+  </div>
+  <p x-show="state === 'success'" x-cloak class="success" style="margin-top:8px;">{{ i18n "subscribe_success" }}</p>
+  <p x-show="state === 'error_generic'" x-cloak class="error" style="margin-top:8px;">{{ i18n "subscribe_error_generic" }}</p>
+  <p x-show="state === 'error_network'" x-cloak class="error" style="margin-top:8px;">{{ i18n "subscribe_error_network" }}</p>
+  <p style="font-size:0.78rem;margin-top:8px;color:var(--fg-muted);">{{ i18n "subscribe_delivery" }}</p>
+</form>
+{{ else }}
 <div class="watch-cta">
   <a class="btn" href="{{ site.Params.githubURL }}" rel="noopener noreferrer">{{ i18n "watch_on_github" }}</a>
   <a class="btn secondary" href="{{ "index.xml" | relURL }}">{{ i18n "subscribe_rss" }}</a>
 </div>
 <p class="muted" style="font-size:0.8rem;margin-top:8px;">{{ i18n "watch_desc" }}</p>
+{{ end }}

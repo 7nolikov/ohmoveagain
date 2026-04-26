@@ -6,6 +6,9 @@
 <body{{ with .Params.bodyClass }} class="{{ . }}"{{ end }} x-data>
 <a href="#main" class="sr-only">Skip to content</a>
 {{- partial "header.html" . -}}
+{{- if eq site.Language.Lang "ru" }}
+<div class="mt-banner" role="alert">{{ i18n "machine_translation_banner" }}</div>
+{{- end }}
 {{- partial "global-progress.html" . -}}
 <main id="main" class="wrap">
 {{ block "main" . }}{{ end }}

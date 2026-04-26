@@ -3,7 +3,7 @@ import { execFileSync } from 'child_process';
 import { STAGES_DIR, listEnglishStageFiles, localizedPath, loadStage, saveStage, sourceHash, translationPayload, compareShape } from './i18n-lib.mjs';
 
 const token = process.env.GITHUB_TOKEN;
-const model = process.env.GITHUB_MODELS_MODEL || 'openai/gpt-4o';
+const model = process.env.GITHUB_MODELS_MODEL || 'openai/gpt-4.1';
 const glossary = JSON.parse(fs.readFileSync('data/i18n/glossary.ru.json', 'utf8'));
 
 if (!token) {

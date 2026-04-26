@@ -617,6 +617,54 @@ footer.foot p { margin: 0 0 0.6em; }
 }
 .edit-link a { color: var(--link); }
 
+/* Machine-translation notice banner (Russian pages) */
+.mt-banner {
+  background: rgba(245, 166, 35, 0.08);
+  border-bottom: 1px solid rgba(245, 166, 35, 0.3);
+  color: var(--warn);
+  font-size: 0.82rem;
+  text-align: center;
+  padding: 7px 16px;
+  line-height: 1.4;
+}
+
+/* Subscribe form */
+.subscribe-form { max-width: 480px; }
+.subscribe-row {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+.subscribe-row input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 14px;
+  font-family: var(--mono);
+  font-size: 16px;
+  background: var(--bg-card);
+  color: var(--fg);
+  border: 1px solid var(--border-bright);
+  border-radius: var(--radius);
+  appearance: none;
+  -webkit-appearance: none;
+}
+.subscribe-row input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: var(--accent);
+}
+.subscribe-row input:disabled { opacity: 0.55; }
+.subscribe-row .btn {
+  white-space: nowrap;
+  padding: 12px 18px;
+  font-size: 0.9rem;
+  width: auto;
+}
+@media (max-width: 420px) {
+  .subscribe-row { flex-direction: column; }
+  .subscribe-row .btn { width: 100%; }
+}
+
 /* freshness page */
 .freshness-table {
   width: 100%;
