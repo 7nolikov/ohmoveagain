@@ -1,173 +1,324 @@
 {{/*
-  Pet travel Gantt — shows the mandatory EU pet-passport sequence as a dependency timeline.
-  Three scenarios rendered as separate rows with a shared timeline (weeks before flight = 0).
-  Static SVG, no JS, screenshot-friendly.
+  Pet travel timeline — readable, responsive replacement for the old fixed SVG Gantt.
+  The previous SVG had overlapping labels at narrow widths and around the flight-date edge.
+  This version keeps the same content but lets text wrap naturally.
 */}}
-<figure class="pet-gantt-wrap">
-  <figcaption class="pet-gantt-caption">
-    EU pet travel sequence — weeks before flight date
+<figure class="pet-gantt-wrap" aria-labelledby="pet-gantt-title">
+  <style>
+    .pet-gantt-wrap {
+      margin: 22px 0 26px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-card);
+      overflow: hidden;
+    }
+
+    .pet-gantt-caption {
+      margin: 0 0 14px;
+      color: var(--fg);
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .pet-gantt-source {
+      display: block;
+      margin-top: 4px;
+      color: var(--fg-muted);
+      font-size: 0.78rem;
+      font-weight: 400;
+    }
+
+    .pet-timeline {
+      display: grid;
+      gap: 12px;
+    }
+
+    .pet-path {
+      display: grid;
+      grid-template-columns: minmax(112px, 0.28fr) minmax(0, 1fr);
+      gap: 12px;
+      align-items: stretch;
+      min-width: 0;
+      padding: 12px;
+      border: 1px solid var(--border-bright);
+      border-radius: var(--radius);
+      background: rgba(11,14,15,0.52);
+    }
+
+    .pet-path-label {
+      min-width: 0;
+      padding: 10px 0;
+      color: var(--fg);
+    }
+
+    .pet-path-label strong {
+      display: block;
+      color: var(--accent);
+      font-size: 0.9rem;
+      line-height: 1.3;
+    }
+
+    .pet-path-label span {
+      display: block;
+      margin-top: 4px;
+      color: var(--fg-dim);
+      font-size: 0.76rem;
+      line-height: 1.35;
+    }
+
+    .pet-steps {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .pet-steps.unlisted {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .pet-step {
+      position: relative;
+      min-width: 0;
+      min-height: 104px;
+      padding: 10px 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-alt);
+      overflow: hidden;
+    }
+
+    .pet-step::after {
+      content: "";
+      position: absolute;
+      top: 22px;
+      right: -8px;
+      width: 16px;
+      height: 1px;
+      background: var(--accent-dim);
+    }
+
+    .pet-step:last-child::after {
+      display: none;
+    }
+
+    .pet-step-index {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      margin-bottom: 8px;
+      border: 1px solid var(--accent-dim);
+      border-radius: 999px;
+      color: var(--accent);
+      background: rgba(126,231,135,0.06);
+      font-size: 0.72rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .pet-step strong {
+      display: block;
+      min-width: 0;
+      color: var(--fg);
+      font-size: 0.82rem;
+      line-height: 1.3;
+      overflow-wrap: anywhere;
+    }
+
+    .pet-step span {
+      display: block;
+      min-width: 0;
+      margin-top: 5px;
+      color: var(--fg-dim);
+      font-size: 0.74rem;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
+    .pet-step.warn {
+      border-color: rgba(245,166,35,0.55);
+      background: rgba(245,166,35,0.06);
+    }
+
+    .pet-step.warn .pet-step-index {
+      border-color: rgba(245,166,35,0.8);
+      color: var(--warn);
+      background: rgba(245,166,35,0.08);
+    }
+
+    .pet-step.flight {
+      border-color: var(--accent-dim);
+      background: rgba(126,231,135,0.06);
+    }
+
+    .pet-dependency-note,
+    .pet-gantt-note {
+      margin: 12px 0 0;
+      padding: 10px 12px;
+      border-left: 2px solid var(--accent-dim);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      background: rgba(126,231,135,0.04);
+      color: var(--fg-dim);
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    .pet-dependency-note strong,
+    .pet-gantt-note strong {
+      color: var(--fg);
+    }
+
+    .pet-gantt-note {
+      border-left-color: var(--warn);
+      background: rgba(245,166,35,0.06);
+    }
+
+    .pet-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      margin: 14px 0 0;
+      color: var(--fg-muted);
+      font-size: 0.76rem;
+    }
+
+    .pet-legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pet-legend i {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      background: var(--border-bright);
+    }
+
+    .pet-legend .ok i { background: var(--accent-dim); }
+    .pet-legend .warn i { background: var(--warn); }
+
+    @media (max-width: 860px) {
+      .pet-path {
+        grid-template-columns: 1fr;
+      }
+
+      .pet-path-label {
+        padding: 0;
+      }
+
+      .pet-steps,
+      .pet-steps.unlisted {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .pet-step::after {
+        display: none;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .pet-gantt-wrap {
+        padding: 12px;
+      }
+
+      .pet-steps,
+      .pet-steps.unlisted {
+        grid-template-columns: 1fr;
+      }
+
+      .pet-step {
+        min-height: 0;
+      }
+    }
+  </style>
+
+  <figcaption id="pet-gantt-title" class="pet-gantt-caption">
+    EU pet travel sequence — dependency timeline before flight
     <span class="pet-gantt-source">
       Source: <a href="https://food.ec.europa.eu/animals/movement-pets/non-eu-countries-listed_en" target="_blank" rel="noopener noreferrer">EU Commission — non-EU listed countries</a> · verified 2026-03-01
     </span>
   </figcaption>
 
-  <div class="pet-gantt-scroll">
-  <svg viewBox="0 0 820 260" xmlns="http://www.w3.org/2000/svg"
-       role="img" aria-label="Pet travel dependency timeline showing required steps and lead times before flight"
-       class="pet-gantt-svg">
+  <div class="pet-timeline">
+    <section class="pet-path" aria-labelledby="pet-listed-title">
+      <div class="pet-path-label">
+        <strong id="pet-listed-title">Listed origin country</strong>
+        <span>No rabies antibody titer test. Still respect microchip → rabies → document timing.</span>
+      </div>
+      <div class="pet-steps" role="list">
+        <div class="pet-step" role="listitem">
+          <span class="pet-step-index">01</span>
+          <strong>Microchip</strong>
+          <span>ISO 11784 / 11785. Must be implanted before rabies vaccination.</span>
+        </div>
+        <div class="pet-step" role="listitem">
+          <span class="pet-step-index">02</span>
+          <strong>Rabies vaccine</strong>
+          <span>At least 21 days before travel. Vaccine must be after the microchip.</span>
+        </div>
+        <div class="pet-step" role="listitem">
+          <span class="pet-step-index">03</span>
+          <strong>Pet passport or veterinary certificate</strong>
+          <span>Issued by an authorised vet with chip and vaccine records.</span>
+        </div>
+        <div class="pet-step flight" role="listitem">
+          <span class="pet-step-index">04</span>
+          <strong>Health certificate window</strong>
+          <span>Official certificate within 10 days before flight, where required.</span>
+        </div>
+      </div>
+    </section>
 
-    <!-- Background -->
-    <rect width="820" height="260" fill="#11161a" rx="6"/>
+    <section class="pet-path" aria-labelledby="pet-unlisted-title">
+      <div class="pet-path-label">
+        <strong id="pet-unlisted-title">Unlisted origin country</strong>
+        <span>Harder path. Missing the titer timing can delay the move by about 3 months.</span>
+      </div>
+      <div class="pet-steps unlisted" role="list">
+        <div class="pet-step" role="listitem">
+          <span class="pet-step-index">01</span>
+          <strong>Microchip</strong>
+          <span>Complete before the rabies vaccine. The chip number must match all records.</span>
+        </div>
+        <div class="pet-step warn" role="listitem">
+          <span class="pet-step-index">02</span>
+          <strong>Rabies vaccine by ~16 weeks before flight</strong>
+          <span>Needed early enough to leave room for the 90-day titer waiting period.</span>
+        </div>
+        <div class="pet-step warn" role="listitem">
+          <span class="pet-step-index">03</span>
+          <strong>90-day wait + titer test</strong>
+          <span>Blood sample after the required wait. Result must meet the EU threshold.</span>
+        </div>
+        <div class="pet-step" role="listitem">
+          <span class="pet-step-index">04</span>
+          <strong>Passport or veterinary certificate</strong>
+          <span>Include microchip, rabies vaccine, and titer result documentation.</span>
+        </div>
+        <div class="pet-step flight" role="listitem">
+          <span class="pet-step-index">05</span>
+          <strong>Health certificate within 10 days</strong>
+          <span>Book the official vet appointment early. Slots can be limited near travel.</span>
+        </div>
+      </div>
+    </section>
+  </div>
 
-    <!-- Week grid lines (week 0 = flight, left = earlier) -->
-    <!-- Timeline: 0 to -20 weeks, displayed left→right as -20…0 -->
-    <!-- Each week = 36px, offset left = 60px -->
-    <!-- x = 60 + (20 - weeksBefore) * 36 -->
+  <p class="pet-dependency-note">
+    <strong>Dependency order:</strong> microchip first, then rabies vaccine, then the waiting period / titer path if your origin country requires it, then final travel certificate checks.
+  </p>
 
-    <!-- Grid -->
-    <g stroke="#1f2a31" stroke-width="1">
-      <line x1="60" y1="30" x2="60" y2="240"/>
-      <line x1="96" y1="30" x2="96" y2="240"/>
-      <line x1="132" y1="30" x2="132" y2="240"/>
-      <line x1="168" y1="30" x2="168" y2="240"/>
-      <line x1="204" y1="30" x2="204" y2="240"/>
-      <line x1="240" y1="30" x2="240" y2="240"/>
-      <line x1="276" y1="30" x2="276" y2="240"/>
-      <line x1="312" y1="30" x2="312" y2="240"/>
-      <line x1="348" y1="30" x2="348" y2="240"/>
-      <line x1="384" y1="30" x2="384" y2="240"/>
-      <line x1="420" y1="30" x2="420" y2="240"/>
-      <line x1="456" y1="30" x2="456" y2="240"/>
-      <line x1="492" y1="30" x2="492" y2="240"/>
-      <line x1="528" y1="30" x2="528" y2="240"/>
-      <line x1="564" y1="30" x2="564" y2="240"/>
-      <line x1="600" y1="30" x2="600" y2="240"/>
-      <line x1="636" y1="30" x2="636" y2="240"/>
-      <line x1="672" y1="30" x2="672" y2="240"/>
-      <line x1="708" y1="30" x2="708" y2="240"/>
-      <line x1="744" y1="30" x2="744" y2="240"/>
-      <line x1="780" y1="30" x2="780" y2="240"/>
-    </g>
-
-    <!-- Week labels (–20 to 0) -->
-    <g font-family="ui-monospace,monospace" font-size="9" fill="#5c6770" text-anchor="middle">
-      <text x="60"  y="22">–20w</text>
-      <text x="132" y="22">–18w</text>
-      <text x="204" y="22">–16w</text>
-      <text x="276" y="22">–14w</text>
-      <text x="348" y="22">–12w</text>
-      <text x="420" y="22">–10w</text>
-      <text x="492" y="22">–8w</text>
-      <text x="564" y="22">–6w</text>
-      <text x="636" y="22">–4w</text>
-      <text x="708" y="22">–2w</text>
-      <text x="780" y="22">Flight</text>
-    </g>
-
-    <!-- Flight day marker -->
-    <line x1="780" y1="28" x2="780" y2="245" stroke="#7ee787" stroke-width="1.5" stroke-dasharray="4 3"/>
-    <text x="782" y="252" font-family="ui-monospace,monospace" font-size="9" fill="#7ee787">✈ 0</text>
-
-    <!--
-      Row 1: Listed-country path (EU-listed origin — no titer test required)
-      Microchip → Rabies vaccine (must be 3w before flight) → Pet passport → Health cert (10d before)
-    -->
-    <text x="8" y="58" font-family="ui-monospace,monospace" font-size="9" fill="#8a969e">Listed</text>
-    <text x="8" y="68" font-family="ui-monospace,monospace" font-size="9" fill="#8a969e">country</text>
-
-    <!-- Microchip: any time (shown at –12w as "anytime before vaccine") -->
-    <rect x="60"  y="46" width="250" height="16" rx="3" fill="#2a3a44"/>
-    <text x="66" y="58" font-family="ui-monospace,monospace" font-size="9" fill="#8a969e">🔷 microchip (before vaccine)</text>
-
-    <!-- Rabies vaccine: at least 21 days before flight → –3w -->
-    <rect x="684" y="46" width="36" height="16" rx="3" fill="#4a8953"/>
-    <text x="688" y="58" font-family="ui-monospace,monospace" font-size="9" fill="#d7dee3">💉 rabies –3w</text>
-
-    <!-- Pet passport: after vaccine + 21d wait = from –3w, valid at flight -->
-    <rect x="720" y="46" width="36" height="16" rx="3" fill="#2a5c3a"/>
-    <text x="724" y="58" font-family="ui-monospace,monospace" font-size="9" fill="#7ee787">📄 passport</text>
-
-    <!-- Health cert: 10d window before flight -->
-    <rect x="744" y="46" width="36" height="16" rx="3" fill="#1a3a28"/>
-    <text x="748" y="58" font-family="ui-monospace,monospace" font-size="9" fill="#7ee787">🏥 health cert 10d</text>
-
-    <!--
-      Row 2: Unlisted-country path (requires titer test)
-      Microchip → Rabies vaccine (–16w minimum) → 90-day wait → Titer test (–4w) → Pet passport → Health cert
-    -->
-    <text x="8" y="108" font-family="ui-monospace,monospace" font-size="9" fill="#8a969e">Unlisted</text>
-    <text x="8" y="118" font-family="ui-monospace,monospace" font-size="9" fill="#f5a623">⚠ titer</text>
-
-    <!-- Microchip: before vaccine (–17w+) -->
-    <rect x="60"  y="96" width="178" height="16" rx="3" fill="#2a3a44"/>
-    <text x="66" y="108" font-family="ui-monospace,monospace" font-size="9" fill="#8a969e">🔷 microchip</text>
-
-    <!-- Rabies vaccine: must be at least 16w before flight (90d titer wait + 3w travel buffer) -->
-    <rect x="240" y="96" width="36" height="16" rx="3" fill="#b45309"/>
-    <text x="244" y="108" font-family="ui-monospace,monospace" font-size="9" fill="#fef3c7">💉 rabies –16w</text>
-
-    <!-- 90-day wait (13 weeks) -->
-    <rect x="276" y="96" width="468" height="16" rx="3" fill="#1c2a1a" stroke="#4a8953" stroke-width="1" stroke-dasharray="3 2"/>
-    <text x="480" y="108" font-family="ui-monospace,monospace" font-size="9" fill="#4a8953">←— 90-day wait (mandatory) —→</text>
-
-    <!-- Titer test drawn at –3w; result must be ≥ 0.5 IU/mL -->
-    <rect x="636" y="96" width="54" height="16" rx="3" fill="#78350f"/>
-    <text x="640" y="108" font-family="ui-monospace,monospace" font-size="9" fill="#fbbf24">🧪 titer –3w+</text>
-
-    <!-- Pet passport (after titer result) -->
-    <rect x="720" y="96" width="36" height="16" rx="3" fill="#2a5c3a"/>
-    <text x="724" y="108" font-family="ui-monospace,monospace" font-size="9" fill="#7ee787">📄</text>
-
-    <!-- Health cert -->
-    <rect x="744" y="96" width="36" height="16" rx="3" fill="#1a3a28"/>
-    <text x="748" y="108" font-family="ui-monospace,monospace" font-size="9" fill="#7ee787">🏥 10d</text>
-
-    <!-- ⚠ Caption for titer trap -->
-    <text x="240" y="125" font-family="ui-monospace,monospace" font-size="9" fill="#f5a623">⚠ start vaccine here or earlier — 4-month trap if you miss this</text>
-
-    <!--
-      Row 3: Dependency arrows summary
-    -->
-    <text x="8" y="165" font-family="ui-monospace,monospace" font-size="9" fill="#5c6770">Key</text>
-    <text x="8" y="175" font-family="ui-monospace,monospace" font-size="9" fill="#5c6770">deps</text>
-
-    <!-- Arrow: microchip → vaccine -->
-    <line x1="160" y1="162" x2="238" y2="162" stroke="#4a8953" stroke-width="1.5" marker-end="url(#arr)"/>
-    <text x="66" y="162" font-family="ui-monospace,monospace" font-size="9" fill="#8a969e">microchip</text>
-    <text x="242" y="162" font-family="ui-monospace,monospace" font-size="9" fill="#8a969e">vaccine</text>
-
-    <!-- Arrow: vaccine → 90d wait → titer -->
-    <line x1="322" y1="162" x2="634" y2="162" stroke="#b45309" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4 2"/>
-    <text x="440" y="158" font-family="ui-monospace,monospace" font-size="9" fill="#b45309">90 days</text>
-
-    <!-- Arrow: titer → passport -->
-    <line x1="694" y1="162" x2="718" y2="162" stroke="#4a8953" stroke-width="1.5" marker-end="url(#arr)"/>
-    <text x="698" y="158" font-family="ui-monospace,monospace" font-size="9" fill="#7ee787">pass</text>
-
-    <!-- Arrow: passport → health cert -->
-    <line x1="732" y1="162" x2="742" y2="162" stroke="#4a8953" stroke-width="1.5" marker-end="url(#arr)"/>
-    <text x="748" y="162" font-family="ui-monospace,monospace" font-size="9" fill="#7ee787">cert</text>
-
-    <!-- Legend -->
-    <rect x="60"  y="190" width="10" height="10" rx="2" fill="#b45309"/>
-    <text x="74"  y="199" font-family="ui-monospace,monospace" font-size="9" fill="#8a969e">hard deadline (miss = delay move)</text>
-    <rect x="60"  y="208" width="10" height="10" rx="2" fill="#4a8953"/>
-    <text x="74"  y="217" font-family="ui-monospace,monospace" font-size="9" fill="#8a969e">step complete</text>
-    <rect x="60"  y="226" width="10" height="10" rx="2" fill="#2a3a44"/>
-    <text x="74"  y="235" font-family="ui-monospace,monospace" font-size="9" fill="#8a969e">flexible window</text>
-    <rect x="220" y="190" width="10" height="10" rx="2" fill="#7ee787"/>
-    <text x="234" y="199" font-family="ui-monospace,monospace" font-size="9" fill="#8a969e">Croatia entry</text>
-
-    <!-- Arrow marker def -->
-    <defs>
-      <marker id="arr" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-        <path d="M 0 0 L 6 3 L 0 6 z" fill="#4a8953"/>
-      </marker>
-    </defs>
-  </svg>
+  <div class="pet-legend" aria-label="Timeline legend">
+    <span class="ok"><i aria-hidden="true"></i> normal required step</span>
+    <span class="warn"><i aria-hidden="true"></i> hard timing risk</span>
   </div>
 
   <p class="pet-gantt-note">
-    <strong>Unlisted country?</strong> Check the <a href="https://food.ec.europa.eu/animals/movement-pets/non-eu-countries-listed_en" target="_blank" rel="noopener noreferrer">EU listed-countries table</a> first. If your origin is <em>not</em> listed, the titer test row applies — start the vaccine at least 16 weeks before your planned flight. Missing this by even one day means a 3-month delay. Use the <a href="#pet-countdown">pet deadline calculator</a> above to compute exact dates.
+    <strong>Unlisted country?</strong> Check the <a href="https://food.ec.europa.eu/animals/movement-pets/non-eu-countries-listed_en" target="_blank" rel="noopener noreferrer">EU listed-countries table</a> first. If your origin is <em>not</em> listed, start the vaccine-and-titer process at least 16 weeks before the planned flight. Use the <a href="#pet-countdown">pet deadline calculator</a> below to compute exact dates.
   </p>
 </figure>
