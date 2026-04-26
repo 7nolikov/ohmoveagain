@@ -16,6 +16,14 @@
 {{- $claimStrings := .Params.claimStrings | default dict -}}
 {{- $w := .Weight -}}
 
+{{- $trustIntro := cond (eq site.Language.Lang "ru") "Оценка показывает, насколько уверенно можно опираться на источники этапа. Она не заменяет проверку в MUP, HZZO или у специалиста, но помогает понять, где риск выше." "This score explains how much you can rely on the sources behind this stage. It does not replace checking MUP, HZZO, or a local professional, but it shows where risk is higher." -}}
+{{- $trustQuestion := cond (eq site.Language.Lang "ru") "Можно ли доверять этому этапу?" "Can I rely on this stage?" -}}
+{{- $trustBasedOn := cond (eq site.Language.Lang "ru") "проверяемых утверждений" "sourced checks" -}}
+{{- $trustAlgo := cond (eq site.Language.Lang "ru") "версия алгоритма" "algorithm" -}}
+{{- $riskLabel := cond (eq site.Language.Lang "ru") "Риск, если пункт неверен" "Risk if this is wrong" -}}
+{{- $uncertaintyLabel := cond (eq site.Language.Lang "ru") "Неопределённость источника" "Evidence uncertainty" -}}
+{{- $detailsHint := cond (eq site.Language.Lang "ru") "Откройте пояснение, чтобы увидеть источник, последствие ошибки и возможные оговорки." "Open the explanation to see the source, impact if wrong, and any caveats." -}}
+
 {{- $trust := newScratch -}}
 {{- $trust.Set "total" 0 -}}
 {{- $trust.Set "count" 0 -}}
@@ -46,12 +54,18 @@
 
 <p class="stage-disclaimer">{{ i18n "stage_disclaimer" }}</p>
 
-<section class="trust-summary">
-  <div class="trust-summary-title">{{ i18n "trust_summary" }}</div>
+<section class="trust-summary" aria-labelledby="trust-summary-title">
+  <div class="trust-summary-kicker">{{ i18n "trust_summary" }}</div>
+  <h2 id="trust-summary-title" class="trust-summary-title">{{ $trustQuestion }}</h2>
+  <p class="trust-summary-copy">{{ $trustIntro }}</p>
   <div class="trust-summary-row">
     <span class="trust-score-pill" data-level="{{ $level }}" title="{{ i18n "trust_score" }}: {{ $avg }}/100 · algo v{{ site.Params.trustAlgoVersion }}">
-      {{ i18n (printf "trust_score_%s" $level) }} {{ i18n "trust_confidence" }}
+      <span class="trust-chip-label">{{ i18n "trust_confidence" }}</span>
+      <strong>{{ i18n (printf "trust_score_%s" $level) }}</strong>
+      <span class="trust-score-number">{{ $avg }}/100</span>
     </span>
+    <span class="trust-summary-meta">{{ $trust.Get "count" }} {{ $trustBasedOn }}</span>
+    <span class="trust-summary-meta">{{ $trustAlgo }} v{{ site.Params.trustAlgoVersion }}</span>
   </div>
 </section>
 
@@ -125,10 +139,17 @@
           <div class="label-text">
             <span class="label">{{ index $strings "label" }}</span>
             {{ if $claim.sourceId }}
-            <div class="trust-badges">
-              <span class="trust-badge" data-level="{{ $claim.riskLevel }}">⚠ {{ i18n (printf "trust_risk_%s" $claim.riskLevel) }}</span>
-              <span class="trust-badge" data-level="{{ $claim.uncertainty }}">≈ {{ i18n (printf "trust_uncertainty_%s" $claim.uncertainty) }}</span>
+            <div class="trust-badges" aria-label="Source confidence for this checklist item">
+              <span class="trust-badge" data-level="{{ $claim.riskLevel }}">
+                <span class="trust-chip-label">{{ $riskLabel }}</span>
+                <strong>{{ i18n (printf "trust_risk_%s" $claim.riskLevel) }}</strong>
+              </span>
+              <span class="trust-badge" data-level="{{ $claim.uncertainty }}">
+                <span class="trust-chip-label">{{ $uncertaintyLabel }}</span>
+                <strong>{{ i18n (printf "trust_uncertainty_%s" $claim.uncertainty) }}</strong>
+              </span>
             </div>
+            <div class="trust-item-hint">{{ $detailsHint }}</div>
             {{ end }}
           </div>
         </label>
