@@ -62,7 +62,7 @@ hero_subtitle: "The Pipeline is a practical, open-source, five-stage guide to mo
 hero_byline_1: "I built the Pipeline while moving to Croatia myself. The official portals are fragmented, the blog posts skip the hard parts, and I kept hitting the same questions:"
 hero_byline_question: "which visa, what order, which documents, by when?"
 hero_byline_2: "This is the Pipeline I wish I had — now open-source so it stays accurate."
-see_five_stages: "See the five stages ↓"
+see_five_stages: "Start the relocation pipeline ↓"
 runway_calculator: "Runway calculator"
 pipeline_h2: "The Pipeline · five stages"
 pipeline_desc_1: "Each stage lists its prerequisites, the documents you will need, an actionable checklist with official sources, and the pitfalls most people hit. Progress is stored"
@@ -88,6 +88,8 @@ watch_desc: "GitHub Watch → Releases sends one notification per significant up
 # Navigation
 nav_pipeline: "Pipeline"
 nav_calculator: "Calculator"
+nav_resources: "Resources"
+nav_language: "Language"
 nav_offices: "Offices"
 nav_forms: "Forms"
 nav_contribute: "Contribute"
