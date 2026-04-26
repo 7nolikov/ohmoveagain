@@ -15,6 +15,10 @@ header.top {
   min-width: 0;
 }
 
+.global-progress {
+  top: 61px;
+}
+
 .nav-link,
 .nav a,
 .nav-menu > summary {
@@ -173,6 +177,11 @@ header.top {
     justify-content: flex-start;
     gap: 6px;
     padding-bottom: 2px;
+    flex-wrap: wrap;
+    overflow: visible;
+    scrollbar-width: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 
   .nav-spacer {
@@ -198,15 +207,16 @@ header.top {
     left: 16px;
     right: 16px;
   }
+
+  .global-progress {
+    position: static;
+  }
 }
 
 @media (max-width: 520px) {
   .nav {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, auto));
-    overflow: visible;
-    mask-image: none;
-    -webkit-mask-image: none;
   }
 
   .nav-link,
