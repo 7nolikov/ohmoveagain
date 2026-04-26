@@ -1,0 +1,129 @@
+/* Home page overview and tool routing. */
+.home-map {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 28px;
+  align-items: center;
+  margin: 28px 0 36px;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: radial-gradient(circle at top right, rgba(126,231,135,0.08), transparent 34%), var(--bg-card);
+}
+
+.home-map-copy h2 {
+  color: var(--fg);
+}
+
+.pipeline-visual {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  position: relative;
+}
+
+.visual-node {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 3px 12px;
+  align-items: start;
+  padding: 12px 14px;
+  border: 1px solid var(--border-bright);
+  border-radius: var(--radius);
+  background: rgba(11,14,15,0.54);
+}
+
+.visual-index {
+  grid-row: span 2;
+  color: var(--accent);
+  font-weight: 800;
+  font-size: 0.82rem;
+}
+
+.visual-node strong {
+  color: var(--fg);
+  font-size: 0.95rem;
+}
+
+.visual-node span:last-child {
+  color: var(--fg-dim);
+  font-size: 0.82rem;
+}
+
+.visual-connector {
+  width: 1px;
+  height: 16px;
+  margin-left: 27px;
+  background: linear-gradient(to bottom, var(--accent-dim), transparent);
+}
+
+.home-tools {
+  margin: 34px 0;
+}
+
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.tool-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 150px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  color: var(--fg);
+  transition: border-color 0.15s, transform 0.15s, background 0.15s;
+}
+
+.tool-card:hover,
+.tool-card:focus-visible {
+  text-decoration: none;
+  border-color: var(--accent-dim);
+  background: rgba(126,231,135,0.04);
+  transform: translateY(-1px);
+}
+
+.tool-card strong {
+  color: var(--accent);
+}
+
+.tool-card span:last-child {
+  color: var(--fg-dim);
+  font-size: 0.84rem;
+}
+
+.tool-kicker {
+  color: var(--fg-muted);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.pipeline-page-hero {
+  padding-bottom: 4px;
+}
+
+@media (max-width: 760px) {
+  .home-map {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+
+  .tool-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 460px) {
+  .tool-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tool-card {
+    min-height: 0;
+  }
+}
