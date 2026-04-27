@@ -1,0 +1,26 @@
+{{- define "main" -}}
+{{- $stages := (where site.RegularPages "Section" "stages").ByWeight -}}
+{{- $allStages := slice -}}
+{{- range $stages -}}
+  {{- $page := . -}}
+  {{- $d := index hugo.Data.stages .File.ContentBaseName -}}
+  {{- $itemStrings := .Params.itemStrings -}}
+  {{- $categoryNames := .Params.categoryNames -}}
+  {{- $cats := slice -}}
+  {{- with $d -}}
+  {{- range $ci, $cat := .checklist -}}
+    {{- $items := slice -}}
+    {{- range $ii, $item := $cat.items -}}
+      {{- $strings := index $itemStrings $item.id -}}
+      {{- $src := dict -}}
+      {{- with $item.source -}}{{- $src = dict "url" .url "label" (index $strings "sourceLabel") "asOf" .asOf -}}{{- end -}}
+      {{- $items = $items | append (dict "key" (printf "%d.%d" $ci $ii) "label" (index $strings "label") "note" (index $strings "note") "source" $src) -}}
+    {{- end -}}
+    {{- $catName := index $categoryNames $cat.id -}}
+    {{- $cats = $cats | append (dict "name" $catName "items" $items) -}}
+  {{- end -}}
+  {{- end -}}
+  {{- $allStages = $allStages | append (dict "title" $page.Title "weight" $page.Weight "cats" $cats) -}}
+{{- end -}}
+{{ $allStages | jsonify }}
+{{- end -}}

@@ -32,6 +32,7 @@ disableKinds = ["taxonomy", "term"]
   twitterHandle = "@7nolikov"
   cfAnalyticsToken = "0813f8e9b0fe443ea2b3fb64f64f9893"
   trustAlgoVersion = "1.0"
+  maintainer = "@7nolikov"
   # Formspree form endpoint — email waitlist. Remove this line to switch to Watch-on-GitHub + RSS.
   formspreeEndpoint = "https://formspree.io/f/mjgjelyd"
 

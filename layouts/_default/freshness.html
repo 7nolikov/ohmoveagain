@@ -21,7 +21,7 @@
   <div class="table-wrap">
     <table class="freshness-table">
       <thead>
-        <tr><th>Stage</th><th>Items</th><th>Oldest verified</th><th>Newest verified</th></tr>
+        <tr><th>Stage</th><th>Items</th><th>Oldest verified</th><th>Newest verified</th><th>Owner</th></tr>
       </thead>
       <tbody>
         {{- range $stages }}
@@ -57,6 +57,7 @@
           <td>{{ $itemCount }}</td>
           <td>{{ if ne $oldest "9999-99-99" }}<span class="asof {{ $oldestCls }}">{{ $oldest }}</span>{{ else }}<span class="dim">—</span>{{ end }}</td>
           <td>{{ if ne $newest "0000-00-00" }}<span class="asof {{ $newestCls }}">{{ $newest }}</span>{{ else }}<span class="dim">—</span>{{ end }}</td>
+          <td class="dim">{{ site.Params.maintainer }}</td>
         </tr>
         {{- end }}
       </tbody>
@@ -68,7 +69,7 @@
   <div class="table-wrap">
     <table class="freshness-table">
       <thead>
-        <tr><th>Country</th><th>Verified</th><th>Valid until</th></tr>
+        <tr><th>Country</th><th>Verified</th><th>Valid until</th><th>Owner</th></tr>
       </thead>
       <tbody>
         {{- range $countries }}
@@ -86,6 +87,7 @@
           <td>{{ .flag }} {{ .name }}</td>
           <td>{{ with .source }}{{ with .asOf }}<span class="asof {{ $cls }}">{{ . }}</span>{{ end }}{{ end }}</td>
           <td>{{ with .validUntil }}<span class="asof {{ $vuCls }}">{{ . }}</span>{{ end }}</td>
+          <td class="dim">{{ site.Params.maintainer }}</td>
         </tr>
         {{- end }}
       </tbody>

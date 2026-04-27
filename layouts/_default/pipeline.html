@@ -52,40 +52,27 @@
   </div>
 </section>
 
-{{/* Embed full checklist structure for client-side export — merges data file + page strings */}}
-{{- $allStages := slice -}}
-{{- range $stages -}}
-  {{- $page := . -}}
-  {{- $d := index hugo.Data.stages .File.ContentBaseName -}}
-  {{- $itemStrings := .Params.itemStrings -}}
-  {{- $categoryNames := .Params.categoryNames -}}
-  {{- $cats := slice -}}
-  {{- with $d -}}
-  {{- range $ci, $cat := .checklist -}}
-    {{- $items := slice -}}
-    {{- range $ii, $item := $cat.items -}}
-      {{- $strings := index $itemStrings $item.id -}}
-      {{- $src := dict -}}
-      {{- with $item.source -}}{{- $src = dict "url" .url "label" (index $strings "sourceLabel") "asOf" .asOf -}}{{- end -}}
-      {{- $items = $items | append (dict "key" (printf "%d.%d" $ci $ii) "label" (index $strings "label") "note" (index $strings "note") "source" $src) -}}
-    {{- end -}}
-    {{- $catName := index $categoryNames $cat.id -}}
-    {{- $cats = $cats | append (dict "name" $catName "items" $items) -}}
-  {{- end -}}
-  {{- end -}}
-  {{- $allStages = $allStages | append (dict "title" $page.Title "weight" $page.Weight "cats" $cats) -}}
-{{- end -}}
 <script>
-window.OHMA_STAGES = {{ $allStages | jsonify | safeJS }};
 window.OHMA_I18N_EXPORT = {
   pipelineTitle: {{ i18n "export_pipeline_md_title" | jsonify }},
   stagePrefix: {{ i18n "export_stage_md_prefix" | jsonify }},
   stageOf: {{ i18n "export_stage_md_of" | jsonify }},
   resetAllConfirm: {{ i18n "reset_all_confirm" | jsonify }},
 };
-function exportPipeline() {
-  const stages = window.OHMA_STAGES || [];
+window._ohmaStagesURL = {{ ((.OutputFormats.Get "json").RelPermalink) | jsonify | safeJS }};
+async function exportPipeline() {
   const t = window.OHMA_I18N_EXPORT;
+  let stages = window._ohmaStagesCache;
+  if (!stages) {
+    try {
+      const r = await fetch(window._ohmaStagesURL);
+      if (!r.ok) throw new Error(r.status);
+      stages = window._ohmaStagesCache = await r.json();
+    } catch(e) {
+      alert('Export failed — could not load stage data. Check your connection and try again.');
+      return;
+    }
+  }
   let prog = {};
   try { prog = JSON.parse(localStorage.getItem('ohma.v1') || '{}'); } catch(e) {}
   const sd = prog.stages || {};

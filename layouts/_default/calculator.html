@@ -202,10 +202,13 @@
       _fallbackCopy(text) {
         const ta = document.createElement('textarea');
         ta.value = text;
-        ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+        ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0;width:1px;height:1px';
+        ta.readOnly = false;
         document.body.appendChild(ta);
-        ta.focus(); ta.select();
-        try { document.execCommand('copy'); return true; } catch(e) { return false; } finally { document.body.removeChild(ta); }
+        ta.focus();
+        ta.setSelectionRange(0, text.length);
+        ta.select();
+        try { return document.execCommand('copy'); } catch(e) { return false; } finally { document.body.removeChild(ta); }
       },
       copyShare() {
         if (!this.result) return;
