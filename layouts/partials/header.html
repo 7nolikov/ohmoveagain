@@ -1,6 +1,6 @@
 {{- $pageKey := "" -}}
 {{- with .File }}{{- $pageKey = .ContentBaseName -}}{{- end -}}
-{{- $isPipeline := or (eq $pageKey "pipeline") (eq .Section "stages") -}}
+{{- $isPipeline := or .IsHome (eq $pageKey "pipeline") (eq .Section "stages") -}}
 {{- $isCalculator := eq $pageKey "calculator" -}}
 {{- $isResource := in (slice "offices" "forms" "contribute" "subscribe") $pageKey -}}
 <header class="top">
