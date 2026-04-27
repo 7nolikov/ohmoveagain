@@ -32,7 +32,7 @@
       <h3 class="form-title">{{ .title }}</h3>
       {{ with .note }}<p class="form-note">{{ . }}</p>{{ end }}
       <div class="form-meta">
-        <a class="btn secondary" href="{{ .url }}" target="_blank" rel="noopener noreferrer" style="display:inline-block;width:auto;padding:6px 12px;font-size:0.85rem;">Official source ↗</a>
+        <a class="btn secondary btn-sm" href="{{ .url }}" target="_blank" rel="noopener noreferrer">Official source ↗</a>
         <span class="form-verified">verified {{ .lastChecked }}</span>
       </div>
     </div>

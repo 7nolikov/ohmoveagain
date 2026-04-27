@@ -16,13 +16,13 @@
 {{- $claimStrings := .Params.claimStrings | default dict -}}
 {{- $w := .Weight -}}
 
-{{- $trustIntro := cond (eq site.Language.Lang "ru") "Оценка показывает, насколько уверенно можно опираться на источники этапа. Она не заменяет проверку в MUP, HZZO или у специалиста, но помогает понять, где риск выше." "This score explains how much you can rely on the sources behind this stage. It does not replace checking MUP, HZZO, or a local professional, but it shows where risk is higher." -}}
-{{- $trustQuestion := cond (eq site.Language.Lang "ru") "Можно ли доверять этому этапу?" "Can I rely on this stage?" -}}
-{{- $trustBasedOn := cond (eq site.Language.Lang "ru") "проверяемых утверждений" "sourced checks" -}}
-{{- $trustAlgo := cond (eq site.Language.Lang "ru") "версия алгоритма" "algorithm" -}}
-{{- $riskLabel := cond (eq site.Language.Lang "ru") "Риск, если пункт неверен" "Risk if this is wrong" -}}
-{{- $uncertaintyLabel := cond (eq site.Language.Lang "ru") "Неопределённость источника" "Evidence uncertainty" -}}
-{{- $detailsHint := cond (eq site.Language.Lang "ru") "Откройте пояснение, чтобы увидеть источник, последствие ошибки и возможные оговорки." "Open the explanation to see the source, impact if wrong, and any caveats." -}}
+{{- $trustIntro := i18n "trust_intro" -}}
+{{- $trustQuestion := i18n "trust_question" -}}
+{{- $trustBasedOn := i18n "trust_based_on" -}}
+{{- $trustAlgo := i18n "trust_algo" -}}
+{{- $riskLabel := i18n "trust_risk_label" -}}
+{{- $uncertaintyLabel := i18n "trust_uncertainty_label" -}}
+{{- $detailsHint := i18n "trust_details_hint" -}}
 
 {{- $trust := newScratch -}}
 {{- $trust.Set "total" 0 -}}

@@ -541,6 +541,10 @@ header.top {
   font-weight: 400;
   text-decoration: none;
 }
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+}
 
 /* At wide screens, form and result sit side-by-side */
 .calc-layout {
@@ -696,6 +700,7 @@ footer.foot p { margin: 0 0 0.6em; }
 .subscribe-row input:disabled { opacity: 0.55; }
 .subscribe-row .btn {
   white-space: nowrap;
+  min-width: 130px;
   padding: 12px 18px;
   font-size: 0.9rem;
   width: auto;
