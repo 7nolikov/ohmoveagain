@@ -62,7 +62,6 @@
     <span class="trust-score-pill" data-level="{{ $level }}" title="{{ i18n "trust_score" }}: {{ $avg }}/100 · algo v{{ site.Params.trustAlgoVersion }}">
       <span class="trust-chip-label">{{ i18n "trust_confidence" }}</span>
       <strong>{{ i18n (printf "trust_score_%s" $level) }}</strong>
-      <span class="trust-score-number">{{ $avg }}/100</span>
     </span>
     <span class="trust-summary-meta">{{ $trust.Get "count" }} {{ $trustBasedOn }}</span>
     <span class="trust-summary-meta">{{ $trustAlgo }} v{{ site.Params.trustAlgoVersion }}</span>

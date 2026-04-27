@@ -131,7 +131,7 @@ document.addEventListener('alpine:init', () => {
   });
 });
 </script>
-<script defer src="{{ "js/alpine.min.js" | relURL }}"></script>
+<script defer src="{{ "js/alpine.csp.min.js" | relURL }}"></script>
 <script>
 function _ohmaDownloadMd(filename, md) {
   const blob = new Blob([md], { type: 'text/markdown' });

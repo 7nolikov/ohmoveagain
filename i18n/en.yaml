@@ -220,7 +220,7 @@ subscribe_p_accent: "free and open-source"
 subscribe_p2: "— no paywall, no upsell, no newsletter drip. If you would rather follow on GitHub,"
 subscribe_p_github: "star the repository"
 subscribe_p3: "instead."
-subscribe_delivery: "Delivery runs through Formspree into a single inbox. No analytics, no cookies, no trackers. You can ask us to delete your address at any time by opening a GitHub issue."
+subscribe_delivery: "Your email is collected by Formspree and forwarded to the maintainer's inbox. Formspree stores your address on their servers. No third-party marketing lists. Request deletion any time by opening a GitHub issue."
 
 # Keyboard shortcuts panel
 hk_title: "Keyboard shortcuts"
