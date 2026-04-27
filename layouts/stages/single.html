@@ -161,8 +161,9 @@
             <div class="trust-block">
               {{- $cs := index $claimStrings $claim.id | default dict -}}
               {{- $impactKey := index $cs "impact" | default $claim.impact -}}
+              {{- $impactKeyNorm := lower (replace (replace $impactKey " " "_") "-" "_") -}}
               <div class="trust-grid">
-                <div class="trust-line"><strong>{{ i18n "trust_impact" }}:</strong> {{ i18n (printf "trust_impact_%s" (replace $impactKey "-" "_")) | default $impactKey }}</div>
+                <div class="trust-line"><strong>{{ i18n "trust_impact" }}:</strong> {{ i18n (printf "trust_impact_%s" $impactKeyNorm) | default $impactKey }}</div>
                 <div class="trust-line"><strong>{{ i18n "trust_source_type" }}:</strong> {{ i18n (printf "trust_source_type_%s" $src.type) }}</div>
               </div>
               {{ with (index $cs "conflictNote" | default $claim.conflictNote) }}
