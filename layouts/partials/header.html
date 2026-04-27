@@ -2,7 +2,7 @@
 {{- with .File }}{{- $pageKey = .ContentBaseName -}}{{- end -}}
 {{- $isPipeline := or .IsHome (eq $pageKey "pipeline") (eq .Section "stages") -}}
 {{- $isCalculator := eq $pageKey "calculator" -}}
-{{- $isResource := in (slice "offices" "forms" "contribute" "subscribe") $pageKey -}}
+{{- $isResource := in (slice "offices" "forms" "contribute" "subscribe" "arrival" "exit") $pageKey -}}
 <header class="top">
   <div class="top-inner">
     <a class="brand" href="{{ site.Home.RelPermalink }}" aria-label="ohmoveagain home">ohmoveagain</a>
@@ -16,6 +16,8 @@
           <span class="nav-caret" aria-hidden="true">⌄</span>
         </summary>
         <div class="nav-menu-panel" role="list">
+          <a role="listitem" class="{{ if eq $pageKey "arrival" }}active{{ end }}" href="{{ "arrival/" | relURL }}"{{ if eq $pageKey "arrival" }} aria-current="page"{{ end }}>{{ i18n "nav_arrival" }}</a>
+          <a role="listitem" class="{{ if eq $pageKey "exit" }}active{{ end }}" href="{{ "exit/" | relURL }}"{{ if eq $pageKey "exit" }} aria-current="page"{{ end }}>{{ i18n "nav_exit" }}</a>
           <a role="listitem" class="{{ if eq $pageKey "offices" }}active{{ end }}" href="{{ "offices/" | relURL }}"{{ if eq $pageKey "offices" }} aria-current="page"{{ end }}>{{ i18n "nav_offices" }}</a>
           <a role="listitem" class="{{ if eq $pageKey "forms" }}active{{ end }}" href="{{ "forms/" | relURL }}"{{ if eq $pageKey "forms" }} aria-current="page"{{ end }}>{{ i18n "nav_forms" }}</a>
           <a role="listitem" class="{{ if eq $pageKey "contribute" }}active{{ end }}" href="{{ "contribute/" | relURL }}"{{ if eq $pageKey "contribute" }} aria-current="page"{{ end }}>{{ i18n "nav_contribute" }}</a>

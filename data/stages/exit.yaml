@@ -1,0 +1,153 @@
+version: 1
+
+countries:
+  - code: DE
+    name: Germany
+    flag: "🇩🇪"
+    items:
+      - id: de-tax-deregister
+        label: "Deregister with Finanzamt (Abmeldung der Steuerpflicht)"
+        note: "File a Wohnsitzabmeldung at your local Bürgeramt. Tax residence ends on departure date — get a written confirmation for Croatia DTA purposes."
+        source:
+          url: "https://www.bundesfinanzministerium.de/Content/EN/Standardartikel/Topics/Taxation/tax-return.html"
+          asOf: "2026-03-01"
+      - id: de-address-deregister
+        label: "Deregister address (Abmeldung) at Bürgeramt"
+        note: "Required by law within two weeks of moving out. Get the Abmeldebestätigung — landlords and banks often require it."
+        source:
+          url: "https://www.bundesregierung.de/breg-en"
+          asOf: "2026-03-01"
+      - id: de-pension-transfer
+        label: "Request Deutsche Rentenversicherung contribution statement"
+        note: "Request a Rentenauskunft for your contribution record. Contributions may be partially refundable after 24+ months outside the EU/EEA, or portable under a DTA."
+        source:
+          url: "https://www.deutsche-rentenversicherung.de/DRV/EN/Home/home_node.html"
+          asOf: "2026-02-01"
+      - id: de-health-cancel
+        label: "Cancel statutory health insurance (GKV) from departure date"
+        note: "Notify your Krankenkasse in writing with your departure date. You remain covered until the end of the membership month."
+        source:
+          url: "https://www.gkv-spitzenverband.de/english/gkv_in_brief/gkv_in_brief.jsp"
+          asOf: "2026-02-01"
+      - id: de-bank-notify
+        label: "Notify German banks of new address; keep IBAN for 90 days"
+        note: "German IBANs keep working after emigration. Keep the account open until your Croatian salary and direct debits migrate fully."
+        source:
+          url: "https://www.bafin.de/EN/Homepage/homepage_node.html"
+          asOf: "2026-01-01"
+
+  - code: GB
+    name: United Kingdom
+    flag: "🇬🇧"
+    items:
+      - id: gb-hmrc-notify
+        label: "Notify HMRC of departure (P85 form)"
+        note: "Complete form P85 to establish non-UK-resident status. This determines how your final UK income is taxed and stops incorrect PAYE deductions."
+        source:
+          url: "https://www.gov.uk/tax-foreign-income/non-residents"
+          asOf: "2026-03-01"
+      - id: gb-ni-voluntary
+        label: "Consider voluntary National Insurance contributions"
+        note: "You need 35 qualifying years for a full State Pension. Voluntary Class 2 or 3 NI contributions from abroad are significantly cheaper than Class 3."
+        source:
+          url: "https://www.gov.uk/voluntary-national-insurance-contributions"
+          asOf: "2026-02-01"
+      - id: gb-bank-notify
+        label: "Notify UK banks of overseas move; update correspondence address"
+        note: "Most UK banks allow non-resident accounts but require an overseas address. Some will close accounts — check your bank's policy before moving."
+        source:
+          url: "https://www.fca.org.uk"
+          asOf: "2026-01-01"
+      - id: gb-council-tax
+        label: "Cancel council tax registration on departure date"
+        note: "Notify your local council in writing with your last day of UK residence. Overpayments are refunded; underpayments create a debt."
+        source:
+          url: "https://www.gov.uk/council-tax"
+          asOf: "2026-01-01"
+
+  - code: US
+    name: United States
+    flag: "🇺🇸"
+    items:
+      - id: us-fbar
+        label: "File FBAR (FinCEN 114) if foreign accounts exceed $10K"
+        note: "US citizens must file FBAR annually regardless of residence. Failure to file carries penalties up to $10K per violation. Croatia-US DTA does not exempt FBAR."
+        source:
+          url: "https://www.fincen.gov/report-foreign-bank-and-financial-accounts"
+          asOf: "2026-03-01"
+      - id: us-state-tax
+        label: "Establish state tax non-residency (state-specific)"
+        note: "Some US states (CA, NY, NJ) aggressively assert residency even after physical departure. Follow your state's domicile change procedure and keep documentation."
+        source:
+          url: "https://www.irs.gov/individuals/international-taxpayers/us-citizens-and-resident-aliens-abroad"
+          asOf: "2026-03-01"
+      - id: us-irs-address
+        label: "Update IRS address (Form 8822); keep SSN active"
+        note: "File Form 8822 to update your address with IRS. Your SSN remains valid and is required for annual tax filings and FBAR."
+        source:
+          url: "https://www.irs.gov/forms-pubs/about-form-8822"
+          asOf: "2026-02-01"
+      - id: us-mail-forward
+        label: "Set up mail forwarding or use a US virtual address service"
+        note: "IRS notices, state tax correspondence, and financial mail often cannot be forwarded internationally. A US-based virtual mailbox service is the standard solution."
+        source:
+          url: "https://www.usps.com/manage/forward-mail-change-of-address.htm"
+          asOf: "2026-01-01"
+
+  - code: NL
+    name: Netherlands
+    flag: "🇳🇱"
+    items:
+      - id: nl-brp-deregister
+        label: "Deregister from BRP (Basisregistratie Personen) at your municipality"
+        note: "Report your emigration at the gemeentehuis. You receive a BRP emigration confirmation — keep it for the Dutch tax authority and bank."
+        source:
+          url: "https://www.government.nl/topics/personal-data/brp-personal-records-database"
+          asOf: "2026-03-01"
+      - id: nl-belastingdienst
+        label: "Notify Belastingdienst of emigration date"
+        note: "Tax residency in the Netherlands ends on the emigration date. File an M-form (partial-year return) for the year you leave. The Belastingdienst will send you one automatically."
+        source:
+          url: "https://www.belastingdienst.nl/wps/wcm/connect/en/individuals/individuals"
+          asOf: "2026-03-01"
+      - id: nl-aow-pension
+        label: "Contact SVB about AOW (state pension) entitlements"
+        note: "Your AOW pension accrues 2% per year of Dutch residency (ages 15–67). Contact SVB to verify your accrual record and understand how Croatian residence affects future payments."
+        source:
+          url: "https://www.svb.nl/en/aow"
+          asOf: "2026-02-01"
+      - id: nl-zorgtoeslag
+        label: "Cancel zorgtoeslag (healthcare allowance) on departure"
+        note: "Notify Belastingdienst Toeslagen immediately — continuing to receive zorgtoeslag after emigrating constitutes fraud and must be repaid."
+        source:
+          url: "https://www.belastingdienst.nl/wps/wcm/connect/en/healthcare-benefit/healthcare-benefit"
+          asOf: "2026-02-01"
+
+  - code: RS
+    name: Serbia
+    flag: "🇷🇸"
+    items:
+      - id: rs-tax-deregister
+        label: "File tax residency termination with the Tax Administration (Poreska uprava)"
+        note: "Submit a request to cancel your tax residency certificate. Serbia uses a 183-day rule plus center-of-life test. Keep documentation to prove Croatian residency started."
+        source:
+          url: "https://www.purs.gov.rs/en.html"
+          asOf: "2026-03-01"
+      - id: rs-address-deregister
+        label: "Deregister from residents' register (MUP)"
+        note: "Notify MUP of your permanent departure. You can hold a Serbian passport without Serbian tax residency — these are separate registrations."
+        source:
+          url: "https://www.mup.gov.rs/wps/portal/en"
+          asOf: "2026-02-01"
+      - id: rs-pio-pension
+        label: "Request PIO Fund contribution extract"
+        note: "Get your pension contribution record from the PIO Fund before leaving. A Serbia-Croatia social security agreement is in force — contributions may count toward Croatian entitlements."
+        source:
+          url: "https://www.pio.rs/en"
+          asOf: "2026-02-01"
+      - id: rs-rfzo-cancel
+        label: "Cancel RFZO health insurance if switching to HZZO"
+        note: "Your RFZO coverage ends with your employment contract or voluntary cancellation. Once you have HZZO in Croatia, notify RFZO in writing to avoid continued contribution obligations."
+        source:
+          url: "https://www.rfzo.rs/index.php/en/"
+          asOf: "2026-01-01"

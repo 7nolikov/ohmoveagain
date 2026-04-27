@@ -103,9 +103,13 @@ checklist:
   - id: first-72-hours
     items:
       - id: accommodation-30d
+        phase: arrival-d1
       - id: ground-transport
+        phase: arrival-d1
       - id: eu-sim
+        phase: arrival-d1
       - id: emergency-cash
+        phase: arrival-d1
   - id: pets-in-transit
     items:
       - id: vet-health-cert

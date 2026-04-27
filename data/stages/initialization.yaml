@@ -72,14 +72,20 @@ checklist:
   - id: identity-bootstrap
     items:
       - id: oib-issued
+        phase: arrival-w1
       - id: address-registration
+        phase: arrival-w1
       - id: residency-card
+        phase: arrival-w1
 
   - id: financial-medical
     items:
       - id: bank-account
+        phase: arrival-m1
       - id: hzzo-enrolled
+        phase: arrival-m1
       - id: tax-residency
+        phase: arrival-m1
 
   - id: family-registration
     items:

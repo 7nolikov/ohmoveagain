@@ -1,0 +1,128 @@
+{{ define "main" }}
+{{- $migPage := site.GetPage "/stages/migration" -}}
+{{- $initPage := site.GetPage "/stages/initialization" -}}
+{{- $migData := index hugo.Data.stages "migration" -}}
+{{- $initData := index hugo.Data.stages "initialization" -}}
+{{- $migStr := $migPage.Params.itemStrings -}}
+{{- $initStr := $initPage.Params.itemStrings -}}
+
+{{/* Collect items from migration.yaml by phase (weight=3) */}}
+{{- $d1Items := slice -}}
+{{- range $ci, $cat := $migData.checklist -}}
+  {{- range $ii, $item := $cat.items -}}
+    {{- if $item.phase -}}
+      {{- $key := printf "%d.%d" $ci $ii -}}
+      {{- $strings := index $migStr $item.id -}}
+      {{- $claim := dict -}}
+      {{- range $migData.claims -}}{{- if eq .id $item.id -}}{{- $claim = . -}}{{- end -}}{{- end -}}
+      {{- $src := dict -}}
+      {{- range $migData.sources -}}{{- if eq .id $claim.sourceId -}}{{- $src = . -}}{{- end -}}{{- end -}}
+      {{- $entry := dict "key" $key "id" $item.id "strings" $strings "src" $src "w" 3 -}}
+      {{- if eq $item.phase "arrival-d1" -}}{{- $d1Items = $d1Items | append $entry -}}{{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* Collect items from initialization.yaml by phase (weight=4) */}}
+{{- $w1Items := slice -}}
+{{- $m1Items := slice -}}
+{{- range $ci, $cat := $initData.checklist -}}
+  {{- range $ii, $item := $cat.items -}}
+    {{- if $item.phase -}}
+      {{- $key := printf "%d.%d" $ci $ii -}}
+      {{- $strings := index $initStr $item.id -}}
+      {{- $claim := dict -}}
+      {{- range $initData.claims -}}{{- if eq .id $item.id -}}{{- $claim = . -}}{{- end -}}{{- end -}}
+      {{- $src := dict -}}
+      {{- range $initData.sources -}}{{- if eq .id $claim.sourceId -}}{{- $src = . -}}{{- end -}}{{- end -}}
+      {{- $entry := dict "key" $key "id" $item.id "strings" $strings "src" $src "w" 4 -}}
+      {{- if eq $item.phase "arrival-w1" -}}{{- $w1Items = $w1Items | append $entry -}}
+      {{- else if eq $item.phase "arrival-m1" -}}{{- $m1Items = $m1Items | append $entry -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+<section>
+  {{ with .Params.tagline }}<div class="tagline">{{ . }}</div>{{ end }}
+  <h1>{{ .Title }}</h1>
+  {{ with .Params.subtitle }}<p class="subtitle">{{ . }}</p>{{ end }}
+  {{ .Content }}
+
+  <p class="stage-disclaimer">{{ i18n "stage_disclaimer" }}</p>
+
+  <div x-data="{ tab: 'd1' }" class="arrival-tabs">
+    <nav class="tab-nav" role="tablist" aria-label="{{ i18n "arrival_tabs_label" }}">
+      <button role="tab" :aria-selected="tab === 'd1'" @click="tab = 'd1'" :class="tab === 'd1' ? 'active' : ''">{{ i18n "arrival_tab_d1" }}</button>
+      <button role="tab" :aria-selected="tab === 'w1'" @click="tab = 'w1'" :class="tab === 'w1' ? 'active' : ''">{{ i18n "arrival_tab_w1" }}</button>
+      <button role="tab" :aria-selected="tab === 'm1'" @click="tab = 'm1'" :class="tab === 'm1' ? 'active' : ''">{{ i18n "arrival_tab_m1" }}</button>
+    </nav>
+
+    <div role="tabpanel" x-show="tab === 'd1'">
+      <p class="tab-panel-desc dim">{{ i18n "arrival_tab_d1_desc" }}</p>
+      <ul class="checklist">
+        {{ range $d1Items }}
+        <li :class="$store.prog.isChecked({{ .w }}, '{{ .key }}') ? 'done' : ''">
+          <label>
+            <input type="checkbox"
+              :checked="$store.prog.isChecked({{ .w }}, '{{ .key }}')"
+              @change="$store.prog.toggle({{ .w }}, '{{ .key }}')"
+            >
+            <div class="label-text">
+              <span class="label">{{ index .strings "label" }}</span>
+            </div>
+          </label>
+          {{ with index .strings "note" }}<div class="trust-microcopy">{{ . }}</div>{{ end }}
+          {{ with .src }}<a class="source" href="{{ .url }}" target="_blank">{{ i18n "source_label" }} · {{ .lastChecked }}</a>{{ end }}
+        </li>
+        {{ end }}
+      </ul>
+      <a class="btn-ghost arrival-stage-link" href="{{ "/stages/migration/" | relURL }}">{{ i18n "arrival_link_migration" }}</a>
+    </div>
+
+    <div role="tabpanel" x-show="tab === 'w1'" x-cloak>
+      <p class="tab-panel-desc dim">{{ i18n "arrival_tab_w1_desc" }}</p>
+      <ul class="checklist">
+        {{ range $w1Items }}
+        <li :class="$store.prog.isChecked({{ .w }}, '{{ .key }}') ? 'done' : ''">
+          <label>
+            <input type="checkbox"
+              :checked="$store.prog.isChecked({{ .w }}, '{{ .key }}')"
+              @change="$store.prog.toggle({{ .w }}, '{{ .key }}')"
+            >
+            <div class="label-text">
+              <span class="label">{{ index .strings "label" }}</span>
+            </div>
+          </label>
+          {{ with index .strings "note" }}<div class="trust-microcopy">{{ . }}</div>{{ end }}
+          {{ with .src }}<a class="source" href="{{ .url }}" target="_blank">{{ i18n "source_label" }} · {{ .lastChecked }}</a>{{ end }}
+        </li>
+        {{ end }}
+      </ul>
+      <a class="btn-ghost arrival-stage-link" href="{{ "/stages/initialization/" | relURL }}">{{ i18n "arrival_link_initialization" }}</a>
+    </div>
+
+    <div role="tabpanel" x-show="tab === 'm1'" x-cloak>
+      <p class="tab-panel-desc dim">{{ i18n "arrival_tab_m1_desc" }}</p>
+      <ul class="checklist">
+        {{ range $m1Items }}
+        <li :class="$store.prog.isChecked({{ .w }}, '{{ .key }}') ? 'done' : ''">
+          <label>
+            <input type="checkbox"
+              :checked="$store.prog.isChecked({{ .w }}, '{{ .key }}')"
+              @change="$store.prog.toggle({{ .w }}, '{{ .key }}')"
+            >
+            <div class="label-text">
+              <span class="label">{{ index .strings "label" }}</span>
+            </div>
+          </label>
+          {{ with index .strings "note" }}<div class="trust-microcopy">{{ . }}</div>{{ end }}
+          {{ with .src }}<a class="source" href="{{ .url }}" target="_blank">{{ i18n "source_label" }} · {{ .lastChecked }}</a>{{ end }}
+        </li>
+        {{ end }}
+      </ul>
+      <a class="btn-ghost arrival-stage-link" href="{{ "/stages/initialization/" | relURL }}">{{ i18n "arrival_link_initialization" }}</a>
+    </div>
+  </div>
+</section>
+{{ end }}

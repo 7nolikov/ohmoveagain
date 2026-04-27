@@ -1,0 +1,51 @@
+{{ define "main" }}
+{{- $exitData := hugo.Data.stages.exit -}}
+
+<section>
+  {{ with .Params.tagline }}<div class="tagline">{{ . }}</div>{{ end }}
+  <h1>{{ .Title }}</h1>
+  {{ with .Params.subtitle }}<p class="subtitle">{{ . }}</p>{{ end }}
+  {{ .Content }}
+
+  <p class="stage-disclaimer">{{ i18n "exit_disclaimer" }}</p>
+
+  {{- $countries := $exitData.countries -}}
+  {{- $countryIDs := slice -}}
+  {{- range $countries -}}{{- $countryIDs = $countryIDs | append .code -}}{{- end -}}
+
+  <div x-data="{ country: '' }" class="exit-picker">
+    <div class="exit-country-nav" role="tablist" aria-label="Origin country">
+      {{ range $countries }}
+      <button role="tab"
+              :aria-selected="country === '{{ .code }}'"
+              @click="country = country === '{{ .code }}' ? '' : '{{ .code }}'"
+              :class="country === '{{ .code }}' ? 'active' : ''">
+        {{ .flag }} {{ .name }}
+      </button>
+      {{ end }}
+    </div>
+
+    {{ range $countries }}
+    {{- $c := . -}}
+    <div x-show="country === '{{ $c.code }}'" x-cloak>
+      <ul class="checklist">
+        {{ range $i, $item := $c.items }}
+        <li>
+          <label>
+            <input type="checkbox">
+            <div class="label-text">
+              <span class="label">{{ $item.label }}</span>
+            </div>
+          </label>
+          {{ with $item.note }}<div class="trust-microcopy">{{ . }}</div>{{ end }}
+          {{ with $item.source }}<a class="source" href="{{ .url }}" target="_blank">{{ i18n "exit_source_label" }} · {{ .asOf }}</a>{{ end }}
+        </li>
+        {{ end }}
+      </ul>
+    </div>
+    {{ end }}
+
+    <p x-show="country === ''" class="dim">{{ i18n "exit_no_country_msg" }}</p>
+  </div>
+</section>
+{{ end }}

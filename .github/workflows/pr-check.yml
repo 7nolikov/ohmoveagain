@@ -1,0 +1,72 @@
+name: PR quality check (a11y + Lighthouse)
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  HUGO_VERSION: "0.160.1"
+  TZ: UTC
+  PORT: 4000
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: ${{ env.HUGO_VERSION }}
+          extended: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Check source freshness (asOf dates)
+        run: node scripts/check-staleness.mjs
+
+      - name: Check i18n parity
+        run: node scripts/check-i18n-parity.mjs
+
+      - name: Generate build data (stats + changelog)
+        run: node scripts/gen-build-data.mjs
+
+      - name: Build site (localhost base URL for audit)
+        run: hugo --gc --minify --baseURL "http://localhost:${{ env.PORT }}/ohmoveagain/"
+
+      - name: Start static file server
+        run: |
+          npx serve ./public -l ${{ env.PORT }} &
+          sleep 4
+
+      - name: Axe accessibility audit
+        run: |
+          npx @axe-core/cli \
+            http://localhost:${{ env.PORT }}/ohmoveagain/ \
+            http://localhost:${{ env.PORT }}/ohmoveagain/pipeline/ \
+            http://localhost:${{ env.PORT }}/ohmoveagain/calculator/ \
+            --exit \
+            --disable color-contrast
+
+      - name: Lighthouse CI audit
+        run: |
+          npx lhci autorun \
+            --collect.url="http://localhost:${{ env.PORT }}/ohmoveagain/" \
+            --collect.url="http://localhost:${{ env.PORT }}/ohmoveagain/pipeline/" \
+            --collect.url="http://localhost:${{ env.PORT }}/ohmoveagain/calculator/"
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}

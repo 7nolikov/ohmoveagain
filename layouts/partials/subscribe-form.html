@@ -27,7 +27,7 @@
       autocomplete="email"
       required
     >
-    <button type="submit" class="btn" :disabled="state === 'loading' || state === 'success'">
+    <button type="submit" class="btn" :disabled="state === 'loading' || state === 'success'" aria-label="{{ i18n "subscribe_button" }}">
       <span x-show="state !== 'loading'">{{ i18n "subscribe_button" }}</span>
       <span x-show="state === 'loading'" x-cloak>{{ i18n "subscribe_loading" }}</span>
     </button>
@@ -35,7 +35,7 @@
   <p x-show="state === 'success'" x-cloak class="success" style="margin-top:8px;display:none;">{{ i18n "subscribe_success" }}</p>
   <p x-show="state === 'error_generic'" x-cloak class="error" style="margin-top:8px;display:none;">{{ i18n "subscribe_error_generic" }}</p>
   <p x-show="state === 'error_network'" x-cloak class="error" style="margin-top:8px;display:none;">{{ i18n "subscribe_error_network" }}</p>
-  <p style="font-size:0.78rem;margin-top:8px;color:var(--fg-muted);">{{ i18n "subscribe_delivery" }}</p>
+  <p style="font-size:0.78rem;margin-top:8px;color:var(--fg-dim);">{{ i18n "subscribe_delivery" }}</p>
 </form>
 {{ else }}
 <div class="watch-cta">
