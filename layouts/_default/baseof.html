@@ -169,6 +169,13 @@ function exportCurrentStage() {
 }
 </script>
 <script>
+document.addEventListener('click', function(e) {
+  document.querySelectorAll('.nav-menu[open]').forEach(function(d) {
+    if (!d.contains(e.target)) d.removeAttribute('open');
+  });
+});
+</script>
+<script>
 // hotkeys — vim + GitHub flavor. Disabled while typing.
 (function () {
   const base = {{ site.Home.RelPermalink | jsonify }};

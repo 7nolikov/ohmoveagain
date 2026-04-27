@@ -532,10 +532,14 @@ header.top {
 .btn:hover { background: #a5f0a9; }
 .btn:active { transform: translateY(1px); }
 .btn.secondary {
+  display: inline-block;
+  width: auto;
+  padding: 12px 18px;
   background: transparent;
   color: var(--accent);
   border: 1px solid var(--accent-dim);
   font-weight: 400;
+  text-decoration: none;
 }
 
 /* At wide screens, form and result sit side-by-side */
