@@ -6,28 +6,29 @@
  * and there are no JS console errors on the most critical pages.
  */
 import { test, expect, Page } from '@playwright/test';
+import { site } from './helpers';
 
 // All 12 primary EN surfaces + language-mirrored RU variants
 const EN_SURFACES = [
-  { path: '/',                    label: 'home' },
-  { path: '/pipeline/',           label: 'pipeline' },
-  { path: '/stage/assessment/',   label: 'stage-assessment' },
-  { path: '/stage/pre-flight/',   label: 'stage-pre-flight' },
-  { path: '/stage/migration/',    label: 'stage-migration' },
-  { path: '/stage/initialization/', label: 'stage-initialization' },
-  { path: '/stage/scaling/',      label: 'stage-scaling' },
-  { path: '/calculator/',         label: 'calculator' },
-  { path: '/offices/',            label: 'offices' },
-  { path: '/forms/',              label: 'forms' },
-  { path: '/arrival/',            label: 'arrival' },
-  { path: '/exit/',               label: 'exit' },
+  { path: site('/'),                      label: 'home' },
+  { path: site('/pipeline/'),             label: 'pipeline' },
+  { path: site('/stage/assessment/'),     label: 'stage-assessment' },
+  { path: site('/stage/pre-flight/'),     label: 'stage-pre-flight' },
+  { path: site('/stage/migration/'),      label: 'stage-migration' },
+  { path: site('/stage/initialization/'), label: 'stage-initialization' },
+  { path: site('/stage/scaling/'),        label: 'stage-scaling' },
+  { path: site('/calculator/'),           label: 'calculator' },
+  { path: site('/offices/'),              label: 'offices' },
+  { path: site('/forms/'),               label: 'forms' },
+  { path: site('/arrival/'),              label: 'arrival' },
+  { path: site('/exit/'),                 label: 'exit' },
 ];
 
 const RU_SURFACES = [
-  { path: '/ru/',                 label: 'ru-home' },
-  { path: '/ru/pipeline/',        label: 'ru-pipeline' },
-  { path: '/ru/stage/assessment/', label: 'ru-stage-assessment' },
-  { path: '/ru/calculator/',      label: 'ru-calculator' },
+  { path: site('/ru/'),                     label: 'ru-home' },
+  { path: site('/ru/pipeline/'),            label: 'ru-pipeline' },
+  { path: site('/ru/stage/assessment/'),    label: 'ru-stage-assessment' },
+  { path: site('/ru/calculator/'),          label: 'ru-calculator' },
 ];
 
 async function expectPageLoads(page: Page, path: string) {
@@ -60,7 +61,7 @@ test.describe('no JS console errors', () => {
   test.skip(({ browserName, javaScriptEnabled }) => !javaScriptEnabled,
     'Console-error check only applies when JS is enabled');
 
-  for (const path of ['/', '/pipeline/', '/calculator/', '/stage/assessment/']) {
+  for (const path of [site('/'), site('/pipeline/'), site('/calculator/'), site('/stage/assessment/')]) {
     test(`no errors on ${path}`, async ({ page }) => {
       const errors: string[] = [];
       page.on('console', msg => { if (msg.type() === 'error') errors.push(msg.text()); });
@@ -76,7 +77,7 @@ test.describe('no JS console errors', () => {
 // ── CSP and security headers ─────────────────────────────────────────────────
 
 test('CSP header present and does not contain unsafe-eval', async ({ page }) => {
-  const response = await page.goto('/');
+  const response = await page.goto(site('/'));
   const headers = response?.headers() ?? {};
 
   // Static hosts may set CSP via meta tag; check both locations
@@ -93,11 +94,11 @@ test('CSP header present and does not contain unsafe-eval', async ({ page }) => 
 
 test('no inline <style> blocks on stage pages', async ({ page }) => {
   for (const path of [
-    '/stage/assessment/',
-    '/stage/pre-flight/',
-    '/stage/migration/',
-    '/stage/initialization/',
-    '/stage/scaling/',
+    site('/stage/assessment/'),
+    site('/stage/pre-flight/'),
+    site('/stage/migration/'),
+    site('/stage/initialization/'),
+    site('/stage/scaling/'),
   ]) {
     await page.goto(path);
     const count = await page.locator('body style').count();
@@ -113,7 +114,7 @@ test('no mixed content on home', async ({ page }) => {
     if (req.url().startsWith('http://') && !req.url().startsWith(page.url()))
       insecure.push(req.url());
   });
-  await page.goto('/');
+  await page.goto(site('/'));
   await page.waitForLoadState('networkidle');
   expect(insecure, `Mixed content requests: ${insecure.join(', ')}`).toHaveLength(0);
 });
@@ -121,14 +122,14 @@ test('no mixed content on home', async ({ page }) => {
 // ── 404 page ─────────────────────────────────────────────────────────────────
 
 test('404 page renders for unknown URL', async ({ page }) => {
-  const response = await page.goto('/this-page-does-not-exist-at-all/');
+  const response = await page.goto(site('/this-page-does-not-exist-at-all/'));
   expect(response?.status()).toBe(404);
   await expect(page.locator('h1').first()).toBeVisible();
 });
 
 // ── OG and SEO meta ──────────────────────────────────────────────────────────
 
-const OG_SURFACES = ['/', '/pipeline/', '/calculator/', '/stage/pre-flight/'];
+const OG_SURFACES = [site('/'), site('/pipeline/'), site('/calculator/'), site('/stage/pre-flight/')];
 
 for (const path of OG_SURFACES) {
   test(`OG image meta present on ${path}`, async ({ page }) => {
@@ -140,7 +141,7 @@ for (const path of OG_SURFACES) {
 }
 
 test('hreflang alternates resolve on home', async ({ page }) => {
-  await page.goto('/');
+  await page.goto(site('/'));
   const ruHref = await page.locator('link[hreflang="ru"]').getAttribute('href');
   expect(ruHref).toBeTruthy();
   const response = await page.goto(ruHref!);
@@ -150,7 +151,7 @@ test('hreflang alternates resolve on home', async ({ page }) => {
 // ── Language switcher links resolve ──────────────────────────────────────────
 
 test('language switcher on pipeline links to RU without 404', async ({ page }) => {
-  await page.goto('/pipeline/');
+  await page.goto(site('/pipeline/'));
   // The lang-menu contains a link to the RU variant
   const ruLink = page.locator('.lang-menu a[hreflang="ru"]');
   const href = await ruLink.getAttribute('href');
@@ -162,7 +163,7 @@ test('language switcher on pipeline links to RU without 404', async ({ page }) =
 // ── Pipeline JSON feed ───────────────────────────────────────────────────────
 
 test('pipeline JSON feed resolves and has expected shape', async ({ page }) => {
-  const response = await page.goto('/pipeline/index.json');
+  const response = await page.goto(site('/pipeline/index.json'));
   expect(response?.status()).toBe(200);
   const body = await response?.text();
   const json = JSON.parse(body ?? 'null');
@@ -174,7 +175,7 @@ test('pipeline JSON feed resolves and has expected shape', async ({ page }) => {
 // ── Cloudflare analytics beacon present ──────────────────────────────────────
 
 test('Cloudflare analytics script tag present on home', async ({ page }) => {
-  await page.goto('/');
+  await page.goto(site('/'));
   const beacon = page.locator('script[src*="cloudflareinsights"]');
   await expect(beacon).toHaveCount(1);
 });
@@ -182,7 +183,7 @@ test('Cloudflare analytics script tag present on home', async ({ page }) => {
 // ── External target="_blank" links have rel=noopener ─────────────────────────
 
 test('all target=_blank links have rel=noopener', async ({ page }) => {
-  await page.goto('/');
+  await page.goto(site('/'));
   const unsafe = await page.evaluate(() => {
     return Array.from(document.querySelectorAll('a[target="_blank"]'))
       .filter(a => !a.getAttribute('rel')?.includes('noopener'))

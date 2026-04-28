@@ -5,13 +5,14 @@
  * URL state roundtrip, copy-link, fees toggle, error messages.
  */
 import { test, expect } from '@playwright/test';
+import { site } from './helpers';
 
 test.skip(({ javaScriptEnabled }) => !javaScriptEnabled, 'Calculator requires Alpine.js');
 
 const BASE_URL = '/calculator/';
 
 async function calculate(page: ReturnType<typeof test.extend>, gross: number, from: string, to: string) {
-  await page.goto(BASE_URL);
+  await page.goto(site(BASE_URL));
   await page.fill('#gross', String(gross));
   await page.selectOption('#from', from);
   await page.selectOption('#to', to);
@@ -47,7 +48,7 @@ test('recomputes when income changes', async ({ page }) => {
 // ── Country coverage ──────────────────────────────────────────────────────────
 
 test('reference table contains all 12 expected countries', async ({ page }) => {
-  await page.goto(BASE_URL);
+  await page.goto(site(BASE_URL));
   const EXPECTED_CODES = ['HR', 'DE', 'PT', 'EE', 'GB', 'US', 'NL', 'FR', 'PL', 'CZ', 'RS', 'MNE'];
   // Countries appear in the reference table and in the selects
   const fromOptions = await page.locator('#from option').evaluateAll(
@@ -73,7 +74,7 @@ test('changing destination country changes the result', async ({ page }) => {
 // ── Error messages ────────────────────────────────────────────────────────────
 
 test('shows error when income is empty', async ({ page }) => {
-  await page.goto(BASE_URL);
+  await page.goto(site(BASE_URL));
   await page.click('button[type="submit"]');
   const err = page.locator('[role="alert"]');
   await expect(err).toBeVisible();
@@ -81,7 +82,7 @@ test('shows error when income is empty', async ({ page }) => {
 });
 
 test('shows error when from === to', async ({ page }) => {
-  await page.goto(BASE_URL);
+  await page.goto(site(BASE_URL));
   await page.fill('#gross', '90000');
   await page.selectOption('#from', 'HR');
   await page.selectOption('#to', 'HR');
@@ -93,7 +94,7 @@ test('shows error when from === to', async ({ page }) => {
 // ── URL state roundtrip ───────────────────────────────────────────────────────
 
 test('URL query params restore form state and auto-calculate', async ({ page }) => {
-  await page.goto(`${BASE_URL}?gross=75000&from=GB&to=HR`);
+  await page.goto(site(BASE_URL) + '?gross=75000&from=GB&to=HR');
   // Alpine init() reads params and calls run()
   await page.waitForSelector('[role="region"][aria-label="calculation result"]', { timeout: 5000 });
 
@@ -157,7 +158,7 @@ test('Share on X link opens intent URL in new tab', async ({ page }) => {
 // ── Fees toggle ───────────────────────────────────────────────────────────────
 
 test('enabling fees toggle shows first-year costs in result', async ({ page }) => {
-  await page.goto(BASE_URL);
+  await page.goto(site(BASE_URL));
   await page.fill('#gross', '90000');
   await page.selectOption('#from', 'DE');
   await page.selectOption('#to', 'HR');
@@ -173,13 +174,13 @@ test('enabling fees toggle shows first-year costs in result', async ({ page }) =
 // ── Reference table ───────────────────────────────────────────────────────────
 
 test('reference table has all columns including Monthly CoL header', async ({ page }) => {
-  await page.goto(BASE_URL);
+  await page.goto(site(BASE_URL));
   const colHeaders = await page.locator('table thead th').allInnerTexts();
   expect(colHeaders.some(h => /col|cost of living/i.test(h))).toBe(true);
 });
 
 test('all source links in reference table have noopener', async ({ page }) => {
-  await page.goto(BASE_URL);
+  await page.goto(site(BASE_URL));
   const unsafe = await page.evaluate(() => {
     return Array.from(document.querySelectorAll('table a[target="_blank"]'))
       .filter(a => !a.getAttribute('rel')?.includes('noopener'))

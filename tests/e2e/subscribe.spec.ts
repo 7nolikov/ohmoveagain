@@ -8,11 +8,12 @@
  * All Formspree calls are intercepted — no real HTTP requests are made.
  */
 import { test, expect, Route } from '@playwright/test';
+import { site } from './helpers';
 
 test.skip(({ javaScriptEnabled }) => !javaScriptEnabled, 'Subscribe form requires Alpine.js');
 
-const HOME = '/';
-const SUBSCRIBE_PAGE = '/subscribe/';
+const HOME = site('/');
+const SUBSCRIBE_PAGE = site('/subscribe/');
 
 // ── Rendering ─────────────────────────────────────────────────────────────────
 

@@ -15,6 +15,7 @@
  * in no-js.spec.ts.
  */
 import { test, expect, Page } from '@playwright/test';
+import { site } from './helpers';
 
 // Skip the entire file for the no-js project
 test.skip(({ javaScriptEnabled }) => !javaScriptEnabled,
@@ -24,18 +25,18 @@ test.skip(({ javaScriptEnabled }) => !javaScriptEnabled,
 // Every surface must fit its viewport width without overflowing.
 
 const ALL_SURFACES = [
-  '/',
-  '/pipeline/',
-  '/stage/assessment/',
-  '/stage/pre-flight/',
-  '/stage/migration/',
-  '/stage/initialization/',
-  '/stage/scaling/',
-  '/calculator/',
-  '/offices/',
-  '/forms/',
-  '/arrival/',
-  '/exit/',
+  site('/'),
+  site('/pipeline/'),
+  site('/stage/assessment/'),
+  site('/stage/pre-flight/'),
+  site('/stage/migration/'),
+  site('/stage/initialization/'),
+  site('/stage/scaling/'),
+  site('/calculator/'),
+  site('/offices/'),
+  site('/forms/'),
+  site('/arrival/'),
+  site('/exit/'),
 ];
 
 for (const path of ALL_SURFACES) {
@@ -77,41 +78,41 @@ async function assertTapTarget(page: Page, selector: string, minSize = 44) {
 }
 
 test('persona selects have ≥44px height on pipeline', async ({ page }) => {
-  await page.goto('/pipeline/');
+  await page.goto(site('/pipeline/'));
   await page.waitForSelector('.persona-select');
   await assertTapTarget(page, '.persona-select', 44);
 });
 
 test('persona selects have ≥44px height on stage pages', async ({ page }) => {
-  await page.goto('/stage/assessment/');
+  await page.goto(site('/stage/assessment/'));
   // Global progress bar injects the persona picker on stage pages too
   await assertTapTarget(page, '.persona-select', 44);
 });
 
 test('nav primary links have ≥44px height', async ({ page }) => {
-  await page.goto('/');
+  await page.goto(site('/'));
   await assertTapTarget(page, 'a.nav-link', 44);
 });
 
 test('language switcher summary has ≥44px height', async ({ page }) => {
-  await page.goto('/');
+  await page.goto(site('/'));
   await assertTapTarget(page, '.lang-menu summary', 44);
 });
 
 test('hotkeys-help button has ≥44×44px', async ({ page }) => {
-  await page.goto('/pipeline/');
+  await page.goto(site('/pipeline/'));
   await assertTapTarget(page, 'button.prog-help', 44);
 });
 
 test('calculator country select has ≥44px height on mobile', async ({ page }) => {
-  await page.goto('/calculator/');
+  await page.goto(site('/calculator/'));
   await assertTapTarget(page, 'select', 44);
 });
 
 // ── Trust details (native <details>) open on tap ─────────────────────────────
 
 test('trust-details expand on tap in assessment stage', async ({ page }) => {
-  await page.goto('/stage/assessment/');
+  await page.goto(site('/stage/assessment/'));
   // Wait for the first trust-details element
   const details = page.locator('details.trust-details').first();
   await expect(details).toBeVisible();
@@ -133,7 +134,7 @@ test('trust-details expand on tap in assessment stage', async ({ page }) => {
 // ── Hotkeys modal open / close ───────────────────────────────────────────────
 
 test('hotkeys modal opens on ? key and closes on Escape', async ({ page }) => {
-  await page.goto('/pipeline/');
+  await page.goto(site('/pipeline/'));
   await page.waitForSelector('[data-hk-open]');
 
   // Modal should be hidden initially
@@ -149,7 +150,7 @@ test('hotkeys modal opens on ? key and closes on Escape', async ({ page }) => {
 });
 
 test('hotkeys modal opens on button tap and closes on backdrop click', async ({ page }) => {
-  await page.goto('/pipeline/');
+  await page.goto(site('/pipeline/'));
   await page.waitForSelector('[data-hk-open]');
 
   await page.locator('[data-hk-open]').first().tap();
@@ -163,7 +164,7 @@ test('hotkeys modal opens on button tap and closes on backdrop click', async ({ 
 // ── Persona picker updates visible count ─────────────────────────────────────
 
 test('changing visa type in persona picker updates pipeline counts', async ({ page }) => {
-  await page.goto('/pipeline/');
+  await page.goto(site('/pipeline/'));
   // Wait for Alpine to hydrate
   await page.waitForSelector('.pipeline-summary');
   await page.waitForTimeout(500);
@@ -196,7 +197,7 @@ test('changing visa type in persona picker updates pipeline counts', async ({ pa
 });
 
 test('setting pets=no in persona picker hides pet items on pre-flight', async ({ page }) => {
-  await page.goto('/stage/pre-flight/');
+  await page.goto(site('/stage/pre-flight/'));
   await page.waitForTimeout(500);
 
   // Count visible list items before
@@ -218,7 +219,7 @@ test('setting pets=no in persona picker hides pet items on pre-flight', async ({
 // and assert it does not overflow its container.
 
 test('long Croatian words wrap without overflow on home', async ({ page }) => {
-  await page.goto('/');
+  await page.goto(site('/'));
 
   const overflows = await page.evaluate(() => {
     // A realistic worst-case Croatian compound word (48 chars)
@@ -244,7 +245,7 @@ test('long Croatian words wrap without overflow on home', async ({ page }) => {
 // ── Sticky disclaimer bar does not cover content ─────────────────────────────
 
 test('sticky disclaimer does not cover checklist items on stage page', async ({ page }) => {
-  await page.goto('/stage/assessment/');
+  await page.goto(site('/stage/assessment/'));
   await page.waitForLoadState('domcontentloaded');
 
   const firstItem = page.locator('.checklist li').first();
@@ -271,7 +272,7 @@ test('sticky disclaimer does not cover checklist items on stage page', async ({ 
 // (Full clipboard content is not testable without CDP; we verify no errors.)
 
 test('calculator share button exists and is tappable', async ({ page }) => {
-  await page.goto('/calculator/');
+  await page.goto(site('/calculator/'));
   await page.waitForTimeout(500);
 
   // The share button may vary; look for the common pattern
@@ -295,7 +296,7 @@ test('calculator Monthly CoL column is hidden at 375px', async ({ page, viewport
     return;
   }
 
-  await page.goto('/calculator/');
+  await page.goto(site('/calculator/'));
   await page.waitForTimeout(500);
 
   // The nth-child CSS hides the column; check visibility
@@ -309,7 +310,7 @@ test('calculator Monthly CoL column is hidden at 375px', async ({ page, viewport
 // ── Arrival tabs switch without page reload ──────────────────────────────────
 
 test('arrival page Day 1 / Week 1 / Month 1 tabs switch', async ({ page }) => {
-  await page.goto('/arrival/');
+  await page.goto(site('/arrival/'));
   await page.waitForTimeout(500);
 
   // Click the Week 1 tab
@@ -331,7 +332,7 @@ test('arrival page Day 1 / Week 1 / Month 1 tabs switch', async ({ page }) => {
 // ── Resources menu opens on tap ──────────────────────────────────────────────
 
 test('Resources nav menu opens on tap', async ({ page }) => {
-  await page.goto('/');
+  await page.goto(site('/'));
 
   const resourcesMenu = page.locator('.resources-menu');
   const summary = resourcesMenu.locator('summary');

@@ -5,11 +5,12 @@
  * pet-countdown shows future date, persona filter hides pet block.
  */
 import { test, expect } from '@playwright/test';
+import { site } from './helpers';
 
 test.skip(({ javaScriptEnabled }) => !javaScriptEnabled,
   'Pet countdown requires Alpine.js; Gantt static HTML is covered by smoke tests');
 
-const PRE_FLIGHT = '/stage/pre-flight/';
+const PRE_FLIGHT = site('/stage/pre-flight/');
 
 // ── Gantt structure ───────────────────────────────────────────────────────────
 
@@ -134,7 +135,7 @@ test('pet Gantt source link points to EU Commission domain', async ({ page }) =>
 // ── Static /pet-gantt/ standalone page ───────────────────────────────────────
 
 test('/pet-gantt/ standalone page loads and shows the Gantt', async ({ page }) => {
-  const response = await page.goto('/pet-gantt/');
+  const response = await page.goto(site('/pet-gantt/'));
   expect(response?.status()).toBe(200);
   const gantt = page.locator('.pet-gantt-wrap');
   await expect(gantt).toBeVisible();

@@ -1,6 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const BASE = process.env.BASE_URL ?? 'http://localhost:1313/ohmoveagain/';
+const BASE = process.env.BASE_URL ?? 'http://localhost:1313';
 const IS_CI = !!process.env.CI;
 
 export default defineConfig({
@@ -22,8 +22,8 @@ export default defineConfig({
   webServer: IS_CI
     ? undefined
     : {
-        command: 'hugo server --port 1313 --baseURL http://localhost:1313/ohmoveagain/',
-        url: 'http://localhost:1313/ohmoveagain/',
+        command: 'hugo server --port 1313',
+        url: 'http://localhost:1313/',
         reuseExistingServer: true,
         timeout: 60_000,
       },

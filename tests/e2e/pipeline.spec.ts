@@ -6,11 +6,12 @@
  * persona filter changes the visible item count.
  */
 import { test, expect, Page } from '@playwright/test';
+import { site } from './helpers';
 
 test.skip(({ javaScriptEnabled }) => !javaScriptEnabled, 'Pipeline progress requires Alpine.js');
 
-const PIPELINE = '/pipeline/';
-const STAGE_1  = '/stage/assessment/';
+const PIPELINE = site('/pipeline/');
+const STAGE_1  = site('/stage/assessment/');
 
 // ── Pipeline overview ─────────────────────────────────────────────────────────
 
@@ -163,7 +164,7 @@ test('export pipeline triggers a file download with correct name', async ({ page
 });
 
 test('pipeline JSON feed shape matches export expectations', async ({ page }) => {
-  const response = await page.goto('/pipeline/index.json');
+  const response = await page.goto(site('/pipeline/index.json'));
   const json = await response?.json();
   expect(json).toHaveProperty('stages');
   expect(json.stages).toBeInstanceOf(Array);
@@ -226,7 +227,7 @@ test('l hotkey navigates from pipeline to stage 1', async ({ page }) => {
 });
 
 test('h hotkey on stage 2 navigates back to stage 1', async ({ page }) => {
-  await page.goto('/stage/pre-flight/');
+  await page.goto(site('/stage/pre-flight/'));
   await page.keyboard.press('h');
   await page.waitForURL('**/stage/assessment/**', { timeout: 5000 });
   expect(page.url()).toContain('assessment');

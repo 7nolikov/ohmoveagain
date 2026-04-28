@@ -83,7 +83,8 @@ jobs:
       - name: Run E2E tests (Track A — smoke + mobile)
         run: npm run qa:e2e
         env:
-          BASE_URL: http://localhost:${{ env.PORT }}/ohmoveagain/
+          BASE_URL: http://localhost:${{ env.PORT }}
+          SITE_SUBPATH: /ohmoveagain
           CI: true
 
       - name: Upload Playwright report on failure
