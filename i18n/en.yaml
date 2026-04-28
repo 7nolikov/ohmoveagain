@@ -145,7 +145,7 @@ home_tool_offices: "Find government offices, maps, hours, and booking links."
 home_tool_forms: "Open official forms and helper templates."
 pipeline_page_tagline: "Pipeline · source-backed checklist"
 pipeline_page_h1: "Work through the move stage by stage."
-pipeline_page_subtitle: "This is the full operational checklist: five stages, progress stored locally, source confidence, and Markdown export."
+pipeline_page_subtitle: "Five stages, local progress tracking, source confidence, and Markdown export — no account required."
 
 # Navigation
 nav_pipeline: "Pipeline"

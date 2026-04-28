@@ -1,6 +1,6 @@
 ---
 title: "Scaling"
-subtitle: "Settle in: optimize taxes, pick a business structure, integrate with the local community."
+subtitle: "Settle in: lock down your tax setup, pick a business structure, and put down roots."
 description: "Now that you are resident: pick the right business structure, plan taxes, build a local network. Verify every tax decision with a licensed Croatian accountant."
 weight: 5
 sitemap:

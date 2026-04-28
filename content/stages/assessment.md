@@ -1,6 +1,6 @@
 ---
 title: "Assessment"
-subtitle: "Decide whether the move is worth it — tax, cost of living, career, and family impact."
+subtitle: "Run the numbers before you commit: tax delta, cost of living, career, and family impact."
 description: "Model tax residency, cost of living, career optionality, and the real cost of staying before you commit to a Croatia move."
 weight: 1
 sitemap:
