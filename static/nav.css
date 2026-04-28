@@ -191,8 +191,8 @@ header.top {
   .nav-link,
   .nav a,
   .nav-menu > summary {
-    min-height: 40px;
-    padding: 8px 10px;
+    min-height: 44px;
+    padding: 10px 10px;
   }
 
   .nav-menu-panel {

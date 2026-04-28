@@ -131,7 +131,7 @@ document.addEventListener('alpine:init', () => {
   });
 });
 </script>
-<script defer src="{{ "js/alpine.csp.min.js" | relURL }}"></script>
+<script defer src="{{ "js/alpine.min.js" | relURL }}"></script>
 <script>
 function _ohmaDownloadMd(filename, md) {
   const blob = new Blob([md], { type: 'text/markdown' });
@@ -178,7 +178,7 @@ document.addEventListener('click', function(e) {
 <script>
 // hotkeys — vim + GitHub flavor. Disabled while typing.
 (function () {
-  const base = {{ site.Home.RelPermalink | jsonify }};
+  const base = {{ site.Home.RelPermalink | jsonify | safeJS }};
   const stages = {
     '1': 'stage/assessment/',
     '2': 'stage/pre-flight/',

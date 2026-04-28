@@ -119,7 +119,8 @@ test('form shows generic error on non-OK response from Formspree', async ({ page
   await page.fill('#sub-email', 'test@example.com');
   await page.click('form.subscribe-form button[type="submit"]');
 
-  const error = page.locator('form.subscribe-form .error');
+  // There are two .error paragraphs (generic + network); match the visible one
+  const error = page.locator('form.subscribe-form p.error:visible').first();
   await expect(error).toBeVisible({ timeout: 3000 });
   // Error must not be an i18n key — must be rendered text
   const text = await error.innerText();
@@ -138,7 +139,8 @@ test('form shows network error when Formspree is unreachable', async ({ page }) 
   await page.fill('#sub-email', 'test@example.com');
   await page.click('form.subscribe-form button[type="submit"]');
 
-  const error = page.locator('form.subscribe-form .error');
+  // There are two .error paragraphs (generic + network); match the visible one
+  const error = page.locator('form.subscribe-form p.error:visible').first();
   await expect(error).toBeVisible({ timeout: 3000 });
   const text = await error.innerText();
   expect(text.length).toBeGreaterThan(5);
@@ -148,12 +150,16 @@ test('form shows network error when Formspree is unreachable', async ({ page }) 
 
 test('form POST goes only to formspree.io — no other host', async ({ page }) => {
   const postUrls: string[] = [];
+  // Cloudflare beacon RUM endpoint is analytics, not user data — exclude it from the host check
+  const isAnalytics = (u: string) =>
+    u.includes('cloudflareinsights') || u.includes('cdn-cgi/rum');
+
   await page.route('**', (route: Route) => {
-    if (route.request().method() === 'POST') {
-      postUrls.push(route.request().url());
+    const req = route.request();
+    if (req.method() === 'POST' && !isAnalytics(req.url())) {
+      postUrls.push(req.url());
     }
-    // Fulfill Formspree with success so the test doesn't hang
-    if (route.request().url().includes('formspree.io')) {
+    if (req.url().includes('formspree.io')) {
       route.fulfill({ status: 200, body: JSON.stringify({ ok: true }) });
     } else {
       route.continue();

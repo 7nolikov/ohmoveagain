@@ -88,7 +88,8 @@ test('pet countdown section is present on pre-flight', async ({ page }) => {
 
 // ── Persona filter hides pet block ───────────────────────────────────────────
 
-test('setting pets=none in persona picker reduces visible items on pre-flight', async ({ page }) => {
+test('setting pets=none in persona picker reduces visible items on pre-flight', async ({ page, viewport }) => {
+  test.skip(!!viewport && viewport.width <= 680, 'Persona picker is collapsed on phones');
   await page.goto(PRE_FLIGHT);
   await page.waitForTimeout(500); // Alpine hydration
 

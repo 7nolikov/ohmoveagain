@@ -4,14 +4,14 @@
  * Verifies: default load, compute on submit, country coverage, share line,
  * URL state roundtrip, copy-link, fees toggle, error messages.
  */
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 import { site } from './helpers';
 
 test.skip(({ javaScriptEnabled }) => !javaScriptEnabled, 'Calculator requires Alpine.js');
 
 const BASE_URL = '/calculator/';
 
-async function calculate(page: ReturnType<typeof test.extend>, gross: number, from: string, to: string) {
+async function calculate(page: Page, gross: number, from: string, to: string) {
   await page.goto(site(BASE_URL));
   await page.fill('#gross', String(gross));
   await page.selectOption('#from', from);
@@ -129,7 +129,8 @@ test('share line text is present after calculation', async ({ page }) => {
 
 test('Copy share line button changes label to Copied ✓', async ({ page }) => {
   // Grant clipboard permission so the write doesn't fail in headed mode
-  await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);
+  // WebKit doesn't accept these permissions; the in-page fallback path still flips the label.
+  try { await page.context().grantPermissions(['clipboard-read', 'clipboard-write']); } catch {}
   await calculate(page, 90_000, 'DE', 'HR');
 
   const copyBtn = page.locator('.share-ctas button').first();
@@ -138,7 +139,8 @@ test('Copy share line button changes label to Copied ✓', async ({ page }) => {
 });
 
 test('Copy link button changes label to Link copied ✓', async ({ page }) => {
-  await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);
+  // WebKit doesn't accept these permissions; the in-page fallback path still flips the label.
+  try { await page.context().grantPermissions(['clipboard-read', 'clipboard-write']); } catch {}
   await calculate(page, 90_000, 'DE', 'HR');
 
   // Third button in share-ctas is "Copy link to this result"
