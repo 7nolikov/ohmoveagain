@@ -73,7 +73,7 @@
             </div>
           </label>
           {{ with index .strings "note" }}<div class="trust-microcopy">{{ . }}</div>{{ end }}
-          {{ with .src }}<a class="source" href="{{ .url }}" target="_blank">{{ i18n "source_label" }} · {{ .lastChecked }}</a>{{ end }}
+          {{ with .src }}<a class="source" href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ i18n "source_label" }} · {{ .lastChecked }}</a>{{ end }}
         </li>
         {{ end }}
       </ul>
@@ -95,7 +95,7 @@
             </div>
           </label>
           {{ with index .strings "note" }}<div class="trust-microcopy">{{ . }}</div>{{ end }}
-          {{ with .src }}<a class="source" href="{{ .url }}" target="_blank">{{ i18n "source_label" }} · {{ .lastChecked }}</a>{{ end }}
+          {{ with .src }}<a class="source" href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ i18n "source_label" }} · {{ .lastChecked }}</a>{{ end }}
         </li>
         {{ end }}
       </ul>
@@ -117,7 +117,7 @@
             </div>
           </label>
           {{ with index .strings "note" }}<div class="trust-microcopy">{{ . }}</div>{{ end }}
-          {{ with .src }}<a class="source" href="{{ .url }}" target="_blank">{{ i18n "source_label" }} · {{ .lastChecked }}</a>{{ end }}
+          {{ with .src }}<a class="source" href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ i18n "source_label" }} · {{ .lastChecked }}</a>{{ end }}
         </li>
         {{ end }}
       </ul>

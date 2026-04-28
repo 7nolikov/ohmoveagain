@@ -38,7 +38,7 @@
             </div>
           </label>
           {{ with $item.note }}<div class="trust-microcopy">{{ . }}</div>{{ end }}
-          {{ with $item.source }}<a class="source" href="{{ .url }}" target="_blank">{{ i18n "exit_source_label" }} · {{ .asOf }}</a>{{ end }}
+          {{ with $item.source }}<a class="source" href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ i18n "exit_source_label" }} · {{ .asOf }}</a>{{ end }}
         </li>
         {{ end }}
       </ul>

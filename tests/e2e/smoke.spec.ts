@@ -196,13 +196,30 @@ test('Cloudflare analytics script tag present on home', async ({ page }) => {
 });
 
 // ── External target="_blank" links have rel=noopener ─────────────────────────
+// Reverse-tabnabbing guard. Source links live on stage/arrival/exit pages too,
+// not just home — sweep every shareable surface.
 
-test('all target=_blank links have rel=noopener', async ({ page }) => {
-  await page.goto(site('/'));
-  const unsafe = await page.evaluate(() => {
-    return Array.from(document.querySelectorAll('a[target="_blank"]'))
-      .filter(a => !a.getAttribute('rel')?.includes('noopener'))
-      .map(a => (a as HTMLAnchorElement).href);
+const NOOPENER_SURFACES = [
+  '/',
+  '/pipeline/',
+  '/calculator/',
+  '/stage/assessment/',
+  '/stage/pre-flight/',
+  '/stage/migration/',
+  '/stage/initialization/',
+  '/stage/scaling/',
+  '/arrival/',
+  '/exit/',
+];
+
+for (const path of NOOPENER_SURFACES) {
+  test(`all target=_blank links have rel=noopener on ${path}`, async ({ page }) => {
+    await page.goto(site(path));
+    const unsafe = await page.evaluate(() => {
+      return Array.from(document.querySelectorAll('a[target="_blank"]'))
+        .filter(a => !a.getAttribute('rel')?.includes('noopener'))
+        .map(a => (a as HTMLAnchorElement).href);
+    });
+    expect(unsafe, `Links missing rel=noopener on ${path}: ${unsafe.join(', ')}`).toHaveLength(0);
   });
-  expect(unsafe, `Links missing rel=noopener: ${unsafe.join(', ')}`).toHaveLength(0);
-});
+}

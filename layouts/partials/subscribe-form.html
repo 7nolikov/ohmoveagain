@@ -1,14 +1,15 @@
 {{ if site.Params.formspreeEndpoint }}
 <form
   class="subscribe-form"
-  x-data="{ email: '', state: 'idle', endpoint: '{{ site.Params.formspreeEndpoint }}' }"
+  x-data="{ email: '', gotcha: '', state: 'idle', endpoint: '{{ site.Params.formspreeEndpoint }}' }"
   @submit.prevent="
     if (!email || state === 'loading' || state === 'success') return;
+    if (gotcha) { state = 'success'; return; }
     state = 'loading';
     fetch(endpoint, {
       method: 'POST',
       headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email })
+      body: JSON.stringify({ email, _gotcha: gotcha })
     }).then(r => {
       if (r.ok) { state = 'success'; } else { state = 'error_generic'; }
     }).catch(() => { state = 'error_network'; });
@@ -27,6 +28,8 @@
       autocomplete="email"
       required
     >
+    {{/* Formspree honeypot — bots fill it, humans don't see it. Non-empty _gotcha is sent to Formspree which silently drops the submission; we also short-circuit to a fake-success state so the bot doesn't probe. */}}
+    <input type="text" name="_gotcha" x-model="gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;">
     <button type="submit" class="btn" :disabled="state === 'loading' || state === 'success'" aria-label="{{ i18n "subscribe_button" }}">
       <span x-show="state !== 'loading'">{{ i18n "subscribe_button" }}</span>
       <span x-show="state === 'loading'" x-cloak>{{ i18n "subscribe_loading" }}</span>

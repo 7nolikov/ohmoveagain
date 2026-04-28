@@ -171,7 +171,7 @@
               {{ with (index $cs "explanation" | default $claim.explanation) }}
               <div class="trust-note">{{ . }}</div>
               {{ end }}
-              <a class="source" href="{{ $src.url }}" target="_blank">
+              <a class="source" href="{{ $src.url }}" target="_blank" rel="noopener noreferrer">
                 {{ i18n "source_label" }} · {{ $src.lastChecked }}
               </a>
             </div>
@@ -179,7 +179,7 @@
         </details>
         {{ else }}
           {{ with $item.source }}
-          <a class="source" href="{{ .url }}" target="_blank">
+          <a class="source" href="{{ .url }}" target="_blank" rel="noopener noreferrer">
             {{ i18n "source_label" }} · {{ .asOf }}
           </a>
           {{ end }}

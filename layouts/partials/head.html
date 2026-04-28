@@ -46,8 +46,14 @@
 <link rel="stylesheet" href="{{ "nav.css" | relURL }}">
 <link rel="stylesheet" href="{{ "home.css" | relURL }}">
 
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' static.cloudflareinsights.com blob: 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://cloudflareinsights.com https://static.cloudflareinsights.com https://formspree.io; font-src 'self'; object-src 'none'; base-uri 'self'; form-action https://formspree.io; frame-ancestors 'none'">
-<meta http-equiv="X-Content-Type-Options" content="nosniff">
+{{/*
+  CSP via <meta http-equiv> — note: frame-ancestors, X-Frame-Options, and
+  X-Content-Type-Options are ignored by browsers when set via meta tag (they
+  must be HTTP response headers). Clickjacking + nosniff protection therefore
+  depend on the hosting layer setting them as headers; static/_headers covers
+  Cloudflare Pages but is ignored by GitHub Pages. See SECURITY_AUDIT below.
+*/}}
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' static.cloudflareinsights.com blob: 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://cloudflareinsights.com https://static.cloudflareinsights.com https://formspree.io; font-src 'self'; object-src 'none'; base-uri 'self'; form-action https://formspree.io">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="google-site-verification" content="nWhMkPqTERFTWAxzrR4mZ2r7E6M5ZtnQbvZFqizGvwQ">
 
