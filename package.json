@@ -7,12 +7,19 @@
     "i18n:ui:parity": "node scripts/check-ui-i18n-parity.mjs",
     "i18n:freshness": "node scripts/check-i18n-freshness.mjs",
     "i18n:sync:ru": "node scripts/sync-ru-translations.mjs --all",
-    "gen:og": "node scripts/gen-og.mjs"
+    "gen:og": "node scripts/gen-og.mjs",
+    "qa:install": "playwright install --with-deps chromium webkit",
+    "qa:e2e": "playwright test",
+    "qa:e2e:ui": "playwright test --ui",
+    "qa:report": "playwright show-report",
+    "qa:smoke": "playwright test tests/e2e/smoke.spec.ts",
+    "qa:mobile": "playwright test tests/e2e/mobile.spec.ts"
   },
   "dependencies": {
     "yaml": "2.8.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.50.0",
     "@resvg/resvg-js": "^2.6.2"
   }
 }

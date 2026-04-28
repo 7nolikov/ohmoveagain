@@ -70,3 +70,26 @@ jobs:
             --collect.url="http://localhost:${{ env.PORT }}/ohmoveagain/calculator/"
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: pw-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium webkit
+
+      - name: Run E2E tests (Track A — smoke + mobile)
+        run: npm run qa:e2e
+        env:
+          BASE_URL: http://localhost:${{ env.PORT }}/ohmoveagain/
+          CI: true
+
+      - name: Upload Playwright report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
