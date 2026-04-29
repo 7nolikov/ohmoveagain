@@ -22,16 +22,17 @@ jobs:
 
     permissions:
       contents: write
+      pull-requests: write
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # actions/checkout@v4
         with:
           fetch-depth: 0
           token: ${{ secrets.REPO_TOKEN }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # actions/setup-node@v4
         with:
           node-version: 20
 
@@ -49,7 +50,7 @@ jobs:
       - name: Validate translation freshness (strict)
         run: npm run i18n:freshness
 
-      - name: Commit updated translations
+      - name: Open PR for translation changes
         if: github.event_name == 'push'
         run: |
           if git diff --quiet; then
@@ -58,6 +59,17 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          BRANCH="i18n/auto-sync-$(date +%Y%m%d-%H%M%S)"
+          git checkout -b "$BRANCH"
           git add content/stages
-          git commit -m "chore(i18n): auto-sync translations [skip ci]"
-          git push
+          git commit -m "chore(i18n): auto-sync translations"
+          git push origin "$BRANCH"
+
+          gh pr create \
+            --title "chore(i18n): auto-sync translations" \
+            --body "Automated translation sync. Review translated strings before merging — LLM output flows into \`safeHTML\`/\`safeJS\` templates." \
+            --base main \
+            --head "$BRANCH"
+        env:
+          GH_TOKEN: ${{ secrets.REPO_TOKEN }}

@@ -16,10 +16,10 @@ jobs:
   link-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # actions/checkout@v4
 
       - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v3
+        uses: peaceiris/actions-hugo@75d2e84710de30f6ff7268e08f310b60ef14033f # peaceiris/actions-hugo@v3
         with:
           hugo-version: "0.160.1"
           extended: true
@@ -29,7 +29,7 @@ jobs:
 
       - name: Link Checker
         id: lychee
-        uses: lycheeverse/lychee-action@v2
+        uses: lycheeverse/lychee-action@8646ba30535128ac92d33dfc9133794bfdd9b411 # lycheeverse/lychee-action@v2
         with:
           # accept 200/206 (ok), 403/429 (gov sites blocking bots — URL still valid)
           args: >-
@@ -44,7 +44,7 @@ jobs:
 
       - name: Open issue if links broken
         if: env.lychee_exit_code != '0'
-        uses: peter-evans/create-issue-from-file@v5
+        uses: peter-evans/create-issue-from-file@e8ef132d6df98ed982188e460ebb3b5d4ef3a9cd # peter-evans/create-issue-from-file@v5
         with:
           title: "Broken source links detected by weekly link check"
           content-filepath: ./lychee/out.md

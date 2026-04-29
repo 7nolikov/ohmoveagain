@@ -94,7 +94,7 @@
          x-data="{{ printf `{ meta: %s, w: %d }` ($allMeta | jsonify | safeJS) $w }}"
          :data-status="$store.prog.statusF(w, meta)">
       <div class="progress-bar" aria-hidden="true">
-        <div class="fill" :style="`width:${$store.prog.pctF(w, meta)}%`"></div>
+        <div class="fill" :style="{ width: $store.prog.pctF(w, meta) + '%' }"></div>
       </div>
       <span class="status-txt" x-cloak>
         <span x-text="$store.prog.countF(w, meta)"></span> {{ i18n "of_n" }} <span x-text="$store.prog.totalF(meta)"></span>
@@ -110,7 +110,7 @@
   {{ range $ci, $cat := . }}
   {{- $catAos := slice -}}
   {{- range $cat.items -}}{{- $catAos = $catAos | append .appliesTo -}}{{- end -}}
-  <h2 x-show="{{ $catAos | jsonify | safeJS }}.some(ao => $store.prog.matchesProfile(ao))">{{ index $categoryNames $cat.id }}</h2>
+  <h2 x-show="$store.prog.matchesAny({{ $catAos | jsonify | safeJS }})">{{ index $categoryNames $cat.id }}</h2>
 
   <ul class="checklist">
     {{ range $ii, $item := $cat.items }}

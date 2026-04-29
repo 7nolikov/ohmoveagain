@@ -4,7 +4,7 @@
   {{- $d := index hugo.Data.stages .File.ContentBaseName -}}
   {{- with $d }}{{- range .checklist -}}{{- $grand = add $grand (len .items) -}}{{- end -}}{{- end -}}
 {{- end -}}
-<div class="global-progress" x-data="{ total: {{ $grand }}, collapsed: window.matchMedia('(max-width:680px)').matches }" role="region" aria-label="Pipeline progress">
+<div class="global-progress" x-data="globalProgress({{ $grand }})" role="region" aria-label="Pipeline progress">
   <div class="global-progress-inner">
     <div class="stage-dots" role="group" aria-label="stage status">
       {{- range $stages -}}
@@ -16,12 +16,12 @@
          aria-label="stage {{ .Weight }} {{ .Title }}"
          x-data="{ t: {{ $c }}, s: '{{ .Weight }}' }"
          :class="$store.prog.count(s) === t && t > 0 ? 'passed' : $store.prog.count(s) > 0 ? 'partial' : ''"
-         :title="`stage {{ .Weight }} · {{ .Title }} · ${$store.prog.count(s)}/${t}`">
+         :title="'stage {{ .Weight }} · {{ .Title }} · ' + $store.prog.count(s) + '/' + t">
         <span>{{ .Weight }}</span>
       </a>
       {{- end -}}
     </div>
-    <div class="progress-bar" aria-hidden="true"><div class="fill" :style="`width:${total ? 100 * $store.prog.totalDone() / total : 0}%`"></div></div>
+    <div class="progress-bar" aria-hidden="true"><div class="fill" :style="{ width: (total ? 100 * $store.prog.totalDone() / total : 0) + '%' }"></div></div>
     <span class="prog-txt">
       <span x-text="$store.prog.totalDone()">0</span>/<span x-text="total">{{ $grand }}</span>
       · <span x-text="total ? Math.round(100 * $store.prog.totalDone() / total) : 0">0</span>%

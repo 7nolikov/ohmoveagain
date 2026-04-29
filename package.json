@@ -13,7 +13,8 @@
     "qa:e2e:ui": "playwright test --ui",
     "qa:report": "playwright show-report",
     "qa:smoke": "playwright test tests/e2e/smoke.spec.ts",
-    "qa:mobile": "playwright test tests/e2e/mobile.spec.ts"
+    "qa:mobile": "playwright test tests/e2e/mobile.spec.ts",
+    "qa:agent": "node scripts/agent-qa.mjs"
   },
   "dependencies": {
     "yaml": "2.8.3"

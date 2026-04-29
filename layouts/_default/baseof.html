@@ -38,6 +38,11 @@ document.addEventListener('alpine:init', () => {
   if (_qs.get('family')) profile.family = _qs.get('family');
   if (_qs.get('pets')) profile.pets = _qs.get('pets');
 
+  Alpine.data('globalProgress', (total) => ({
+    total,
+    collapsed: window.matchMedia('(max-width:680px)').matches,
+  }));
+
   Alpine.store('prog', {
     data: initial,
     profile: profile,
@@ -60,6 +65,11 @@ document.addEventListener('alpine:init', () => {
       if (ao.family && ao.family.length && this.profile.family !== 'all' && !ao.family.includes(this.profile.family)) return false;
       if (ao.pets   && ao.pets.length   && this.profile.pets   !== 'all' && !ao.pets.includes(this.profile.pets))     return false;
       return true;
+    },
+    matchesAny(aos) {
+      if (!aos || !aos.length) return true;
+      for (let i = 0; i < aos.length; i++) { if (this.matchesProfile(aos[i])) return true; }
+      return false;
     },
 
     toggle(stage, key) {
@@ -131,7 +141,7 @@ document.addEventListener('alpine:init', () => {
   });
 });
 </script>
-<script defer src="{{ "js/alpine.min.js" | relURL }}"></script>
+<script defer src="{{ "js/alpine.csp.min.js" | relURL }}"></script>
 <script>
 function _ohmaDownloadMd(filename, md) {
   const blob = new Blob([md], { type: 'text/markdown' });
