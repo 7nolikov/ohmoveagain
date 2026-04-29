@@ -53,6 +53,9 @@ jobs:
           npx serve ./public -l ${{ env.PORT }} &
           sleep 4
 
+      - name: Install matching Chrome + ChromeDriver
+        run: npx browser-driver-manager install chrome
+
       - name: Axe accessibility audit
         run: |
           npx @axe-core/cli \
