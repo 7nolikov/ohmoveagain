@@ -5,9 +5,11 @@ const IS_CI = !!process.env.CI;
 
 export default defineConfig({
   testDir: './tests/e2e',
-  timeout: 30_000,
+  // Static Hugo site renders in <100ms; 10s surfaces broken selectors fast.
+  timeout: 10_000,
   retries: IS_CI ? 1 : 0,
-  workers: IS_CI ? 2 : undefined,
+  // ubuntu-latest has 4 vCPU; 2 left ~50% throughput on the table.
+  workers: IS_CI ? 4 : undefined,
   reporter: IS_CI
     ? [['list'], ['html', { open: 'never' }]]
     : [['list'], ['html']],
@@ -50,6 +52,9 @@ export default defineConfig({
     },
     {
       name: 'no-js',
+      // Scope to the dedicated no-js suite. Other suites either gate on
+      // javaScriptEnabled (skip at runtime) or duplicate desktop coverage.
+      testMatch: /no-js\.spec\.ts$/,
       use: {
         ...devices['Desktop Chrome'],
         viewport: { width: 1280, height: 800 },

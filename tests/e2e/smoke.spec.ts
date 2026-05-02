@@ -97,10 +97,11 @@ test('CSP is present and properly scoped', async ({ page }) => {
   const csp = metaCsp ?? headerCsp;
 
   expect(csp, 'CSP should be present').toBeTruthy();
-  // Hard requirements that don't depend on the Alpine build choice
+  // Hard requirements that don't depend on the Alpine build choice.
+  // frame-ancestors is intentionally NOT asserted here — browsers ignore it
+  // in <meta>; production enforces it via the Cloudflare Pages HTTP header.
   expect(csp).toContain("default-src 'self'");
   expect(csp).toContain("object-src 'none'");
-  expect(csp).toContain("frame-ancestors 'none'");
   expect(csp).toContain("form-action https://formspree.io");
 });
 

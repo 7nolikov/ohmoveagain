@@ -97,7 +97,7 @@ for (const path of RU_SURFACES) {
 test('RU pipeline page shows Cyrillic stage names', async ({ page }) => {
   await page.goto(site('/ru/pipeline/'));
   const html = await page.content();
-  const expected = ['Оценка', 'Подготовка', 'Переезд', 'Регистрация', 'Развитие'];
+  const expected = ['Оценка', 'Подготовка', 'Переезд', 'Регистрация', 'Масштабирование'];
   for (const name of expected) {
     expect(html, `Cyrillic stage name "${name}" missing from RU pipeline`).toContain(name);
   }

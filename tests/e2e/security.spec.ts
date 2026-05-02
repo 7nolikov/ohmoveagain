@@ -50,20 +50,21 @@ for (const path of ALL_SURFACES) {
 // It must not appear in JS source, meta tags, or other elements where it
 // would be harvested without context.
 
-test('Formspree ID only in form action, not in other elements', async ({ page }) => {
+test('Formspree ID only in subscribe form, not in other elements', async ({ page }) => {
   await page.goto(site('/'));
-  const formAction = await page.locator('form[action*="formspree"]').getAttribute('action');
-  if (!formAction) return; // no subscribe form on this page variant
+  const html = await page.content();
 
-  // Extract the form ID from the action URL
-  const idMatch = formAction.match(/formspree\.io\/f\/([a-z0-9]+)/i);
-  if (!idMatch) return;
+  // The endpoint is set in the subscribe form's x-data (not action=), e.g.
+  //   x-data="{ ..., endpoint: 'https://formspree.io/f/mjgjelyd' }"
+  const idMatch = html.match(/formspree\.io\/f\/([a-z0-9]+)/i);
+  if (!idMatch) return; // no subscribe form on this page variant
   const formId = idMatch[1];
 
-  // Count occurrences — should only be the form action itself
-  const html = await page.content();
+  // Allow up to a small number of legitimate occurrences (x-data + maybe a
+  // privacy-policy mention). Anything more suggests the ID leaked into other
+  // elements (meta, comments, scripts).
   const occurrences = (html.match(new RegExp(formId, 'g')) ?? []).length;
-  expect(occurrences, `Formspree ID "${formId}" appears ${occurrences} times (expected 1)`).toBeLessThanOrEqual(2);
+  expect(occurrences, `Formspree ID "${formId}" appears ${occurrences} times (expected ≤ 2)`).toBeLessThanOrEqual(2);
 });
 
 // ── CSP is present on every surface ─────────────────────────────────────────
