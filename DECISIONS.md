@@ -2,7 +2,7 @@
 
 Strategy decisions locked for ohmoveagain. Update this file when a decision changes (with date + reason). Don't re-open a decision without traction data.
 
-Last review: **2026-04-22** (naming + i18n architecture).
+Last review: **2026-05-02** (post product audit — IA lock, language parity rule, calculator scope cap).
 
 ---
 
@@ -128,7 +128,7 @@ Pull from based on launch signal:
 
 ---
 
-## 9. Language support — plan (2026-04-22, shipped for `ru` 2026-04-23)
+## 9. Language support — plan (2026-04-22, shipped for `ru` 2026-04-23, parity rule added 2026-05-02)
 
 **Decision:** English ships first and stays canonical. Non-English languages are additive strings-only files (`content/stages/<slug>.<lang>.md`). No structural fork, no data duplication.
 
@@ -140,6 +140,12 @@ Pull from based on launch signal:
 **Not in scope:** fully-manual translation. The original plan of "LLM drafts, human commits" was inverted: the LLM drafts AND commits; a human edits after if quality drifts. Reasoning: for a solo-maintained project, human-in-the-loop on every content change is the actual blocker to language coverage, not quality. Quality is guarded by parity + freshness checks + glossary pins, not by a review gate.
 
 **Trigger:** land the first translation when (a) we have a contributor who reads the target language natively and is willing to own parity for the first 6 months, or (b) waitlist / GitHub-issue signal points at a specific language.
+
+**Parity rule (2026-05-02, post-audit):** every user-visible page that exists in English must have an `i18n` key for every visible string before any non-English build is published. The `machine_translation_banner` is a contract — half-translated flagship pages (calculator, freshness, forms category labels) violate it and destroy the trust thesis on the first interaction.
+
+**Why this rule and not "hide untranslated pages":** conditional language switchers and per-page suppression logic are a permanent maintenance tax (every new page asks "is this i18n'd yet"). One-time translation cost (≤2h for the current gap) beats forever-conditional UI. Templates with hardcoded English are a build-time defect, not a runtime feature flag.
+
+**How to apply:** before adding a new template under `layouts/`, every visible string goes through `i18n` + `i18n/en.yaml`. Adding a new language re-runs `npm run i18n:sync:<lang>` and ships only when `check-i18n-parity` is clean for both content AND templates. CI gate to be added (track in `EXECUTION_PLAN`).
 
 ---
 
@@ -162,6 +168,46 @@ Pull from based on launch signal:
 **Why no human-in-the-loop:** solo-maintained project. Every manual gate is a broken promise waiting to happen. Quality is guarded structurally: glossary pins + shape validation + freshness checks. Human edits go into `<slug>.ru.md` directly and survive until the English hash next changes.
 
 **Known gap:** `translationPayload` does NOT cover `data/stages/*.yaml` strings (`impact`, `explanation`, `conflictNote` on trust claims; `i18n/ru.yaml` UI strings; `content/_index.ru.md` body). RU pages leak English in trust details and nav. Tracked in `EXECUTION_PLAN.md` Sprints 7 + 8.
+
+---
+
+## 11. Information architecture — single-spine rule (2026-05-02)
+
+**Decision:** the Pipeline is the spine of the product. Everything else is a sub-element of, or reference to, a Pipeline stage.
+
+**Header navigation — three links exactly:**
+- **Pipeline** (the five stages + the entry to them)
+- **Calculator** (single named tool, kept in the header for HN/Reddit copy parity)
+- **GitHub** (source + support)
+
+**Demoted from header / landing page:**
+- Calculator is a co-equal *header* link only because it has independent share-traffic value. It is NOT a co-equal *home-page* tool card — on the home page it appears as a sub-link inside Stage 1 (Assessment), not as a separate CTA.
+- Offices, Forms, Arrival, Exit, Freshness, Contribute, Subscribe — none are top-level navigation. They surface contextually:
+  - **Offices** + **Forms** → per-stage panels on the stage that needs them (e.g. OIB form on Stage 4).
+  - **Arrival** ("after-landing") → folded into Stage 3 (Migration) or Stage 4 (Initialization). Not a separate page long-term.
+  - **Exit** ("leaving origin country") → folded into Stage 1 (Assessment) as a "before you commit" appendix, or rendered as Stage 0.
+  - **Freshness** → a stats strip at the bottom of the Pipeline page.
+  - **Contribute**, **Subscribe** → footer links only.
+
+**Home-page rule:** one primary CTA — *Start the Pipeline*. The 5-stage visual is the only above-the-fold structure. Trust hook ("every claim links to MUP / Porezna uprava / HZZO with a verified date") replaces the current meta subtitle.
+
+**Why this lock:** the audit found the home page advertised four equal-weight tools (Pipeline, Calculator, Offices, Forms), which contradicted the "Pipeline is the product" thesis from §1. Three CTAs is no CTA. Locking the IA prevents drift the next time someone (human or AI PR) is tempted to add a fifth tool card or a sixth header link.
+
+**How to apply:** any PR that adds a new top-level `content/<page>.md` or a new header `<a class="nav-link">` must justify why the content can't live as a stage panel or footer link. Default answer is "no." This decision overrides any prior implicit IA shipped before 2026-05-02.
+
+---
+
+## 12. Calculator scope — 12 countries, all sourced (revised 2026-05-02)
+
+**Decision:** keep all 12 countries currently in `data/countries.yaml` (HR, MNE, DE, PT, EE, GB, US, NL, FR, PL, CZ, RS). `countries.yaml` already has `source.url`, `source.label`, `source.asOf`, and `validUntil` for every entry — the initial audit overstated the gap.
+
+**Required for every country in `countries.yaml`:**
+- `source.url` — URL to the official rate or CoL dataset
+- `source.label` — human-readable source name
+- `source.asOf` — ISO date of last verification
+- `validUntil` — ISO date, validated by `check-staleness.mjs`
+
+**How to apply:** any future country addition requires all four fields with verifiable sources. No country is added "because the data is approximately right." `check-staleness.mjs` already validates `validUntil`; extend it to also fail if `source.asOf` is >12 months old. Launch copy says "12 countries" — update if the count changes.
 
 ---
 

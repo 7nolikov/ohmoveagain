@@ -49,6 +49,14 @@ The site also ships a [runway calculator](https://7nolikov.dev/ohmoveagain/calcu
 
 No application server, no database. Node is only used for CI-side i18n tooling — it is not required to render the site.
 
+### Content Security Policy
+
+The site ships `'unsafe-eval'` in `script-src`. This is required by the standard Alpine.js build (`alpine.min.js`). The CSP-compatible Alpine build (`alpine.csp.min.js`) was attempted and reverted twice — it is not stable with the current GitHub Pages + Hugo pipeline.
+
+Mitigations in place: no user-supplied data reaches `eval`, no untrusted third-party scripts in `script-src`, Alpine is self-hosted and version-pinned in `static/js/`, Formspree is scoped to `form-action` only.
+
+This trade-off is accepted and documented. Do not attempt to remove `unsafe-eval` without a fully-tested CSP-build of Alpine that survives the full deploy pipeline.
+
 ## Local development
 
 ### Prerequisites

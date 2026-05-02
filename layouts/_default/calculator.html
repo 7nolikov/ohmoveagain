@@ -15,29 +15,25 @@
   "isPartOf"        (dict "@type" "WebSite" "name" site.Title "url" site.BaseURL) | jsonify -}}
 {{ printf "<script type=\"application/ld+json\">%s</script>" $ld | safeHTML }}
 <section x-data="calcApp()">
-  <div class="tagline">Runway calculator · directional, not legal advice</div>
-  <h1>How many extra months of runway does the move buy you?</h1>
-  <p class="subtitle">
-    For the same annual gross income, we compare the effective tax rate and typical cost of living
-    between two countries and show the difference in months of runway per year. All math runs in
-    your browser — no tracking, no server round-trip.
-  </p>
+  <div class="tagline">{{ i18n "calc_tagline" }}</div>
+  <h1>{{ i18n "calc_h1" }}</h1>
+  <p class="subtitle">{{ i18n "calc_subtitle" }}</p>
 
   <div class="calc-layout">
   <form class="form" @submit.prevent="run" novalidate>
     <div>
-      <label for="gross">Annual gross income (EUR)</label>
+      <label for="gross">{{ i18n "calc_label_gross" }}</label>
       <input id="gross" x-model.number="gross" type="number" min="1" max="10000000" step="1000" required placeholder="e.g. 90000" inputmode="numeric">
     </div>
     <div class="row">
       <div>
-        <label for="from">Moving from</label>
+        <label for="from">{{ i18n "calc_label_from" }}</label>
         <select id="from" x-model="fromCode" required>
           {{ range $countries }}<option value="{{ .code }}">{{ .flag }} {{ .name }} ({{ .code }})</option>{{ end }}
         </select>
       </div>
       <div>
-        <label for="to">Moving to</label>
+        <label for="to">{{ i18n "calc_label_to" }}</label>
         <select id="to" x-model="toCode" required>
           {{ range $countries }}<option value="{{ .code }}" {{ if eq .code "HR" }}selected{{ end }}>{{ .flag }} {{ .name }} ({{ .code }})</option>{{ end }}
         </select>
@@ -46,11 +42,11 @@
     <div class="fees-toggle">
       <label>
         <input type="checkbox" x-model="includeFees">
-        Include first-year paperwork costs (~€{{ $feeTotal }})
+        {{ i18n "calc_fees_checkbox" $feeTotal }}
       </label>
-      <span class="fees-hint">apostilles, translations, permits, biometric card, HZZO</span>
+      <span class="fees-hint">{{ i18n "calc_fees_hint" }}</span>
     </div>
-    <button class="btn" type="submit">Calculate</button>
+    <button class="btn" type="submit">{{ i18n "calc_btn_calculate" }}</button>
   </form>
 
   <template x-if="error">
@@ -61,53 +57,50 @@
     <div class="result" role="region" aria-label="calculation result">
       <h2><span x-text="result.from.flag + ' ' + result.from.name"></span> → <span x-text="result.to.flag + ' ' + result.to.name"></span></h2>
       <div class="delta" :class="{ neg: !result.positive }">
-        <span x-text="fmtDelta(result.deltaMonths)"></span> months/year of runway
+        <span x-text="fmtDelta(result.deltaMonths)"></span> {{ i18n "calc_result_months" }}
       </div>
       <div class="table-wrap">
         <table>
           <tbody>
-            <tr><th>Annual gross</th><td colspan="2" x-text="money(result.gross)"></td></tr>
-            <tr><th>Net income</th><td x-text="money(result.fromNet)"></td><td x-text="money(result.toNet)"></td></tr>
-            <tr><th>Runway per year (months)</th><td x-text="result.fromRunway.toFixed(1)"></td><td x-text="result.toRunway.toFixed(1)"></td></tr>
-            <tr><th>Net difference (per year)</th><td colspan="2" :class="result.positive ? 'acc' : 'dim'" x-text="fmtSign(result.deltaSavings) + ' €'"></td></tr>
+            <tr><th>{{ i18n "calc_th_gross" }}</th><td colspan="2" x-text="money(result.gross)"></td></tr>
+            <tr><th>{{ i18n "calc_th_net" }}</th><td x-text="money(result.fromNet)"></td><td x-text="money(result.toNet)"></td></tr>
+            <tr><th>{{ i18n "calc_th_runway" }}</th><td x-text="result.fromRunway.toFixed(1)"></td><td x-text="result.toRunway.toFixed(1)"></td></tr>
+            <tr><th>{{ i18n "calc_th_difference" }}</th><td colspan="2" :class="result.positive ? 'acc' : 'dim'" x-text="fmtSign(result.deltaSavings) + ' €'"></td></tr>
             <template x-if="result.feesEUR > 0">
-              <tr><th>First-year paperwork costs</th><td colspan="2" class="dim" x-text="'−€' + result.feesEUR.toLocaleString()"></td></tr>
+              <tr><th>{{ i18n "calc_th_fees" }}</th><td colspan="2" class="dim" x-text="'−€' + result.feesEUR.toLocaleString()"></td></tr>
             </template>
             <template x-if="result.feesEUR > 0">
-              <tr><th>Net year-1 delta (incl. fees)</th><td colspan="2" :class="result.year1Positive ? 'acc' : 'dim'" x-text="fmtSign(result.year1Delta) + ' €'"></td></tr>
+              <tr><th>{{ i18n "calc_th_year1" }}</th><td colspan="2" :class="result.year1Positive ? 'acc' : 'dim'" x-text="fmtSign(result.year1Delta) + ' €'"></td></tr>
             </template>
           </tbody>
         </table>
       </div>
-      <div class="share" title="Tap to select, copy, and share" x-text="result.shareLine" @click="copyShare"></div>
+      <div class="share" :title="t.shareTitle" x-text="result.shareLine" @click="copyShare"></div>
       <div class="share-ctas">
         <button type="button" class="btn-ghost" @click="copyShare">
-          <span x-text="copied ? 'Copied ✓' : 'Copy share line'"></span>
+          <span x-text="copied ? t.btnCopied : t.btnCopyShare"></span>
         </button>
-        <a class="btn-ghost" :href="result.tweetUrl" target="_blank" rel="noopener noreferrer">Share on X / Twitter</a>
+        <a class="btn-ghost" :href="result.tweetUrl" target="_blank" rel="noopener noreferrer" x-text="t.btnShareX"></a>
         <button type="button" class="btn-ghost" @click="copyUrl">
-          <span x-text="urlCopied ? 'Link copied ✓' : 'Copy link to this result'"></span>
+          <span x-text="urlCopied ? t.btnLinkCopied : t.btnCopyLink"></span>
         </button>
       </div>
       <template x-if="copyError">
-        <div class="error" role="alert" style="margin-top:8px;">Copy failed — please select the text above manually and copy.</div>
+        <div class="error" role="alert" style="margin-top:8px;" x-text="t.errorCopy"></div>
       </template>
-      <p class="muted" style="font-size:0.8rem;margin-top:10px;">
-        Directional only. The effective tax rate is a single-person blended baseline (income tax + typical social contributions).
-        Verify with a local accountant before making decisions.
-      </p>
+      <p class="muted" style="font-size:0.8rem;margin-top:10px;" x-text="t.disclaimer"></p>
     </div>
   </template>
   </div><!-- /.calc-layout -->
 </section>
 
 <section style="margin-top:40px;">
-  <h2>Reference: tax &amp; cost-of-living baselines</h2>
+  <h2>{{ i18n "calc_ref_h2" | safeHTML }}</h2>
   <div class="result">
     <div class="table-wrap">
       <table>
         <thead>
-          <tr><th>Country</th><th>Effective tax</th><th>Monthly CoL</th><th class="ref-note">Notes</th></tr>
+          <tr><th>{{ i18n "calc_ref_th_country" }}</th><th>{{ i18n "calc_ref_th_tax" }}</th><th>{{ i18n "calc_ref_th_col" }}</th><th class="ref-note">{{ i18n "calc_ref_th_notes" }}</th></tr>
         </thead>
         <tbody>
           {{ range $countries }}
@@ -128,9 +121,7 @@
         </tbody>
       </table>
     </div>
-    <p class="muted" style="font-size:0.8rem;margin-top:10px;">
-      Rates are single-person blended baselines. Edge cases (reduced rates, special regimes, double-taxation treaties) are intentionally out of scope.
-    </p>
+    <p class="muted" style="font-size:0.8rem;margin-top:10px;">{{ i18n "calc_ref_disclaimer" }}</p>
   </div>
 </section>
 
@@ -138,7 +129,25 @@
   window.OHMA_COUNTRIES = {{ $countries | jsonify | safeJS }};
   window.OHMA_FEES_TOTAL = {{ $feeTotal }};
   window.OHMA_FEES = {{ $fees | jsonify | safeJS }};
+  window.OHMA_CALC_I18N = {
+    monthsPerYear:     {{ i18n "calc_result_months" | jsonify }},
+    shareTitle:        {{ i18n "calc_share_title" | jsonify }},
+    btnCopyShare:      {{ i18n "calc_btn_copy_share" | jsonify }},
+    btnCopied:         {{ i18n "calc_btn_copied" | jsonify }},
+    btnShareX:         {{ i18n "calc_btn_share_x" | jsonify }},
+    btnCopyLink:       {{ i18n "calc_btn_copy_link" | jsonify }},
+    btnLinkCopied:     {{ i18n "calc_btn_link_copied" | jsonify }},
+    errorCopy:         {{ i18n "calc_error_copy" | jsonify }},
+    disclaimer:        {{ i18n "calc_disclaimer" | jsonify }},
+    errNoIncome:       {{ i18n "calc_err_no_income" | jsonify }},
+    errTooLarge:       {{ i18n "calc_err_too_large" | jsonify }},
+    errBothCountries:  {{ i18n "calc_err_both_countries" | jsonify }},
+    errSameCountry:    {{ i18n "calc_err_same_country" | jsonify }},
+    errUnknownCode:    {{ i18n "calc_err_unknown_code" | jsonify }},
+    shareLineTemplate: {{ i18n "calc_share_line_template" | jsonify }},
+  };
   function calcApp() {
+    const t = window.OHMA_CALC_I18N || {};
     return {
       gross: null,
       fromCode: 'DE',
@@ -149,6 +158,7 @@
       copied: false,
       urlCopied: false,
       copyError: false,
+      t: t,
       init() {
         const p = new URLSearchParams(window.location.search);
         if (p.get('gross')) this.gross = Number(p.get('gross'));
@@ -165,14 +175,14 @@
         this.result = null;
         this.copied = false;
         const gross = Number(this.gross);
-        if (!gross || gross <= 0) { this.error = 'Please enter a positive annual gross income.'; return; }
-        if (gross > 10_000_000) { this.error = 'Please keep the amount under 10 million — this tool is aimed at individual earners.'; return; }
-        if (!this.fromCode || !this.toCode) { this.error = 'Please pick both a starting and target country.'; return; }
-        if (this.fromCode === this.toCode) { this.error = 'Please pick two different countries — the difference vs itself is zero.'; return; }
+        if (!gross || gross <= 0) { this.error = t.errNoIncome; return; }
+        if (gross > 10_000_000) { this.error = t.errTooLarge; return; }
+        if (!this.fromCode || !this.toCode) { this.error = t.errBothCountries; return; }
+        if (this.fromCode === this.toCode) { this.error = t.errSameCountry; return; }
         const countries = window.OHMA_COUNTRIES || [];
         const from = countries.find(c => c.code === this.fromCode);
         const to = countries.find(c => c.code === this.toCode);
-        if (!from || !to) { this.error = 'Unknown country code.'; return; }
+        if (!from || !to) { this.error = t.errUnknownCode; return; }
         const fromNet = Math.round(gross * (1 - from.effectiveTaxRate));
         const toNet = Math.round(gross * (1 - to.effectiveTaxRate));
         const fromRunway = from.costOfLivingEUR > 0 ? fromNet / from.costOfLivingEUR : 0;
@@ -189,7 +199,13 @@
         if (this.includeFees) url.searchParams.set('fees', '1');
         else url.searchParams.delete('fees');
         history.replaceState(null, '', url.toString());
-        const shareLine = `Moving to ${to.name} buys me ${this.fmtSign(deltaMonths, 1)} months/year of runway vs ${from.name} (net difference ${this.fmtSign(deltaSavings)} € / year). Try your own: ${url.toString()}`;
+        const tmpl = t.shareLineTemplate || 'Moving to {to} buys me {delta} months/year of runway vs {from} (net difference {deltaSavings} € / year). Try your own: {url}';
+        const shareLine = tmpl
+          .replace('{to}', to.name)
+          .replace('{from}', from.name)
+          .replace('{delta}', this.fmtSign(deltaMonths, 1))
+          .replace('{deltaSavings}', this.fmtSign(deltaSavings))
+          .replace('{url}', url.toString());
         const tweetUrl = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareLine);
         this.result = { gross, from, to, fromNet, toNet, fromRunway, toRunway, deltaMonths, deltaSavings, positive, feesEUR, year1Delta, year1Positive: year1Delta >= 0, shareLine, tweetUrl, shareUrl: url.toString() };
       },

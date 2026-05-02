@@ -10,21 +10,24 @@
   <p class="stage-disclaimer">{{ i18n "forms_disclaimer" }}</p>
 </section>
 
-{{- $categories := dict
-  "visa"             "Visa &amp; residency permits"
-  "registration"     "Registrations (OIB, address)"
-  "health-insurance" "Health insurance"
-  "documents"        "Documents &amp; apostilles"
-  "pets"             "Pets"
-  "business"         "Business registration"
+{{/* Ordered list of category keys — dict iteration is non-deterministic */}}
+{{- $categoryKeys := slice "visa" "registration" "health-insurance" "documents" "pets" "business" -}}
+{{- $categoryI18n := dict
+  "visa"             "forms_cat_visa"
+  "registration"     "forms_cat_registration"
+  "health-insurance" "forms_cat_health_insurance"
+  "documents"        "forms_cat_documents"
+  "pets"             "forms_cat_pets"
+  "business"         "forms_cat_business"
 -}}
 
-{{ range $catKey, $catLabel := $categories }}
+{{ range $catKey := $categoryKeys }}
+{{- $catI18nKey := index $categoryI18n $catKey -}}
 {{- $catForms := slice -}}
 {{- range $forms }}{{- if eq .category $catKey -}}{{- $catForms = $catForms | append . -}}{{- end -}}{{- end -}}
 {{ if $catForms }}
 <section aria-labelledby="cat-{{ $catKey }}">
-  <h2 id="cat-{{ $catKey }}">{{ $catLabel | safeHTML }}</h2>
+  <h2 id="cat-{{ $catKey }}">{{ i18n $catI18nKey | safeHTML }}</h2>
   <div class="form-list">
     {{ range $catForms }}
     <div class="form-card">

@@ -2,26 +2,26 @@
 {{- $stages := (where site.RegularPages "Section" "stages").ByWeight -}}
 {{- $countries := hugo.Data.countries -}}
 <section>
-  <div class="tagline">Source freshness · auto-derived from verification dates</div>
+  <div class="tagline">{{ i18n "freshness_tagline" }}</div>
   <h1>{{ .Title }}</h1>
   {{ with .Params.subtitle }}<p class="subtitle">{{ . }}</p>{{ end }}
 
   {{- with hugo.Data.build }}
   {{- with .stats }}
   <p class="verified-note">
-    <strong>{{ .contributorCount }}</strong> contributor{{ if ne .contributorCount 1 }}s{{ end }} ·
-    last commit <strong>{{ if eq .lastCommitDays 0 }}today{{ else if eq .lastCommitDays 1 }}1 day ago{{ else }}{{ .lastCommitDays }} days ago{{ end }}</strong> ·
-    <strong>{{ .recentUpdates }}</strong> commit{{ if ne .recentUpdates 1 }}s{{ end }} to content/data in the last 90 days
+    <strong>{{ .contributorCount }}</strong> {{ i18n "freshness_contributors" .contributorCount }} ·
+    {{ i18n "freshness_last_commit" }} <strong>{{ if eq .lastCommitDays 0 }}{{ i18n "footer_ribbon_today" }}{{ else if eq .lastCommitDays 1 }}{{ i18n "footer_ribbon_day_ago" }}{{ else }}{{ i18n "footer_ribbon_days_ago" .lastCommitDays }}{{ end }}</strong> ·
+    <strong>{{ .recentUpdates }}</strong> {{ i18n "freshness_commits" .recentUpdates }} {{ i18n "freshness_stats_90d" }}
   </p>
   {{- end }}
   {{- end }}
 
-  <h2>Pipeline stages</h2>
-  <p class="dim">Each stage's source verification window. <span class="asof asof-fresh">Green</span> means &lt;6 months old, <span class="asof asof-aging">yellow</span> 6–12 months, <span class="asof asof-stale">red</span> &gt;12 months.</p>
+  <h2>{{ i18n "freshness_stages_h2" }}</h2>
+  <p class="dim">{{ i18n "freshness_stages_intro" }} <span class="asof asof-fresh">{{ i18n "freshness_color_fresh" }}</span> {{ i18n "freshness_color_fresh_desc" }}, <span class="asof asof-aging">{{ i18n "freshness_color_aging" }}</span> {{ i18n "freshness_color_aging_desc" }}, <span class="asof asof-stale">{{ i18n "freshness_color_stale" }}</span> {{ i18n "freshness_color_stale_desc" }}.</p>
   <div class="table-wrap">
     <table class="freshness-table">
       <thead>
-        <tr><th>Stage</th><th>Items</th><th>Oldest verified</th><th>Newest verified</th><th>Owner</th></tr>
+        <tr><th>{{ i18n "freshness_th_stage" }}</th><th>{{ i18n "freshness_th_items" }}</th><th>{{ i18n "freshness_th_oldest" }}</th><th>{{ i18n "freshness_th_newest" }}</th><th>{{ i18n "freshness_th_owner" }}</th></tr>
       </thead>
       <tbody>
         {{- range $stages }}
@@ -53,7 +53,7 @@
           {{- $newestCls = cond (gt $d 365) "asof-stale" (cond (gt $d 180) "asof-aging" "asof-fresh") -}}
         {{- end -}}
         <tr>
-          <td><a href="{{ .RelPermalink }}"><strong>Stage {{ .Weight }}</strong> · {{ .Title }}</a></td>
+          <td><a href="{{ .RelPermalink }}"><strong>{{ i18n "freshness_stage_cell_prefix" }} {{ .Weight }}</strong> · {{ .Title }}</a></td>
           <td>{{ $itemCount }}</td>
           <td>{{ if ne $oldest "9999-99-99" }}<span class="asof {{ $oldestCls }}">{{ $oldest }}</span>{{ else }}<span class="dim">—</span>{{ end }}</td>
           <td>{{ if ne $newest "0000-00-00" }}<span class="asof {{ $newestCls }}">{{ $newest }}</span>{{ else }}<span class="dim">—</span>{{ end }}</td>
@@ -64,12 +64,12 @@
     </table>
   </div>
 
-  <h2>Country tax data</h2>
-  <p class="dim">Tax rates and cost-of-living baselines used by the <a href="{{ "calculator/" | relURL }}">runway calculator</a>. <code>Valid until</code> marks when the entry must be re-reviewed for the next tax year — the build fails automatically if any date passes.</p>
+  <h2>{{ i18n "freshness_countries_h2" }}</h2>
+  <p class="dim">{{ i18n "freshness_countries_desc" | safeHTML }}</p>
   <div class="table-wrap">
     <table class="freshness-table">
       <thead>
-        <tr><th>Country</th><th>Verified</th><th>Valid until</th><th>Owner</th></tr>
+        <tr><th>{{ i18n "calc_ref_th_country" }}</th><th>{{ i18n "freshness_th_verified" }}</th><th>{{ i18n "freshness_th_valid_until" }}</th><th>{{ i18n "freshness_th_owner" }}</th></tr>
       </thead>
       <tbody>
         {{- range $countries }}
@@ -95,8 +95,10 @@
   </div>
 
   <p class="muted" style="font-size:0.85rem;margin-top:24px;">
-    Spotted something stale or wrong? <a href="{{ site.Params.githubURL }}/issues/new" rel="noopener noreferrer">Open an issue</a> or
-    submit a PR — every fix shows up in the <a href="{{ site.Params.githubURL }}/commits/main" rel="noopener noreferrer">commit history</a>.
+    {{ i18n "freshness_cta_prefix" }}
+    <a href="{{ site.Params.githubURL }}/issues/new" rel="noopener noreferrer">{{ i18n "freshness_cta_issue" }}</a>
+    {{ i18n "freshness_cta_middle" }}
+    <a href="{{ site.Params.githubURL }}/commits/main" rel="noopener noreferrer">{{ i18n "freshness_cta_history" }}</a>.
   </p>
 </section>
 {{ end }}

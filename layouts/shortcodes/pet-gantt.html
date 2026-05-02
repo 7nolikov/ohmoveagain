@@ -1,86 +1,82 @@
 <figure class="pet-gantt-wrap" aria-labelledby="pet-gantt-title">
   <figcaption id="pet-gantt-title" class="pet-gantt-caption">
-    EU pet travel sequence — dependency timeline before flight
+    {{ i18n "pg_caption" }}
     <span class="pet-gantt-source">
-      Source: <a href="https://food.ec.europa.eu/animals/movement-pets/non-eu-countries-listed_en" target="_blank" rel="noopener noreferrer">EU Commission — non-EU listed countries</a> · verified 2026-03-01
+      {{ i18n "pg_source_label" }}: <a href="https://food.ec.europa.eu/animals/movement-pets/non-eu-countries-listed_en" target="_blank" rel="noopener noreferrer">EU Commission — non-EU listed countries</a> · {{ i18n "pg_source_verified" }}
     </span>
   </figcaption>
 
   <div class="pet-timeline">
     <section class="pet-path" aria-labelledby="pet-listed-title">
       <div class="pet-path-label">
-        <strong id="pet-listed-title">Listed origin country</strong>
-        <span>No rabies antibody titer test. Still respect microchip → rabies → document timing.</span>
+        <strong id="pet-listed-title">{{ i18n "pg_listed_title" }}</strong>
+        <span>{{ i18n "pg_listed_desc" }}</span>
       </div>
       <div class="pet-steps" role="list">
         <div class="pet-step" role="listitem">
           <span class="pet-step-index">01</span>
-          <strong>Microchip</strong>
-          <span>ISO 11784 / 11785. Must be implanted before rabies vaccination.</span>
+          <strong>{{ i18n "pg_listed_step1" }}</strong>
+          <span>{{ i18n "pg_listed_step1_note" }}</span>
         </div>
         <div class="pet-step" role="listitem">
           <span class="pet-step-index">02</span>
-          <strong>Rabies vaccine</strong>
-          <span>At least 21 days before travel. Vaccine must be after the microchip.</span>
+          <strong>{{ i18n "pg_listed_step2" }}</strong>
+          <span>{{ i18n "pg_listed_step2_note" }}</span>
         </div>
         <div class="pet-step" role="listitem">
           <span class="pet-step-index">03</span>
-          <strong>Pet passport or veterinary certificate</strong>
-          <span>Issued by an authorised vet with chip and vaccine records.</span>
+          <strong>{{ i18n "pg_listed_step3" }}</strong>
+          <span>{{ i18n "pg_listed_step3_note" }}</span>
         </div>
         <div class="pet-step flight" role="listitem">
           <span class="pet-step-index">04</span>
-          <strong>Health certificate window</strong>
-          <span>Official certificate within 10 days before flight, where required.</span>
+          <strong>{{ i18n "pg_listed_step4" }}</strong>
+          <span>{{ i18n "pg_listed_step4_note" }}</span>
         </div>
       </div>
     </section>
 
     <section class="pet-path" aria-labelledby="pet-unlisted-title">
       <div class="pet-path-label">
-        <strong id="pet-unlisted-title">Unlisted origin country</strong>
-        <span>Harder path. Missing the titer timing can delay the move by about 3 months.</span>
+        <strong id="pet-unlisted-title">{{ i18n "pg_unlisted_title" }}</strong>
+        <span>{{ i18n "pg_unlisted_desc" }}</span>
       </div>
       <div class="pet-steps unlisted" role="list">
         <div class="pet-step" role="listitem">
           <span class="pet-step-index">01</span>
-          <strong>Microchip</strong>
-          <span>Complete before the rabies vaccine. The chip number must match all records.</span>
+          <strong>{{ i18n "pg_unlisted_step1" }}</strong>
+          <span>{{ i18n "pg_unlisted_step1_note" }}</span>
         </div>
         <div class="pet-step warn" role="listitem">
           <span class="pet-step-index">02</span>
-          <strong>Rabies vaccine by ~16 weeks before flight</strong>
-          <span>Needed early enough to leave room for the 90-day titer waiting period.</span>
+          <strong>{{ i18n "pg_unlisted_step2" }}</strong>
+          <span>{{ i18n "pg_unlisted_step2_note" }}</span>
         </div>
         <div class="pet-step warn" role="listitem">
           <span class="pet-step-index">03</span>
-          <strong>90-day wait + titer test</strong>
-          <span>Blood sample after the required wait. Result must meet the EU threshold.</span>
+          <strong>{{ i18n "pg_unlisted_step3" }}</strong>
+          <span>{{ i18n "pg_unlisted_step3_note" }}</span>
         </div>
         <div class="pet-step" role="listitem">
           <span class="pet-step-index">04</span>
-          <strong>Passport or veterinary certificate</strong>
-          <span>Include microchip, rabies vaccine, and titer result documentation.</span>
+          <strong>{{ i18n "pg_unlisted_step4" }}</strong>
+          <span>{{ i18n "pg_unlisted_step4_note" }}</span>
         </div>
         <div class="pet-step flight" role="listitem">
           <span class="pet-step-index">05</span>
-          <strong>Health certificate within 10 days</strong>
-          <span>Book the official vet appointment early. Slots can be limited near travel.</span>
+          <strong>{{ i18n "pg_unlisted_step5" }}</strong>
+          <span>{{ i18n "pg_unlisted_step5_note" }}</span>
         </div>
       </div>
     </section>
   </div>
 
-  <p class="pet-dependency-note">
-    <strong>Dependency order:</strong> microchip first, then rabies vaccine, then the waiting period / titer path if your origin country requires it, then final travel certificate checks.
-  </p>
+  <p class="pet-dependency-note">{{ i18n "pg_dependency_note" | safeHTML }}</p>
 
   <div class="pet-legend" aria-label="Timeline legend">
-    <span class="ok"><i aria-hidden="true"></i> normal required step</span>
-    <span class="warn"><i aria-hidden="true"></i> hard timing risk</span>
+    <span class="ok"><i aria-hidden="true"></i> {{ i18n "pg_legend_normal" }}</span>
+    <span class="warn"><i aria-hidden="true"></i> {{ i18n "pg_legend_risk" }}</span>
   </div>
 
-  <p class="pet-gantt-note">
-    <strong>Unlisted country?</strong> Check the <a href="https://food.ec.europa.eu/animals/movement-pets/non-eu-countries-listed_en" target="_blank" rel="noopener noreferrer">EU listed-countries table</a> first. If your origin is <em>not</em> listed, start the vaccine-and-titer process at least 16 weeks before the planned flight. Use the <a href="#pet-countdown">pet deadline calculator</a> below to compute exact dates.
-  </p>
+  <p class="pet-gantt-note">{{ i18n "pg_footer" | safeHTML }}</p>
 </figure>
