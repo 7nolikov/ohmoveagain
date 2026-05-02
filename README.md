@@ -14,20 +14,64 @@ This project provides **source traceability**, not a guarantee of correctness.
 
 Each checklist item includes:
 - a source link
-- a last verified date
+- a last verified date (`asOf` / `lastChecked`)
 - where applicable, a trust badge summarising risk level, uncertainty, and source authority
 
 Users should treat content as directional and verify critical steps with official sources (MUP, Porezna uprava, HZZO) before acting.
+
+### How a trust badge is assembled
+
+```mermaid
+flowchart LR
+    subgraph Data["data/stages/&lt;slug&gt;.yaml — facts"]
+        S["sources[]<br/>id · url · type · authorityScore · lastChecked"]
+        C["claims[]<br/>id · riskLevel · uncertainty · sourceId · impact"]
+        L["checklist[]<br/>id · appliesTo · fallback source"]
+    end
+
+    subgraph Content["content/stages/&lt;slug&gt;.md — strings"]
+        I["itemStrings.&lt;id&gt;<br/>label · note · sourceLabel"]
+        N["categoryNames · gotchas · documents"]
+    end
+
+    T["layouts/stages/single.html<br/>merge by item id"]
+
+    B["Rendered checklist item<br/>label + note + trust badge<br/>(risk · uncertainty · source · asOf)"]
+
+    L -->|matches claim?| C
+    C -->|sourceId| S
+    L -->|no claim → fallback| L
+    I --> T
+    N --> T
+    L --> T
+    C --> T
+    S --> T
+    T --> B
+```
+
+Two-track data: **structural facts** (URLs, dates, risk metadata) live in YAML and are language-neutral; **translatable strings** live in Markdown frontmatter keyed by item ID. A URL fix is a single YAML edit that propagates to every language. A translation is a strings-only change with zero drift surface.
+
+### Source freshness
+
+`scripts/check-staleness.mjs` runs on every build and inspects every `asOf` / `lastChecked` date in `data/`:
+- **>6 months old** → warning
+- **>12 months old** → build fails
+
+Items can also declare `appliesTo: { visa, family, pets }` so the rendered checklist filters by persona — a digital-nomad applicant without dependents sees a different list than a Blue Card applicant moving with family and pets.
 
 ## What the project covers
 
 Five sequential stages for relocation to Croatia:
 
-1. **Assessment** — tax math, visa pathway review, career and family reality check
-2. **Pre-Flight** — apostilles, background checks, diplomas, family and pet paperwork
-3. **Migration** — border crossing and first days after arrival
-4. **Initialization** — OIB, address registration, bank account, HZZO setup
-5. **Scaling** — business structure, tax optimization, long-term local integration
+```mermaid
+flowchart LR
+    A["1. Assessment<br/>tax math · visa pathway<br/>family / career check"]
+    B["2. Pre-Flight<br/>apostilles · checks<br/>diplomas · pets"]
+    C["3. Migration<br/>border crossing<br/>first days"]
+    D["4. Initialization<br/>OIB · address<br/>bank · HZZO"]
+    E["5. Scaling<br/>business · tax<br/>integration"]
+    A --> B --> C --> D --> E
+```
 
 Each stage answers four questions: what must be done first, which documents or artifacts are required, which official sources support the checklist, and which common mistakes usually slow people down.
 
@@ -45,7 +89,7 @@ The site also ships a [runway calculator](https://7nolikov.dev/ohmoveagain/calcu
 | Hosting | GitHub Pages |
 | Deployment | GitHub Actions |
 | Styling | Framework-free CSS |
-| i18n sync | Node scripts + GitHub Models (GPT-4o) |
+| i18n sync | Node scripts + GitHub Models (`openai/gpt-4.1` by default, override via `GITHUB_MODELS_MODEL`) |
 
 No application server, no database. Node is only used for CI-side i18n tooling — it is not required to render the site.
 
@@ -125,7 +169,7 @@ scripts/
   i18n-lib.mjs                  # shared helpers (translationPayload, hash, shape compare)
 
 static/                         # CSS, favicons, OG image
-.github/workflows/              # deploy.yml, i18n.yml, linkcheck.yml
+.github/workflows/              # deploy.yml, i18n.yml, linkcheck.yml, pr-check.yml
 ```
 
 ## Content model
@@ -150,18 +194,51 @@ The template (`layouts/stages/single.html`) merges the two at build time via ite
 
 ## i18n pipeline
 
-English is canonical. Russian is auto-drafted by an LLM, validated mechanically, committed by a bot, and human-editable.
+English is canonical. Russian is auto-drafted by an LLM, validated mechanically, opened as a PR by a bot, and human-editable.
 
-**How it works:**
-1. Each `content/stages/<slug>.md` has a canonical source of truth. Its translation payload (title, subtitle, description, requires, documents, categoryNames, itemStrings, gotchas, artifactNames, body) is hashed with SHA-256.
-2. `scripts/sync-ru-translations.mjs` walks English files. If `<slug>.ru.md`'s `translationMeta.sourceHash` matches the current English hash, skip. Otherwise, call GitHub Models (GPT-4o) with the English payload, the existing Russian payload (for stability), and the glossary, then write the normalized result.
-3. Output is shape-validated against the English payload (`compareShape` in `scripts/i18n-lib.mjs`) — extra keys, missing keys, or array-length mismatches fail the build.
-4. CI workflow `.github/workflows/i18n.yml` runs on pushes to `main` that touch `content/stages/**`, commits drift via a bot using `ACTIONS_TOKEN` (PAT) so the downstream deploy workflow fires.
-5. `check-i18n-parity` and `check-i18n-freshness` guard against shape divergence and stale translations on every run.
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Dev as Author
+    participant Repo as main branch
+    participant CI as i18n.yml workflow
+    participant Sync as sync-ru-translations.mjs
+    participant LLM as GitHub Models<br/>(openai/gpt-4.1)
+    participant Bot as github-actions[bot]
+    participant Deploy as deploy.yml
 
-**Glossary:** `data/i18n/glossary.ru.json` pins terminology (e.g. `Digital Nomad Visa` → `Виза цифрового кочевника`). The model is instructed to use glossary entries verbatim, and `enforceGlossary` re-applies them after the response.
+    Dev->>Repo: push changes to content/stages/*.md
+    Repo->>CI: trigger (paths: content/stages/**, data/i18n/**)
+    CI->>Sync: npm run i18n:sync:ru
+    loop each English stage
+        Sync->>Sync: SHA-256 of translationPayload
+        alt sourceHash matches *.ru.md
+            Sync-->>Sync: skip (no drift)
+        else hash differs
+            Sync->>LLM: english + existing ru + glossary
+            LLM-->>Sync: translated payload
+            Sync->>Sync: compareShape vs English<br/>enforceGlossary · cleanStrings
+            Sync->>Repo: write *.ru.md with new sourceHash
+        end
+    end
+    CI->>CI: i18n:parity (shape diff)
+    CI->>CI: i18n:freshness (hash drift)
+    CI->>Bot: open PR on branch i18n/auto-sync-*
+    Dev->>Repo: review + merge PR
+    Repo->>Deploy: push to main → Hugo build → Pages
+```
 
-**Cost:** translating one stage is a single ~2k-token call. The full site re-syncs in seconds and only when content actually drifts.
+**Hashing:** each `content/stages/<slug>.md` has a canonical English payload (title, subtitle, description, requires, documents, categoryNames, itemStrings, gotchas, artifactNames, body) hashed with SHA-256 and stored as `translationMeta.sourceHash` on the translated file. Re-translation only fires when hashes diverge.
+
+**Shape validation:** output is shape-validated against the English payload (`compareShape` in `scripts/i18n-lib.mjs`) — extra keys, missing keys, or array-length mismatches fail the build before anything is written.
+
+**Glossary:** `data/i18n/glossary.ru.json` pins terminology (e.g. `Digital Nomad Visa` → `Виза цифрового кочевника`). The model is instructed to use glossary entries verbatim, and `enforceGlossary` re-applies them deterministically after the response.
+
+**Tokens:** `REPO_TOKEN` (PAT, `repo` + `pull-requests`) is used to push the auto-sync branch and open the PR; `ACTIONS_TOKEN` (PAT with `models:read`) is the value passed as `GITHUB_TOKEN` to the sync script for GitHub Models access.
+
+**Local guards:** `npm run i18n:parity` and `npm run i18n:freshness` reproduce the CI checks. Run them before pushing translation-affecting changes.
+
+**Cost:** one stage is a single ~2k-token call. The full site re-syncs in seconds and only when content actually drifts.
 
 ## Configuration
 
@@ -174,9 +251,32 @@ Project-level settings live in `hugo.toml` under `[params]`:
 
 ## Deployment
 
-A push to `main` triggers `.github/workflows/deploy.yml` which builds with Hugo and publishes to GitHub Pages.
+```mermaid
+flowchart TD
+    Push["push to main"]
+    Push --> Deploy["deploy.yml"]
+    Push --> I18n["i18n.yml<br/>(if content/stages/** changed)"]
+    PR["pull request"] --> PRCheck["pr-check.yml<br/>fast structural checks"]
+    Cron["weekly cron"] --> LC["linkcheck.yml<br/>lychee-action → issue on break"]
 
-Link health is checked weekly by `linkcheck.yml` (lychee-action). Broken links auto-open an issue.
+    subgraph DeployJob["deploy.yml"]
+        S1["check-staleness.mjs<br/>asOf > 12mo → fail"]
+        S2["gen-build-data.mjs<br/>contributor + commit stats"]
+        S3["gen-og.mjs<br/>OG images"]
+        S4["hugo --gc --minify"]
+        S5["upload-pages-artifact"]
+        S6["deploy-pages → GitHub Pages"]
+        S1 --> S2 --> S3 --> S4 --> S5 --> S6
+    end
+
+    Deploy --> DeployJob
+    I18n -. "auto PR back to main" .-> PR
+```
+
+- `deploy.yml` — push to `main` builds with Hugo and publishes to GitHub Pages. Stale source dates fail the build before deploy.
+- `i18n.yml` — runs when `content/stages/**` or `data/i18n/**` change; opens an auto-sync PR via `github-actions[bot]`.
+- `pr-check.yml` — fast structural checks on pull requests.
+- `linkcheck.yml` — weekly lychee-action; broken links auto-open an issue.
 
 ## Contributing
 
