@@ -194,7 +194,10 @@ test('form does not include hidden tracking fields in the payload', async ({ pag
   await page.waitForTimeout(500);
 
   const keys = Object.keys(payload);
-  // Only "email" should be in the payload
+  // "email" is the only user-data field. "_gotcha" is the Formspree honeypot
+  // (anti-spam, always empty for real users) — allowed. Any other key would
+  // indicate a hidden tracking field.
   expect(keys).toContain('email');
-  expect(keys.length).toBe(1);
+  const tracking = keys.filter(k => k !== 'email' && k !== '_gotcha');
+  expect(tracking, `Unexpected tracking fields: ${tracking.join(', ')}`).toHaveLength(0);
 });

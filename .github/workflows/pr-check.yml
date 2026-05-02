@@ -57,11 +57,20 @@ jobs:
         run: node scripts/gen-build-data.mjs
 
       - name: Build site (localhost base URL for audit)
-        run: hugo --gc --minify --baseURL "http://localhost:${{ env.PORT }}/ohmoveagain/"
+        run: |
+          hugo --gc --minify --baseURL "http://localhost:${{ env.PORT }}/ohmoveagain/"
+          # Mirror the subpath so that /ohmoveagain/* resolves under the static
+          # server (matches production layout at https://7nolikov.dev/ohmoveagain/).
+          mkdir _serve
+          mv public _serve/ohmoveagain
+          # `serve` (serve-handler) auto-serves /404.html for missing paths.
+          # Copy Hugo's 404 to the root so the test sees the real page, not
+          # serve's bare default. Mirrors production (Cloudflare Pages 404).
+          cp _serve/ohmoveagain/404.html _serve/404.html
 
       - name: Start static file server
         run: |
-          npx serve ./public -l ${{ env.PORT }} &
+          npx serve ./_serve -l ${{ env.PORT }} &
           sleep 4
 
       - name: Install matching Chrome + ChromeDriver
