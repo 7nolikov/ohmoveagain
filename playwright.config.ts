@@ -6,7 +6,7 @@ const IS_CI = !!process.env.CI;
 export default defineConfig({
   testDir: './tests/e2e',
   timeout: 30_000,
-  retries: IS_CI ? 2 : 0,
+  retries: IS_CI ? 1 : 0,
   workers: IS_CI ? 2 : undefined,
   reporter: IS_CI
     ? [['list'], ['html', { open: 'never' }]]

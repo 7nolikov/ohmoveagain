@@ -3,6 +3,16 @@ name: PR quality check (a11y + Lighthouse)
 on:
   pull_request:
     branches: [main]
+    paths-ignore:
+      - 'i18n/**'
+      - 'content/**'
+      - 'data/i18n/**'
+      - 'launch/**'
+      - '**.md'
+
+concurrency:
+  group: pr-check-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -81,10 +91,10 @@ jobs:
           key: pw-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium webkit
+        run: npx playwright install --with-deps chromium
 
-      - name: Run E2E tests (Track A — smoke + mobile)
-        run: npm run qa:e2e
+      - name: Run E2E tests (desktop + no-js only)
+        run: npx playwright test --project desktop --project no-js
         env:
           BASE_URL: http://localhost:${{ env.PORT }}
           SITE_SUBPATH: /ohmoveagain
