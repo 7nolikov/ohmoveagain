@@ -1,0 +1,84 @@
+# Официальные государственные формы — только ссылки, контент не дублируется.
+# Каждая запись: sourceAuthority — орган, владеющий формой; url — ссылка на официальный источник.
+# lastChecked: когда URL и название были последний раз проверены.
+# Структурные поля (id, category, url, lastChecked) совпадают с en.yaml.
+
+- id: mup-dn-application
+  title: "Digital Nomad Visa — анкета заявления"
+  sourceAuthority: "MUP (Министерство внутренних дел)"
+  category: visa
+  url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+  note: "Форма не выдаётся отдельно для скачивания — подаётся лично в офисе MUP или через уполномоченного агента. На странице перечислены требуемые документы."
+  lastChecked: "2026-04-22"
+
+- id: mup-blue-card-application
+  title: "EU Blue Card — заявление через работодателя"
+  sourceAuthority: "MUP (Министерство внутренних дел)"
+  category: visa
+  url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+  note: "Работодатель подаёт заявление от имени соискателя. Ссылка ведёт на общую страницу о пребывании в Хорватии со всеми типами разрешений."
+  lastChecked: "2026-04-22"
+
+- id: porezna-oib1
+  title: "Заявление на OIB — форма OIB-1 (личный идентификационный номер)"
+  sourceAuthority: "Porezna uprava (Налоговая администрация)"
+  category: registration
+  url: "https://www.porezna-uprava.hr/en/Pages/oib.aspx"
+  note: "Форму OIB-1 можно подать лично в любом офисе Porezna uprava или через портал e-Porezna для владельцев действующего eID."
+  lastChecked: "2026-03-01"
+
+- id: mup-address-registration
+  title: "Регистрация адреса — prijava/odjava boravišta"
+  sourceAuthority: "MUP (Министерство внутренних дел)"
+  category: registration
+  url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+  note: "Должна быть выполнена в офисе MUP в течение 3 дней после получения резидентства. Арендодатель должен присутствовать или предоставить подписанное согласие. Возьмите договор аренды."
+  lastChecked: "2026-04-22"
+
+- id: hzzo-t1
+  title: "Регистрация в системе медицинского страхования HZZO — форма T-1"
+  sourceAuthority: "HZZO (Хорватский фонд медицинского страхования)"
+  category: health-insurance
+  url: "https://hzzo.hr/en/how-to-become-insured"
+  note: "Форму T-1 для наёмных работников подаёт работодатель. Самозанятые подают её в HZZO самостоятельно."
+  lastChecked: "2026-02-15"
+
+- id: hzzo-t2
+  title: "Регистрация члена семьи в HZZO — форма T-2"
+  sourceAuthority: "HZZO (Хорватский фонд медицинского страхования)"
+  category: health-insurance
+  url: "https://hzzo.hr/en/how-to-become-insured"
+  note: "Используется для включения иждивенцев (супруг(а), дети) в медицинскую страховку как членов семьи основного держателя."
+  lastChecked: "2026-02-15"
+
+- id: mup-criminal-background
+  title: "Справка об отсутствии судимости — запрос (kaznena evidencija)"
+  sourceAuthority: "Министерство юстиции (Ministarstvo pravosuđa)"
+  category: documents
+  url: "https://pravosudje.gov.hr/UserDocsImages/dokumenti/Pristup%20informacijama/Ispisi%20iz%20kaznene%20evidencije/Zahtjev%20za%20ispis%20iz%20kaznene%20evidencije.pdf"
+  note: "Выдаётся аналогичным органом страны происхождения (не Хорватии), затем апостилируется. Хорватия не выдаёт такую справку для иностранных граждан. Запросите аналог в Министерстве юстиции вашей страны."
+  lastChecked: "2026-02-01"
+
+- id: hcch-apostille
+  title: "Апостиль — руководство по Гаагской конвенции"
+  sourceAuthority: "HCCH (Гаагская конференция по международному частному праву)"
+  category: documents
+  url: "https://www.hcch.net/en/instruments/conventions/specialised-sections/apostille"
+  note: "Апостили выдаются компетентным органом в стране, выпустившей оригинал документа. Используйте раздел Apostille Section на сайте HCCH, чтобы найти нужный орган в вашей стране происхождения."
+  lastChecked: "2026-01-01"
+
+- id: eu-pet-passport
+  title: "Паспорт домашнего животного ЕС — официальное руководство"
+  sourceAuthority: "Европейская комиссия (DG SANTE)"
+  category: pets
+  url: "https://food.ec.europa.eu/animals/movement-pets_en"
+  note: "Паспорт животного выдаёт аккредитованный (официальный) ветеринар в стране происхождения. Содержит номер микрочипа, запись о вакцинации против бешенства и (если требуется) результат теста титра антител."
+  lastChecked: "2026-03-01"
+
+- id: fina-business-registration
+  title: "Регистрация бизнеса — paušalni obrt или d.o.o."
+  sourceAuthority: "FINA (Финансовое агентство)"
+  category: business
+  url: "https://www.fina.hr/en/start-business"
+  note: "Paušalni obrt (индивидуальный предприниматель на упрощённом фиксированном режиме) — самая простая структура для фрилансеров. Регистрацию проводит FINA. Для регистрации необходим OIB."
+  lastChecked: "2026-02-15"

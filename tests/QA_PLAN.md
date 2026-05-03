@@ -63,19 +63,21 @@ Chromium (covers ≥75% of users); WebKit emulation for iOS Safari clipboard qui
 ### 2.2 Mobile usability (former C1 — now scripted)
 
 - [ ] **No horizontal scroll** at 375px on every surface
-- [ ] **All tap targets ≥ 44×44 px** (persona chips, hotkeys help button, trust badge, hamburger, language switcher, checkbox rows, calculator country select)
+- [ ] **All tap targets ≥ 44×44 px** (persona chips, hotkeys help button, hamburger, language switcher, checkbox rows, calculator country select). Note: a tap target's hit area can be larger than its `getBoundingClientRect()` via CSS padding — assertions must measure the effective hit area, not the box size.
 - [ ] **Sticky elements behave**: footer disclaimer pinned but not covering content; header nav doesn't jump on scroll
 - [ ] **Long Croatian word wrapping**: synthetic test inserts `prijevremenoumirovljenikinjašaakojebaštako` into the page and asserts no overflow
-- [ ] **Trust tooltip on tap**: tap opens, tap-elsewhere closes (touch event, not hover)
+- [ ] **Trust summary renders**: stage pages show the static `<section class="trust-summary">` block with title, score, and inline `.trust-chip` labels. The current design has no click-to-reveal tooltip; do not test for one.
 - [ ] **Hotkeys help modal**: opens on `?`, closes on `Escape`, closes on backdrop click
 - [ ] **Persona picker**: changing visa/family/pets updates the visible checklist count without a page reload
 
 ### 2.3 Calculator — full feature pass
 
-- [ ] Default load shows a result (no blank state)
-- [ ] Changing income recomputes within 100 ms
-- [ ] Changing destination country reorders results
-- [ ] All 12 countries appear in the result table
+The calculator is **submit-driven** — the result region (`<template x-if="result">`) renders only after the `Calculate` button is clicked. The reference table at the bottom of the page is server-rendered and always visible.
+
+- [ ] Default load: form renders, result region is empty, reference table shows all 12 countries
+- [ ] Filling income + clicking `Calculate` populates the result region within 100 ms
+- [ ] After a result is shown, changing destination country and re-clicking `Calculate` updates the result
+- [ ] All 12 countries appear in the **reference** table (always visible, server-rendered)
 - [ ] Persona filter (visa type) hides ineligible countries appropriately
 - [ ] Share button copies a URL to clipboard
 - [ ] Loading the share URL restores the same input state (URL state roundtrip)
@@ -109,8 +111,9 @@ Chromium (covers ≥75% of users); WebKit emulation for iOS Safari clipboard qui
 
 - [ ] Language switcher on every page links to its translation (not 404)
 - [ ] No raw i18n keys leaking (`/{{ i18n "..." }}/` regex must not match in rendered HTML)
-- [ ] No untranslated English strings on `/ru/` surfaces (fuzzy heuristic: ASCII-only paragraphs in `/ru/` flagged)
+- [ ] No untranslated English strings on `/ru/` surfaces (fuzzy heuristic: ASCII-only text in `<p>`, `<h3>`, `<dd>` inside `main` flagged on `/ru/`)
 - [ ] RU pipeline page shows Cyrillic stage names (Оценка / Подготовка / Переезд / Регистрация / Развитие)
+- [ ] `npm run i18n:parity` is clean — covers translated stage front-matter AND translatable data (`data/forms/<lang>.yaml`, `data/offices/<lang>.yaml`) shape parity with `en.yaml`. CI gate; do not bypass.
 
 ### 2.8 No-JS / SEO
 

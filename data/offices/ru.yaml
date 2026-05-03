@@ -1,0 +1,121 @@
+# Хорватские государственные офисы — адреса, часы работы, ссылки для записи.
+# lastChecked: когда адрес и часы работы были последний раз проверены по официальному источнику.
+# Все адреса на хорватском; используйте ссылку Google Maps для навигации.
+# Структурные поля (id, city, address, phone, booking, hours, mapUrl, lastChecked) совпадают с en.yaml.
+
+- id: mup-zagreb-central
+  authority: "MUP — Министерство внутренних дел"
+  name: "MUP Zagreb — отдел по делам иностранцев (Odjel za strance)"
+  city: "Zagreb"
+  address: "Petrinjska 30, 10000 Zagreb"
+  phone: "+385 1 3788 100"
+  booking: "https://e-uprava.gov.hr/"
+  bookingNote: "Запись через портал e-Građani (требуется eID или NIAS). Слотов без записи мало."
+  hours: "Пн–Пт 08:00–16:00"
+  mapUrl: "https://maps.google.com/?q=Petrinjska+30+Zagreb"
+  lastChecked: "2026-03-15"
+  note: "Главный офис по выдаче разрешений на резидентство, Digital Nomad Visa, EU Blue Card, регистрации адреса. Принесите все документы в оригиналах и копиях."
+
+- id: mup-split
+  authority: "MUP — Министерство внутренних дел"
+  name: "MUP Split — отдел по делам иностранцев"
+  city: "Split"
+  address: "Trg Hrvatske bratske zajednice 9, 21000 Split"
+  phone: "+385 21 307 100"
+  booking: "https://e-uprava.gov.hr/"
+  bookingNote: "Запись через портал e-Građani."
+  hours: "Пн–Пт 08:00–16:00"
+  mapUrl: "https://maps.google.com/?q=Trg+Hrvatske+bratske+zajednice+9+Split"
+  lastChecked: "2026-03-15"
+  note: "Региональный офис MUP по Далмации. Обрабатывает все типы разрешений на резидентство."
+
+- id: mup-rijeka
+  authority: "MUP — Министерство внутренних дел"
+  name: "MUP Rijeka — отдел по делам иностранцев"
+  city: "Rijeka"
+  address: "Verdijeva 4, 51000 Rijeka"
+  phone: "+385 51 214 101"
+  booking: "https://e-uprava.gov.hr/"
+  bookingNote: "Запись через портал e-Građani."
+  hours: "Пн–Пт 08:00–16:00"
+  mapUrl: "https://maps.google.com/?q=Verdijeva+4+Rijeka"
+  lastChecked: "2026-03-15"
+  note: "Региональный офис MUP по региону Кварнер."
+
+- id: fina-zagreb
+  authority: "FINA — Финансовое агентство"
+  name: "FINA Zagreb — главный офис"
+  city: "Zagreb"
+  address: "Ulica grada Vukovara 70, 10000 Zagreb"
+  phone: "+385 1 4688 900"
+  booking: "https://www.fina.hr/kontakt"
+  bookingNote: "Без записи; для получения OIB и простых обращений запись не требуется."
+  hours: "Пн–Пт 08:00–16:00"
+  mapUrl: "https://maps.google.com/?q=Ulica+grada+Vukovara+70+Zagreb"
+  lastChecked: "2026-03-01"
+  note: "Получение OIB (после выдачи Porezna uprava), регистрация бизнеса (obrt, d.o.o.), финансовая отчётность. Возьмите оригинал паспорта."
+
+- id: porezna-zagreb
+  authority: "Porezna uprava — Налоговая администрация"
+  name: "Porezna uprava Zagreb — региональный офис"
+  city: "Zagreb"
+  address: "Avenija Dubrovnik 32, 10000 Zagreb"
+  phone: "+385 1 6307 999"
+  booking: "https://e-porezna.porezna-uprava.hr/"
+  bookingNote: "Многие услуги доступны через портал e-Porezna. Без записи — для подачи заявления на OIB (форма OIB-1)."
+  hours: "Пн–Пт 08:00–16:00"
+  mapUrl: "https://maps.google.com/?q=Avenija+Dubrovnik+32+Zagreb"
+  lastChecked: "2026-03-01"
+  note: "Налоговая регистрация, заявление на OIB для иностранных граждан, налоговая отчётность по paušalni obrt."
+
+- id: hzzo-zagreb
+  authority: "HZZO — Хорватский фонд медицинского страхования"
+  name: "HZZO Zagreb — региональный офис"
+  city: "Zagreb"
+  address: "Margaretska 3, 10000 Zagreb"
+  phone: "+385 1 4806 333"
+  booking: "https://hzzo.hr/en/contact"
+  bookingNote: "Без записи. Работодатель подаёт T-1 от вашего имени; самозанятые подают самостоятельно."
+  hours: "Пн–Пт 08:00–15:30"
+  mapUrl: "https://maps.google.com/?q=Margaretska+3+Zagreb"
+  lastChecked: "2026-02-15"
+  note: "Регистрация в системе медицинского страхования (T-1/T-2), переход с частной страховки на государственную, оформление Европейской карты медицинского страхования (EHIC)."
+
+- id: hzzo-split
+  authority: "HZZO — Хорватский фонд медицинского страхования"
+  name: "HZZO Split — региональный офис"
+  city: "Split"
+  address: "Livanjska 1, 21000 Split"
+  phone: "+385 21 303 080"
+  booking: "https://hzzo.hr/en/contact"
+  bookingNote: "Без записи."
+  hours: "Пн–Пт 08:00–15:30"
+  mapUrl: "https://maps.google.com/?q=Livanjska+1+Split"
+  lastChecked: "2026-02-15"
+  note: "Региональный офис HZZO по Далмации."
+
+- id: opcinski-sud-zagreb
+  authority: "Općinski sud Zagreb (муниципальный суд)"
+  name: "Муниципальный суд Загреба — заверение апостиля"
+  city: "Zagreb"
+  address: "Trg sv. Marka 4, 10000 Zagreb"
+  phone: "+385 1 4891 888"
+  booking: null
+  bookingNote: "Только без записи. Системы записи нет."
+  hours: "Пн–Пт 08:00–14:00"
+  mapUrl: "https://maps.google.com/?q=Trg+sv.+Marka+4+Zagreb"
+  lastChecked: "2026-02-01"
+  note: "Хорватские суды выдают апостили на документы, выпущенные в Хорватии. На иностранные документы апостили выдаются в стране происхождения, а не здесь."
+
+- id: translator-zagreb-hofmann
+  authority: "Судебный переводчик (sudski tumač)"
+  name: "Sudski tumač — пример загребского бюро переводов"
+  city: "Zagreb"
+  address: "Ilica 1a, 10000 Zagreb"
+  phone: null
+  booking: "https://sudskit umaci.pravosudje.gov.hr/"
+  bookingNote: "Используйте официальный реестр Министерства юстиции, чтобы найти сертифицированного судебного переводчика для вашей языковой пары."
+  hours: "По записи"
+  mapUrl: null
+  lastChecked: "2026-02-01"
+  note: "Используйте только переводчиков, внесённых в официальный реестр судебных переводчиков (sudski tumači). Переводы вне реестра отклоняются MUP. Поиск по реестру: https://sudskitumaci.pravosudje.gov.hr/"

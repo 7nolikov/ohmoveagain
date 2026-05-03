@@ -1,5 +1,7 @@
 {{ define "main" }}
-{{- $offices := hugo.Data.offices -}}
+{{- /* Language-scoped data: data/offices/<lang>.yaml. Fall back to EN if missing. */ -}}
+{{- $offices := index hugo.Data.offices site.Language.Lang -}}
+{{- if not $offices }}{{- $offices = hugo.Data.offices.en -}}{{- end -}}
 {{- $ld := dict "@context" "https://schema.org" "@type" "WebPage" "name" .Title "description" (default site.Params.description .Description) "url" .Permalink "isPartOf" (dict "@type" "WebSite" "name" site.Title "url" site.BaseURL) | jsonify -}}
 {{ printf "<script type=\"application/ld+json\">%s</script>" $ld | safeHTML }}
 
