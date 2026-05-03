@@ -208,7 +208,7 @@
   {{ if $next }}
   <a href="{{ $next.RelPermalink }}">{{ i18n "next_stage" }} {{ $next.Title }}</a>
   {{ else }}
-  <a href="{{ "calculator/" | relURL }}">{{ i18n "open_calculator" }}</a>
+  <a href="{{ "calculator/" | relLangURL }}">{{ i18n "open_calculator" }}</a>
   {{ end }}
 </nav>
 

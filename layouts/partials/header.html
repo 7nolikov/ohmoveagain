@@ -7,8 +7,8 @@
   <div class="top-inner">
     <a class="brand" href="{{ site.Home.RelPermalink }}" aria-label="ohmoveagain home">ohmoveagain</a>
     <nav class="nav" aria-label="Primary">
-      <a class="nav-link{{ if $isPipeline }} active{{ end }}" href="{{ "pipeline/" | relURL }}"{{ if $isPipeline }} aria-current="page"{{ end }}>{{ i18n "nav_pipeline" }}</a>
-      <a class="nav-link{{ if $isCalculator }} active{{ end }}" href="{{ "calculator/" | relURL }}"{{ if $isCalculator }} aria-current="page"{{ end }}>{{ i18n "nav_calculator" }}</a>
+      <a class="nav-link{{ if $isPipeline }} active{{ end }}" href="{{ "pipeline/" | relLangURL }}"{{ if $isPipeline }} aria-current="page"{{ end }}>{{ i18n "nav_pipeline" }}</a>
+      <a class="nav-link{{ if $isCalculator }} active{{ end }}" href="{{ "calculator/" | relLangURL }}"{{ if $isCalculator }} aria-current="page"{{ end }}>{{ i18n "nav_calculator" }}</a>
 
       <details class="nav-menu resources-menu">
         <summary class="nav-link{{ if $isResource }} active{{ end }}"{{ if $isResource }} aria-current="page"{{ end }}>
@@ -16,12 +16,12 @@
           <span class="nav-caret" aria-hidden="true">⌄</span>
         </summary>
         <div class="nav-menu-panel" role="list">
-          <a role="listitem" class="{{ if eq $pageKey "arrival" }}active{{ end }}" href="{{ "arrival/" | relURL }}"{{ if eq $pageKey "arrival" }} aria-current="page"{{ end }}>{{ i18n "nav_arrival" }}</a>
-          <a role="listitem" class="{{ if eq $pageKey "exit" }}active{{ end }}" href="{{ "exit/" | relURL }}"{{ if eq $pageKey "exit" }} aria-current="page"{{ end }}>{{ i18n "nav_exit" }}</a>
-          <a role="listitem" class="{{ if eq $pageKey "offices" }}active{{ end }}" href="{{ "offices/" | relURL }}"{{ if eq $pageKey "offices" }} aria-current="page"{{ end }}>{{ i18n "nav_offices" }}</a>
-          <a role="listitem" class="{{ if eq $pageKey "forms" }}active{{ end }}" href="{{ "forms/" | relURL }}"{{ if eq $pageKey "forms" }} aria-current="page"{{ end }}>{{ i18n "nav_forms" }}</a>
-          <a role="listitem" class="{{ if eq $pageKey "contribute" }}active{{ end }}" href="{{ "contribute/" | relURL }}"{{ if eq $pageKey "contribute" }} aria-current="page"{{ end }}>{{ i18n "nav_contribute" }}</a>
-          <a role="listitem" class="{{ if eq $pageKey "subscribe" }}active{{ end }}" href="{{ "subscribe/" | relURL }}"{{ if eq $pageKey "subscribe" }} aria-current="page"{{ end }}>{{ i18n "nav_subscribe" }}</a>
+          <a role="listitem" class="{{ if eq $pageKey "arrival" }}active{{ end }}" href="{{ "arrival/" | relLangURL }}"{{ if eq $pageKey "arrival" }} aria-current="page"{{ end }}>{{ i18n "nav_arrival" }}</a>
+          <a role="listitem" class="{{ if eq $pageKey "exit" }}active{{ end }}" href="{{ "exit/" | relLangURL }}"{{ if eq $pageKey "exit" }} aria-current="page"{{ end }}>{{ i18n "nav_exit" }}</a>
+          <a role="listitem" class="{{ if eq $pageKey "offices" }}active{{ end }}" href="{{ "offices/" | relLangURL }}"{{ if eq $pageKey "offices" }} aria-current="page"{{ end }}>{{ i18n "nav_offices" }}</a>
+          <a role="listitem" class="{{ if eq $pageKey "forms" }}active{{ end }}" href="{{ "forms/" | relLangURL }}"{{ if eq $pageKey "forms" }} aria-current="page"{{ end }}>{{ i18n "nav_forms" }}</a>
+          <a role="listitem" class="{{ if eq $pageKey "contribute" }}active{{ end }}" href="{{ "contribute/" | relLangURL }}"{{ if eq $pageKey "contribute" }} aria-current="page"{{ end }}>{{ i18n "nav_contribute" }}</a>
+          <a role="listitem" class="{{ if eq $pageKey "subscribe" }}active{{ end }}" href="{{ "subscribe/" | relLangURL }}"{{ if eq $pageKey "subscribe" }} aria-current="page"{{ end }}>{{ i18n "nav_subscribe" }}</a>
         </div>
       </details>
 

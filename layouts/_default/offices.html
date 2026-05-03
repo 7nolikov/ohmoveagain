@@ -26,23 +26,23 @@
       <div class="office-authority">{{ .authority }}</div>
       <h3 class="office-name">{{ .name }}</h3>
       <dl class="office-details">
-        <dt>Address</dt>
+        <dt>{{ i18n "offices_field_address" }}</dt>
         <dd>
           {{ .address }}
-          {{ with .mapUrl }}· <a href="{{ . }}" target="_blank" rel="noopener noreferrer">Map ↗</a>{{ end }}
+          {{ with .mapUrl }}· <a href="{{ . }}" target="_blank" rel="noopener noreferrer">{{ i18n "offices_map" }} ↗</a>{{ end }}
         </dd>
-        {{ with .phone }}<dt>Phone</dt><dd><a href="tel:{{ . }}">{{ . }}</a></dd>{{ end }}
-        <dt>Hours</dt><dd>{{ .hours }}</dd>
+        {{ with .phone }}<dt>{{ i18n "offices_field_phone" }}</dt><dd><a href="tel:{{ . }}">{{ . }}</a></dd>{{ end }}
+        <dt>{{ i18n "offices_field_hours" }}</dt><dd>{{ .hours }}</dd>
         {{ with .booking }}
-        <dt>Booking</dt>
+        <dt>{{ i18n "offices_field_booking" }}</dt>
         <dd>
-          <a href="{{ . }}" target="_blank" rel="noopener noreferrer">Book online ↗</a>
+          <a href="{{ . }}" target="_blank" rel="noopener noreferrer">{{ i18n "offices_book_online" }} ↗</a>
           {{ with $office.bookingNote }}<br><span class="office-note">{{ . }}</span>{{ end }}
         </dd>
         {{ end }}
-        {{ with .note }}<dt>Note</dt><dd class="office-note">{{ . }}</dd>{{ end }}
+        {{ with .note }}<dt>{{ i18n "offices_field_note" }}</dt><dd class="office-note">{{ . }}</dd>{{ end }}
       </dl>
-      <p class="office-verified">Last verified: {{ .lastChecked }}</p>
+      <p class="office-verified">{{ i18n "offices_last_verified" }}: {{ .lastChecked }}</p>
     </div>
     {{ end }}{{ end }}
   </div>
@@ -50,9 +50,9 @@
 {{ end }}
 
 <section>
-  <h2>Court translator registry</h2>
-  <p>Only translations by court-certified translators (<em>sudski tumači</em>) are accepted by MUP. Use the official registry to find a translator for your language pair:</p>
-  <p><a class="btn secondary" href="https://sudskitumaci.pravosudje.gov.hr/" target="_blank" rel="noopener noreferrer">Official court translator registry ↗</a></p>
+  <h2>{{ i18n "offices_translators_h2" }}</h2>
+  <p>{{ i18n "offices_translators_desc" | safeHTML }}</p>
+  <p><a class="btn secondary" href="https://sudskitumaci.pravosudje.gov.hr/" target="_blank" rel="noopener noreferrer">{{ i18n "offices_translators_link" }} ↗</a></p>
 </section>
 
 {{ end }}

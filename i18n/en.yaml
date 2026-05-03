@@ -163,6 +163,17 @@ nav_support: "★ Support"
 # Offices page
 offices_tagline: "Government offices · addresses &amp; booking"
 offices_disclaimer: "Addresses and hours verified on dates shown. Offices may change schedules without notice — call ahead or check the official website before travelling."
+offices_field_address: "Address"
+offices_field_phone: "Phone"
+offices_field_hours: "Hours"
+offices_field_booking: "Booking"
+offices_field_note: "Note"
+offices_map: "Map"
+offices_book_online: "Book online"
+offices_last_verified: "Last verified"
+offices_translators_h2: "Court translator registry"
+offices_translators_desc: "Only translations by court-certified translators (<em>sudski tumači</em>) are accepted by MUP. Use the official registry to find a translator for your language pair:"
+offices_translators_link: "Official court translator registry"
 
 # Forms page
 forms_tagline: "Official forms &amp; helper templates"
@@ -348,6 +359,8 @@ freshness_cta_middle: "or submit a PR — every fix shows up in the"
 freshness_cta_history: "commit history"
 
 # Forms page categories
+forms_official_source: "Official source"
+forms_verified: "verified"
 forms_cat_visa: "Visa &amp; residency permits"
 forms_cat_registration: "Registrations (OIB, address)"
 forms_cat_health_insurance: "Health insurance"

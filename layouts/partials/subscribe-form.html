@@ -43,7 +43,7 @@
 {{ else }}
 <div class="watch-cta">
   <a class="btn" href="{{ site.Params.githubURL }}" rel="noopener noreferrer">{{ i18n "watch_on_github" }}</a>
-  <a class="btn secondary" href="{{ "index.xml" | relURL }}">{{ i18n "subscribe_rss" }}</a>
+  <a class="btn secondary" href="{{ "index.xml" | relLangURL }}">{{ i18n "subscribe_rss" }}</a>
 </div>
 <p class="muted" style="font-size:0.8rem;margin-top:8px;">{{ i18n "watch_desc" }}</p>
 {{ end }}
