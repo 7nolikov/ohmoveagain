@@ -118,7 +118,8 @@ header.top {
 }
 .nav a:hover { color: var(--fg); }
 .nav-star { border-radius: var(--radius); }
-.star-count { font-size: 0.72rem; margin-left: 2px; color: var(--fg-muted); }
+.nav-star-icon { display: block; flex: 0 0 auto; }
+.star-count { font-size: 0.78rem; color: var(--fg-muted); font-variant-numeric: tabular-nums; }
 
 /* Hide keyboard shortcut hint on touch devices */
 @media (pointer: coarse) {
