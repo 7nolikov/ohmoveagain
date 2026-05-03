@@ -1661,15 +1661,28 @@ header.top {
 
 @media (max-width: 960px) {
   .top-inner {
-    align-items: flex-start;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
     gap: 8px;
     padding-top: 10px;
     padding-bottom: 10px;
   }
 
+  .brand {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  /* Support sits next to the brand on the top row, normal sized. */
+  .top-inner > .nav-star {
+    flex: 0 0 auto;
+    order: 1;
+  }
+
   .nav {
-    width: 100%;
+    order: 2;
+    flex-basis: 100%;
     justify-content: flex-start;
     gap: 6px;
     padding-bottom: 2px;
@@ -1737,9 +1750,11 @@ header.top {
     min-height: 44px;
   }
 
-  .nav-star {
-    grid-column: 1 / -1;
-    min-height: 44px;
+  /* Support, lifted out of .nav, sits on the brand row. Keep it compact
+     but preserve the 44px tap target. */
+  .top-inner > .nav-star {
+    padding: 8px 12px;
+    font-size: 0.85rem;
   }
 
   .nav-menu-panel {

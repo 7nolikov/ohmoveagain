@@ -44,8 +44,7 @@
         </div>
       </details>
       {{- end }}
-
-      <a href="{{ site.Params.githubURL }}" rel="noopener noreferrer" class="nav-link nav-star" title="Support this project on GitHub">{{ i18n "nav_support" }}{{- with hugo.Data.build }}{{- with .stats }}{{- if gt .starCount 0 }} <span class="star-count">{{ .starCount }}</span>{{- end }}{{- end }}{{- end -}}</a>
     </nav>
+    <a href="{{ site.Params.githubURL }}" rel="noopener noreferrer" class="nav-link nav-star" title="Support this project on GitHub">{{ i18n "nav_support" }}{{- with hugo.Data.build }}{{- with .stats }}{{- if gt .starCount 0 }} <span class="star-count">{{ .starCount }}</span>{{- end }}{{- end }}{{- end -}}</a>
   </div>
 </header>
