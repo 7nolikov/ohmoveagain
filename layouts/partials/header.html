@@ -25,26 +25,25 @@
         </div>
       </details>
 
-      <span class="nav-spacer" aria-hidden="true"></span>
-
-      {{- $translations := .AllTranslations -}}
-      {{- if gt (len $translations) 1 }}
-      <details class="nav-menu lang-menu">
-        <summary class="nav-link nav-lang-summary" aria-label="{{ i18n "nav_language" }}: {{ site.Language.LanguageName }}">
-          <span class="nav-lang-current">{{ site.Language.Lang | upper }}</span>
-          <span class="nav-caret" aria-hidden="true">⌄</span>
-        </summary>
-        <div class="nav-menu-panel nav-lang-panel" role="list" aria-label="{{ i18n "nav_language" }}">
-          {{- range $translations }}
-          <a role="listitem" href="{{ .RelPermalink }}" lang="{{ .Language.Lang }}" hreflang="{{ .Language.Lang }}" class="{{ if eq .Language.Lang site.Language.Lang }}active{{ end }}"{{ if eq .Language.Lang site.Language.Lang }} aria-current="page"{{ end }}>
-            <span class="nav-lang-code">{{ .Language.Lang | upper }}</span>
-            <span>{{ .Language.LanguageName }}</span>
-          </a>
-          {{- end }}
-        </div>
-      </details>
-      {{- end }}
+      <a href="{{ site.Params.githubURL }}" rel="noopener noreferrer" class="nav-link nav-star" title="Support this project on GitHub">{{ i18n "nav_support" }}{{- with hugo.Data.build }}{{- with .stats }}{{- if gt .starCount 0 }} <span class="star-count">{{ .starCount }}</span>{{- end }}{{- end }}{{- end -}}</a>
     </nav>
-    <a href="{{ site.Params.githubURL }}" rel="noopener noreferrer" class="nav-link nav-star" title="Support this project on GitHub">{{ i18n "nav_support" }}{{- with hugo.Data.build }}{{- with .stats }}{{- if gt .starCount 0 }} <span class="star-count">{{ .starCount }}</span>{{- end }}{{- end }}{{- end -}}</a>
+
+    {{- $translations := .AllTranslations -}}
+    {{- if gt (len $translations) 1 }}
+    <details class="nav-menu lang-menu">
+      <summary class="nav-link nav-lang-summary" aria-label="{{ i18n "nav_language" }}: {{ site.Language.LanguageName }}">
+        <span class="nav-lang-current">{{ site.Language.Lang | upper }}</span>
+        <span class="nav-caret" aria-hidden="true">⌄</span>
+      </summary>
+      <div class="nav-menu-panel nav-lang-panel" role="list" aria-label="{{ i18n "nav_language" }}">
+        {{- range $translations }}
+        <a role="listitem" href="{{ .RelPermalink }}" lang="{{ .Language.Lang }}" hreflang="{{ .Language.Lang }}" class="{{ if eq .Language.Lang site.Language.Lang }}active{{ end }}"{{ if eq .Language.Lang site.Language.Lang }} aria-current="page"{{ end }}>
+          <span class="nav-lang-code">{{ .Language.Lang | upper }}</span>
+          <span>{{ .Language.LanguageName }}</span>
+        </a>
+        {{- end }}
+      </div>
+    </details>
+    {{- end }}
   </div>
 </header>

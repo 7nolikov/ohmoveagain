@@ -117,8 +117,8 @@ header.top {
   line-height: 1.3;
 }
 .nav a:hover { color: var(--fg); }
-.nav-star { color: var(--accent) !important; border: 1px solid var(--accent-dim); border-radius: var(--radius); }
-.star-count { font-size: 0.72rem; margin-left: 2px; }
+.nav-star { border-radius: var(--radius); }
+.star-count { font-size: 0.72rem; margin-left: 2px; color: var(--fg-muted); }
 
 /* Hide keyboard shortcut hint on touch devices */
 @media (pointer: coarse) {
@@ -1641,15 +1641,15 @@ header.top {
 
 .nav-star {
   margin-left: 2px;
-  color: var(--accent) !important;
-  border: 1px solid var(--accent-dim);
-  background: rgba(126,231,135,0.04);
 }
 
-.nav-star:hover,
-.nav-star:focus-visible {
-  border-color: var(--accent);
-  background: rgba(126,231,135,0.1);
+.nav-star .star-count {
+  color: var(--fg-muted);
+}
+
+.nav-star:hover .star-count,
+.nav-star:focus-visible .star-count {
+  color: var(--fg);
 }
 
 @media (min-width: 961px) {
@@ -1674,8 +1674,8 @@ header.top {
     min-width: 0;
   }
 
-  /* Support sits next to the brand on the top row, normal sized. */
-  .top-inner > .nav-star {
+  /* Language selector sits next to the brand on the top row. */
+  .top-inner > .lang-menu {
     flex: 0 0 auto;
     order: 1;
   }
@@ -1739,20 +1739,18 @@ header.top {
     padding: 8px 6px;
   }
 
-  .lang-menu,
   .resources-menu {
     justify-self: stretch;
   }
 
-  .lang-menu > summary,
   .resources-menu > summary {
     width: 100%;
     min-height: 44px;
   }
 
-  /* Support, lifted out of .nav, sits on the brand row. Keep it compact
-     but preserve the 44px tap target. */
-  .top-inner > .nav-star {
+  /* Language selector, lifted out of .nav, sits on the brand row. Keep it
+     compact but preserve the 44px tap target. */
+  .top-inner > .lang-menu > summary {
     padding: 8px 12px;
     font-size: 0.85rem;
   }
