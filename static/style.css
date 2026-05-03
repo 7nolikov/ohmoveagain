@@ -890,6 +890,12 @@ footer.foot p { margin: 0 0 0.6em; }
   flex-wrap: wrap;
   min-width: 0;
 }
+
+/* On desktop the picker is always inline; the toggle button doesn't render here,
+   so override Alpine's x-show inline display:none in case state was set on mobile. */
+@media (min-width: 681px) {
+  .persona-picker[x-show] { display: flex !important; }
+}
 .persona-label {
   font-size: 0.72rem;
   color: var(--fg-muted);
