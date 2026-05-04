@@ -1,7 +1,9 @@
 {{ define "main" }}
-{{- /* Language-scoped data: data/offices/<lang>.yaml. Fall back to EN if missing. */ -}}
-{{- $offices := index hugo.Data.offices site.Language.Lang -}}
-{{- if not $offices }}{{- $offices = hugo.Data.offices.en -}}{{- end -}}
+{{- /* Structural data is language-agnostic. Translatable strings live in this
+       page's frontmatter under officeStrings, keyed by id (parity-checked
+       against data/offices.yaml by scripts/check-i18n-parity.mjs). */ -}}
+{{- $offices := hugo.Data.offices -}}
+{{- $strings := default (dict) .Params.officeStrings -}}
 {{- $ld := dict "@context" "https://schema.org" "@type" "WebPage" "name" .Title "description" (default site.Params.description .Description) "url" .Permalink "isPartOf" (dict "@type" "WebSite" "name" site.Title "url" site.BaseURL) | jsonify -}}
 {{ printf "<script type=\"application/ld+json\">%s</script>" $ld | safeHTML }}
 
@@ -24,9 +26,10 @@
   <div class="office-grid">
     {{ range $offices }}{{ if eq .city $city }}
     {{- $office := . -}}
+    {{- $s := index $strings .id -}}
     <div class="office-card">
-      <div class="office-authority">{{ .authority }}</div>
-      <h3 class="office-name">{{ .name }}</h3>
+      <div class="office-authority">{{ with $s }}{{ .authority }}{{ end }}</div>
+      <h3 class="office-name">{{ with $s }}{{ .name }}{{ end }}</h3>
       <dl class="office-details">
         <dt>{{ i18n "offices_field_address" }}</dt>
         <dd>
@@ -34,17 +37,17 @@
           {{ with .mapUrl }}· <a href="{{ . }}" target="_blank" rel="noopener noreferrer">{{ i18n "offices_map" }} ↗</a>{{ end }}
         </dd>
         {{ with .phone }}<dt>{{ i18n "offices_field_phone" }}</dt><dd><a href="tel:{{ . }}">{{ . }}</a></dd>{{ end }}
-        <dt>{{ i18n "offices_field_hours" }}</dt><dd>{{ .hours }}</dd>
+        <dt>{{ i18n "offices_field_hours" }}</dt><dd>{{ with $s }}{{ .hours }}{{ end }}</dd>
         {{ with .booking }}
         <dt>{{ i18n "offices_field_booking" }}</dt>
         <dd>
           <a href="{{ . }}" target="_blank" rel="noopener noreferrer">{{ i18n "offices_book_online" }} ↗</a>
-          {{ with $office.bookingNote }}<br><span class="office-note">{{ . }}</span>{{ end }}
+          {{ with $s }}{{ with .bookingNote }}<br><span class="office-note">{{ . }}</span>{{ end }}{{ end }}
         </dd>
         {{ end }}
-        {{ with .note }}<dt>{{ i18n "offices_field_note" }}</dt><dd class="office-note">{{ . }}</dd>{{ end }}
+        {{ with $s }}{{ with .note }}<dt>{{ i18n "offices_field_note" }}</dt><dd class="office-note">{{ . }}</dd>{{ end }}{{ end }}
       </dl>
-      <p class="office-verified">{{ i18n "offices_last_verified" }}: {{ .lastChecked }}</p>
+      <p class="office-verified">{{ i18n "offices_last_verified" }}: {{ $office.lastChecked }}</p>
     </div>
     {{ end }}{{ end }}
   </div>

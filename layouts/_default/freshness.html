@@ -1,6 +1,16 @@
 {{ define "main" }}
 {{- $stages := (where site.RegularPages "Section" "stages").ByWeight -}}
-{{- $countries := hugo.Data.countries -}}
+{{- /* Merge structural data with per-language country strings (parity-checked
+       against data/countries.yaml by scripts/check-i18n-parity.mjs). */ -}}
+{{- $countriesRaw := hugo.Data.countries -}}
+{{- $countryStrings := index hugo.Data.i18n (printf "countries.%s" site.Language.Lang) -}}
+{{- if not $countryStrings }}{{- $countryStrings = index hugo.Data.i18n "countries.en" -}}{{- end -}}
+{{- $countries := slice -}}
+{{- range $countriesRaw -}}
+  {{- $s := index $countryStrings .code | default (dict) -}}
+  {{- $m := merge . (dict "name" (index $s "name")) -}}
+  {{- $countries = $countries | append $m -}}
+{{- end -}}
 <section>
   <div class="tagline">{{ i18n "freshness_tagline" }}</div>
   <h1>{{ .Title }}</h1>

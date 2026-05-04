@@ -1,6 +1,26 @@
 {{ define "main" }}
-{{ $countries := hugo.Data.countries }}
-{{- $fees := hugo.Data.fees -}}
+{{- /* Merge structural data (data/countries.yaml, data/fees.yaml) with the
+       per-language strings under data/i18n/{countries,fees}.<lang>.yaml.
+       Parity is enforced by scripts/check-i18n-parity.mjs. */ -}}
+{{- $countriesRaw := hugo.Data.countries -}}
+{{- $countryStrings := index hugo.Data.i18n (printf "countries.%s" site.Language.Lang) -}}
+{{- if not $countryStrings }}{{- $countryStrings = index hugo.Data.i18n "countries.en" -}}{{- end -}}
+{{- $countries := slice -}}
+{{- range $countriesRaw -}}
+  {{- $s := index $countryStrings .code | default (dict) -}}
+  {{- $src := merge (default (dict) .source) (dict "label" (index $s "sourceLabel")) -}}
+  {{- $m := merge . (dict "name" (index $s "name") "note" (index $s "note") "source" $src) -}}
+  {{- $countries = $countries | append $m -}}
+{{- end -}}
+{{- $feesRaw := hugo.Data.fees -}}
+{{- $feeStrings := index hugo.Data.i18n (printf "fees.%s" site.Language.Lang) -}}
+{{- if not $feeStrings }}{{- $feeStrings = index hugo.Data.i18n "fees.en" -}}{{- end -}}
+{{- $fees := slice -}}
+{{- range $feesRaw -}}
+  {{- $s := index $feeStrings .id | default (dict) -}}
+  {{- $m := merge . (dict "label" (index $s "label") "note" (index $s "note")) -}}
+  {{- $fees = $fees | append $m -}}
+{{- end -}}
 {{- $feeTotal := 0 -}}
 {{- range $fees }}{{- $feeTotal = add $feeTotal (mul .amountEUR .count) -}}{{- end -}}
 {{- $ld := dict
@@ -113,7 +133,7 @@
               {{- with .source }}
               {{- $d := div (sub now.Unix (time.AsTime .asOf).Unix) 86400 -}}
               {{- $cls := cond (gt $d 365) "asof-stale" (cond (gt $d 180) "asof-aging" "asof-fresh") }}
-              <br><a class="source" href="{{ .url }}" rel="noopener noreferrer" target="_blank">Source: {{ .label }}{{ with .asOf }} · <span class="asof {{ $cls }}">verified {{ . }}</span>{{ end }}</a>
+              <br><a class="source" href="{{ .url }}" rel="noopener noreferrer" target="_blank">{{ i18n "calc_ref_source_prefix" }} {{ .label }}{{ with .asOf }} · <span class="asof {{ $cls }}">{{ i18n "calc_ref_source_verified" }} {{ . }}</span>{{ end }}</a>
               {{- end }}
             </td>
           </tr>

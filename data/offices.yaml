@@ -1,0 +1,79 @@
+# Croatian government offices — addresses, hours, booking links.
+# Each entry: id, city, address (Croatian — proper noun), phone, booking,
+# mapUrl, lastChecked (structural — language-agnostic).
+# Translatable strings (authority, name, bookingNote, hours, note) live in
+# content frontmatter:
+#   content/offices.<lang>.md → officeStrings: { <id>: { authority, name, bookingNote, hours, note } }
+# Parity is enforced by scripts/check-i18n-parity.mjs.
+
+- id: mup-zagreb-central
+  city: "Zagreb"
+  address: "Petrinjska 30, 10000 Zagreb"
+  phone: "+385 1 3788 100"
+  booking: "https://e-uprava.gov.hr/"
+  mapUrl: "https://maps.google.com/?q=Petrinjska+30+Zagreb"
+  lastChecked: "2026-03-15"
+
+- id: mup-split
+  city: "Split"
+  address: "Trg Hrvatske bratske zajednice 9, 21000 Split"
+  phone: "+385 21 307 100"
+  booking: "https://e-uprava.gov.hr/"
+  mapUrl: "https://maps.google.com/?q=Trg+Hrvatske+bratske+zajednice+9+Split"
+  lastChecked: "2026-03-15"
+
+- id: mup-rijeka
+  city: "Rijeka"
+  address: "Verdijeva 4, 51000 Rijeka"
+  phone: "+385 51 214 101"
+  booking: "https://e-uprava.gov.hr/"
+  mapUrl: "https://maps.google.com/?q=Verdijeva+4+Rijeka"
+  lastChecked: "2026-03-15"
+
+- id: fina-zagreb
+  city: "Zagreb"
+  address: "Ulica grada Vukovara 70, 10000 Zagreb"
+  phone: "+385 1 4688 900"
+  booking: "https://www.fina.hr/kontakt"
+  mapUrl: "https://maps.google.com/?q=Ulica+grada+Vukovara+70+Zagreb"
+  lastChecked: "2026-03-01"
+
+- id: porezna-zagreb
+  city: "Zagreb"
+  address: "Avenija Dubrovnik 32, 10000 Zagreb"
+  phone: "+385 1 6307 999"
+  booking: "https://e-porezna.porezna-uprava.hr/"
+  mapUrl: "https://maps.google.com/?q=Avenija+Dubrovnik+32+Zagreb"
+  lastChecked: "2026-03-01"
+
+- id: hzzo-zagreb
+  city: "Zagreb"
+  address: "Margaretska 3, 10000 Zagreb"
+  phone: "+385 1 4806 333"
+  booking: "https://hzzo.hr/en/contact"
+  mapUrl: "https://maps.google.com/?q=Margaretska+3+Zagreb"
+  lastChecked: "2026-02-15"
+
+- id: hzzo-split
+  city: "Split"
+  address: "Livanjska 1, 21000 Split"
+  phone: "+385 21 303 080"
+  booking: "https://hzzo.hr/en/contact"
+  mapUrl: "https://maps.google.com/?q=Livanjska+1+Split"
+  lastChecked: "2026-02-15"
+
+- id: opcinski-sud-zagreb
+  city: "Zagreb"
+  address: "Trg sv. Marka 4, 10000 Zagreb"
+  phone: "+385 1 4891 888"
+  booking: null
+  mapUrl: "https://maps.google.com/?q=Trg+sv.+Marka+4+Zagreb"
+  lastChecked: "2026-02-01"
+
+- id: translator-zagreb-hofmann
+  city: "Zagreb"
+  address: "Ilica 1a, 10000 Zagreb"
+  phone: null
+  booking: "https://sudskit umaci.pravosudje.gov.hr/"
+  mapUrl: null
+  lastChecked: "2026-02-01"

@@ -3,6 +3,12 @@
 // different set of sub-keys under itemStrings/categoryNames/artifactNames,
 // or different gotchas list length.
 //
+// Also enforces parity for translatable reference data:
+//   • forms.yaml      ← strings in content/forms/_index.<lang>.md (formStrings)
+//   • offices.yaml    ← strings in content/offices.<lang>.md     (officeStrings)
+//   • countries.yaml  ← strings in data/i18n/countries.<lang>.yaml
+//   • fees.yaml       ← strings in data/i18n/fees.<lang>.yaml
+//
 // Uses the real YAML parser via i18n-lib to avoid false positives on
 // line-wrapped list items produced by yaml.stringify.
 
@@ -15,17 +21,52 @@ const OBJECT_FIELDS = ['itemStrings', 'categoryNames', 'claimStrings', 'artifact
 const LIST_FIELDS = ['gotchas', 'requires', 'documents'];
 const LANG_RE = /^(.+)\.([a-z]{2})\.md$/i;
 
-// Translatable-data parity: each entry in `data/<dir>/en.yaml` must appear in
-// every sibling `<lang>.yaml` with the same `id` and the same set of keys, so
-// the layout cannot silently render English fields on a non-English page.
-const DATA_DIRS = ['data/forms', 'data/offices'];
+// Reference data with translatable strings in content frontmatter (page-scoped).
+const PAGE_STRINGS = [
+  {
+    label: 'forms',
+    sourceData: 'data/forms.yaml',
+    sourceKey: 'id',
+    contentEn: 'content/forms/_index.md',
+    contentLangPattern: (lang) => `content/forms/_index.${lang}.md`,
+    frontmatterKey: 'formStrings',
+    requiredInnerKeys: ['title', 'sourceAuthority', 'note'],
+  },
+  {
+    label: 'offices',
+    sourceData: 'data/offices.yaml',
+    sourceKey: 'id',
+    contentEn: 'content/offices.md',
+    contentLangPattern: (lang) => `content/offices.${lang}.md`,
+    frontmatterKey: 'officeStrings',
+    requiredInnerKeys: ['authority', 'name', 'bookingNote', 'hours', 'note'],
+  },
+];
 
-function listTranslatedFiles() {
-  return fs.readdirSync(STAGES_DIR).filter((f) => LANG_RE.test(f));
-}
+// Reference data with translatable strings shared across templates
+// (calculator + freshness for countries; calculator for fees).
+const I18N_DATA_STRINGS = [
+  {
+    label: 'countries',
+    sourceData: 'data/countries.yaml',
+    sourceKey: 'code',
+    i18nDataPattern: (lang) => `data/i18n/countries.${lang}.yaml`,
+    requiredInnerKeys: ['name', 'note', 'sourceLabel'],
+  },
+  {
+    label: 'fees',
+    sourceData: 'data/fees.yaml',
+    sourceKey: 'id',
+    i18nDataPattern: (lang) => `data/i18n/fees.${lang}.yaml`,
+    requiredInnerKeys: ['label', 'note'],
+  },
+];
 
 let errors = 0;
-const translated = listTranslatedFiles();
+
+// ── Translated stage files ────────────────────────────────────────────────────
+
+const translated = fs.readdirSync(STAGES_DIR).filter((f) => LANG_RE.test(f));
 const englishSet = new Set(listEnglishStageFiles());
 
 for (const langFile of translated) {
@@ -72,71 +113,137 @@ for (const langFile of translated) {
   }
 }
 
-// ── Translatable-data parity (forms, offices) ────────────────────────────────
+// ── Helpers for reference-data parity ─────────────────────────────────────────
 
-let dataChecked = 0;
-for (const dir of DATA_DIRS) {
-  if (!fs.existsSync(dir)) continue;
-  const files = fs.readdirSync(dir).filter((f) => f.endsWith('.yaml'));
-  const enFile = path.join(dir, 'en.yaml');
-  if (!fs.existsSync(enFile)) {
-    console.log(`FAIL ${dir}: missing en.yaml (canonical source)`);
+function readSourceIds(spec) {
+  const list = YAML.parse(fs.readFileSync(spec.sourceData, 'utf8')) || [];
+  if (!Array.isArray(list)) {
+    console.log(`FAIL ${spec.sourceData}: expected a list at root`);
+    errors++;
+    return null;
+  }
+  return list.map((e) => e[spec.sourceKey]).filter(Boolean);
+}
+
+function detectLangs(globPattern) {
+  // globPattern: a function(lang) → path. Probe common languages by scanning
+  // the parent directory for files matching the pattern.
+  const probePath = globPattern('XX');
+  const dir = path.dirname(probePath);
+  const fileRe = new RegExp(path.basename(probePath).replace('XX', '([a-z]{2})'));
+  if (!fs.existsSync(dir)) return [];
+  return fs.readdirSync(dir)
+    .map((f) => (fileRe.exec(f) || [])[1])
+    .filter(Boolean);
+}
+
+function checkStringMap(spec, lang, stringsByKey, sourceIds) {
+  const idSet = new Set(sourceIds);
+  const stringsKeys = Object.keys(stringsByKey || {});
+  let localErrors = 0;
+
+  for (const id of sourceIds) {
+    if (!(id in (stringsByKey || {}))) {
+      console.log(`FAIL [${lang}] ${spec.label}: missing entry "${id}"`);
+      localErrors++;
+    }
+  }
+  for (const id of stringsKeys) {
+    if (!idSet.has(id)) {
+      console.log(`FAIL [${lang}] ${spec.label}: unexpected entry "${id}"`);
+      localErrors++;
+    }
+  }
+  for (const id of stringsKeys) {
+    if (!idSet.has(id)) continue;
+    const entry = stringsByKey[id];
+    if (!entry || typeof entry !== 'object') {
+      console.log(`FAIL [${lang}] ${spec.label} "${id}": expected an object`);
+      localErrors++;
+      continue;
+    }
+    for (const k of spec.requiredInnerKeys) {
+      if (!(k in entry) || entry[k] === null || entry[k] === '') {
+        console.log(`FAIL [${lang}] ${spec.label} "${id}": missing key "${k}"`);
+        localErrors++;
+      }
+    }
+    for (const k of Object.keys(entry)) {
+      if (!spec.requiredInnerKeys.includes(k)) {
+        console.log(`FAIL [${lang}] ${spec.label} "${id}": unexpected key "${k}"`);
+        localErrors++;
+      }
+    }
+  }
+
+  return localErrors;
+}
+
+// ── Page-scoped string parity (forms, offices) ────────────────────────────────
+
+let pageChecked = 0;
+for (const spec of PAGE_STRINGS) {
+  if (!fs.existsSync(spec.sourceData)) {
+    console.log(`FAIL ${spec.sourceData}: file missing`);
     errors++;
     continue;
   }
-  const enList = YAML.parse(fs.readFileSync(enFile, 'utf8')) || [];
-  if (!Array.isArray(enList)) {
-    console.log(`FAIL ${enFile}: expected a list at root`);
-    errors++;
-    continue;
-  }
-  const enById = new Map(enList.map((e) => [e.id, e]));
+  const sourceIds = readSourceIds(spec);
+  if (!sourceIds) continue;
 
-  for (const f of files) {
-    if (f === 'en.yaml') continue;
-    const lang = path.basename(f, '.yaml');
-    const langFile = path.join(dir, f);
-    const langList = YAML.parse(fs.readFileSync(langFile, 'utf8')) || [];
-    if (!Array.isArray(langList)) {
-      console.log(`FAIL ${langFile}: expected a list at root`);
+  // Always check English content too — strings must exist before any RU build ships.
+  const langsToCheck = ['en', ...detectLangs(spec.contentLangPattern)];
+  for (const lang of langsToCheck) {
+    const file = lang === 'en' ? spec.contentEn : spec.contentLangPattern(lang);
+    if (!fs.existsSync(file)) {
+      console.log(`FAIL [${lang}] ${spec.label}: content file ${file} missing`);
       errors++;
       continue;
     }
-    const langById = new Map(langList.map((e) => [e.id, e]));
-
-    for (const id of enById.keys()) {
-      if (!langById.has(id)) {
-        console.log(`FAIL [${lang}] ${dir}: missing entry id=${id}`);
-        errors++;
-      }
+    const doc = loadStage(file);
+    const fm = doc.frontMatter || {};
+    const strings = fm[spec.frontmatterKey];
+    if (!strings || typeof strings !== 'object') {
+      console.log(`FAIL [${lang}] ${spec.label}: ${file} missing ${spec.frontmatterKey} frontmatter`);
+      errors++;
+      continue;
     }
-    for (const id of langById.keys()) {
-      if (!enById.has(id)) {
-        console.log(`FAIL [${lang}] ${dir}: unexpected entry id=${id}`);
-        errors++;
-      }
-    }
-    for (const [id, en] of enById) {
-      const lc = langById.get(id);
-      if (!lc) continue;
-      const enKeys = Object.keys(en).sort();
-      const lcKeys = Object.keys(lc).sort();
-      for (const k of enKeys) {
-        if (!(k in lc)) {
-          console.log(`FAIL [${lang}] ${dir} id=${id}: missing key "${k}"`);
-          errors++;
-        }
-      }
-      for (const k of lcKeys) {
-        if (!(k in en)) {
-          console.log(`FAIL [${lang}] ${dir} id=${id}: unexpected key "${k}"`);
-          errors++;
-        }
-      }
-    }
-    dataChecked++;
+    errors += checkStringMap(spec, lang, strings, sourceIds);
+    pageChecked++;
   }
 }
 
-console.log(`\ni18n parity: checked ${translated.length} translated stage file(s) and ${dataChecked} translated data file(s) — ${errors} error(s).`);
+// ── Shared i18n data parity (countries, fees) ─────────────────────────────────
+
+let i18nDataChecked = 0;
+for (const spec of I18N_DATA_STRINGS) {
+  if (!fs.existsSync(spec.sourceData)) {
+    console.log(`FAIL ${spec.sourceData}: file missing`);
+    errors++;
+    continue;
+  }
+  const sourceIds = readSourceIds(spec);
+  if (!sourceIds) continue;
+
+  const langsToCheck = detectLangs(spec.i18nDataPattern);
+  if (!langsToCheck.includes('en')) langsToCheck.push('en');
+  for (const lang of langsToCheck) {
+    const file = spec.i18nDataPattern(lang);
+    if (!fs.existsSync(file)) {
+      console.log(`FAIL [${lang}] ${spec.label}: ${file} missing`);
+      errors++;
+      continue;
+    }
+    const strings = YAML.parse(fs.readFileSync(file, 'utf8'));
+    if (!strings || typeof strings !== 'object' || Array.isArray(strings)) {
+      console.log(`FAIL [${lang}] ${spec.label}: ${file} expected a map at root`);
+      errors++;
+      continue;
+    }
+    errors += checkStringMap(spec, lang, strings, sourceIds);
+    i18nDataChecked++;
+  }
+}
+
+console.log(`\ni18n parity: ${translated.length} stage file(s), ${pageChecked} page-string surface(s), ${i18nDataChecked} i18n-data surface(s) checked — ${errors} error(s).`);
 process.exit(errors > 0 ? 1 : 0);

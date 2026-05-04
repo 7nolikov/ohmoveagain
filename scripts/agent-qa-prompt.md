@@ -19,7 +19,7 @@ For every surface in QA_PLAN.md §1.1, verify the following by hand:
    - Check for horizontal scroll (report if body scrollWidth > viewportWidth)
    - Tap every interactive element and report any where the hit area appears < 44×44 px
    - Check sticky elements (footer disclaimer, header) do not cover content
-3. **i18n (§2.7)** — switch language to RU for surfaces that have a RU variant; report any untranslated English string longer than 5 words in a paragraph
+3. **i18n (§2.7)** — switch language to RU for surfaces that have a RU variant; report any untranslated English string longer than 5 words in a paragraph, heading, definition list `<dd>`, or reference-table `<td>` (the calculator and freshness reference tables are common gaps)
 4. **No-JS counters (§2.8)** — note whether /pipeline/ shows "0 of N · 0%" in view-source (not "· %")
 5. **Trust summary (stages only)** — confirm the static `<section class="trust-summary">` block renders with title, score, and inline `.trust-chip` labels. The current design has no click-to-reveal tooltip; do not test for one.
 6. **Calculator (§2.3)** — fill income, pick from/to country, click `Calculate`; confirm the result region appears and shows runway delta. Then change destination country and re-click `Calculate`; confirm the result updates. Test the share button.

@@ -1,0 +1,56 @@
+# Official government forms — links only, no re-hosted content.
+# Each entry: id, category, url, lastChecked (structural — language-agnostic).
+# Translatable strings (title, sourceAuthority, note) live in content frontmatter:
+#   content/forms/_index.<lang>.md → formStrings: { <id>: { title, sourceAuthority, note } }
+# Parity is enforced by scripts/check-i18n-parity.mjs (formStrings keys must
+# match this file's id set for every language).
+
+- id: mup-dn-application
+  category: visa
+  url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+  lastChecked: "2026-04-22"
+
+- id: mup-blue-card-application
+  category: visa
+  url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+  lastChecked: "2026-04-22"
+
+- id: porezna-oib1
+  category: registration
+  url: "https://www.porezna-uprava.hr/en/Pages/oib.aspx"
+  lastChecked: "2026-03-01"
+
+- id: mup-address-registration
+  category: registration
+  url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
+  lastChecked: "2026-04-22"
+
+- id: hzzo-t1
+  category: health-insurance
+  url: "https://hzzo.hr/en/how-to-become-insured"
+  lastChecked: "2026-02-15"
+
+- id: hzzo-t2
+  category: health-insurance
+  url: "https://hzzo.hr/en/how-to-become-insured"
+  lastChecked: "2026-02-15"
+
+- id: mup-criminal-background
+  category: documents
+  url: "https://pravosudje.gov.hr/UserDocsImages/dokumenti/Pristup%20informacijama/Ispisi%20iz%20kaznene%20evidencije/Zahtjev%20za%20ispis%20iz%20kaznene%20evidencije.pdf"
+  lastChecked: "2026-02-01"
+
+- id: hcch-apostille
+  category: documents
+  url: "https://www.hcch.net/en/instruments/conventions/specialised-sections/apostille"
+  lastChecked: "2026-01-01"
+
+- id: eu-pet-passport
+  category: pets
+  url: "https://food.ec.europa.eu/animals/movement-pets_en"
+  lastChecked: "2026-03-01"
+
+- id: fina-business-registration
+  category: business
+  url: "https://www.fina.hr/en/start-business"
+  lastChecked: "2026-02-15"

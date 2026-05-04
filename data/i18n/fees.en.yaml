@@ -1,0 +1,25 @@
+# Translatable strings for data/fees.yaml — keyed by `id`.
+# Every id in fees.yaml must have a matching entry here.
+# scripts/check-i18n-parity.mjs enforces id-set + key-set parity across languages.
+
+apostille-origin:
+  label: "Apostilles (in origin country, per document)"
+  note: "Varies by origin country and issuing authority. Budget for 3–4 documents."
+court-translation:
+  label: "Court-certified translations (per page)"
+  note: "Per page. Budget 8–15 pages across all documents."
+criminal-background:
+  label: "Criminal background check (origin country)"
+  note: "Fee varies widely by country. May require a notary or apostille."
+mup-residency-permit:
+  label: "Residence permit fee (MUP)"
+  note: "Fee depends on permit type and duration. Digital Nomad Visa approx. 70–100 EUR."
+biometric-card:
+  label: "Biometric residence card"
+  note: "Issued separately from the permit decision. Paid at FINA."
+oib-registration:
+  label: "OIB registration"
+  note: "Free of charge."
+hzzo-retroactive:
+  label: "HZZO health insurance — retroactive contributions if late enrollment"
+  note: "Only applies if you were uninsured during a gap period. ~60–80 EUR/month of gap. Budget conservatively."

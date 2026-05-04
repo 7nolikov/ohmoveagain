@@ -111,9 +111,12 @@ The calculator is **submit-driven** — the result region (`<template x-if="resu
 
 - [ ] Language switcher on every page links to its translation (not 404)
 - [ ] No raw i18n keys leaking (`/{{ i18n "..." }}/` regex must not match in rendered HTML)
-- [ ] No untranslated English strings on `/ru/` surfaces (fuzzy heuristic: ASCII-only text in `<p>`, `<h3>`, `<dd>` inside `main` flagged on `/ru/`)
+- [ ] No untranslated English strings on `/ru/` surfaces (fuzzy heuristic: ASCII-only text in `<p>`, `<h3>`, `<dd>`, `<td>` inside `main` flagged on `/ru/`)
 - [ ] RU pipeline page shows Cyrillic stage names (Оценка / Подготовка / Переезд / Регистрация / Развитие)
-- [ ] `npm run i18n:parity` is clean — covers translated stage front-matter AND translatable data (`data/forms/<lang>.yaml`, `data/offices/<lang>.yaml`) shape parity with `en.yaml`. CI gate; do not bypass.
+- [ ] `npm run i18n:parity` is clean. CI gate; do not bypass. Covers four surfaces:
+  - Translated stage frontmatter (`itemStrings`, `categoryNames`, `gotchas`, etc.)
+  - **Page-scoped strings** in content frontmatter: `formStrings` keyed against `data/forms.yaml`, `officeStrings` keyed against `data/offices.yaml`
+  - **Shared i18n data** keyed against structural data: `data/i18n/countries.<lang>.yaml` against `data/countries.yaml`, `data/i18n/fees.<lang>.yaml` against `data/fees.yaml`
 
 ### 2.8 No-JS / SEO
 

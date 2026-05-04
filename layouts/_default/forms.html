@@ -1,7 +1,9 @@
 {{ define "main" }}
-{{- /* Language-scoped data: data/forms/<lang>.yaml. Fall back to EN if missing. */ -}}
-{{- $forms := index hugo.Data.forms site.Language.Lang -}}
-{{- if not $forms }}{{- $forms = hugo.Data.forms.en -}}{{- end -}}
+{{- /* Structural data is language-agnostic. Translatable strings live in this
+       page's frontmatter under formStrings, keyed by id (parity-checked
+       against data/forms.yaml by scripts/check-i18n-parity.mjs). */ -}}
+{{- $forms := hugo.Data.forms -}}
+{{- $strings := default (dict) .Params.formStrings -}}
 {{- $ld := dict "@context" "https://schema.org" "@type" "WebPage" "name" .Title "description" (default site.Params.description .Description) "url" .Permalink "isPartOf" (dict "@type" "WebSite" "name" site.Title "url" site.BaseURL) | jsonify -}}
 {{ printf "<script type=\"application/ld+json\">%s</script>" $ld | safeHTML }}
 
@@ -32,10 +34,11 @@
   <h2 id="cat-{{ $catKey }}">{{ i18n $catI18nKey | safeHTML }}</h2>
   <div class="form-list">
     {{ range $catForms }}
+    {{- $s := index $strings .id -}}
     <div class="form-card">
-      <div class="form-authority">{{ .sourceAuthority }}</div>
-      <h3 class="form-title">{{ .title }}</h3>
-      {{ with .note }}<p class="form-note">{{ . }}</p>{{ end }}
+      <div class="form-authority">{{ with $s }}{{ .sourceAuthority }}{{ end }}</div>
+      <h3 class="form-title">{{ with $s }}{{ .title }}{{ end }}</h3>
+      {{ with $s }}{{ with .note }}<p class="form-note">{{ . }}</p>{{ end }}{{ end }}
       <div class="form-meta">
         <a class="btn secondary btn-sm" href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ i18n "forms_official_source" }} ↗</a>
         <span class="form-verified">{{ i18n "forms_verified" }} {{ .lastChecked }}</span>

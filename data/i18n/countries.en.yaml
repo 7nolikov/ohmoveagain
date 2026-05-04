@@ -1,0 +1,52 @@
+# Translatable strings for data/countries.yaml — keyed by `code`.
+# Every code in countries.yaml must have a matching entry here.
+# scripts/check-i18n-parity.mjs enforces id-set + key-set parity across languages.
+
+HR:
+  name: "Croatia"
+  note: "Paušalni obrt structure for solo SaaS. Zagreb has a real IT scene."
+  sourceLabel: "Porezna uprava — income tax"
+MNE:
+  name: "Montenegro"
+  note: "Lowest headline rate in the region; weakest banking and EU-market access."
+  sourceLabel: "Tax Administration of Montenegro"
+DE:
+  name: "Germany"
+  note: "Strong market, heavy tax load, rigorous bureaucracy. Blue Card friendly."
+  sourceLabel: "Federal Ministry of Finance — income tax"
+PT:
+  name: "Portugal"
+  note: "NHR replaced by IFICI — narrower scope, still attractive for specific professions."
+  sourceLabel: "Autoridade Tributária — income tax"
+EE:
+  name: "Estonia"
+  note: "e-Residency is NOT tax residency. Corporate structure is elegant; personal side is standard."
+  sourceLabel: "Estonian Tax and Customs Board"
+GB:
+  name: "United Kingdom"
+  note: "Outside IR35 Ltd company baseline. Inside IR35 pushes effective rate higher. Post-Brexit visa friction for HR."
+  sourceLabel: "HMRC — income tax rates"
+US:
+  name: "United States"
+  note: "Federal + mid-tier state + self-employment tax blended. CoL is a mid-tier city (Austin / Denver). Varies wildly by state."
+  sourceLabel: "IRS — tax rates and brackets"
+NL:
+  name: "Netherlands"
+  note: "ZZP freelancer baseline. Box 1 rates are steep. 30% ruling for recent arrivals not included."
+  sourceLabel: "Belastingdienst — income tax"
+FR:
+  name: "France"
+  note: "Micro-entrepreneur / auto-entrepreneur baseline. Portage salarial pushes the effective rate higher."
+  sourceLabel: "Direction générale des Finances publiques — tax rates"
+PL:
+  name: "Poland"
+  note: "B2B contractor with flat PIT + ZUS social/health contributions. IP Box reduced rate not included."
+  sourceLabel: "Ministry of Finance Poland — PIT"
+CZ:
+  name: "Czech Republic"
+  note: "OSVČ sole trader: income tax + social/health on a portion of profit base."
+  sourceLabel: "Czech Financial Administration — personal tax"
+RS:
+  name: "Serbia"
+  note: "Flat PIT + capped contributions. Gaining traction with remote devs. No EU single market."
+  sourceLabel: "Tax Administration of Serbia — income tax"
