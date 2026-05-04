@@ -247,6 +247,26 @@ Pull from based on launch signal:
 
 ---
 
+## 13. Stage gotchas — voice contract (2026-05-04)
+
+**Decision:** every gotcha on a Pipeline stage page uses one voice — second-person imperative, em-dash separator, single sentence. Stage subtitles already follow this pattern (locked in commit `8a1992b`); gotchas now match.
+
+**Voice contract:**
+- **Open with an imperative verb** addressed to the reader: *Watch*, *File*, *Apostille*, *Pack*, *Notify*, *Sign*, *Bring*, *Don't carry*, *Don't improvise*. No declarative-only sentences. No "X happens / X is required / X means…" framings.
+- **Use an em-dash to separate action from stake.** Pattern: `[Imperative clause] — [terse why or consequence].` One sentence per gotcha. No semicolons stitching two warnings together.
+- **One gotcha = one trap.** No meta-commentary ("This stage is critical…"), no encouragement, no summary lines. If it isn't a specific failure mode, it isn't a gotcha and it doesn't ship.
+- **Second person throughout.** "You" or implicit-you (imperative). No third-person ("a developer must…"), no first-person plural ("we should…").
+
+**Why:** the pre-launch tone audit found subtitles read as a single directive voice while gotchas drifted between explanation, warning, and filler — including one (`assessment.md` #3) that wasn't a gotcha at all, just a meta-statement that the stage is "important." Mixed voice in the highest-stakes element on a stage page (the thing that exists to flag traps) erodes trust faster than a missing field. One voice across subtitle + gotcha makes the stage page feel authored, not assembled.
+
+**How to apply:**
+- Adding a new gotcha to `content/stages/<slug>.md` follows the contract above.
+- Removing or rewriting an existing gotcha is fine; the i18n sync pipeline (§10) regenerates `<slug>.<lang>.md` on the next push to `main` because the `sourceHash` will mismatch.
+- Reviewers reject any gotcha that opens with an article (*The*, *A*) or a noun-fact ("Croatia's…", "Tax residency…"). Imperative-first or it doesn't ship.
+- The same contract applies to any future stage-level "watch out" microcopy (inline warnings, sidebars, callouts). One voice, project-wide.
+
+---
+
 ## Meta rule
 
 **Don't re-open a decision without traction data.** Four reassessments in 24 hours on 2026-04-18→19 produced plans, not launches. The next scope change waits for signal.

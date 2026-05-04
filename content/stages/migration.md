@@ -56,8 +56,8 @@ itemStrings:
     label: "Carrier dimensions verified at check-in vs airline's current spec"
     note: "Staff measure on the day. If your carrier is 1cm over, the pet goes cargo or stays home."
 gotchas:
-  - "Your old country's bank may freeze cards on geo-change. Notify in advance, or carry a backup bank."
-  - "Croatia switched to EUR in 2023 — old kuna cash is no longer legal tender."
+  - "Notify your old bank before you fly, and carry a backup card — geo-change triggers freezes mid-arrival."
+  - "Don't carry old kuna — Croatia switched to EUR in 2023, and the cash is no longer legal tender."
 claimStrings:
   border-method:
     impact: "operational-delay"

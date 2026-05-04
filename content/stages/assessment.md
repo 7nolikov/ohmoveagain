@@ -66,9 +66,8 @@ itemStrings:
     note: "Misaligned expectations are the leading cause of failed relocations — more common than visa rejections or tax issues."
     sourceLabel: "OECD — international migration patterns"
 gotchas:
-  - "Croatia's tax residency triggers at 183 days OR center-of-life — you can become resident before you realize."
-  - "Double-taxation treaties don't eliminate paperwork — they cap exposure. Both filings still happen."
-  - "This stage is critical because it helps to avoid costly mistakes and stress."
+  - "Watch your day count — 183 days OR Croatian center-of-life triggers tax residency before you intend it."
+  - "File in both countries — the treaty caps tax exposure, not paperwork."
 artifactNames:
   runway-calc: "Runway calculator (HR / MNE / DE / PT / EE)"
 claimStrings:

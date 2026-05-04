@@ -53,8 +53,8 @@ itemStrings:
     note: "Zagreb meetups, Infobip events, Croatian Makers, local Slack / Discord."
     sourceLabel: "Meetup — Zagreb tech"
 gotchas:
-  - "Paušalni obrt has annual revenue caps — crossing mid-year is messy."
-  - "Tax residency + client location + IP ownership determine where you owe. Don't freelance this."
+  - "Watch the paušalni obrt revenue ceiling — crossing mid-year forces a messy structure switch."
+  - "Don't improvise tax residency — what you owe is set by residency, client location, and IP ownership together."
 claimStrings:
   accountant:
     impact: "suboptimal-planning"

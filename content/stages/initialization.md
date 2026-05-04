@@ -77,8 +77,8 @@ itemStrings:
     note: "Annual registration fee applies. Fine for non-compliance is significant."
     sourceLabel: "City of Zagreb — dog registration"
 gotchas:
-  - "Without a Croatian work contract or residency card, expect most banks to offer only a non-resident account (limited features, no salary deposits). Get the work contract first, then open the full account."
-  - "Address registration requires landlord's notarized signature in some municipalities."
+  - "Sign the work contract before you open the bank — without it, banks offer non-resident accounts only (no salary, limited features)."
+  - "Bring a notarized landlord signature to address registration — some municipalities reject anything less."
 claimStrings:
   oib-issued:
     impact: "operational-delay"

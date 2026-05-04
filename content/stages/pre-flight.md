@@ -111,8 +111,8 @@ itemStrings:
     note: "Must demonstrate stable income covering household. Threshold is ~average HR net salary per dependent — verify current figure with MUP."
     sourceLabel: "MUP — income requirements"
 gotchas:
-  - "The apostille is on the document, not on the translation. Order matters."
-  - "Some consulates require originals AND notarized copies. Bring both."
+  - "Apostille the document, then translate — most consulates reject the reverse order."
+  - "Pack originals and notarized copies — some consulates demand both at intake."
 claimStrings:
   passport-validity:
     impact: "operational-delay"
