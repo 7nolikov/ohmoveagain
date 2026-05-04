@@ -230,15 +230,16 @@ claimStrings:
     conflictNote: Практика применения порогов может меняться и требует проверки
       перед подачей.
 gotchas:
-  - Апостиль ставится на документ, а не на перевод. Порядок важен.
-  - Некоторые консульства требуют оригиналы И нотариально заверенные копии.
-    Возьмите и то, и другое.
+  - Сначала апостилируйте документ, потом переводите — большинство консульств
+    отклоняют обратный порядок.
+  - Берите оригиналы и нотариально заверенные копии — некоторые консульства
+    требуют и то, и другое при подаче.
 artifactNames: {}
 translationMeta:
   sourceLang: en
   targetLang: ru
   sourceFile: content/stages/pre-flight.md
-  sourceHash: e6d3af7f7e0b519cfb468f222872730c39b9f45a1ead6df1d5dfb0bbc694cf29
+  sourceHash: 30f1b9c4103260d7639fae07fec5743c67ade93c84d34c0919ef0e15b5941165
   sourceCommit: cdb2bd3ee079e1609236b8c467dfb7c0bd59580e
   status: auto-updated
 ---

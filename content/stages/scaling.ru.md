@@ -104,16 +104,16 @@ claimStrings:
     impact: suboptimal-planning
     explanation: Пенсионные взносы можно оптимизировать, но ими часто пренебрегают.
 gotchas:
-  - У paušalni obrt есть годовые лимиты выручки — превышение в середине года
-    создаёт проблемы.
-  - Налоговое резидентство + местонахождение клиента + владение IP определяют,
-    где вы должны платить. Не импровизируйте здесь.
+  - Следите за лимитом выручки paušalni obrt — превышение в середине года
+    вынуждает срочно менять структуру.
+  - Не импровизируйте с налоговым резидентством — где вы платите, определяется
+    резидентством, местонахождением клиента и владением IP вместе.
 artifactNames: {}
 translationMeta:
   sourceLang: en
   targetLang: ru
   sourceFile: content/stages/scaling.md
-  sourceHash: 2bf946a60c235d56bb00471a62b3b4c76da16ef88eb733401786aa21bb071b56
+  sourceHash: 340d043fc3032956d81fbf1ad97cbc8b0bfab39a18cbfcb7d6f814d70647ba51
   sourceCommit: ab40a23ef76472a4459174e8168f6ee85d257a20
   status: auto-updated
 ---
