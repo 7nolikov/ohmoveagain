@@ -54,6 +54,31 @@ export function translationPayload(doc) {
   };
 }
 
+// Generic page-content payload (forms/offices index pages). The translatable
+// strings live under `stringsKey` in frontmatter, keyed by id. Body is the
+// markdown after the frontmatter.
+export function pageContentPayload(doc, stringsKey) {
+  const fm = doc.frontMatter || {};
+  return {
+    title: fm.title,
+    description: fm.description,
+    [stringsKey]: fm[stringsKey] || {},
+    body: doc.body || ''
+  };
+}
+
+// Generic i18n-data payload (data/i18n/<thing>.<lang>.yaml). The whole map
+// is translatable; structural metadata (translationMeta) is excluded.
+export function dataI18nPayload(parsedYaml) {
+  if (!parsedYaml || typeof parsedYaml !== 'object' || Array.isArray(parsedYaml)) return {};
+  const out = {};
+  for (const [k, v] of Object.entries(parsedYaml)) {
+    if (k === 'translationMeta' || k.startsWith('_')) continue;
+    out[k] = v;
+  }
+  return out;
+}
+
 function normalize(value) {
   if (Array.isArray(value)) return value.map(normalize);
   if (value && typeof value === 'object') {
@@ -64,8 +89,12 @@ function normalize(value) {
   return value;
 }
 
+export function payloadHash(payload) {
+  return crypto.createHash('sha256').update(JSON.stringify(normalize(payload))).digest('hex');
+}
+
 export function sourceHash(doc) {
-  return crypto.createHash('sha256').update(JSON.stringify(normalize(translationPayload(doc)))).digest('hex');
+  return payloadHash(translationPayload(doc));
 }
 
 export function compareShape(reference, candidate, currentPath = '') {

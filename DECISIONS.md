@@ -171,6 +171,42 @@ Pull from based on launch signal:
 
 ---
 
+## 11. Reference-data translation pattern — addendum to §9 (locked 2026-05-04, Fix A)
+
+**Context:** The Q6 Track B QA pass surfaced English content rendering on `/ru/forms/`, `/ru/offices/`, `/ru/calculator/` (country `note` cells), and `/ru/freshness/` (country names). Root cause was the same in every case: layouts read translatable strings (`title`, `note`, `name`, etc.) directly from language-agnostic `data/*.yaml` files. The §9 parity rule covers template strings; it didn't have an opinion on translatable *data* fields, so the gap accumulated quietly until launch QA.
+
+**Decision (locked):** Reference data with translatable strings always splits structural fields from translatable strings. Choice of where translatable strings live is determined by **scope of consumption**, not by file convenience:
+
+| Data scope | Structural data | Translatable strings | When |
+|---|---|---|---|
+| Per-stage content | `data/stages/<slug>.yaml` (lang-agnostic items + categories) | `content/stages/<slug>.<lang>.md` frontmatter (`itemStrings`, `categoryNames`, `gotchas`, etc., keyed by id) | Existing pattern, established 2026-04-22. |
+| Page-scoped reference data (one consumer template) | `data/<thing>.yaml` (id + non-translatable fields) | `content/<page>/<...>.<lang>.md` frontmatter (`<thing>Strings`, keyed by id) | When a single page renders the data and the strings are conceptually part of that page. **Examples: forms (`formStrings` in `content/forms/_index.<lang>.md`), offices (`officeStrings` in `content/offices.<lang>.md`).** |
+| Shared reference data (multiple consumer templates) | `data/<thing>.yaml` (id + structural fields) | `data/i18n/<thing>.<lang>.yaml` (keyed by id) | When the same data backs multiple pages and pulling strings from any single page's frontmatter would couple unrelated layouts. **Examples: countries (used by `/calculator/` AND `/freshness/`), fees (used by `/calculator/`).** |
+| UI chrome | n/a | `i18n/<lang>.yaml` (flat keys) | Shared template-level strings, parameterized via `i18n` template func. |
+
+**Layout contract:** templates merge structural data with the per-language strings via id lookup. Hugo flattens dotted filenames into single map keys, so `data/i18n/countries.en.yaml` is `index hugo.Data.i18n "countries.en"` — **not** `hugo.Data.i18n.countries.en`. The pattern in `layouts/_default/calculator.html` is the reference implementation.
+
+**Decision rule for new translatable reference data (the only thing a contributor needs to remember):**
+- Renders on exactly one page → page-scoped strings in the page's content frontmatter (`<thing>Strings`).
+- Renders on two or more pages → shared strings under `data/i18n/<thing>.<lang>.yaml`.
+- The structural data file (`data/<thing>.yaml`) never holds translatable strings, regardless.
+
+**Parity gate:** `scripts/check-i18n-parity.mjs` (extended 2026-05-04) enforces shape parity for all four surfaces:
+1. Translated stage frontmatter (existing).
+2. `formStrings` against `data/forms.yaml` ids; `officeStrings` against `data/offices.yaml` ids.
+3. `data/i18n/countries.<lang>.yaml` against `data/countries.yaml` codes; same for fees.
+4. The English content/data is also gated — a `formStrings`/`officeStrings` block is required in `content/forms/_index.md` and `content/offices.md` before any non-English file can pass. This makes "ship the English structure first" a build-time invariant rather than a review check.
+
+**Sync pipeline:** `scripts/sync-ru-translations.mjs` (extended 2026-05-04) auto-translates all four surfaces. Existing manual translations carry a `translationMeta.sourceHash` baseline so the script skips them until the English source actually changes. Adding a new language is `npm run i18n:sync:<lang>` plus the parity gate.
+
+**Why not unify everything under `data/i18n/`:** page-scoped strings naturally belong with the page they describe — putting `formStrings` next to the page that renders it keeps a single contributor edit (adding a new form) within one file pair. Shared data has no natural home page, so it goes under `data/i18n/`. Same principle as colocation in any framework.
+
+**Why not unify everything under `content/<page>/<...>.<lang>.md` frontmatter:** would force `/calculator/` and `/freshness/` to either duplicate the country strings or take a dependency on each other's frontmatter. Both are worse than a small shared file under `data/i18n/`.
+
+**Closes the §10 "Known gap"** for `data/countries.yaml` and `data/fees.yaml`. The `data/stages/*.yaml` trust-claim strings (`impact`, `explanation`, `conflictNote`) are still not covered — same fix shape applies (move strings to `content/stages/<slug>.<lang>.md` frontmatter or to `data/i18n/`), tracked separately.
+
+---
+
 ## 11. Information architecture — single-spine rule (2026-05-02)
 
 **Decision:** the Pipeline is the spine of the product. Everything else is a sub-element of, or reference to, a Pipeline stage.

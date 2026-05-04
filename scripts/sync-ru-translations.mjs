@@ -1,6 +1,7 @@
 import fs from 'fs';
 import { execFileSync } from 'child_process';
-import { STAGES_DIR, listEnglishStageFiles, localizedPath, loadStage, saveStage, sourceHash, translationPayload, compareShape } from './i18n-lib.mjs';
+import YAML from 'yaml';
+import { STAGES_DIR, listEnglishStageFiles, localizedPath, loadStage, saveStage, sourceHash, payloadHash, translationPayload, pageContentPayload, dataI18nPayload, compareShape } from './i18n-lib.mjs';
 
 const token = process.env.GITHUB_TOKEN;
 const model = process.env.GITHUB_MODELS_MODEL || 'openai/gpt-4.1';
@@ -74,25 +75,24 @@ function unwrapTranslatedPayload(payload) {
 function completePayloadShape(payload, englishPayload) {
   const completed = {};
   for (const key of Object.keys(englishPayload)) {
-    completed[key] = Object.prototype.hasOwnProperty.call(payload, key) ? payload[key] : englishPayload[key];
-  }
+    const enValue = englishPayload[key];
+    const have = Object.prototype.hasOwnProperty.call(payload, key);
+    const candidate = have ? payload[key] : enValue;
 
-  for (const field of ['requires', 'documents', 'gotchas']) {
-    if (!(field in englishPayload)) continue;
-    if (!Array.isArray(completed[field])) completed[field] = englishPayload[field] || [];
-  }
-
-  for (const field of ['categoryNames', 'itemStrings', 'claimStrings', 'artifactNames']) {
-    if (!(field in englishPayload)) continue;
-    if (!completed[field] || typeof completed[field] !== 'object' || Array.isArray(completed[field])) {
-      completed[field] = englishPayload[field] || {};
+    // Ensure the candidate type matches the English type. If the model
+    // returned the wrong type for a field, fall back to the English value.
+    if (Array.isArray(enValue)) {
+      completed[key] = Array.isArray(candidate) ? candidate : (enValue || []);
+    } else if (enValue && typeof enValue === 'object') {
+      completed[key] = (candidate && typeof candidate === 'object' && !Array.isArray(candidate))
+        ? candidate
+        : (enValue || {});
+    } else if (typeof enValue === 'string') {
+      completed[key] = typeof candidate === 'string' ? candidate : (enValue || '');
+    } else {
+      completed[key] = candidate;
     }
   }
-
-  if ('body' in englishPayload && typeof completed.body !== 'string') {
-    completed.body = englishPayload.body || '';
-  }
-
   return completed;
 }
 
@@ -100,21 +100,24 @@ function normalizeTranslatedPayload(payload, englishPayload) {
   return completePayloadShape(unwrapTranslatedPayload(payload), englishPayload);
 }
 
-function validateTranslatedPayload(payload) {
+function validateTranslatedPayload(payload, englishPayload) {
   if (!payload || typeof payload !== 'object') throw new Error('translation payload missing');
-  if (!payload.title || typeof payload.title !== 'string') throw new Error('translated title missing');
-  if (!payload.itemStrings || typeof payload.itemStrings !== 'object') throw new Error('translated itemStrings missing');
-  if (typeof payload.body !== 'string') throw new Error('translated body missing');
+  for (const key of Object.keys(englishPayload || {})) {
+    if (!Object.prototype.hasOwnProperty.call(payload, key)) {
+      throw new Error(`translated ${key} missing`);
+    }
+  }
 }
 
 async function translatePayload(englishPayload, existingRuPayload) {
+  const topKeys = Object.keys(englishPayload || {}).join(', ');
   const system = [
     'You are a professional product translator.',
     'Translate from English to Russian.',
     'Return JSON only.',
     'Keep structure EXACTLY the same as englishPayload.',
     'Return the translated payload object directly, not a wrapper object.',
-    'The top-level JSON keys must be exactly: title, subtitle, description, duration, requires, documents, categoryNames, itemStrings, claimStrings, gotchas, artifactNames, body.',
+    `The top-level JSON keys must be exactly: ${topKeys}.`,
     'Do not return englishPayload, existingRuPayload, translatedPayload, translation, ru, or any other wrapper key.',
     'Do not add or remove fields.',
     'Do not invent facts.',
@@ -212,7 +215,7 @@ for (const file of listEnglishStageFiles()) {
   let translated;
   try {
     translated = await translatePayload(enPayload, existingPayload);
-    validateTranslatedPayload(translated);
+    validateTranslatedPayload(translated, enPayload);
   } catch (error) {
     if (existingPayload) {
       console.warn(`translation failed for ${file}; keeping existing Russian copy: ${error.message}`);
@@ -251,5 +254,154 @@ for (const file of listEnglishStageFiles()) {
   };
 
   saveStage(ruPath, out, translatedBody);
+  console.log('updated', ruPath);
+}
+
+// ── Page-content surfaces (forms, offices) ────────────────────────────────────
+
+const PAGE_CONTENT_SURFACES = [
+  { en: 'content/forms/_index.md', ruFile: (lang) => `content/forms/_index.${lang}.md`, stringsKey: 'formStrings' },
+  { en: 'content/offices.md',     ruFile: (lang) => `content/offices.${lang}.md`,     stringsKey: 'officeStrings' },
+];
+
+for (const surface of PAGE_CONTENT_SURFACES) {
+  const enPath = surface.en;
+  const ruPath = surface.ruFile('ru');
+  if (!fs.existsSync(enPath)) {
+    console.warn(`page-content: ${enPath} missing — skipping`);
+    continue;
+  }
+  const enDoc = loadStage(enPath);
+  const enPayload = pageContentPayload(enDoc, surface.stringsKey);
+  const hash = payloadHash(enPayload);
+
+  let existing = null;
+  let existingPayload = null;
+  if (fs.existsSync(ruPath)) {
+    existing = loadStage(ruPath);
+    existingPayload = pageContentPayload(existing, surface.stringsKey);
+    if (existing.frontMatter?.translationMeta?.sourceHash === hash) continue;
+  }
+
+  let translated;
+  try {
+    translated = await translatePayload(enPayload, existingPayload);
+    validateTranslatedPayload(translated, enPayload);
+  } catch (error) {
+    if (existingPayload) {
+      console.warn(`translation failed for ${enPath}; keeping existing copy: ${error.message}`);
+      continue;
+    }
+    throw error;
+  }
+
+  const shapeErrors = compareShape(enPayload, translated);
+  if (shapeErrors.length) {
+    if (existingPayload) {
+      console.warn(`shape mismatch for ${enPath}; keeping existing copy`);
+      for (const e of shapeErrors) console.warn(`- ${e}`);
+      continue;
+    }
+    console.error(`shape mismatch for ${enPath}`);
+    for (const e of shapeErrors) console.error(`- ${e}`);
+    process.exit(1);
+  }
+
+  const { body: translatedBody, [surface.stringsKey]: translatedStrings, title: translatedTitle, description: translatedDescription } = translated;
+
+  // Preserve all existing frontmatter (layout, sitemap, etc.); overwrite only
+  // the translatable subset.
+  const out = {
+    ...(existing?.frontMatter || enDoc.frontMatter),
+    title: translatedTitle,
+    description: translatedDescription,
+    [surface.stringsKey]: translatedStrings,
+    translationMeta: {
+      sourceLang: 'en',
+      targetLang: 'ru',
+      sourceFile: enPath,
+      sourceHash: hash,
+      sourceCommit: commit,
+      status: existingPayload ? 'auto-updated' : 'auto-generated'
+    }
+  };
+
+  saveStage(ruPath, out, translatedBody);
+  console.log('updated', ruPath);
+}
+
+// ── Shared i18n-data surfaces (countries, fees) ───────────────────────────────
+
+const I18N_DATA_SURFACES = [
+  { en: 'data/i18n/countries.en.yaml', ruFile: (lang) => `data/i18n/countries.${lang}.yaml` },
+  { en: 'data/i18n/fees.en.yaml',     ruFile: (lang) => `data/i18n/fees.${lang}.yaml` },
+];
+
+function loadDataYaml(path) {
+  const parsed = YAML.parse(fs.readFileSync(path, 'utf8'));
+  return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
+}
+
+function saveDataYaml(path, data, header) {
+  const text = (header ? header + '\n' : '') + YAML.stringify(data).trimEnd() + '\n';
+  fs.writeFileSync(path, text, 'utf8');
+}
+
+for (const surface of I18N_DATA_SURFACES) {
+  const enPath = surface.en;
+  const ruPath = surface.ruFile('ru');
+  if (!fs.existsSync(enPath)) {
+    console.warn(`i18n-data: ${enPath} missing — skipping`);
+    continue;
+  }
+  const enRaw = loadDataYaml(enPath);
+  const enPayload = dataI18nPayload(enRaw);
+  const hash = payloadHash(enPayload);
+
+  let existingRaw = null;
+  let existingPayload = null;
+  if (fs.existsSync(ruPath)) {
+    existingRaw = loadDataYaml(ruPath);
+    existingPayload = dataI18nPayload(existingRaw);
+    if (existingRaw.translationMeta?.sourceHash === hash) continue;
+  }
+
+  let translated;
+  try {
+    translated = await translatePayload(enPayload, existingPayload);
+    validateTranslatedPayload(translated, enPayload);
+  } catch (error) {
+    if (existingPayload) {
+      console.warn(`translation failed for ${enPath}; keeping existing copy: ${error.message}`);
+      continue;
+    }
+    throw error;
+  }
+
+  const shapeErrors = compareShape(enPayload, translated);
+  if (shapeErrors.length) {
+    if (existingPayload) {
+      console.warn(`shape mismatch for ${enPath}; keeping existing copy`);
+      for (const e of shapeErrors) console.warn(`- ${e}`);
+      continue;
+    }
+    console.error(`shape mismatch for ${enPath}`);
+    for (const e of shapeErrors) console.error(`- ${e}`);
+    process.exit(1);
+  }
+
+  const out = {
+    translationMeta: {
+      sourceLang: 'en',
+      targetLang: 'ru',
+      sourceFile: enPath,
+      sourceHash: hash,
+      sourceCommit: commit,
+      status: existingPayload ? 'auto-updated' : 'auto-generated'
+    },
+    ...translated
+  };
+
+  saveDataYaml(ruPath, out);
   console.log('updated', ruPath);
 }

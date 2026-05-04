@@ -139,7 +139,10 @@ function detectLangs(globPattern) {
 
 function checkStringMap(spec, lang, stringsByKey, sourceIds) {
   const idSet = new Set(sourceIds);
-  const stringsKeys = Object.keys(stringsByKey || {});
+  // translationMeta is a sync-pipeline marker (sync-ru-translations.mjs writes
+  // it at the top of every auto-managed lang file). It is not a translation
+  // entry; ignore it here.
+  const stringsKeys = Object.keys(stringsByKey || {}).filter((k) => k !== 'translationMeta');
   let localErrors = 0;
 
   for (const id of sourceIds) {
