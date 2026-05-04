@@ -95,6 +95,69 @@ trust_impact_visa_renewal_failure: "Visa renewal failure"
 trust_impact_work_authorization_mismatch: "Work authorization mismatch"
 trust_impact_wrong_family_work_assumptions: "Wrong family work assumptions"
 
+# Trust v2 — source tiers (replace authorityScore-implied label)
+tier_official: "government"
+tier_supranational: "international body"
+tier_industry: "industry expert"
+tier_community: "community"
+tier_research: "research"
+tier_survey: "survey"
+tier_internal: "project data"
+
+# Trust v2 — verified-date inline rendering
+trust_verified: "verified"
+trust_age_today: "today"
+trust_age_days_ago:
+  one: "1 day ago"
+  other: "{{ . }} days ago"
+trust_stale_inline: "stale"
+trust_methodology_link: "How is this verified? →"
+
+# Trust v2 — per-stage factual one-liner (replaces algorithmic pill)
+trust_strip_sources:
+  one: "1 source"
+  other: "{{ . }} sources"
+trust_strip_oldest_today: "all verified today"
+trust_strip_oldest_days:
+  one: "oldest verified 1 day ago"
+  other: "oldest verified {{ . }} days ago"
+trust_strip_no_sources: "No sources tagged on this stage yet."
+trust_strip_separator: " · "
+
+# Methodology page
+methodology_tagline: "How sources are verified · open methodology"
+methodology_h1: "Trust methodology"
+methodology_intro: "Every checklist item links to an external source. Sources are categorized by tier, dated, and reviewed on a fixed cadence. The rubric and the cadence are public — there is no hidden algorithm."
+methodology_tiers_h2: "Source tiers"
+methodology_tiers_intro: "Each source belongs to one of these tiers. The tier shapes how heavily a claim should be weighted."
+methodology_tier_official_label: "Government"
+methodology_tier_official_desc: "Direct authority for the rule (MUP, Porezna uprava, HZZO, ministries). Definitive for what they administer."
+methodology_tier_supranational_label: "International body"
+methodology_tier_supranational_desc: "Treaty bodies and EU institutions (HCCH, EU Commission, EU Council). Authoritative for the framework, secondary for national implementation."
+methodology_tier_industry_label: "Industry expert"
+methodology_tier_industry_desc: "Trade and standards bodies (IATA, CITES Secretariat). Authoritative within their domain."
+methodology_tier_community_label: "Community"
+methodology_tier_community_desc: "Public registries and lived-experience reports. Useful as supporting context, not primary authority."
+methodology_tier_research_label: "Research"
+methodology_tier_research_desc: "Statistical and analytical sources (OECD, statistical offices, academic studies)."
+methodology_tier_survey_label: "Survey"
+methodology_tier_survey_desc: "Aggregated cost or quality data (Numbeo, comparable rankings)."
+methodology_tier_internal_label: "Project data"
+methodology_tier_internal_desc: "Tables maintained inside this repository (calculator country baselines, derived schedules)."
+methodology_renewal_h2: "Renewal cadence"
+methodology_renewal_intro: "Every source carries a verified date. The build fails automatically when a date drifts beyond the threshold — the project cannot ship a stale source."
+methodology_renewal_warn: "Warning at 180 days. The verified date renders amber on stage pages."
+methodology_renewal_fail: "Failure at 365 days. The build fails until the source is re-verified or removed."
+methodology_renewal_validuntil: "Country tax baselines carry a separate <code>validUntil</code> field. The build fails the day that date passes — used for figures that go out of date on a known calendar (annual tax thresholds)."
+methodology_renewal_check: "Check current freshness on the freshness page →"
+methodology_score_h2: "How the per-stage one-liner is computed"
+methodology_score_intro: "The line above each stage is a fact, not a score. It reports raw counts: how many sources back the stage, what tiers they belong to, and how old the oldest one is. \"Oldest verified 187 days ago\" means today minus that date."
+methodology_score_no_bucket: "There is no HIGH / MEDIUM / LOW bucket on stage pages. Per-claim risk and uncertainty are still labeled — they describe a specific claim, not a magic number."
+methodology_provenance_h2: "Where the data lives"
+methodology_provenance_intro: "Source URLs and verification dates are committed to a public Git repository. Every verified date corresponds to a commit and a contributor — full provenance is in"
+methodology_provenance_git: "the commit history"
+methodology_provenance_outro: ". Spotted something stale? Open a PR or an issue."
+
 # Home page
 hero_tagline: "Moving to Croatia · the open-source Pipeline"
 hero_h1: "Relocate to Croatia without guessing."
@@ -214,6 +277,7 @@ footer_disclaimer: "Content is directional — always verify with an official so
 footer_source_code: "Source code"
 footer_contribute: "Contribute"
 footer_freshness: "Freshness"
+footer_methodology: "Methodology"
 footer_subscribe: "Subscribe"
 footer_edit_page: "✎ Edit this page on GitHub"
 

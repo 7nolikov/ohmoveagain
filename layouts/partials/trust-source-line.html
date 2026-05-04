@@ -1,0 +1,41 @@
+{{- /*
+  Unified source line for any checklist item with attribution.
+  Renders: [Source · LABEL] · verified YYYY-MM-DD (Nd ago) · TIER
+
+  Inputs (dict):
+    url   — required, source URL
+    label — required, human-readable source label
+    date  — required, ISO yyyy-mm-dd verification date
+    type  — optional, source.type enum (e.g. "official", "supranational")
+
+  Color band on the date span (data-age):
+    fresh  ≤ 90d
+    aging  91–270d
+    stale  > 270d  (matches check-staleness.mjs warn=180/fail=365 conservatively)
+*/ -}}
+{{- $url := .url -}}
+{{- $label := .label -}}
+{{- $date := .date -}}
+{{- $type := .type -}}
+{{- $age := "" -}}
+{{- $rel := "" -}}
+{{- if $date -}}
+  {{- $d := div (sub now.Unix (time.AsTime $date).Unix) 86400 -}}
+  {{- $age = cond (gt $d 270) "stale" (cond (gt $d 90) "aging" "fresh") -}}
+  {{- if le $d 0 -}}
+    {{- $rel = i18n "trust_age_today" -}}
+  {{- else -}}
+    {{- $rel = i18n "trust_age_days_ago" $d -}}
+  {{- end -}}
+{{- end -}}
+<div class="source-line">
+  {{- if $url }}
+  <a class="source" href="{{ $url }}" target="_blank" rel="noopener noreferrer">{{ i18n "source_label" }}{{ if $label }} · {{ $label }}{{ end }}</a>
+  {{- end }}
+  {{- if $date }}
+  <span class="verified-inline" data-age="{{ $age }}">{{ i18n "trust_verified" }} {{ $date }} <span class="verified-rel">({{ $rel }})</span>{{ if eq $age "stale" }} <span class="verified-stale">{{ i18n "trust_stale_inline" }}</span>{{ end }}</span>
+  {{- end }}
+  {{- if $type }}
+  <span class="tier-chip" data-tier="{{ $type }}">{{ i18n (printf "tier_%s" $type) }}</span>
+  {{- end }}
+</div>

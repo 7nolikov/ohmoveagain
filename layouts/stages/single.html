@@ -16,36 +16,38 @@
 {{- $claimStrings := .Params.claimStrings | default dict -}}
 {{- $w := .Weight -}}
 
-{{- $trustIntro := i18n "trust_intro" -}}
-{{- $trustQuestion := i18n "trust_question" -}}
-{{- $trustBasedOn := i18n "trust_based_on" -}}
-{{- $trustAlgo := i18n "trust_algo" -}}
 {{- $riskLabel := i18n "trust_risk_label" -}}
 {{- $uncertaintyLabel := i18n "trust_uncertainty_label" -}}
 {{- $detailsHint := i18n "trust_details_hint" -}}
 
-{{- $trust := newScratch -}}
-{{- $trust.Set "total" 0 -}}
-{{- $trust.Set "count" 0 -}}
-{{- with $data }}
-  {{- range .claims }}
-    {{- $claim := . -}}
-    {{- $src := dict -}}
-    {{- range $data.sources }}
-      {{- if eq .id $claim.sourceId }}{{ $src = . }}{{ end }}
-    {{- end }}
-    {{- $base := mul (default 3 $src.authorityScore) 20 -}}
-    {{- $score := $base -}}
-    {{- if eq $claim.uncertainty "medium" }}{{ $score = sub $score 15 }}{{ end }}
-    {{- if eq $claim.uncertainty "high" }}{{ $score = sub $score 30 }}{{ end }}
-    {{- if lt $score 0 }}{{ $score = 0 }}{{ end }}
-    {{- $trust.Add "total" $score -}}
-    {{- $trust.Add "count" 1 -}}
-  {{- end }}
-{{- end }}
-{{- $avg := cond (gt ($trust.Get "count") 0) (div ($trust.Get "total") ($trust.Get "count")) 0 -}}
-{{- $level := "low" -}}
-{{- if ge $avg 80 }}{{ $level = "high" }}{{ else if ge $avg 55 }}{{ $level = "medium" }}{{ end }}
+{{- /* Per-stage factual one-liner — replaces the algorithmic trust pill.
+       Reports raw counts (sources, distinct tiers, oldest verified date)
+       computed at build time. No bucket. No score. The methodology page
+       documents what each tier means and what the renewal cadence is. */ -}}
+{{- $sources := default (slice) $data.sources -}}
+{{- $sourceCount := len $sources -}}
+{{- $oldestDate := "" -}}
+{{- $tierKeys := slice -}}
+{{- range $sources -}}
+  {{- with .type -}}{{- $tierKeys = $tierKeys | append . -}}{{- end -}}
+  {{- with .lastChecked -}}
+    {{- if or (eq $oldestDate "") (lt . $oldestDate) -}}{{- $oldestDate = . -}}{{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $tierKeys = $tierKeys | uniq -}}
+{{- /* Order tiers by authority, not alphabetically — keeps "government" first
+       so the strip reads as it ranks. Mirrors methodology page ordering. */ -}}
+{{- $tierPriority := slice "official" "supranational" "industry" "research" "survey" "community" "internal" -}}
+{{- $orderedTiers := slice -}}
+{{- range $tierPriority -}}{{- if in $tierKeys . -}}{{- $orderedTiers = $orderedTiers | append . -}}{{- end -}}{{- end -}}
+{{- $tierLabels := slice -}}
+{{- range $orderedTiers -}}{{- $tierLabels = $tierLabels | append (i18n (printf "tier_%s" .)) -}}{{- end -}}
+{{- $oldestDays := 0 -}}
+{{- $oldestAge := "" -}}
+{{- if $oldestDate -}}
+  {{- $oldestDays = div (sub now.Unix (time.AsTime $oldestDate).Unix) 86400 -}}
+  {{- $oldestAge = cond (gt $oldestDays 270) "stale" (cond (gt $oldestDays 90) "aging" "fresh") -}}
+{{- end -}}
 
 <section class="stage-head">
   <h1>{{ .Title }}</h1>
@@ -54,19 +56,19 @@
 
 <p class="stage-disclaimer">{{ i18n "stage_disclaimer" }}</p>
 
-<section class="trust-summary" aria-labelledby="trust-summary-title">
-  <div class="trust-summary-kicker">{{ i18n "trust_summary" }}</div>
-  <h2 id="trust-summary-title" class="trust-summary-title">{{ $trustQuestion }}</h2>
-  <p class="trust-summary-copy">{{ $trustIntro }}</p>
-  <div class="trust-summary-row">
-    <span class="trust-score-pill" data-level="{{ $level }}" title="{{ i18n "trust_score" }}: {{ $avg }}/100 · algo v{{ site.Params.trustAlgoVersion }}">
-      <span class="trust-chip-label">{{ i18n "trust_confidence" }}</span>
-      <strong>{{ i18n (printf "trust_score_%s" $level) }}</strong>
-    </span>
-    <span class="trust-summary-meta">{{ $trust.Get "count" }} {{ $trustBasedOn }}</span>
-    <span class="trust-summary-meta">{{ $trustAlgo }} v{{ site.Params.trustAlgoVersion }}</span>
-  </div>
-</section>
+{{- if gt $sourceCount 0 }}
+<p class="trust-strip" data-age="{{ $oldestAge }}" aria-label="Source attribution summary">
+  <strong class="trust-strip-count">{{ i18n "trust_strip_sources" $sourceCount }}</strong>
+  {{- with $tierLabels }}<span class="trust-strip-sep">{{ i18n "trust_strip_separator" }}</span><span class="trust-strip-tiers">{{ delimit . ", " }}</span>{{ end -}}
+  {{- if $oldestDate }}<span class="trust-strip-sep">{{ i18n "trust_strip_separator" }}</span><span class="trust-strip-oldest">{{ if le $oldestDays 0 }}{{ i18n "trust_strip_oldest_today" }}{{ else }}{{ i18n "trust_strip_oldest_days" $oldestDays }}{{ end }}</span>{{ end -}}
+  <a class="trust-methodology-link" href="{{ "methodology/" | relLangURL }}">{{ i18n "trust_methodology_link" }}</a>
+</p>
+{{- else }}
+<p class="trust-strip trust-strip-empty">
+  {{ i18n "trust_strip_no_sources" }}
+  <a class="trust-methodology-link" href="{{ "methodology/" | relLangURL }}">{{ i18n "trust_methodology_link" }}</a>
+</p>
+{{- end }}
 
 {{ with $data }}{{ with .checklist }}
 
@@ -127,6 +129,14 @@
         {{- end }}
       {{- end }}
 
+      {{/* Unified source-line params — claim-based or inline-source path */}}
+      {{- $srcLineParams := dict -}}
+      {{- if $claim.sourceId -}}
+        {{- $srcLineParams = dict "url" $src.url "label" (index $strings "sourceLabel") "date" $src.lastChecked "type" $src.type -}}
+      {{- else if $item.source -}}
+        {{- $srcLineParams = dict "url" $item.source.url "label" (index $strings "sourceLabel") "date" $item.source.asOf -}}
+      {{- end -}}
+
       {{- $ao := $item.appliesTo | jsonify -}}
       <li x-show="$store.prog.matchesProfile({{ $ao | safeJS }})"
           :class="$store.prog.isChecked({{ $w }}, '{{ $key }}') ? 'done' : ''">
@@ -138,7 +148,7 @@
           <div class="label-text">
             <span class="label">{{ index $strings "label" }}</span>
             {{ if $claim.sourceId }}
-            <div class="trust-badges" aria-label="Source confidence for this checklist item">
+            <div class="trust-badges" aria-label="{{ $riskLabel }}">
               <span class="trust-badge" data-level="{{ $claim.riskLevel }}">
                 <span class="trust-chip-label">{{ $riskLabel }}</span>
                 <strong>{{ i18n (printf "trust_risk_%s" $claim.riskLevel) }}</strong>
@@ -148,7 +158,9 @@
                 <strong>{{ i18n (printf "trust_uncertainty_%s" $claim.uncertainty) }}</strong>
               </span>
             </div>
-            <div class="trust-item-hint">{{ $detailsHint }}</div>
+            {{ end }}
+            {{ if $srcLineParams }}
+              {{ partial "trust-source-line.html" $srcLineParams }}
             {{ end }}
           </div>
         </label>
@@ -161,28 +173,16 @@
               {{- $cs := index $claimStrings $claim.id | default dict -}}
               {{- $impactKey := index $cs "impact" | default $claim.impact -}}
               {{- $impactKeyNorm := lower (replace (replace $impactKey " " "_") "-" "_") -}}
-              <div class="trust-grid">
-                <div class="trust-line"><strong>{{ i18n "trust_impact" }}:</strong> {{ i18n (printf "trust_impact_%s" $impactKeyNorm) | default $impactKey }}</div>
-                <div class="trust-line"><strong>{{ i18n "trust_source_type" }}:</strong> {{ i18n (printf "trust_source_type_%s" $src.type) }}</div>
-              </div>
+              <div class="trust-line"><strong>{{ i18n "trust_impact" }}:</strong> {{ i18n (printf "trust_impact_%s" $impactKeyNorm) | default $impactKey }}</div>
               {{ with (index $cs "conflictNote" | default $claim.conflictNote) }}
               <div class="trust-warning">⚠ {{ . }}</div>
               {{ end }}
               {{ with (index $cs "explanation" | default $claim.explanation) }}
               <div class="trust-note">{{ . }}</div>
               {{ end }}
-              <a class="source" href="{{ $src.url }}" target="_blank" rel="noopener noreferrer">
-                {{ i18n "source_label" }} · {{ $src.lastChecked }}
-              </a>
             </div>
           </div>
         </details>
-        {{ else }}
-          {{ with $item.source }}
-          <a class="source" href="{{ .url }}" target="_blank" rel="noopener noreferrer">
-            {{ i18n "source_label" }} · {{ .asOf }}
-          </a>
-          {{ end }}
         {{ end }}
 
         {{ with (index $strings "note") }}

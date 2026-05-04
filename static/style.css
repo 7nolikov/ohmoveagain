@@ -2180,6 +2180,172 @@ header.top {
   margin-top: 10px;
 }
 
+/* ---------- Trust v2 — factual strip + unified source line ---------- */
+
+.trust-strip {
+  margin: 14px 0 18px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent-dim);
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  color: var(--fg-dim);
+  font-size: 0.86rem;
+  line-height: 1.5;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0;
+}
+.trust-strip[data-age="aging"] { border-left-color: var(--warn); }
+.trust-strip[data-age="stale"] { border-left-color: var(--err); }
+.trust-strip-empty {
+  border-left-color: var(--border-bright);
+  color: var(--fg-muted);
+  font-style: italic;
+}
+.trust-strip-count {
+  color: var(--fg);
+  font-weight: 700;
+  margin-right: 2px;
+}
+.trust-strip-sep {
+  color: var(--fg-muted);
+  user-select: none;
+}
+.trust-strip-tiers { color: var(--fg-dim); }
+.trust-strip-oldest { color: var(--fg-dim); }
+.trust-strip[data-age="aging"] .trust-strip-oldest { color: var(--warn); font-weight: 600; }
+.trust-strip[data-age="stale"] .trust-strip-oldest { color: var(--err); font-weight: 600; }
+.trust-methodology-link {
+  margin-left: auto;
+  font-size: 0.78rem;
+  color: var(--link);
+  white-space: nowrap;
+}
+.trust-methodology-link:hover { text-decoration: underline; }
+
+.source-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin-top: 6px;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+.source-line .source { margin-top: 0; }
+.verified-inline {
+  color: var(--fg-muted);
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  white-space: nowrap;
+}
+.verified-inline[data-age="fresh"] { color: var(--accent); }
+.verified-inline[data-age="aging"] { color: var(--warn); }
+.verified-inline[data-age="stale"] { color: var(--err); font-weight: 600; }
+.verified-rel { color: inherit; opacity: 0.85; }
+.verified-stale {
+  margin-left: 4px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: rgba(255,107,107,0.12);
+  border: 1px solid rgba(255,107,107,0.35);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.tier-chip {
+  display: inline-block;
+  padding: 1px 7px;
+  border: 1px solid var(--border-bright);
+  border-radius: 999px;
+  font-size: 0.7rem;
+  text-transform: lowercase;
+  color: var(--fg-dim);
+  background: var(--bg);
+  white-space: nowrap;
+}
+.tier-chip[data-tier="official"] {
+  border-color: var(--accent-dim);
+  color: var(--accent);
+  background: rgba(126,231,135,0.06);
+}
+.tier-chip[data-tier="supranational"] {
+  border-color: rgba(88,166,255,0.45);
+  color: var(--link);
+  background: rgba(88,166,255,0.06);
+}
+.tier-chip[data-tier="industry"],
+.tier-chip[data-tier="research"],
+.tier-chip[data-tier="survey"] {
+  border-color: var(--border-bright);
+  color: var(--fg-dim);
+}
+.tier-chip[data-tier="community"],
+.tier-chip[data-tier="internal"] {
+  border-color: var(--border);
+  color: var(--fg-muted);
+}
+
+@media (max-width: 600px) {
+  .trust-strip { gap: 4px; }
+  .trust-methodology-link { margin-left: 0; flex-basis: 100%; margin-top: 4px; }
+  .source-line { font-size: 0.76rem; }
+  .verified-inline { white-space: normal; }
+}
+
+/* ---------- Methodology page ---------- */
+
+.methodology .methodology-tiers {
+  margin: 12px 0 24px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px 18px;
+}
+.methodology .methodology-tiers dt {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+.methodology .methodology-tiers dd {
+  margin: 0 0 0 0;
+  color: var(--fg-dim);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+.methodology .methodology-cadence {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.methodology .methodology-cadence li {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  font-size: 0.9rem;
+}
+.methodology .methodology-cadence .verified-inline { font-family: inherit; font-size: inherit; white-space: normal; }
+.methodology code {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-size: 0.85em;
+}
+
+@media print {
+  .trust-strip { display: none; }
+  .trust-methodology-link, .verified-stale, .tier-chip { display: none; }
+  .verified-inline { color: #000 !important; font-weight: normal !important; }
+}
+
 .trust-topline {
   display: flex;
   flex-wrap: wrap;
