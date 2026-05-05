@@ -92,14 +92,16 @@ claimStrings:
     conflictNote: Эффективная ставка зависит от структуры дохода, статуса
       резидентства и правил взносов.
   dnv-income:
-    consequence: "Откажут на этапе приёма — выбран не тот маршрут, начинаем заново с другим типом ВНЖ"
+    consequence: Откажут на этапе приёма — выбран не тот маршрут, начинаем заново с
+      другим типом ВНЖ
     impact: visa-rejection
     explanation: Это требование определяет, подходите ли вы, прежде чем тратить
       время и деньги на заявку.
     conflictNote: Пороги дохода могут меняться ежегодно, поэтому устаревшие цифры
       создают ложную уверенность.
   blue-card-salary:
-    consequence: "Откажут по минимальной зарплате — пересмотр оффера или переход на разрешение на работу"
+    consequence: Откажут по минимальной зарплате — пересмотр оффера или переход на
+      разрешение на работу
     impact: visa-rejection
     explanation: Порог зарплаты — входной барьер для Blue Card, который нужно
       проверить до внесения предположений в план переезда.
@@ -115,7 +117,7 @@ translationMeta:
   sourceLang: en
   targetLang: ru
   sourceFile: content/stages/assessment.md
-  sourceHash: 6ac2d4f449dbe0e2a2b880e8ce8e2ace71ec1606d42a759117dafbb770afcc63
+  sourceHash: 43e67743738261670f53994619fec46635c0d1b6b068d4b56ce6d6403073dba8
   sourceCommit: ab40a23ef76472a4459174e8168f6ee85d257a20
   status: auto-updated
 ---

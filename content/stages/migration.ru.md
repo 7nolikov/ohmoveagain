@@ -75,7 +75,8 @@ claimStrings:
     conflictNote: Маршруты внутри и вне Шенгена могут изменить то, что пограничники
       проверяют на практике.
   originals-cabin:
-    consequence: "Потеря багажа — это потеря дела по ВНЖ — цепочка восстановления длится месяцы, иногда требуется повторная выдача из страны исхода"
+    consequence: Потеря багажа — это потеря дела по ВНЖ — цепочка восстановления
+      длится месяцы, иногда требуется повторная выдача из страны исхода
     impact: operational-delay
     explanation: Оригиналы незаменимы в период прибытия — потерянный багаж может
       обрушить следующий этап.
@@ -102,7 +103,8 @@ claimStrings:
     impact: financial-cost
     explanation: Карты блокируются при смене геолокации чаще, чем ожидают путешественники.
   vet-health-cert:
-    consequence: "Питомца не пустят на борт — 10-дневное окно не оставляет времени на переоформление"
+    consequence: Питомца не пустят на борт — 10-дневное окно не оставляет времени на
+      переоформление
     impact: operational-delay
     explanation: Сроки ветеринарной справки строгие — недействительные документы
       провалят регистрацию на рейс или пограничный контроль.
@@ -128,7 +130,7 @@ translationMeta:
   sourceLang: en
   targetLang: ru
   sourceFile: content/stages/migration.md
-  sourceHash: a28c6c023f5bdea8fc91c47211a9f01efb780377d992573b22b29c4bf0149adc
+  sourceHash: c8a5cac6ffab49a28a01304db0c0a3d8703aa3e40c195570c8698faa184b7e55
   sourceCommit: ab40a23ef76472a4459174e8168f6ee85d257a20
   status: auto-updated
 ---
