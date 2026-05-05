@@ -8,11 +8,20 @@
   <h2>{{ i18n "methodology_tiers_h2" }}</h2>
   <p class="dim">{{ i18n "methodology_tiers_intro" }}</p>
   <dl class="methodology-tiers">
-    {{- range slice "official" "supranational" "industry" "community" "research" "survey" "internal" }}
-    <dt><span class="tier-chip" data-tier="{{ . }}">{{ i18n (printf "tier_%s" .) }}</span> {{ i18n (printf "methodology_tier_%s_label" .) }}</dt>
+    {{- range slice "official" "supranational" "industry" }}
+    <dt><span class="tier-chip" data-tier="{{ . }}">{{ i18n (printf "tier_%s" .) }}</span></dt>
     <dd>{{ i18n (printf "methodology_tier_%s_desc" .) }}</dd>
     {{- end }}
   </dl>
+  <details class="methodology-tiers-other">
+    <summary>{{ i18n "methodology_tiers_other_h3" }}</summary>
+    <dl class="methodology-tiers">
+      {{- range slice "community" "research" "survey" "internal" }}
+      <dt><span class="tier-chip" data-tier="{{ . }}">{{ i18n (printf "tier_%s" .) }}</span></dt>
+      <dd>{{ i18n (printf "methodology_tier_%s_desc" .) }}</dd>
+      {{- end }}
+    </dl>
+  </details>
 
   <h2>{{ i18n "methodology_renewal_h2" }}</h2>
   <p>{{ i18n "methodology_renewal_intro" }}</p>

@@ -2332,6 +2332,17 @@ header.top {
   font-size: 0.92rem;
   line-height: 1.55;
 }
+.methodology .methodology-tiers-other {
+  margin: 8px 0 24px;
+  font-size: 0.92rem;
+}
+.methodology .methodology-tiers-other > summary {
+  cursor: pointer;
+  color: var(--fg-dim);
+  padding: 4px 0;
+}
+.methodology .methodology-tiers-other > summary:hover { color: var(--fg); }
+.methodology .methodology-tiers-other dl { margin-top: 8px; }
 .methodology .methodology-cadence {
   list-style: none;
   padding: 0;
