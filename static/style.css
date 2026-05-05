@@ -2292,14 +2292,7 @@ header.top {
   color: var(--link);
   background: rgba(88,166,255,0.06);
 }
-.tier-chip[data-tier="industry"],
-.tier-chip[data-tier="research"],
-.tier-chip[data-tier="survey"] {
-  border-color: var(--border-bright);
-  color: var(--fg-dim);
-}
-.tier-chip[data-tier="community"],
-.tier-chip[data-tier="internal"] {
+.tier-chip[data-tier="community"] {
   border-color: var(--border);
   color: var(--fg-muted);
 }

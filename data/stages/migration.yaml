@@ -23,7 +23,7 @@ sources:
     lastChecked: "2026-03-01"
   - id: iata-live-animals
     url: "https://www.iata.org/en/programs/cargo/live-animals/"
-    type: industry
+    type: supranational
     authorityScore: 3
     lastChecked: "2026-01-01"
 

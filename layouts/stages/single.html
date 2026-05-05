@@ -37,7 +37,7 @@
 {{- $tierKeys = $tierKeys | uniq -}}
 {{- /* Order tiers by authority, not alphabetically — keeps "government" first
        so the strip reads as it ranks. Mirrors methodology page ordering. */ -}}
-{{- $tierPriority := slice "official" "supranational" "industry" "research" "survey" "community" "internal" -}}
+{{- $tierPriority := slice "official" "supranational" "community" -}}
 {{- $orderedTiers := slice -}}
 {{- range $tierPriority -}}{{- if in $tierKeys . -}}{{- $orderedTiers = $orderedTiers | append . -}}{{- end -}}{{- end -}}
 {{- $tierLabels := slice -}}
