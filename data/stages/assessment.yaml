@@ -100,6 +100,10 @@ checklist:
         source:
           url: "https://www.oecd.org/els/mig/World-Migration-in-Figures.pdf"
           asOf: "2026-04-01"
+      - id: medical-baseline
+        source:
+          url: "https://www.who.int/health-topics/travel-and-health"
+          asOf: "2026-05-01"
 
 artifacts:
   - id: runway-calc

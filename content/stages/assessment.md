@@ -65,6 +65,10 @@ itemStrings:
     label: "Stress-test decision with partner / dependents"
     note: "Misaligned expectations are the leading cause of failed relocations — more common than visa rejections or tax issues."
     sourceLabel: "OECD — international migration patterns"
+  medical-baseline:
+    label: "Establish a medical baseline before departure"
+    note: "Run a full checkup, dental work, and any pending procedures in your home country. Carry translated records and a 90-day prescription stock — finding a GP and rebuilding care continuity in a new system takes weeks, not days."
+    sourceLabel: "WHO — travel and health"
 gotchas:
   - "Watch your day count — 183 days OR Croatian center-of-life triggers tax residency before you intend it."
   - "File in both countries — the treaty caps tax exposure, not paperwork."

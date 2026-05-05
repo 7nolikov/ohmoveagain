@@ -53,6 +53,31 @@ claims:
     impact: "Visa renewal failure"
     uncertainty: medium
     sourceId: mup-stay
+  - id: permit-renewal-window
+    riskLevel: high
+    impact: "Visa renewal failure"
+    uncertainty: low
+    sourceId: mup-stay
+  - id: blue-card-renewal
+    riskLevel: high
+    impact: "Visa renewal failure"
+    uncertainty: medium
+    sourceId: eu-blue-card
+  - id: work-permit-renewal
+    riskLevel: high
+    impact: "Visa renewal failure"
+    uncertainty: medium
+    sourceId: mup-stay
+  - id: permanent-residence-path
+    riskLevel: medium
+    impact: "Suboptimal long-term planning"
+    uncertainty: medium
+    sourceId: mup-stay
+  - id: citizenship-path
+    riskLevel: low
+    impact: "Suboptimal long-term planning"
+    uncertainty: high
+    sourceId: mup-stay
   - id: vat-threshold
     riskLevel: high
     impact: "Tax non-compliance"
@@ -75,8 +100,25 @@ checklist:
       - id: accountant
       - id: business-structure
       - id: blue-card-sideincome
-      - id: dnv-renewal
+        appliesTo:
+          visa: [blue-card]
       - id: vat-threshold
+  - id: renewals
+    items:
+      - id: permit-renewal-window
+      - id: dnv-renewal
+        appliesTo:
+          visa: [digital-nomad]
+      - id: blue-card-renewal
+        appliesTo:
+          visa: [blue-card]
+      - id: work-permit-renewal
+        appliesTo:
+          visa: [work-permit]
+  - id: long-term
+    items:
+      - id: permanent-residence-path
+      - id: citizenship-path
   - id: operations
     items:
       - id: invoicing-bookkeeping

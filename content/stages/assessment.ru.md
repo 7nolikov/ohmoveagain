@@ -84,6 +84,10 @@ itemStrings:
     note: Несовпадение ожиданий — главная причина неудачных переездов, чаще чем
       отказ в визе или налоговые проблемы.
     sourceLabel: OECD — международная миграция
+  medical-baseline:
+    label: Зафиксируйте медицинский базис до отъезда
+    note: "Полный чекап, стоматология и плановые процедуры — в стране проживания. Возьмите переведённую медкарту и запас рецептурных препаратов на 90 дней — найти терапевта и восстановить непрерывность лечения в новой системе занимает недели, а не дни."
+    sourceLabel: ВОЗ — здоровье в поездках
 claimStrings:
   effective-tax-rate:
     impact: financial-cost
@@ -117,8 +121,8 @@ translationMeta:
   sourceLang: en
   targetLang: ru
   sourceFile: content/stages/assessment.md
-  sourceHash: 43e67743738261670f53994619fec46635c0d1b6b068d4b56ce6d6403073dba8
-  sourceCommit: ab40a23ef76472a4459174e8168f6ee85d257a20
+  sourceHash: 42b9e4da80d5bdf7a5e87d101f3e29bcb37bb715c5415254040585fc16fd909b
+  sourceCommit: cd1b68b68ed9ea6253fa47c592d731dfc304c0c2
   status: auto-updated
 ---
 
