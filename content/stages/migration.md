@@ -64,6 +64,7 @@ claimStrings:
     explanation: "Border mechanics affect stamps, proof expectations and travel routing assumptions."
     conflictNote: "Schengen and non-Schengen routing can change what officers check in practice."
   originals-cabin:
+    consequence: "Lost luggage means a lost residency case — replacement chain runs months and may require re-issuance from origin"
     impact: "operational-delay"
     explanation: "Originals are irreplaceable during the arrival window and lost luggage can collapse the next stage."
   customs-proof:
@@ -84,6 +85,7 @@ claimStrings:
     impact: "financial-cost"
     explanation: "Cards fail more often during geo-changes than travellers expect."
   vet-health-cert:
+    consequence: "Pet denied boarding at the airport — the 10-day window leaves no time to reissue"
     impact: "operational-delay"
     explanation: "Health certificate timing is strict and invalid documents fail at check-in or border inspection."
   airline-booking:

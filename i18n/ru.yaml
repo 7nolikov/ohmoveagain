@@ -114,6 +114,7 @@ trust_age_days_ago:
   other: "{{ . }} дня назад"
 trust_stale_inline: "устарел"
 trust_methodology_link: "Как это проверяется? →"
+trust_consequence_label: "Если ошибка"
 
 # Trust v2 — per-stage factual one-liner (replaces algorithmic pill)
 trust_strip_sources:

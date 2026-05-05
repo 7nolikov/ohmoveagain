@@ -2225,6 +2225,22 @@ header.top {
 }
 .trust-methodology-link:hover { text-decoration: underline; }
 
+.trust-consequence {
+  margin: 6px 0 2px;
+  padding: 6px 10px;
+  border-left: 3px solid var(--err);
+  background: rgba(255,107,107,0.06);
+  color: var(--fg);
+  font-size: 0.86rem;
+  line-height: 1.45;
+  border-radius: 3px;
+}
+.trust-consequence strong {
+  color: var(--err);
+  font-weight: 700;
+  margin-right: 4px;
+}
+
 .source-line {
   display: flex;
   flex-wrap: wrap;

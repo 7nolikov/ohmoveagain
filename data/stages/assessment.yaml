@@ -25,8 +25,6 @@ claims:
     impact: "Incorrect financial planning"
     uncertainty: medium
     sourceId: porezna
-    explanation: "Tax planning changes the real economics of a move before you choose a visa or legal structure."
-    conflictNote: "Effective rate depends on income mix, residency status, and contribution rules."
 
   - id: dnv-income
     riskLevel: high
@@ -34,8 +32,6 @@ claims:
     uncertainty: medium
     sourceId: mup-main
     lastReviewed: "2026-04-24"
-    explanation: "This requirement determines whether you qualify before you spend time and money on an application."
-    conflictNote: "Income thresholds can change annually, so stale numbers create false confidence."
 
   - id: blue-card-salary
     riskLevel: high
@@ -43,8 +39,6 @@ claims:
     uncertainty: medium
     sourceId: eu-blue-card
     lastReviewed: "2026-04-24"
-    explanation: "Salary thresholds are a gatekeeper for Blue Card eligibility and need to be checked before signing assumptions into your relocation plan."
-    conflictNote: "Threshold interpretation can vary by year and local implementation details."
 
 checklist:
   - id: tax-math

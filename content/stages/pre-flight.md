@@ -115,12 +115,15 @@ gotchas:
   - "Pack originals and notarized copies — some consulates demand both at intake."
 claimStrings:
   passport-validity:
+    consequence: "Boarding refused or permit blocked late in the chain — months lost on a rebook"
     impact: "operational-delay"
     explanation: "Passport validity can block boarding, application intake, or permit issuance late in the process."
   birth-cert-apostilled:
+    consequence: "MUP rejects the file — redo apostille + sworn translation, add 4–6 weeks"
     impact: "operational-delay"
     explanation: "Civil status documents often fail because the apostille and translation chain is done in the wrong order."
   criminal-background:
+    consequence: "Residency rejected on an expired check — re-issue and reapply, add 6–8 weeks"
     impact: "operational-delay"
     explanation: "Background checks have a short usable life, so timing matters almost as much as the document itself."
   diploma-recognition:
@@ -128,32 +131,40 @@ claimStrings:
     explanation: "Recognition is not universal across professions, so this needs category-specific checking."
     conflictNote: "Regulated professions and ordinary private-sector roles are treated differently."
   accommodation-proof:
+    consequence: "MUP refuses intake — no permit clock starts without valid housing proof"
     impact: "operational-delay"
     explanation: "Address proof is a core filing dependency and weak accommodation documents can stop the process immediately."
   employment-contract:
+    consequence: "Blue Card / work permit denied — this employer path closes for the route"
     impact: "visa-rejection"
     explanation: "Employer-side documentation defines whether this path exists at all."
     conflictNote: "Salary thresholds and document expectations can shift across yearly updates."
   dnv-income-proof:
+    consequence: "Digital nomad permit refused — reapply with stronger evidence or switch routes (months lost)"
     impact: "visa-rejection"
     explanation: "Income proof is the core eligibility gate for remote-income routes."
     conflictNote: "Threshold interpretation can drift with policy updates and document examples."
   business-registration:
+    consequence: "Self-employment permit cannot be filed — entity must exist first"
     impact: "visa-rejection"
     explanation: "You cannot safely assume residency can be filed first and entity paperwork later."
   intl-health-insurance:
     impact: "healthcare-gap"
     explanation: "There is usually a gap between entry and local public insurance onboarding."
   landlord-registration-consent:
+    consequence: "Lease is useless for MUP — re-sign or re-rent, restart housing search"
     impact: "operational-delay"
     explanation: "A lease without registration cooperation from the landlord can be useless for residency purposes."
   pet-microchip:
+    consequence: "Pet refused boarding — no chip = no EU passport = no flight"
     impact: "legal-noncompliance"
     explanation: "Microchip sequencing matters because later veterinary documents depend on it."
   pet-rabies:
+    consequence: "Pet denied boarding for a short-window vaccine — rebook flight after 21-day minimum"
     impact: "operational-delay"
     explanation: "Rabies timing rules are strict and are checked mechanically, not generously."
   pet-titer-test:
+    consequence: "Pet travel blocked for 3 months — the titer wait window cannot be compressed"
     impact: "operational-delay"
     explanation: "This rule creates long lead times, so late discovery breaks the move plan."
     conflictNote: "Requirement depends on whether the origin country is listed or unlisted."
@@ -165,17 +176,21 @@ claimStrings:
     explanation: "Airline-level implementation can override generic assumptions about pet transport."
     conflictNote: "Carrier rules differ even when the legal import framework is the same."
   cites-docs:
+    consequence: "Pet seized at border or denied boarding — exotic species need permits before any travel"
     impact: "legal-noncompliance"
     explanation: "Non-standard species can trigger an entirely different compliance pathway."
     conflictNote: "Species-specific permit requirements vary more than owners usually expect."
   marriage-cert:
+    consequence: "Family reunification rejected — order fresh certificate, re-apostille, re-translate (4–6 weeks)"
     impact: "operational-delay"
     explanation: "Civil status documents are time-sensitive and often rejected when people rely on old copies."
     conflictNote: "Fresh-issue expectations and local practice can change with administrative guidance."
   child-birth-certs:
+    consequence: "Children cannot be added to the file — each missing certificate blocks dependent intake"
     impact: "operational-delay"
     explanation: "Each child creates a separate document dependency chain."
   spouse-work-status:
+    consequence: "Spouse arrives unable to work legally — household budget breaks until status is corrected"
     impact: "suboptimal-planning"
     explanation: "Secondary applicant work rights affect budget, timing, and route selection."
     conflictNote: "Work rights differ by permit type and cannot be assumed from one visa route to another."
@@ -183,6 +198,7 @@ claimStrings:
     impact: "suboptimal-planning"
     explanation: "School availability can become a hard relocation blocker for families with children."
   sponsor-income:
+    consequence: "Reunification refused on income — no path to add dependents until threshold is met"
     impact: "visa-rejection"
     explanation: "Income thresholds define whether dependents can realistically be added to the move."
     conflictNote: "Threshold practice can change and needs rechecking before filing."

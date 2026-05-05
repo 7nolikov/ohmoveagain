@@ -112,6 +112,7 @@ trust_age_days_ago:
   other: "{{ . }} days ago"
 trust_stale_inline: "stale"
 trust_methodology_link: "How is this verified? →"
+trust_consequence_label: "If wrong"
 
 # Trust v2 — per-stage factual one-liner (replaces algorithmic pill)
 trust_strip_sources:

@@ -60,17 +60,21 @@ claimStrings:
     impact: "suboptimal-planning"
     explanation: "Local accounting practices define compliance and reporting structure."
   business-structure:
+    consequence: "Stuck on the full corporate rate forever — restructuring usually means a new entity, not an edit"
     impact: "financial-cost"
     explanation: "Structure decisions compound over years and are hard to reverse cleanly."
     conflictNote: "Best structure depends on income profile and liability tolerance."
   blue-card-sideincome:
+    consequence: "Blue Card revoked for unauthorised income — single-employer rule is strict"
     impact: "legal-noncompliance"
     explanation: "Secondary work may conflict with permit conditions."
     conflictNote: "Interpretation differs across member states and contracts."
   dnv-renewal:
+    consequence: "Permit lapses, you become an overstayer — Croatia entry ban for years"
     impact: "visa-rejection"
     explanation: "Renewal rules must be satisfied continuously, not just at entry."
   vat-threshold:
+    consequence: "Back-VAT plus penalty — Porezna pursues retroactively, can run to tens of thousands of euros"
     impact: "legal-noncompliance"
     explanation: "VAT obligations change financial reporting and pricing structure."
     conflictNote: "Threshold values change periodically and require rechecking."

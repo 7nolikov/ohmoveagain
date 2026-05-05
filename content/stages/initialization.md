@@ -81,12 +81,15 @@ gotchas:
   - "Bring a notarized landlord signature to address registration — some municipalities reject anything less."
 claimStrings:
   oib-issued:
+    consequence: "Bank account, lease, healthcare all blocked — OIB is the keystone for every Croatian admin step"
     impact: "operational-delay"
     explanation: "OIB is the root identifier for almost every administrative action in Croatia."
   address-registration:
+    consequence: "Residency card cannot be issued — MUP releases the card only against a registered address"
     impact: "legal-noncompliance"
     explanation: "Address registration is a structural dependency for identity and legal presence."
   residency-card:
+    consequence: "Legal stay window closes — overstaying the 90-day mark triggers a fine and an entry ban"
     impact: "legal-noncompliance"
     explanation: "Residency card formalises legal presence and unlocks financial and employment systems."
   bank-account:
@@ -97,6 +100,7 @@ claimStrings:
     impact: "healthcare-gap"
     explanation: "Public health coverage begins only after registration is complete."
   tax-residency:
+    consequence: "Wrong taxes paid — double-tax exposure or a back-tax demand a year later"
     impact: "financial-cost"
     explanation: "Tax residency affects global income reporting and liability."
     conflictNote: "Residency determination is based on facts, not just certificate requests."

@@ -137,6 +137,11 @@
         {{- $srcLineParams = dict "url" $item.source.url "label" (index $strings "sourceLabel") "date" $item.source.asOf -}}
       {{- end -}}
 
+      {{- /* Per-claim translatable strings, used both above-the-fold (consequence)
+             and inside <details> (impact / explanation / conflict). */ -}}
+      {{- $cs := index $claimStrings $claim.id | default dict -}}
+      {{- $consequence := index $cs "consequence" -}}
+
       {{- $ao := $item.appliesTo | jsonify -}}
       <li x-show="$store.prog.matchesProfile({{ $ao | safeJS }})"
           :class="$store.prog.isChecked({{ $w }}, '{{ $key }}') ? 'done' : ''">
@@ -159,6 +164,9 @@
               </span>
             </div>
             {{ end }}
+            {{ if and (eq $claim.riskLevel "high") $consequence }}
+            <div class="trust-consequence"><strong>{{ i18n "trust_consequence_label" }}:</strong> {{ $consequence }}</div>
+            {{ end }}
             {{ if $srcLineParams }}
               {{ partial "trust-source-line.html" $srcLineParams }}
             {{ end }}
@@ -170,14 +178,13 @@
           <summary>{{ i18n "trust_explanation" }}</summary>
           <div class="trust-details-body">
             <div class="trust-block">
-              {{- $cs := index $claimStrings $claim.id | default dict -}}
               {{- $impactKey := index $cs "impact" | default $claim.impact -}}
               {{- $impactKeyNorm := lower (replace (replace $impactKey " " "_") "-" "_") -}}
               <div class="trust-line"><strong>{{ i18n "trust_impact" }}:</strong> {{ i18n (printf "trust_impact_%s" $impactKeyNorm) | default $impactKey }}</div>
-              {{ with (index $cs "conflictNote" | default $claim.conflictNote) }}
+              {{ with (index $cs "conflictNote") }}
               <div class="trust-warning">⚠ {{ . }}</div>
               {{ end }}
-              {{ with (index $cs "explanation" | default $claim.explanation) }}
+              {{ with (index $cs "explanation") }}
               <div class="trust-note">{{ . }}</div>
               {{ end }}
             </div>

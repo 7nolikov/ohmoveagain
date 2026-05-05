@@ -76,10 +76,12 @@ claimStrings:
     explanation: "Tax planning changes the real economics of a move before you choose a visa or legal structure."
     conflictNote: "Effective rate depends on income mix, residency status, and contribution rules."
   dnv-income:
+    consequence: "Visa refused at intake — wrong route picked, restart with a different permit type"
     impact: "visa-rejection"
     explanation: "This requirement determines whether you qualify before you spend time and money on an application."
     conflictNote: "Income thresholds can change annually, so stale numbers create false confidence."
   blue-card-salary:
+    consequence: "Application rejected on the salary floor — renegotiate the offer or pivot to a work permit"
     impact: "visa-rejection"
     explanation: "Salary thresholds are a gatekeeper for Blue Card eligibility and need to be checked before signing assumptions into your relocation plan."
     conflictNote: "Threshold interpretation can vary by year and local implementation details."
