@@ -61,12 +61,12 @@
   <strong class="trust-strip-count">{{ i18n "trust_strip_sources" $sourceCount }}</strong>
   {{- with $tierLabels }}<span class="trust-strip-sep">{{ i18n "trust_strip_separator" }}</span><span class="trust-strip-tiers">{{ delimit . ", " }}</span>{{ end -}}
   {{- if $oldestDate }}<span class="trust-strip-sep">{{ i18n "trust_strip_separator" }}</span><span class="trust-strip-oldest">{{ if le $oldestDays 0 }}{{ i18n "trust_strip_oldest_today" }}{{ else }}{{ i18n "trust_strip_oldest_days" $oldestDays }}{{ end }}</span>{{ end -}}
-  <a class="trust-methodology-link" href="{{ "methodology/" | relLangURL }}">{{ i18n "trust_methodology_link" }}</a>
+  <a class="trust-methodology-link" href="{{ "freshness/#methodology" | relLangURL }}">{{ i18n "trust_methodology_link" }}</a>
 </p>
 {{- else }}
 <p class="trust-strip trust-strip-empty">
   {{ i18n "trust_strip_no_sources" }}
-  <a class="trust-methodology-link" href="{{ "methodology/" | relLangURL }}">{{ i18n "trust_methodology_link" }}</a>
+  <a class="trust-methodology-link" href="{{ "freshness/#methodology" | relLangURL }}">{{ i18n "trust_methodology_link" }}</a>
 </p>
 {{- end }}
 

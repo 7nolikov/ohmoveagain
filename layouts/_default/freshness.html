@@ -26,7 +26,7 @@
   {{- end }}
   {{- end }}
 
-  <h2>{{ i18n "freshness_stages_h2" }}</h2>
+  <h2 id="stages">{{ i18n "freshness_stages_h2" }}</h2>
   <p class="dim">{{ i18n "freshness_stages_intro" }} <span class="asof asof-fresh">{{ i18n "freshness_color_fresh" }}</span> {{ i18n "freshness_color_fresh_desc" }}, <span class="asof asof-aging">{{ i18n "freshness_color_aging" }}</span> {{ i18n "freshness_color_aging_desc" }}, <span class="asof asof-stale">{{ i18n "freshness_color_stale" }}</span> {{ i18n "freshness_color_stale_desc" }}.</p>
   <div class="table-wrap">
     <table class="freshness-table">
@@ -110,5 +110,39 @@
     {{ i18n "freshness_cta_middle" }}
     <a href="{{ site.Params.githubURL }}/commits/main" rel="noopener noreferrer">{{ i18n "freshness_cta_history" }}</a>.
   </p>
+
+  <section class="methodology" id="methodology">
+    <div class="tagline">{{ i18n "methodology_tagline" }}</div>
+    <h2>{{ i18n "methodology_h1" }}</h2>
+    <p>{{ i18n "methodology_intro" }}</p>
+
+    <h3>{{ i18n "methodology_tiers_h2" }}</h3>
+    <p class="dim">{{ i18n "methodology_tiers_intro" }}</p>
+    <dl class="methodology-tiers">
+      {{- range slice "official" "supranational" "community" }}
+      <dt><span class="tier-chip" data-tier="{{ . }}">{{ i18n (printf "tier_%s" .) }}</span></dt>
+      <dd>{{ i18n (printf "methodology_tier_%s_desc" .) }}</dd>
+      {{- end }}
+    </dl>
+
+    <h3>{{ i18n "methodology_renewal_h2" }}</h3>
+    <p>{{ i18n "methodology_renewal_intro" }}</p>
+    <ul class="methodology-cadence">
+      <li><span class="verified-inline" data-age="aging">{{ i18n "methodology_renewal_warn" }}</span></li>
+      <li><span class="verified-inline" data-age="stale">{{ i18n "methodology_renewal_fail" }}</span></li>
+      <li>{{ i18n "methodology_renewal_validuntil" | safeHTML }}</li>
+    </ul>
+    <p><a href="#stages">{{ i18n "methodology_renewal_check" }}</a></p>
+
+    <h3>{{ i18n "methodology_score_h2" }}</h3>
+    <p>{{ i18n "methodology_score_intro" }}</p>
+    <p class="dim">{{ i18n "methodology_score_no_bucket" }}</p>
+
+    <h3>{{ i18n "methodology_provenance_h2" }}</h3>
+    <p>
+      {{ i18n "methodology_provenance_intro" }}
+      <a href="{{ site.Params.githubURL }}/commits/main" rel="noopener noreferrer">{{ i18n "methodology_provenance_git" }}</a>{{ i18n "methodology_provenance_outro" }}
+    </p>
+  </section>
 </section>
 {{ end }}
