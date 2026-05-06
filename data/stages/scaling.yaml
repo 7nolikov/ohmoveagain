@@ -4,94 +4,64 @@ sources:
   - id: hok
     url: "https://www.hok.hr/en/"
     type: official
-    authorityScore: 4
     lastChecked: "2026-02-01"
   - id: porezna
     url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
     type: official
-    authorityScore: 5
     lastChecked: "2026-03-01"
   - id: eu-blue-card
     url: "https://home-affairs.ec.europa.eu/policies/migration-and-asylum/legal-migration-and-integration/work_en"
     type: supranational
-    authorityScore: 3
     lastChecked: "2026-01-01"
   - id: mup-stay
     url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
     type: official
-    authorityScore: 5
     lastChecked: "2026-02-15"
   - id: eu-vat
     url: "https://taxation-customs.ec.europa.eu/vat-rules-by-country/croatia_en"
     type: supranational
-    authorityScore: 3
     lastChecked: "2026-01-01"
   - id: regos
     url: "https://www.regos.hr/en/"
     type: official
-    authorityScore: 4
     lastChecked: "2026-02-01"
 
 claims:
   - id: accountant
-    riskLevel: medium
     impact: "Operational inefficiency"
-    uncertainty: medium
     sourceId: hok
   - id: business-structure
-    riskLevel: high
     impact: "Long-term tax inefficiency"
-    uncertainty: medium
     sourceId: porezna
   - id: blue-card-sideincome
-    riskLevel: high
     impact: "Permit violation"
-    uncertainty: medium
     sourceId: eu-blue-card
   - id: dnv-renewal
-    riskLevel: high
     impact: "Visa renewal failure"
-    uncertainty: medium
     sourceId: mup-stay
   - id: permit-renewal-window
-    riskLevel: high
     impact: "Visa renewal failure"
-    uncertainty: low
     sourceId: mup-stay
   - id: blue-card-renewal
-    riskLevel: high
     impact: "Visa renewal failure"
-    uncertainty: medium
     sourceId: eu-blue-card
   - id: work-permit-renewal
-    riskLevel: high
     impact: "Visa renewal failure"
-    uncertainty: medium
     sourceId: mup-stay
   - id: permanent-residence-path
-    riskLevel: medium
     impact: "Suboptimal long-term planning"
-    uncertainty: medium
     sourceId: mup-stay
   - id: citizenship-path
-    riskLevel: low
     impact: "Suboptimal long-term planning"
-    uncertainty: high
     sourceId: mup-stay
   - id: vat-threshold
-    riskLevel: high
     impact: "Tax non-compliance"
-    uncertainty: medium
     sourceId: eu-vat
   - id: invoicing-bookkeeping
-    riskLevel: medium
     impact: "Operational disruption"
-    uncertainty: medium
     sourceId: porezna
   - id: pension-strategy
-    riskLevel: low
     impact: "Suboptimal long-term planning"
-    uncertainty: medium
     sourceId: regos
 
 checklist:

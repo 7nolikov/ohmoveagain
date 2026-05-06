@@ -4,59 +4,42 @@ sources:
   - id: porezna
     url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
     type: official
-    authorityScore: 5
     lastChecked: "2026-03-01"
   - id: mup-stay
     url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
     type: official
-    authorityScore: 5
     lastChecked: "2026-02-15"
   - id: hanfa
     url: "https://www.hanfa.hr/en/"
     type: official
-    authorityScore: 5
     lastChecked: "2026-02-01"
   - id: hzzo
     url: "https://hzzo.hr/en"
     type: official
-    authorityScore: 5
     lastChecked: "2026-02-15"
   - id: porezna-residency
     url: "https://porezna-uprava.gov.hr/en/determination-of-residency-status/7378"
     type: official
-    authorityScore: 5
     lastChecked: "2026-04-22"
 
 claims:
   - id: oib-issued
-    riskLevel: high
     impact: "All downstream steps blocked"
-    uncertainty: low
     sourceId: porezna
   - id: address-registration
-    riskLevel: high
     impact: "Residency process blocked"
-    uncertainty: low
     sourceId: mup-stay
   - id: residency-card
-    riskLevel: high
     impact: "Legal status incomplete"
-    uncertainty: low
     sourceId: mup-stay
   - id: bank-account
-    riskLevel: medium
     impact: "Financial friction"
-    uncertainty: medium
     sourceId: hanfa
   - id: hzzo-enrolled
-    riskLevel: medium
     impact: "Healthcare gap"
-    uncertainty: low
     sourceId: hzzo
   - id: tax-residency
-    riskLevel: high
     impact: "Incorrect tax obligations"
-    uncertainty: medium
     sourceId: porezna-residency
     lastReviewed: "2026-04-24"
 

@@ -4,79 +4,54 @@ sources:
   - id: eu-schengen
     url: "https://home-affairs.ec.europa.eu/policies/schengen_en"
     type: supranational
-    authorityScore: 3
     lastChecked: "2026-01-01"
   - id: hr-customs
     url: "https://carina.gov.hr/en"
     type: official
-    authorityScore: 5
     lastChecked: "2026-02-01"
   - id: hnb
     url: "https://www.hnb.hr/en"
     type: official
-    authorityScore: 5
     lastChecked: "2026-01-01"
   - id: eu-pets
     url: "https://food.ec.europa.eu/animals/movement-pets_en"
     type: supranational
-    authorityScore: 3
     lastChecked: "2026-03-01"
   - id: iata-live-animals
     url: "https://www.iata.org/en/programs/cargo/live-animals/"
     type: supranational
-    authorityScore: 3
     lastChecked: "2026-01-01"
 
 claims:
   - id: border-method
-    riskLevel: medium
     impact: "Entry assumptions fail at border"
-    uncertainty: medium
     sourceId: eu-schengen
   - id: originals-cabin
-    riskLevel: high
     impact: "Critical document loss"
-    uncertainty: low
     sourceId: hr-customs
   - id: customs-proof
-    riskLevel: medium
     impact: "Border delay or additional scrutiny"
-    uncertainty: medium
     sourceId: hr-customs
   - id: accommodation-30d
-    riskLevel: medium
     impact: "Arrival instability"
-    uncertainty: low
     sourceId: hr-customs
   - id: ground-transport
-    riskLevel: low
     impact: "Arrival friction and wasted time"
-    uncertainty: medium
     sourceId: hr-customs
   - id: eu-sim
-    riskLevel: low
     impact: "Connectivity gap on arrival"
-    uncertainty: low
     sourceId: eu-schengen
   - id: emergency-cash
-    riskLevel: medium
     impact: "Payment failure during arrival"
-    uncertainty: low
     sourceId: hnb
   - id: vet-health-cert
-    riskLevel: high
     impact: "Pet denied travel"
-    uncertainty: low
     sourceId: eu-pets
   - id: airline-booking
-    riskLevel: medium
     impact: "Pet transport cancellation"
-    uncertainty: medium
     sourceId: iata-live-animals
   - id: carrier-dimensions
-    riskLevel: medium
     impact: "Check-in failure for pet"
-    uncertainty: medium
     sourceId: iata-live-animals
 
 checklist:

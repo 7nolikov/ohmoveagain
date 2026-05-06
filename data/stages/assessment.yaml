@@ -4,39 +4,30 @@ sources:
   - id: mup-main
     url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
     type: official
-    authorityScore: 5
     lastChecked: "2026-02-15"
 
   - id: eu-blue-card
     url: "https://home-affairs.ec.europa.eu/policies/migration-and-asylum/legal-migration-and-integration/work_en"
     type: supranational
-    authorityScore: 3
     lastChecked: "2026-01-01"
 
   - id: porezna
     url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
     type: official
-    authorityScore: 5
     lastChecked: "2026-03-01"
 
 claims:
   - id: effective-tax-rate
-    riskLevel: medium
     impact: "Incorrect financial planning"
-    uncertainty: medium
     sourceId: porezna
 
   - id: dnv-income
-    riskLevel: high
     impact: "Visa rejection"
-    uncertainty: medium
     sourceId: mup-main
     lastReviewed: "2026-04-24"
 
   - id: blue-card-salary
-    riskLevel: high
     impact: "Ineligible application"
-    uncertainty: medium
     sourceId: eu-blue-card
     lastReviewed: "2026-04-24"
 

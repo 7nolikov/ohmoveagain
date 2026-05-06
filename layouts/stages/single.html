@@ -16,10 +16,6 @@
 {{- $claimStrings := .Params.claimStrings | default dict -}}
 {{- $w := .Weight -}}
 
-{{- $riskLabel := i18n "trust_risk_label" -}}
-{{- $uncertaintyLabel := i18n "trust_uncertainty_label" -}}
-{{- $detailsHint := i18n "trust_details_hint" -}}
-
 {{- /* Per-stage factual one-liner — replaces the algorithmic trust pill.
        Reports raw counts (sources, distinct tiers, oldest verified date)
        computed at build time. No bucket. No score. The methodology page
@@ -152,19 +148,7 @@
           >
           <div class="label-text">
             <span class="label">{{ index $strings "label" }}</span>
-            {{ if $claim.sourceId }}
-            <div class="trust-badges" aria-label="{{ $riskLabel }}">
-              <span class="trust-badge" data-level="{{ $claim.riskLevel }}">
-                <span class="trust-chip-label">{{ $riskLabel }}</span>
-                <strong>{{ i18n (printf "trust_risk_%s" $claim.riskLevel) }}</strong>
-              </span>
-              <span class="trust-badge" data-level="{{ $claim.uncertainty }}">
-                <span class="trust-chip-label">{{ $uncertaintyLabel }}</span>
-                <strong>{{ i18n (printf "trust_uncertainty_%s" $claim.uncertainty) }}</strong>
-              </span>
-            </div>
-            {{ end }}
-            {{ if and (eq $claim.riskLevel "high") $consequence }}
+            {{ if $consequence }}
             <div class="trust-consequence"><strong>{{ i18n "trust_consequence_label" }}:</strong> {{ $consequence }}</div>
             {{ end }}
             {{ if $srcLineParams }}

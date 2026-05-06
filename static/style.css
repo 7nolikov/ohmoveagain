@@ -1146,7 +1146,6 @@ html.hk-open { overflow: hidden; }
   /* Stage checklist */
   .checklist li { page-break-inside: avoid; margin-bottom: 6pt; }
   .checklist input[type=checkbox] { appearance: auto; width: 12pt; height: 12pt; }
-  .trust-score-pill, .trust-badges { display: none; }
   details > summary { display: none; }
   details[open] > summary { display: block; }
 
@@ -2018,66 +2017,6 @@ header.top {
   align-items: center;
 }
 
-.trust-score-pill,
-.trust-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--border-bright);
-  font-size: 0.76rem;
-  line-height: 1.2;
-  white-space: normal;
-}
-
-.trust-score-pill {
-  font-size: 0.8rem;
-}
-
-.trust-chip-label {
-  color: var(--fg-dim);
-  font-weight: 500;
-}
-
-.trust-score-pill strong,
-.trust-badge strong {
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-}
-
-.trust-score-number {
-  color: var(--fg-muted);
-  font-size: 0.72rem;
-}
-
-.trust-score-pill[data-level="high"],
-.trust-badge[data-level="high"] {
-  border-color: var(--accent-dim);
-  color: var(--accent);
-  background: rgba(126,231,135,0.08);
-}
-
-.trust-score-pill[data-level="medium"],
-.trust-badge[data-level="medium"] {
-  border-color: var(--warn);
-  color: var(--warn);
-  background: rgba(245,166,35,0.08);
-}
-
-.trust-score-pill[data-level="low"],
-.trust-badge[data-level="low"] {
-  border-color: var(--err);
-  color: var(--err);
-  background: rgba(255,107,107,0.08);
-}
-
-.trust-summary-meta {
-  color: var(--fg-dim);
-  font-size: 0.8rem;
-}
-
 .trust-block {
   margin-top: 10px;
   padding: 10px 12px;
@@ -2085,13 +2024,6 @@ header.top {
   border-radius: var(--radius);
   background: var(--bg-card);
   font-size: 0.82rem;
-}
-
-.trust-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 8px 0 4px;
 }
 
 .trust-item-hint {
@@ -2373,16 +2305,3 @@ header.top {
   padding-bottom: 14px;
 }
 
-@media (max-width: 560px) {
-  .trust-score-pill,
-  .trust-badge {
-    width: 100%;
-    align-items: flex-start;
-    justify-content: space-between;
-    border-radius: var(--radius);
-  }
-
-  .trust-chip-label {
-    flex: 1 1 auto;
-  }
-}
