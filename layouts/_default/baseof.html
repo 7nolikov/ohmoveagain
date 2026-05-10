@@ -138,6 +138,21 @@ document.addEventListener('alpine:init', () => {
       return 'not started';
     },
 
+    // Cross-stage filtered totals — reads window.OHMA_STAGES_META (emitted
+    // by layouts/partials/global-progress.html and re-used by pipeline.html).
+    totalDoneF() {
+      const all = window.OHMA_STAGES_META || {};
+      let n = 0;
+      for (const s in all) n += this.countF(s, all[s]);
+      return n;
+    },
+    totalAllF() {
+      const all = window.OHMA_STAGES_META || {};
+      let n = 0;
+      for (const s in all) n += this.totalF(all[s]);
+      return n;
+    },
+
     resetStage(stage) {
       delete this.data.stages[String(stage)];
       this._persist();
