@@ -42,7 +42,7 @@
 {{- $oldestAge := "" -}}
 {{- if $oldestDate -}}
   {{- $oldestDays = div (sub now.Unix (time.AsTime $oldestDate).Unix) 86400 -}}
-  {{- $oldestAge = cond (gt $oldestDays 270) "stale" (cond (gt $oldestDays 90) "aging" "fresh") -}}
+  {{- $oldestAge = cond (gt $oldestDays 365) "stale" (cond (gt $oldestDays 180) "aging" "fresh") -}}
 {{- end -}}
 
 <section class="stage-head">
@@ -162,9 +162,6 @@
           <summary>{{ i18n "trust_explanation" }}</summary>
           <div class="trust-details-body">
             <div class="trust-block">
-              {{- $impactKey := index $cs "impact" | default $claim.impact -}}
-              {{- $impactKeyNorm := lower (replace (replace $impactKey " " "_") "-" "_") -}}
-              <div class="trust-line"><strong>{{ i18n "trust_impact" }}:</strong> {{ i18n (printf "trust_impact_%s" $impactKeyNorm) | default $impactKey }}</div>
               {{ with (index $cs "conflictNote") }}
               <div class="trust-warning">⚠ {{ . }}</div>
               {{ end }}

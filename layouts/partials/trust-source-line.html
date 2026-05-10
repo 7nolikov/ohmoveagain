@@ -9,9 +9,9 @@
     type  — optional, source.type enum (e.g. "official", "supranational")
 
   Color band on the date span (data-age):
-    fresh  ≤ 90d
-    aging  91–270d
-    stale  > 270d  (matches check-staleness.mjs warn=180/fail=365 conservatively)
+    fresh  ≤ 180d
+    aging  181–365d
+    stale  > 365d  (matches check-staleness.mjs warn=180/fail=365)
 */ -}}
 {{- $url := .url -}}
 {{- $label := .label -}}
@@ -21,7 +21,7 @@
 {{- $rel := "" -}}
 {{- if $date -}}
   {{- $d := div (sub now.Unix (time.AsTime $date).Unix) 86400 -}}
-  {{- $age = cond (gt $d 270) "stale" (cond (gt $d 90) "aging" "fresh") -}}
+  {{- $age = cond (gt $d 365) "stale" (cond (gt $d 180) "aging" "fresh") -}}
   {{- if le $d 0 -}}
     {{- $rel = i18n "trust_age_today" -}}
   {{- else -}}

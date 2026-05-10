@@ -13,7 +13,7 @@ The Pipeline separates **structural facts** from **translatable strings**.
 ```
 data/
   stages/
-    <slug>.yaml       ← source URLs, asOf dates, risk levels, appliesTo filters
+    <slug>.yaml       ← source URLs, asOf dates, appliesTo filters
 content/
   stages/
     <slug>.md         ← English display strings (labels, notes, gotchas)
@@ -42,7 +42,7 @@ cp data/stages/initialization.yaml data/stages/<country>/initialization.yaml
 cp data/stages/scaling.yaml       data/stages/<country>/scaling.yaml
 ```
 
-Replace every `url`, `lastChecked`, and `authorityScore` with values for your country. Keep the same YAML schema — `id` fields must be stable kebab-case; do not put human-readable strings in the YAML.
+Replace every `url` and `lastChecked` with values for your country. Assign the correct `type` to each source — valid values are `official`, `supranational`, or `community` (the build fails on any other value). Keep the same YAML schema — `id` fields must be stable kebab-case; do not put human-readable strings in the YAML.
 
 ### 3. Copy and adapt the content files
 
@@ -77,9 +77,25 @@ Reference the tracking issue. The PR description should list:
 
 Every checklist item must:
 - Cite an official or authoritative source (prefer ministry / government authority / EU Commission)
-- Include an `asOf` or `lastChecked` date
+- Include an `asOf` or `lastChecked` date — see "Setting verified dates" below
 - Be specific and actionable — avoid vague wording
 - Use `appliesTo` filters if it only applies to certain visa types, family compositions, or pets
+
+## Setting verified dates
+
+A source is marked "verified" on the date you personally:
+1. Opened the URL and confirmed it resolves
+2. Located the specific rule or threshold on that page
+3. Confirmed that the claim's wording in the YAML/content files matches what the source says
+
+This is a manual read, not a URL ping or a build check. If the page is live but the specific rule is gone or changed, the source is **not** verified — update the claim first, then set the date.
+
+Set `lastChecked` (on a `sources[]` entry) or `asOf` (on an inline `source:` block) to today's date in `YYYY-MM-DD` format. Do not backdate.
+
+Source tier guide — `type` must be one of:
+- `official` — Government authority directly responsible for the rule (ministry, tax authority, social insurance body)
+- `supranational` — EU institutions, treaty bodies, intergovernmental organisations (HCCH, IATA, WHO, CITES)
+- `community` — Public registries, surveys, contributor reports. Supporting context only, not primary authority
 
 ## Maintenance commitment
 

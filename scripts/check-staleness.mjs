@@ -56,6 +56,13 @@ for (const root of ROOTS) {
         }
         continue;
       }
+      if (/data\/stages\/.*\.ya?ml$/.test(file)) {
+        const tierMatch = lines[i].match(/^\s+type:\s*["']?(\S+?)["']?\s*$/);
+        if (tierMatch && !['official', 'supranational', 'community'].includes(tierMatch[1])) {
+          findings.push({ file, line: i + 1, kind: 'tier', value: tierMatch[1], level: 'FAIL' });
+        }
+      }
+
       const validUntil = lines[i].match(/^\s*validUntil:\s*["']?(\d{4}-\d{2}-\d{2})["']?/);
       if (validUntil) {
         const ts = Date.parse(validUntil[1] + 'T23:59:59Z');
@@ -73,7 +80,9 @@ const fails = findings.filter((f) => f.level === 'FAIL');
 const warns = findings.filter((f) => f.level === 'WARN');
 
 for (const f of [...fails, ...warns]) {
-  if (f.kind === 'validUntil') {
+  if (f.kind === 'tier') {
+    console.log(`${f.level}: ${f.file}:${f.line}  invalid source.type="${f.value}" (allowed: official, supranational, community)`);
+  } else if (f.kind === 'validUntil') {
     console.log(`${f.level}: ${f.file}:${f.line}  validUntil=${f.date} (overdue ${f.age}d)`);
   } else {
     console.log(`${f.level}: ${f.file}:${f.line}  asOf=${f.date}  age=${f.age}d`);
