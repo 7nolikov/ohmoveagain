@@ -38,9 +38,17 @@ document.addEventListener('alpine:init', () => {
   if (_qs.get('family')) profile.family = _qs.get('family');
   if (_qs.get('pets')) profile.pets = _qs.get('pets');
 
+  const DKEY = 'ohma.profile.dismissed';
   Alpine.data('globalProgress', (total) => ({
     total,
-    collapsed: window.matchMedia('(max-width:680px)').matches,
+    collapsed: (() => { try { return localStorage.getItem(DKEY) === '1'; } catch(e) { return false; } })(),
+    toggleCollapsed() {
+      this.collapsed = !this.collapsed;
+      try {
+        if (this.collapsed) localStorage.setItem(DKEY, '1');
+        else localStorage.removeItem(DKEY);
+      } catch(e) {}
+    },
   }));
 
   Alpine.store('prog', {

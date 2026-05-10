@@ -9,6 +9,7 @@
     "i18n:sync:ru": "node scripts/sync-ru-translations.mjs --all",
     "gen:og": "node scripts/gen-og.mjs",
     "qa:install": "playwright install --with-deps chromium webkit",
+    "preqa:e2e": "rm -rf test-results",
     "qa:e2e": "playwright test",
     "qa:e2e:ui": "playwright test --ui",
     "qa:report": "playwright show-report",

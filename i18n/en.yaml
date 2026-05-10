@@ -400,6 +400,7 @@ pc_th_deadline: "Deadline"
 pc_th_days_from_today: "Days from today"
 pc_th_status: "Status"
 pc_warn: "⚠ One or more deadlines have already passed for your chosen flight date. Either adjust your flight date or contact a vet immediately."
+pc_source_eu_movement: "EU Commission — movement of pet animals"
 pc_source_intro: "Applies when origin country is"
 pc_source_not: "not"
 pc_source_intro2: "on the EU listed-country table — check"
@@ -426,6 +427,7 @@ pc_step5_note: "Issued by an official government vet (not your regular vet). Val
 
 # Pet Gantt shortcode
 pg_caption: "EU pet travel sequence — dependency timeline before flight"
+pg_source_eu_listed: "EU Commission — non-EU listed countries"
 pg_source_label: "Source"
 pg_source_verified: "verified 2026-03-01"
 pg_listed_title: "Listed origin country"

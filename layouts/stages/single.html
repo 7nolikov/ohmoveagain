@@ -101,7 +101,7 @@
     <button class="btn-ghost" type="button"
             @click="if (confirm({{ i18n "reset_stage_confirm" | jsonify }})) $store.prog.resetStage({{ $w }})"
             x-show="$store.prog.count({{ $w }}) > 0" x-cloak>{{ i18n "reset_stage" }}</button>
-    <button class="btn-ghost" type="button" @click="exportCurrentStage()" title="{{ i18n "export_stage_title" }}">{{ i18n "export_stage" }}</button>
+    <button class="btn-ghost" type="button" @click="exportCurrentStage()" title="{{ i18n "export_stage_title" }}" x-show="$store.prog.countF(w, meta) > 0" x-cloak>{{ i18n "export_stage" }}</button>
   </div>
   <p class="privacy-note dim">{{ i18n "privacy_note" }}</p>
 

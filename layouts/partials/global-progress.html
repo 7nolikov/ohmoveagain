@@ -26,7 +26,7 @@
       <span x-text="$store.prog.totalDone()">0</span>/<span x-text="total">{{ $grand }}</span>
       · <span x-text="total ? Math.round(100 * $store.prog.totalDone() / total) : 0">0</span>%
     </span>
-    <button type="button" class="strip-toggle" @click="collapsed = !collapsed" :aria-label="collapsed ? 'Show filters' : 'Hide filters'" :aria-expanded="!collapsed">
+    <button type="button" class="strip-toggle" @click="toggleCollapsed()" :aria-label="collapsed ? 'Show filters' : 'Hide filters'" :aria-expanded="!collapsed">
       <span x-show="collapsed">{{ i18n "filter_show" }}</span>
       <span x-show="!collapsed" x-cloak>{{ i18n "filter_hide" }}</span>
     </button>

@@ -101,6 +101,8 @@ Mitigations in place: no user-supplied data reaches `eval`, no untrusted third-p
 
 This trade-off is accepted and documented. Do not attempt to remove `unsafe-eval` without a fully-tested CSP-build of Alpine that survives the full deploy pipeline.
 
+The site also ships `'unsafe-inline'` in `script-src`. This covers inline `<script>` blocks in Hugo templates (stage data bootstrap, Alpine component registration). Moving these to external files would allow removing this directive — not attempted pre-launch.
+
 ## Local development
 
 ### Prerequisites
