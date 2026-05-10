@@ -267,6 +267,26 @@ Pull from based on launch signal:
 
 ---
 
+## 14. Monospaced body font — intentional, do not change (2026-05-10)
+
+**Decision:** the site uses a monospaced body font. This is an intentional dev-audience design choice, not a default or oversight.
+
+**Why:** the terminal/CLI aesthetic is ~40% of the differentiation. A proportional font would make the site look like every other relocation blog and remove the signal that the audience is right. The mono font communicates "this is for developers" at a glance, before the user reads a single word.
+
+**How to apply:** do not propose switching to a proportional font (system-ui, Inter, etc.) pre-launch or as a "readability improvement." Post-launch changes require a user-experience signal (e.g., heatmaps or session recordings showing bounces on text-heavy pages). HN + Reddit launch copy does not need to explain the font choice.
+
+---
+
+## 15. i18n pipeline cadence — push-triggered only, no schedules (2026-05-10)
+
+**Decision:** the i18n translation and validation workflows run only on `push` (and PR) events. No cron schedule. No periodic rebuild.
+
+**Why:** scheduled rebuilds would incur LLM API cost and open translation PRs on days with no content changes. Push-triggered runs are proportional: a translation sync fires exactly when English content changes, not on a timer. The `check-staleness.mjs` CI gate (which runs on every PR) is already the right mechanism for catching stale sources — no separate daily job needed.
+
+**How to apply:** `.github/workflows/i18n.yml` must never add a `schedule:` trigger. If a contributor proposes a nightly i18n job, reject it — the push trigger is sufficient and cheaper. For launch-morning freshness verification, the process step (A-M7) is a one-time manual check, not a workflow.
+
+---
+
 ## Meta rule
 
 **Don't re-open a decision without traction data.** Four reassessments in 24 hours on 2026-04-18→19 produced plans, not launches. The next scope change waits for signal.

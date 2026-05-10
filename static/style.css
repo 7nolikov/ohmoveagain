@@ -2305,3 +2305,45 @@ header.top {
   padding-bottom: 14px;
 }
 
+
+/* Sources page */
+.sources-controls {
+  margin-bottom: 12px;
+}
+
+.sources-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.sources-table th,
+.sources-table td {
+  text-align: left;
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.sources-table th {
+  color: var(--fg-muted);
+  font-weight: normal;
+  white-space: nowrap;
+}
+
+.sources-table th:last-child {
+  cursor: pointer;
+}
+
+.sources-table th:last-child:hover {
+  color: var(--fg);
+}
+
+.sources-table td:first-child {
+  word-break: break-all;
+}
+
+@media (max-width: 600px) {
+  .sources-table th:nth-child(3),
+  .sources-table td:nth-child(3) { display: none; }
+}

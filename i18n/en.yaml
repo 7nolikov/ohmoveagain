@@ -425,6 +425,19 @@ pc_step4_note: "Issued by an accredited (official) vet. Must include microchip n
 pc_step5_label: "5 · Official health certificate (10-day window)"
 pc_step5_note: "Issued by an official government vet (not your regular vet). Valid for 10 days from issue date. Book the appointment early — slots are limited."
 
+# Sources page
+sources_title: "All sources"
+sources_desc: "Every source cited in the Pipeline — government portals, EU institutions, and community registries — with tier, verified date, and age."
+sources_col_source: "Source"
+sources_col_stage: "Stage"
+sources_col_tier: "Tier"
+sources_col_verified: "Verified"
+sources_col_age: "Age"
+sources_sort_oldest: "Sort oldest first"
+sources_sort_newest: "Sort newest first"
+sources_days_ago: "{n}d ago"
+sources_stage_label: "Stage {n}"
+
 # Pet Gantt shortcode
 pg_caption: "EU pet travel sequence — dependency timeline before flight"
 pg_source_eu_listed: "EU Commission — non-EU listed countries"

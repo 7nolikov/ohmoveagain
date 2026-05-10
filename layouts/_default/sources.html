@@ -1,0 +1,126 @@
+{{ define "main" }}
+{{- $stages := (where site.RegularPages "Section" "stages").ByWeight -}}
+
+{{- /* Collect all named sources from every stage, ordered by stage weight */ -}}
+{{- $allRows := slice -}}
+{{- range $stages -}}
+  {{- $slug := .File.ContentBaseName -}}
+  {{- $stageData := index hugo.Data.stages $slug -}}
+  {{- $stageN := .Weight -}}
+  {{- $stageTitle := .Title -}}
+  {{- $stageURL := .RelPermalink -}}
+  {{- range $stageData.sources -}}
+    {{- $days := 0 -}}
+    {{- with .lastChecked -}}
+      {{- $days = div (sub now.Unix (time.AsTime .).Unix) 86400 -}}
+    {{- end -}}
+    {{- $age := cond (gt $days 365) "stale" (cond (gt $days 180) "aging" "fresh") -}}
+    {{- $allRows = $allRows | append (dict
+      "url"          .url
+      "id"           .id
+      "type"         .type
+      "lastChecked"  .lastChecked
+      "days"         $days
+      "age"          $age
+      "stageN"       $stageN
+      "stageTitle"   $stageTitle
+      "stageURL"     $stageURL
+    ) -}}
+  {{- end -}}
+{{- end -}}
+
+<section>
+  <h1>{{ i18n "sources_title" }}</h1>
+  <p class="subtitle">{{ i18n "sources_desc" }}</p>
+</section>
+
+<div x-data="sourcesTable()" x-cloak>
+  <div class="sources-controls">
+    <button class="btn-ghost" type="button" @click="toggleSort()">
+      <span x-text="ascending ? {{ i18n "sources_sort_oldest" | jsonify }} : {{ i18n "sources_sort_newest" | jsonify }}"></span>
+    </button>
+  </div>
+
+  <table class="sources-table">
+    <thead>
+      <tr>
+        <th>{{ i18n "sources_col_source" }}</th>
+        <th>{{ i18n "sources_col_stage" }}</th>
+        <th>{{ i18n "sources_col_tier" }}</th>
+        <th>{{ i18n "sources_col_verified" }}</th>
+        <th @click="toggleSort()" style="cursor:pointer">{{ i18n "sources_col_age" }} ↕</th>
+      </tr>
+    </thead>
+    <tbody>
+      <template x-for="row in sorted" :key="row.id + row.stageN">
+        <tr>
+          <td><a :href="row.url" target="_blank" rel="noopener noreferrer" x-text="row.domain"></a></td>
+          <td><a :href="row.stageURL" x-text="row.stageLabel"></a></td>
+          <td><span class="tier-chip" :data-type="row.type" x-text="row.tierLabel"></span></td>
+          <td><span class="asof" :data-age="row.age" x-text="row.lastChecked"></span></td>
+          <td><span class="asof" :data-age="row.age" x-text="row.daysLabel"></span></td>
+        </tr>
+      </template>
+    </tbody>
+  </table>
+</div>
+
+<noscript>
+  <table class="sources-table">
+    <thead>
+      <tr>
+        <th>{{ i18n "sources_col_source" }}</th>
+        <th>{{ i18n "sources_col_stage" }}</th>
+        <th>{{ i18n "sources_col_tier" }}</th>
+        <th>{{ i18n "sources_col_verified" }}</th>
+        <th>{{ i18n "sources_col_age" }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ range $allRows }}
+      <tr>
+        <td><a href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ .url }}</a></td>
+        <td>{{ .stageTitle }}</td>
+        <td><span class="tier-chip" data-type="{{ .type }}">{{ i18n (printf "tier_%s" .type) }}</span></td>
+        <td><span class="asof" data-age="{{ .age }}">{{ .lastChecked }}</span></td>
+        <td><span class="asof" data-age="{{ .age }}">{{ .days }}d</span></td>
+      </tr>
+      {{ end }}
+    </tbody>
+  </table>
+</noscript>
+
+<script>
+(function () {
+  const ROWS = {{ $allRows | jsonify }};
+  const TIER_LABELS = {
+    official:      {{ i18n "tier_official"      | jsonify }},
+    supranational: {{ i18n "tier_supranational" | jsonify }},
+    community:     {{ i18n "tier_community"     | jsonify }},
+  };
+  const DAYS_AGO   = {{ i18n "sources_days_ago"   | jsonify }};
+  const STAGE_LABEL = {{ i18n "sources_stage_label" | jsonify }};
+
+  function domain(url) {
+    try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return url; }
+  }
+
+  window.sourcesTable = function () {
+    return {
+      ascending: true,
+      rows: ROWS.map(r => ({
+        ...r,
+        domain:     domain(r.url),
+        tierLabel:  TIER_LABELS[r.type] || r.type,
+        daysLabel:  DAYS_AGO.replace('{n}', r.days),
+        stageLabel: STAGE_LABEL.replace('{n}', r.stageN),
+      })),
+      get sorted() {
+        return [...this.rows].sort((a, b) => this.ascending ? a.days - b.days : b.days - a.days);
+      },
+      toggleSort() { this.ascending = !this.ascending; },
+    };
+  };
+})();
+</script>
+{{ end }}

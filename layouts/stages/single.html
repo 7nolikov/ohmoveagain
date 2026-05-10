@@ -15,6 +15,19 @@
 {{- $categoryNames := .Params.categoryNames -}}
 {{- $claimStrings := .Params.claimStrings | default dict -}}
 {{- $w := .Weight -}}
+{{- $howToSteps := slice -}}
+{{- range $data.checklist -}}
+  {{- $howToSteps = $howToSteps | append (dict "@type" "HowToStep" "name" (index $categoryNames .id | default .id)) -}}
+{{- end -}}
+{{- if $howToSteps -}}
+{{- $howTo := dict
+  "@context"    "https://schema.org"
+  "@type"       "HowTo"
+  "name"        .Title
+  "description" (default site.Params.description .Description)
+  "step"        $howToSteps | jsonify -}}
+{{ printf "<script type=\"application/ld+json\">%s</script>" $howTo | safeHTML }}
+{{- end -}}
 
 {{- /* Per-stage factual one-liner — replaces the algorithmic trust pill.
        Reports raw counts (sources, distinct tiers, oldest verified date)

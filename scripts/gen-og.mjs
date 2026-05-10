@@ -90,11 +90,11 @@ writePng(path.join(STATIC_OG, 'calculator.png'), card({
 
 // Per-stage
 const STAGES = [
-  { n: 1, slug: 'assessment',     title: 'Assessment',     subtitle: 'Tax math, visa pathway, and reality check before you commit.' },
-  { n: 2, slug: 'pre-flight',     title: 'Pre-Flight',     subtitle: 'Apostilles, background checks, pet and family paperwork.' },
-  { n: 3, slug: 'migration',      title: 'Migration',      subtitle: 'Border crossing and your first 72 hours.' },
-  { n: 4, slug: 'initialization', title: 'Initialization', subtitle: 'OIB, address registration, bank account, HZZO health insurance.' },
-  { n: 5, slug: 'scaling',        title: 'Scaling',        subtitle: 'Business structure (paušalni obrt, d.o.o.), tax optimisation.' },
+  { n: 1, slug: 'assessment',     title: 'Assessment',     subtitle: '183 days or Croatian center-of-life triggers tax residency before you intend it.' },
+  { n: 2, slug: 'pre-flight',     title: 'Pre-Flight',     subtitle: 'Apostille first, then translate — consulates reject the reverse order.' },
+  { n: 3, slug: 'migration',      title: 'Migration',      subtitle: 'Notify your bank before you fly — geo-change triggers card freezes mid-arrival.' },
+  { n: 4, slug: 'initialization', title: 'Initialization', subtitle: 'Sign the work contract before you open the bank — without it, non-resident account only.' },
+  { n: 5, slug: 'scaling',        title: 'Scaling',        subtitle: 'Watch the paušalni obrt revenue ceiling — crossing mid-year forces a messy structure switch.' },
 ];
 
 for (const s of STAGES) {
