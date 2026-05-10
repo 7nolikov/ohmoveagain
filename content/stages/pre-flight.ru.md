@@ -269,7 +269,7 @@ translationMeta:
   sourceLang: en
   targetLang: ru
   sourceFile: content/stages/pre-flight.md
-  sourceHash: 6e8b964405f60bfa8db35d6610039f03b62f3918a6370688c7a62154a04b010a
+  sourceHash: f4fbf0c9aa646278e4ed65aa835acedb3571b71e15f9c377c8a8f70885e7d959
   sourceCommit: cdb2bd3ee079e1609236b8c467dfb7c0bd59580e
   status: auto-updated
 ---
