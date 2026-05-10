@@ -206,8 +206,12 @@ claimStrings:
 
 Everything you need *before* you board. Apostilled birth certificates, criminal background checks, translated diplomas, pet paperwork, housing shortlist, and an initial look at banks. Expect this stage to take roughly twice as long as you first estimate.
 
+<div x-data x-show="!$store.prog || $store.prog.profile.pets !== 'none'" x-cloak>
+
 {{< pet-gantt >}}
 
 <div id="pet-countdown"></div>
 
 {{< pet-countdown >}}
+
+</div>
