@@ -8,6 +8,8 @@ The core product is **the Pipeline** — a five-stage, source-linked framework t
 
 **Live site:** https://7nolikov.dev/ohmoveagain/
 
+![ohmoveagain demo — multi-persona filter and runway calculator](static/og/demo.gif)
+
 ## Trust model
 
 This project provides **source traceability**, not a guarantee of correctness.
