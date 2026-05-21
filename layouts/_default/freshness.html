@@ -20,7 +20,7 @@
   {{- with .stats }}
   <p class="verified-note">
     <strong>{{ .contributorCount }}</strong> {{ i18n "freshness_contributors" .contributorCount }} ·
-    {{ i18n "freshness_last_commit" }} <strong>{{ if eq .lastCommitDays 0 }}{{ i18n "footer_ribbon_today" }}{{ else if eq .lastCommitDays 1 }}{{ i18n "footer_ribbon_day_ago" }}{{ else }}{{ i18n "footer_ribbon_days_ago" .lastCommitDays }}{{ end }}</strong> ·
+    {{ i18n "freshness_last_commit" }} <strong>{{ dateFormat "Jan 2, 2006" (time .lastCommitDate) }}</strong> ·
     <strong>{{ .recentUpdates }}</strong> {{ i18n "freshness_commits" .recentUpdates }} {{ i18n "freshness_stats_90d" }}
   </p>
   {{- end }}
