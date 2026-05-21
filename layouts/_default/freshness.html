@@ -19,6 +19,7 @@
   {{- $feedURL := "freshness.xml" | relLangURL }}
   <p class="freshness-feed-cta">
     <a class="btn secondary btn-sm" href="{{ $feedURL }}" rel="alternate" type="application/atom+xml">{{ i18n "freshness_feed_cta" }}</a>
+    <a class="btn secondary btn-sm" href="{{ "sources/" | relLangURL }}">{{ i18n "freshness_sources_cta" }}</a>
     <span class="dim">{{ i18n "freshness_feed_cta_desc" }}</span>
   </p>
 

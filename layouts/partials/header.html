@@ -2,7 +2,7 @@
 {{- with .File }}{{- $pageKey = .ContentBaseName -}}{{- end -}}
 {{- $isPipeline := or .IsHome (eq $pageKey "pipeline") (eq .Section "stages") -}}
 {{- $isCalculator := eq $pageKey "calculator" -}}
-{{- $isResource := in (slice "offices" "forms" "contribute" "subscribe" "arrival" "exit") $pageKey -}}
+{{- $isResource := in (slice "sources" "offices" "forms" "contribute" "subscribe" "arrival" "exit") $pageKey -}}
 <header class="top">
   <div class="top-inner">
     <a class="brand" href="{{ site.Home.RelPermalink }}" aria-label="ohmoveagain home">ohmoveagain</a>
@@ -16,10 +16,14 @@
           <span class="nav-caret" aria-hidden="true">⌄</span>
         </summary>
         <div class="nav-menu-panel" role="list">
-          <a role="listitem" class="{{ if eq $pageKey "arrival" }}active{{ end }}" href="{{ "arrival/" | relLangURL }}"{{ if eq $pageKey "arrival" }} aria-current="page"{{ end }}>{{ i18n "nav_arrival" }}</a>
-          <a role="listitem" class="{{ if eq $pageKey "exit" }}active{{ end }}" href="{{ "exit/" | relLangURL }}"{{ if eq $pageKey "exit" }} aria-current="page"{{ end }}>{{ i18n "nav_exit" }}</a>
+          {{- /* Reference cluster — Sources first (trust moat), then directories */ -}}
+          <a role="listitem" class="{{ if eq $pageKey "sources" }}active{{ end }}" href="{{ "sources/" | relLangURL }}"{{ if eq $pageKey "sources" }} aria-current="page"{{ end }}>{{ i18n "nav_sources" }}</a>
           <a role="listitem" class="{{ if eq $pageKey "offices" }}active{{ end }}" href="{{ "offices/" | relLangURL }}"{{ if eq $pageKey "offices" }} aria-current="page"{{ end }}>{{ i18n "nav_offices" }}</a>
           <a role="listitem" class="{{ if eq $pageKey "forms" }}active{{ end }}" href="{{ "forms/" | relLangURL }}"{{ if eq $pageKey "forms" }} aria-current="page"{{ end }}>{{ i18n "nav_forms" }}</a>
+          {{- /* Stage-shaped content */ -}}
+          <a role="listitem" class="{{ if eq $pageKey "arrival" }}active{{ end }}" href="{{ "arrival/" | relLangURL }}"{{ if eq $pageKey "arrival" }} aria-current="page"{{ end }}>{{ i18n "nav_arrival" }}</a>
+          <a role="listitem" class="{{ if eq $pageKey "exit" }}active{{ end }}" href="{{ "exit/" | relLangURL }}"{{ if eq $pageKey "exit" }} aria-current="page"{{ end }}>{{ i18n "nav_exit" }}</a>
+          {{- /* Meta */ -}}
           <a role="listitem" class="{{ if eq $pageKey "contribute" }}active{{ end }}" href="{{ "contribute/" | relLangURL }}"{{ if eq $pageKey "contribute" }} aria-current="page"{{ end }}>{{ i18n "nav_contribute" }}</a>
           <a role="listitem" class="{{ if eq $pageKey "subscribe" }}active{{ end }}" href="{{ "subscribe/" | relLangURL }}"{{ if eq $pageKey "subscribe" }} aria-current="page"{{ end }}>{{ i18n "nav_subscribe" }}</a>
         </div>
