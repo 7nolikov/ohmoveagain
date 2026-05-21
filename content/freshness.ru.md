@@ -4,6 +4,7 @@ subtitle: "Когда каждый источник был проверен в �
 description: "Даты проверки источников по этапам и по странам. Цветовая разметка, чтобы сразу видеть, что свежее, а что нужно перепроверить."
 layout: "freshness"
 outputs: ["HTML", "freshnessfeed"]
+noindex: true
 sitemap:
-  priority: 0.4
+  disable: true
 ---

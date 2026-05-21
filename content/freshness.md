@@ -4,6 +4,7 @@ subtitle: "When every source was last verified — auto-derived from the data, n
 description: "Per-stage and per-country source verification dates. Color-coded so you can see at a glance what's fresh and what needs re-verification."
 layout: "freshness"
 outputs: ["HTML", "freshnessfeed"]
+noindex: true
 sitemap:
-  priority: 0.4
+  disable: true
 ---

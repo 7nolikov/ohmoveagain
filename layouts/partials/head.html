@@ -64,3 +64,7 @@
 {{- $freshnessFeed := "freshness.xml" | relLangURL }}
 <link rel="alternate" type="application/atom+xml" href="{{ $freshnessFeed }}" title="{{ site.Title }} — source freshness feed">
 
+{{- if not (or .Params.noindex (in (slice "taxonomy" "term") .Kind)) }}
+{{- partial "jsonld.html" . }}
+{{- end }}
+

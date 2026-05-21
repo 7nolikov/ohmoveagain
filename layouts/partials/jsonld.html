@@ -1,0 +1,92 @@
+{{- /*
+  Complementary JSON-LD — adds schemas the per-page layouts don't already emit.
+    - Home: Organization (layouts/index.html already emits WebSite)
+    - Pipeline: HowTo with 5 stages as steps (overrides the existing WebPage-only emit)
+    - Stage / Forms single / Calculator / Sources / Offices / Arrival / Exit / Contribute / Pet-Gantt: BreadcrumbList
+  Per-layout files still emit their primary type (WebSite, Article, WebPage, etc).
+*/ -}}
+{{- $home := site.Home.Permalink -}}
+{{- $brand := site.Title -}}
+{{- $github := default "" site.Params.githubURL -}}
+{{- $logo := "favicon.svg" | absURL -}}
+
+{{- /* Home: Organization */ -}}
+{{- if .IsHome -}}
+{{- $org := dict
+  "@context" "https://schema.org"
+  "@type"    "Organization"
+  "name"     $brand
+  "url"      $home
+  "logo"     $logo
+  "sameAs"   (slice $github) | jsonify -}}
+{{ printf "<script type=\"application/ld+json\">%s</script>" $org | safeHTML }}
+{{- end -}}
+
+{{- /* Pipeline page: HowTo with proper stage steps */ -}}
+{{- with .File -}}{{- if eq .ContentBaseName "pipeline" -}}
+{{- $stages := (where site.RegularPages "Section" "stages").ByWeight -}}
+{{- $steps := slice -}}
+{{- range $i, $s := $stages -}}
+  {{- $steps = $steps | append (dict
+    "@type"    "HowToStep"
+    "position" (add $i 1)
+    "name"     $s.Title
+    "text"     (default site.Params.description $s.Description)
+    "url"      $s.Permalink) -}}
+{{- end -}}
+{{- $howto := dict
+  "@context"    "https://schema.org"
+  "@type"       "HowTo"
+  "name"        (printf "How to move to Croatia — %d-stage Pipeline" (len $stages))
+  "description" (default site.Params.description $.Description)
+  "totalTime"   "P6M"
+  "inLanguage"  site.Language.Lang
+  "step"        $steps | jsonify -}}
+{{ printf "<script type=\"application/ld+json\">%s</script>" $howto | safeHTML }}
+{{- end -}}{{- end -}}
+
+{{- /* BreadcrumbList — emitted for sub-pages.
+       Builds the breadcrumb chain based on page type. */ -}}
+{{- $crumbs := slice -}}
+
+{{- /* Stage single page: Home > Pipeline > Stage */ -}}
+{{- if and (eq .Section "stages") (ne .Kind "section") (ne .Kind "home") -}}
+{{- $crumbs = slice
+  (dict "@type" "ListItem" "position" 1 "name" $brand "item" $home)
+  (dict "@type" "ListItem" "position" 2 "name" "Pipeline" "item" (printf "%spipeline/" $home))
+  (dict "@type" "ListItem" "position" 3 "name" .Title    "item" .Permalink) -}}
+{{- end -}}
+
+{{- /* Forms single page: Home > Forms > Form */ -}}
+{{- if and (eq .Section "forms") (ne .Kind "section") -}}
+{{- $crumbs = slice
+  (dict "@type" "ListItem" "position" 1 "name" $brand "item" $home)
+  (dict "@type" "ListItem" "position" 2 "name" "Forms" "item" (printf "%sforms/" $home))
+  (dict "@type" "ListItem" "position" 3 "name" .Title  "item" .Permalink) -}}
+{{- end -}}
+
+{{- /* Top-level pages with their own breadcrumb (Home > Page) */ -}}
+{{- with .File -}}
+{{- $base := .ContentBaseName -}}
+{{- $topLevel := slice "calculator" "sources" "offices" "arrival" "exit" "contribute" "pet-gantt" "pipeline" -}}
+{{- if in $topLevel $base -}}
+{{- $crumbs = slice
+  (dict "@type" "ListItem" "position" 1 "name" $brand "item" $home)
+  (dict "@type" "ListItem" "position" 2 "name" $.Title "item" $.Permalink) -}}
+{{- end -}}
+{{- end -}}
+
+{{- /* Forms section index: Home > Forms */ -}}
+{{- if and (eq .Section "forms") (eq .Kind "section") -}}
+{{- $crumbs = slice
+  (dict "@type" "ListItem" "position" 1 "name" $brand "item" $home)
+  (dict "@type" "ListItem" "position" 2 "name" .Title "item" .Permalink) -}}
+{{- end -}}
+
+{{- if $crumbs -}}
+{{- $bc := dict
+  "@context"        "https://schema.org"
+  "@type"           "BreadcrumbList"
+  "itemListElement" $crumbs | jsonify -}}
+{{ printf "<script type=\"application/ld+json\">%s</script>" $bc | safeHTML }}
+{{- end -}}
