@@ -1,7 +1,7 @@
 ---
 title: "Migration"
 subtitle: "Make the crossing: border entry, first 72 hours on the ground, no undo button."
-description: "Border crossing, temporary accommodation, first 72 hours on the ground. Keep every original document on your person, not in checked luggage."
+description: "Croatia relocation Migration stage: border crossing into Croatia, temporary accommodation, first 72 hours on the ground. Keep every original document on your person, not in checked luggage."
 weight: 3
 sitemap:
   priority: 0.9

@@ -1,7 +1,7 @@
 ---
 title: "Pre-Flight"
 subtitle: "Collect and apostille every document before you board."
-description: "Everything you need before you board. Apostilles, criminal background checks, translated diplomas, proof of accommodation, pet and family paperwork."
+description: "Croatia relocation Pre-Flight stage: apostilles, criminal background check, translated diploma, accommodation proof, and pet and family paperwork — every document you need before boarding."
 weight: 2
 sitemap:
   priority: 0.9
