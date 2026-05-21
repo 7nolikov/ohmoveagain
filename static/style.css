@@ -2193,6 +2193,16 @@ header.top {
 .verified-inline[data-age="aging"] { color: var(--warn); }
 .verified-inline[data-age="stale"] { color: var(--err); font-weight: 600; }
 .verified-rel { color: inherit; opacity: 0.85; }
+a.verified-blame {
+  text-decoration: none;
+  border-bottom: 1px dotted currentColor;
+  cursor: help;
+}
+a.verified-blame:hover,
+a.verified-blame:focus-visible {
+  text-decoration: none;
+  border-bottom-style: solid;
+}
 .verified-stale {
   margin-left: 4px;
   padding: 1px 5px;

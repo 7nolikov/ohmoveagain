@@ -47,6 +47,18 @@ disableKinds = ["taxonomy", "term"]
   home = ["HTML", "RSS", "robots"]
   section = ["HTML"]
 
+[mediaTypes]
+  [mediaTypes."application/atom+xml"]
+    suffixes = ["xml"]
+
+[outputFormats]
+  [outputFormats.freshnessfeed]
+    mediaType = "application/atom+xml"
+    baseName = "freshness"
+    isPlainText = false
+    rel = "alternate"
+    noUgly = true
+
 [sitemap]
   changefreq = "weekly"
   priority = 0.5

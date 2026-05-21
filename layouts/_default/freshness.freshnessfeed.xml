@@ -1,0 +1,108 @@
+{{- /*
+  Stale-source Atom feed — one entry per checklist source across all stages
+  and the calculator's per-country sources. Sorted by lastChecked/asOf
+  ascending so the oldest (stalest) verification appears first.
+
+  Subscribe in expat Slack / Discord / RSS readers to get notified when a
+  source's age bucket flips (fresh ≤180d → aging 181–365d → stale >365d).
+*/ -}}
+{{- $feedURL := "freshness.xml" | absLangURL -}}
+
+{{- /* Collect entries: { date, slug, kind, label, url, stagePath } */ -}}
+{{- $entries := slice -}}
+
+{{- /* Per-stage sources + inline checklist-item sources */ -}}
+{{- range $slug, $sd := hugo.Data.stages -}}
+  {{- $stagePages := where site.RegularPages "Section" "stages" -}}
+  {{- $stagePages = where $stagePages "File.ContentBaseName" $slug -}}
+  {{- $stagePath := "" -}}
+  {{- $stageTitle := $slug -}}
+  {{- with index $stagePages 0 -}}
+    {{- $stagePath = .Permalink -}}
+    {{- $stageTitle = .Title -}}
+  {{- end -}}
+
+  {{- range $src := $sd.sources -}}
+    {{- with $src.lastChecked -}}
+      {{- $entries = $entries | append (dict
+        "date" .
+        "slug" $slug
+        "stageTitle" $stageTitle
+        "kind" "source"
+        "id" $src.id
+        "url" $src.url
+        "type" (default "" $src.type)
+        "stagePath" $stagePath) -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- range $cat := $sd.checklist -}}
+    {{- range $item := $cat.items -}}
+      {{- with $item.source -}}
+        {{- with .asOf -}}
+          {{- $entries = $entries | append (dict
+            "date" .
+            "slug" $slug
+            "stageTitle" $stageTitle
+            "kind" "item-source"
+            "id" $item.id
+            "url" $item.source.url
+            "type" ""
+            "stagePath" $stagePath) -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Calculator country sources */ -}}
+{{- $calculatorPath := printf "%scalculator/" site.BaseURL -}}
+{{- range $country := hugo.Data.countries -}}
+  {{- with $country.source -}}
+    {{- with .asOf -}}
+      {{- $entries = $entries | append (dict
+        "date" .
+        "slug" $country.code
+        "stageTitle" "Runway calculator"
+        "kind" "country"
+        "id" $country.code
+        "url" $country.source.url
+        "type" "official"
+        "stagePath" $calculatorPath) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Sort: oldest verification date first (stalest at the top of the feed) */ -}}
+{{- $entries = sort $entries "date" "asc" -}}
+
+{{- $latest := "1970-01-01" -}}
+{{- range $entries -}}
+  {{- if gt .date $latest -}}{{- $latest = .date -}}{{- end -}}
+{{- end -}}
+{{ printf "<?xml version=\"1.0\" encoding=\"utf-8\"?>" | safeHTML }}
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="{{ site.Language.Lang }}">
+  <title>{{ site.Title }} — source freshness</title>
+  <subtitle>Sources verified for ohmoveagain checklists, sorted oldest-first. New entry whenever a verification date changes.</subtitle>
+  <id>{{ $feedURL }}</id>
+  <link rel="self" type="application/atom+xml" href="{{ $feedURL }}"/>
+  <link rel="alternate" type="text/html" href="{{ .Permalink }}"/>
+  <updated>{{ dateFormat "2006-01-02T15:04:05Z" (time.AsTime $latest) }}</updated>
+  <generator uri="https://gohugo.io/">Hugo</generator>
+  {{- range $entry := $entries }}
+  {{- $d := div (sub now.Unix (time.AsTime $entry.date).Unix) 86400 -}}
+  {{- $bucket := cond (gt $d 365) "stale" (cond (gt $d 180) "aging" "fresh") -}}
+  {{- $entryID := printf "%s#%s:%s:%s" $feedURL $entry.slug $entry.kind $entry.id -}}
+  <entry>
+    <title>[{{ $bucket }}] {{ $entry.stageTitle }} · {{ $entry.id }} · verified {{ $entry.date }}</title>
+    <id>{{ $entryID }}</id>
+    <link rel="alternate" type="text/html" href="{{ $entry.url }}"/>
+    <link rel="related" type="text/html" href="{{ $entry.stagePath }}"/>
+    <updated>{{ dateFormat "2006-01-02T15:04:05Z" (time.AsTime $entry.date) }}</updated>
+    <published>{{ dateFormat "2006-01-02T15:04:05Z" (time.AsTime $entry.date) }}</published>
+    <category term="{{ $bucket }}"/>
+    {{- if $entry.type }}<category term="{{ $entry.type }}"/>{{ end }}
+    <summary type="text">{{ $entry.stageTitle }} — source "{{ $entry.id }}" last verified {{ $entry.date }} ({{ $d }} days ago, bucket: {{ $bucket }}). URL: {{ $entry.url }}</summary>
+  </entry>
+  {{- end }}
+</feed>

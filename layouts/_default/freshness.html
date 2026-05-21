@@ -16,6 +16,12 @@
   <h1>{{ .Title }}</h1>
   {{ with .Params.subtitle }}<p class="subtitle">{{ . }}</p>{{ end }}
 
+  {{- $feedURL := "freshness.xml" | relLangURL }}
+  <p class="freshness-feed-cta">
+    <a class="btn secondary btn-sm" href="{{ $feedURL }}" rel="alternate" type="application/atom+xml">{{ i18n "freshness_feed_cta" }}</a>
+    <span class="dim">{{ i18n "freshness_feed_cta_desc" }}</span>
+  </p>
+
   {{- with hugo.Data.build }}
   {{- with .stats }}
   <p class="verified-note">

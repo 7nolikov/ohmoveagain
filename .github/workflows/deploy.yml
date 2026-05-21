@@ -45,6 +45,9 @@ jobs:
       - name: Check source freshness (asOf dates)
         run: node scripts/check-staleness.mjs
 
+      - name: Generate source-line map (for GitHub blame links)
+        run: node scripts/gen-source-lines.mjs
+
       - name: Generate build data (stats + changelog)
         run: node scripts/gen-build-data.mjs
 

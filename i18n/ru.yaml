@@ -80,6 +80,7 @@ trust_age_days_ago:
 trust_stale_inline: "устарел"
 trust_methodology_link: "Как это проверяется? →"
 trust_consequence_label: "Если ошибка"
+trust_blame_title: "Открыть строку YAML, где была установлена эта дата (GitHub blame)"
 
 # Trust v2 — per-stage factual one-liner (replaces algorithmic pill)
 trust_strip_sources:
@@ -240,6 +241,10 @@ footer_disclaimer: "Контент носит ориентировочный х�
 footer_source_code: "Исходный код"
 footer_contribute: "Участвовать"
 footer_freshness: "Актуальность"
+footer_freshness_feed: "Лента актуальности"
+footer_freshness_feed_title: "Atom-лента — подписка на обновления проверки источников"
+freshness_feed_cta: "Подписаться на Atom-ленту"
+freshness_feed_cta_desc: "Новая запись при каждом изменении даты проверки. Сначала — самые старые."
 footer_methodology: "Методология"
 footer_subscribe: "Подписаться"
 footer_edit_page: "✎ Редактировать на GitHub"

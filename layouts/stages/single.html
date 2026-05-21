@@ -137,12 +137,20 @@
         {{- end }}
       {{- end }}
 
-      {{/* Unified source-line params — claim-based or inline-source path */}}
+      {{/* Unified source-line params — claim-based or inline-source path.
+           blameUrl: deep-link to the YAML line where the verification date
+           was set (provenance), built from data/source_lines.yaml. */}}
       {{- $srcLineParams := dict -}}
+      {{- $blameBase := printf "%s/blame/main/data/stages/%s.yaml" site.Params.githubURL $slug -}}
+      {{- $slugLines := index (default dict hugo.Data.source_lines.stages) $slug | default dict -}}
       {{- if $claim.sourceId -}}
-        {{- $srcLineParams = dict "url" $src.url "label" (index $strings "sourceLabel") "date" $src.lastChecked "type" $src.type -}}
+        {{- $ln := index (default dict $slugLines.sources) $claim.sourceId | default 0 -}}
+        {{- $blameUrl := "" -}}{{- if $ln -}}{{- $blameUrl = printf "%s#L%d" $blameBase $ln -}}{{- end -}}
+        {{- $srcLineParams = dict "url" $src.url "label" (index $strings "sourceLabel") "date" $src.lastChecked "type" $src.type "blameUrl" $blameUrl -}}
       {{- else if $item.source -}}
-        {{- $srcLineParams = dict "url" $item.source.url "label" (index $strings "sourceLabel") "date" $item.source.asOf -}}
+        {{- $ln := index (default dict $slugLines.items) $item.id | default 0 -}}
+        {{- $blameUrl := "" -}}{{- if $ln -}}{{- $blameUrl = printf "%s#L%d" $blameBase $ln -}}{{- end -}}
+        {{- $srcLineParams = dict "url" $item.source.url "label" (index $strings "sourceLabel") "date" $item.source.asOf "blameUrl" $blameUrl -}}
       {{- end -}}
 
       {{- /* Per-claim translatable strings, used both above-the-fold (consequence)

@@ -78,6 +78,7 @@ trust_age_days_ago:
 trust_stale_inline: "stale"
 trust_methodology_link: "How is this verified? →"
 trust_consequence_label: "If wrong"
+trust_blame_title: "Open the YAML line where this date was set (GitHub blame)"
 
 # Trust v2 — per-stage factual one-liner (replaces algorithmic pill)
 trust_strip_sources:
@@ -234,6 +235,10 @@ footer_disclaimer: "Content is directional — always verify with an official so
 footer_source_code: "Source code"
 footer_contribute: "Contribute"
 footer_freshness: "Freshness"
+footer_freshness_feed: "Freshness feed"
+footer_freshness_feed_title: "Atom feed — subscribe to source verification updates"
+freshness_feed_cta: "Subscribe to the Atom feed"
+freshness_feed_cta_desc: "New entry whenever a verification date changes. Sorted oldest-first."
 footer_methodology: "Methodology"
 footer_subscribe: "Subscribe"
 footer_edit_page: "✎ Edit this page on GitHub"

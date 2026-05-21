@@ -61,3 +61,6 @@
 {{ with .OutputFormats.Get "RSS" -}}
 <link rel="alternate" type="application/rss+xml" href="{{ .RelPermalink }}" title="{{ site.Title }}">
 {{- end }}
+{{- $freshnessFeed := "freshness.xml" | relLangURL }}
+<link rel="alternate" type="application/atom+xml" href="{{ $freshnessFeed }}" title="{{ site.Title }} — source freshness feed">
+
