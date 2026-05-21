@@ -443,6 +443,16 @@ sources_sort_newest: "Sort newest first"
 sources_days_ago: "{n}d ago"
 sources_stage_label: "Stage {n}"
 
+# /sources/ — "Verified by" contributor wall
+verified_by_tagline: "Who verified these sources"
+verified_by_h2: "Verified by"
+verified_by_intro: "Every commit to data/stages/ or data/countries.yaml is a verification act. These are the people who have done it."
+verified_by_commits:
+  one: "1 commit"
+  other: "{{ . }} commits"
+verified_by_cta: "How to contribute →"
+verified_by_cta_desc: "Open a PR with a verified date update — your handle will appear here on the next deploy."
+
 # Pet Gantt shortcode
 pg_caption: "EU pet travel sequence — dependency timeline before flight"
 pg_source_eu_listed: "EU Commission — non-EU listed countries"

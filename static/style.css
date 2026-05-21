@@ -2321,6 +2321,97 @@ a.verified-blame:focus-visible {
   margin-bottom: 12px;
 }
 
+/* Verified-by contributor wall */
+.verified-by {
+  margin: 24px 0 32px;
+  padding: 16px 18px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.verified-by h2 {
+  margin-top: 0;
+}
+.contributor-wall {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+  margin: 14px 0 0;
+}
+.contributor-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-alt);
+}
+.contributor-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  color: var(--fg);
+  text-decoration: none;
+  border-radius: var(--radius);
+}
+.contributor-link:hover,
+.contributor-link:focus-visible {
+  text-decoration: none;
+  border-color: var(--accent-dim);
+  background: rgba(126, 231, 135, 0.04);
+}
+.contributor-link-static { cursor: default; }
+.contributor-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  background: var(--border);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 1rem;
+}
+.contributor-avatar-empty {
+  font-family: var(--mono);
+}
+.contributor-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.contributor-name {
+  font-weight: 600;
+  color: var(--fg);
+  font-size: 0.92rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.contributor-count {
+  color: var(--fg-muted);
+  font-size: 0.78rem;
+  font-family: var(--mono);
+}
+.contributor-cta {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.86rem;
+}
+.freshness-feed-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0 16px;
+  font-size: 0.86rem;
+}
+
 .sources-table {
   width: 100%;
   border-collapse: collapse;

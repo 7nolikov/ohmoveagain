@@ -34,6 +34,46 @@
   <p class="subtitle">{{ i18n "sources_desc" }}</p>
 </section>
 
+{{- $verified := default (slice) hugo.Data.build.verifiedBy -}}
+{{- if $verified }}
+<section class="verified-by" aria-labelledby="verified-by-h">
+  <div class="tagline">{{ i18n "verified_by_tagline" }}</div>
+  <h2 id="verified-by-h">{{ i18n "verified_by_h2" }}</h2>
+  <p class="dim">{{ i18n "verified_by_intro" }}</p>
+  <ul class="contributor-wall" role="list">
+    {{- range $verified }}
+    <li class="contributor-card">
+      {{- if .profileUrl }}
+      <a class="contributor-link" href="{{ .profileUrl }}" rel="noopener noreferrer" target="_blank">
+        {{- if .avatarUrl }}
+        <img class="contributor-avatar" src="{{ .avatarUrl }}" alt="" width="40" height="40" loading="lazy" referrerpolicy="no-referrer">
+        {{- else }}
+        <span class="contributor-avatar contributor-avatar-empty" aria-hidden="true">{{ substr .name 0 1 | upper }}</span>
+        {{- end }}
+        <span class="contributor-meta">
+          <span class="contributor-name">{{ if .ghUsername }}@{{ .ghUsername }}{{ else }}{{ .name }}{{ end }}</span>
+          <span class="contributor-count">{{ i18n "verified_by_commits" .commits }}</span>
+        </span>
+      </a>
+      {{- else }}
+      <span class="contributor-link contributor-link-static">
+        <span class="contributor-avatar contributor-avatar-empty" aria-hidden="true">{{ substr .name 0 1 | upper }}</span>
+        <span class="contributor-meta">
+          <span class="contributor-name">{{ .name }}</span>
+          <span class="contributor-count">{{ i18n "verified_by_commits" .commits }}</span>
+        </span>
+      </span>
+      {{- end }}
+    </li>
+    {{- end }}
+  </ul>
+  <p class="contributor-cta">
+    <a class="btn secondary btn-sm" href="{{ site.Params.githubURL }}/blob/main/CONTRIBUTING-i18n.md" rel="noopener noreferrer">{{ i18n "verified_by_cta" }}</a>
+    <span class="dim">{{ i18n "verified_by_cta_desc" }}</span>
+  </p>
+</section>
+{{- end }}
+
 <div x-data="sourcesTable()" x-cloak>
   <div class="sources-controls">
     <button class="btn-ghost" type="button" @click="toggleSort()">

@@ -449,6 +449,18 @@ sources_sort_newest: "Сначала новые"
 sources_days_ago: "{n} д. назад"
 sources_stage_label: "Этап {n}"
 
+# /sources/ — стена «Verified by»
+verified_by_tagline: "Кто проверял эти источники"
+verified_by_h2: "Проверено"
+verified_by_intro: "Каждый коммит в data/stages/ или data/countries.yaml — это акт проверки. Здесь — люди, которые это делали."
+verified_by_commits:
+  one: "1 коммит"
+  few: "{{ . }} коммита"
+  many: "{{ . }} коммитов"
+  other: "{{ . }} коммита"
+verified_by_cta: "Как участвовать →"
+verified_by_cta_desc: "Откройте PR с обновлённой датой проверки — ваш профиль появится здесь после следующего деплоя."
+
 # Pet Gantt shortcode
 pg_caption: "Перевозка питомца в ЕС — последовательность действий до вылета"
 pg_source_eu_listed: "Еврокомиссия — страны, не входящие в список ЕС"
