@@ -1,10 +1,11 @@
 <footer class="foot">
   {{- with hugo.Data.build }}
+  {{- $verifiedCount := len (default (slice) .verifiedBy) }}
   {{- with .stats }}
   <p class="activity-ribbon">
     <span class="ribbon-prompt">$</span>
-    {{- if gt .contributorCount 1 }}
-    <span class="ribbon-item"><span class="ribbon-key">{{ i18n "footer_ribbon_contributors" }}:</span> <span class="ribbon-val">{{ .contributorCount }}</span></span>
+    {{- if ge $verifiedCount 2 }}
+    <span class="ribbon-item"><span class="ribbon-key">{{ i18n "footer_ribbon_verified_by" }}:</span> <a class="ribbon-val ribbon-link" href="{{ "sources/#verified-by" | relLangURL }}">{{ $verifiedCount }}</a></span>
     <span class="ribbon-sep">·</span>
     {{- end }}
     <span class="ribbon-item"><span class="ribbon-key">{{ i18n "footer_ribbon_last_commit" }}:</span> <span class="ribbon-val">{{ dateFormat "Jan 2, 2006" (time .lastCommitDate) }}</span></span>

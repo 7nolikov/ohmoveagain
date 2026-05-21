@@ -34,9 +34,13 @@
   <p class="subtitle">{{ i18n "sources_desc" }}</p>
 </section>
 
+{{- /* Gate the contributor wall until we have ≥2 data committers.
+       Otherwise a wall-of-one reads as self-credit. The wall flips on
+       automatically once a second human commits to data/stages/ or
+       data/countries.yaml. */ -}}
 {{- $verified := default (slice) hugo.Data.build.verifiedBy -}}
-{{- if $verified }}
-<section class="verified-by" aria-labelledby="verified-by-h">
+{{- if ge (len $verified) 2 }}
+<section id="verified-by" class="verified-by" aria-labelledby="verified-by-h">
   <div class="tagline">{{ i18n "verified_by_tagline" }}</div>
   <h2 id="verified-by-h">{{ i18n "verified_by_h2" }}</h2>
   <p class="dim">{{ i18n "verified_by_intro" }}</p>

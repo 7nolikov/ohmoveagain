@@ -282,6 +282,7 @@ hk_privacy: "Progress is stored locally in your browser (localStorage). Nothing 
 
 # Footer activity ribbon
 footer_ribbon_contributors: "contributors"
+footer_ribbon_verified_by: "verified by"
 footer_ribbon_last_commit: "last commit"
 footer_ribbon_today: "today"
 footer_ribbon_day_ago: "1 day ago"

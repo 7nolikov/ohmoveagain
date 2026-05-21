@@ -288,6 +288,7 @@ hk_privacy: "Прогресс сохраняется локально в бра�
 
 # Footer activity ribbon
 footer_ribbon_contributors: "контрибьюторов"
+footer_ribbon_verified_by: "проверено"
 footer_ribbon_last_commit: "последний коммит"
 footer_ribbon_today: "сегодня"
 footer_ribbon_day_ago: "1 день назад"
