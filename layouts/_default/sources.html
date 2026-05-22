@@ -136,14 +136,14 @@
 
 <script>
 (function () {
-  const ROWS = {{ $allRows | jsonify }};
+  const ROWS = {{ $allRows | jsonify | safeJS }};
   const TIER_LABELS = {
-    official:      {{ i18n "tier_official"      | jsonify }},
-    supranational: {{ i18n "tier_supranational" | jsonify }},
-    community:     {{ i18n "tier_community"     | jsonify }},
+    official:      {{ i18n "tier_official"      | jsonify | safeJS }},
+    supranational: {{ i18n "tier_supranational" | jsonify | safeJS }},
+    community:     {{ i18n "tier_community"     | jsonify | safeJS }},
   };
-  const DAYS_AGO   = {{ i18n "sources_days_ago"   | jsonify }};
-  const STAGE_LABEL = {{ i18n "sources_stage_label" | jsonify }};
+  const DAYS_AGO   = {{ i18n "sources_days_ago"   | jsonify | safeJS }};
+  const STAGE_LABEL = {{ i18n "sources_stage_label" | jsonify | safeJS }};
 
   function domain(url) {
     try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return url; }

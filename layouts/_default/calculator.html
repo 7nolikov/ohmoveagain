@@ -150,21 +150,21 @@
   window.OHMA_FEES_TOTAL = {{ $feeTotal }};
   window.OHMA_FEES = {{ $fees | jsonify | safeJS }};
   window.OHMA_CALC_I18N = {
-    monthsPerYear:     {{ i18n "calc_result_months" | jsonify }},
-    shareTitle:        {{ i18n "calc_share_title" | jsonify }},
-    btnCopyShare:      {{ i18n "calc_btn_copy_share" | jsonify }},
-    btnCopied:         {{ i18n "calc_btn_copied" | jsonify }},
-    btnShareX:         {{ i18n "calc_btn_share_x" | jsonify }},
-    btnCopyLink:       {{ i18n "calc_btn_copy_link" | jsonify }},
-    btnLinkCopied:     {{ i18n "calc_btn_link_copied" | jsonify }},
-    errorCopy:         {{ i18n "calc_error_copy" | jsonify }},
-    disclaimer:        {{ i18n "calc_disclaimer" | jsonify }},
-    errNoIncome:       {{ i18n "calc_err_no_income" | jsonify }},
-    errTooLarge:       {{ i18n "calc_err_too_large" | jsonify }},
-    errBothCountries:  {{ i18n "calc_err_both_countries" | jsonify }},
-    errSameCountry:    {{ i18n "calc_err_same_country" | jsonify }},
-    errUnknownCode:    {{ i18n "calc_err_unknown_code" | jsonify }},
-    shareLineTemplate: {{ i18n "calc_share_line_template" | jsonify }},
+    monthsPerYear:     {{ i18n "calc_result_months" | jsonify | safeJS }},
+    shareTitle:        {{ i18n "calc_share_title" | jsonify | safeJS }},
+    btnCopyShare:      {{ i18n "calc_btn_copy_share" | jsonify | safeJS }},
+    btnCopied:         {{ i18n "calc_btn_copied" | jsonify | safeJS }},
+    btnShareX:         {{ i18n "calc_btn_share_x" | jsonify | safeJS }},
+    btnCopyLink:       {{ i18n "calc_btn_copy_link" | jsonify | safeJS }},
+    btnLinkCopied:     {{ i18n "calc_btn_link_copied" | jsonify | safeJS }},
+    errorCopy:         {{ i18n "calc_error_copy" | jsonify | safeJS }},
+    disclaimer:        {{ i18n "calc_disclaimer" | jsonify | safeJS }},
+    errNoIncome:       {{ i18n "calc_err_no_income" | jsonify | safeJS }},
+    errTooLarge:       {{ i18n "calc_err_too_large" | jsonify | safeJS }},
+    errBothCountries:  {{ i18n "calc_err_both_countries" | jsonify | safeJS }},
+    errSameCountry:    {{ i18n "calc_err_same_country" | jsonify | safeJS }},
+    errUnknownCode:    {{ i18n "calc_err_unknown_code" | jsonify | safeJS }},
+    shareLineTemplate: {{ i18n "calc_share_line_template" | jsonify | safeJS }},
   };
   function calcApp() {
     const t = window.OHMA_CALC_I18N || {};

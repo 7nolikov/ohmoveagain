@@ -49,22 +49,22 @@
 
 <script>
 window.OHMA_PET_I18N = {
-  stepMissed:  {{ i18n "pc_step_missed" | jsonify }},
-  stepUrgent:  {{ i18n "pc_step_urgent" | jsonify }},
-  stepOk:      {{ i18n "pc_step_ok" | jsonify }},
-  daysFuture:  {{ i18n "pc_days_future" | jsonify }},
-  daysToday:   {{ i18n "pc_days_today" | jsonify }},
-  daysAgo:     {{ i18n "pc_days_ago" | jsonify }},
-  step1Label:  {{ i18n "pc_step1_label" | jsonify }},
-  step1Note:   {{ i18n "pc_step1_note" | jsonify }},
-  step2Label:  {{ i18n "pc_step2_label" | jsonify }},
-  step2Note:   {{ i18n "pc_step2_note" | jsonify }},
-  step3Label:  {{ i18n "pc_step3_label" | jsonify }},
-  step3Note:   {{ i18n "pc_step3_note" | jsonify }},
-  step4Label:  {{ i18n "pc_step4_label" | jsonify }},
-  step4Note:   {{ i18n "pc_step4_note" | jsonify }},
-  step5Label:  {{ i18n "pc_step5_label" | jsonify }},
-  step5Note:   {{ i18n "pc_step5_note" | jsonify }},
+  stepMissed:  {{ i18n "pc_step_missed" | jsonify | safeJS }},
+  stepUrgent:  {{ i18n "pc_step_urgent" | jsonify | safeJS }},
+  stepOk:      {{ i18n "pc_step_ok" | jsonify | safeJS }},
+  daysFuture:  {{ i18n "pc_days_future" | jsonify | safeJS }},
+  daysToday:   {{ i18n "pc_days_today" | jsonify | safeJS }},
+  daysAgo:     {{ i18n "pc_days_ago" | jsonify | safeJS }},
+  step1Label:  {{ i18n "pc_step1_label" | jsonify | safeJS }},
+  step1Note:   {{ i18n "pc_step1_note" | jsonify | safeJS }},
+  step2Label:  {{ i18n "pc_step2_label" | jsonify | safeJS }},
+  step2Note:   {{ i18n "pc_step2_note" | jsonify | safeJS }},
+  step3Label:  {{ i18n "pc_step3_label" | jsonify | safeJS }},
+  step3Note:   {{ i18n "pc_step3_note" | jsonify | safeJS }},
+  step4Label:  {{ i18n "pc_step4_label" | jsonify | safeJS }},
+  step4Note:   {{ i18n "pc_step4_note" | jsonify | safeJS }},
+  step5Label:  {{ i18n "pc_step5_label" | jsonify | safeJS }},
+  step5Note:   {{ i18n "pc_step5_note" | jsonify | safeJS }},
 };
 function petCountdown() {
   const p = window.OHMA_PET_I18N || {};

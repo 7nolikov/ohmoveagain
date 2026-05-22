@@ -51,10 +51,10 @@
 
 <script>
 window.OHMA_I18N_EXPORT = {
-  pipelineTitle: {{ i18n "export_pipeline_md_title" | jsonify }},
-  stagePrefix: {{ i18n "export_stage_md_prefix" | jsonify }},
-  stageOf: {{ i18n "export_stage_md_of" | jsonify }},
-  resetAllConfirm: {{ i18n "reset_all_confirm" | jsonify }},
+  pipelineTitle: {{ i18n "export_pipeline_md_title" | jsonify | safeJS }},
+  stagePrefix: {{ i18n "export_stage_md_prefix" | jsonify | safeJS }},
+  stageOf: {{ i18n "export_stage_md_of" | jsonify | safeJS }},
+  resetAllConfirm: {{ i18n "reset_all_confirm" | jsonify | safeJS }},
 };
 window._ohmaStagesURL = {{ ((.OutputFormats.Get "json").RelPermalink) | jsonify | safeJS }};
 async function exportPipeline() {
