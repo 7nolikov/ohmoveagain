@@ -109,7 +109,7 @@ function validateTranslatedPayload(payload, englishPayload) {
   }
 }
 
-async function translatePayload(englishPayload, existingRuPayload) {
+async function translatePayloadOnce(englishPayload, existingRuPayload) {
   const topKeys = Object.keys(englishPayload || {}).join(', ');
   const system = [
     'You are a professional product translator.',
@@ -198,6 +198,20 @@ async function translatePayload(englishPayload, existingRuPayload) {
 
   const normalized = normalizeTranslatedPayload(parsed, englishPayload);
   return enforceGlossary(cleanStrings(normalized));
+}
+
+async function translatePayload(englishPayload, existingRuPayload) {
+  try {
+    return await translatePayloadOnce(englishPayload, existingRuPayload);
+  } catch (err) {
+    // 413 means the combined EN+RU payload exceeds the model's token limit.
+    // Retry without the existing translation to halve the request size.
+    if (existingRuPayload && err.message.includes('413')) {
+      console.warn('payload too large with existing RU — retrying without it');
+      return await translatePayloadOnce(englishPayload, null);
+    }
+    throw err;
+  }
 }
 
 const commit = gitSha();
