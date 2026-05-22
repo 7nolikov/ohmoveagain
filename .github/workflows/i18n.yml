@@ -10,6 +10,9 @@ on:
     paths:
       - 'content/stages/**/*.md'
       - 'data/i18n/**'
+  # Manual re-run: lets the pipeline pick up script-only fixes (e.g. payload
+  # chunking) that don't touch the content/data paths above.
+  workflow_dispatch:
 
 concurrency:
   group: i18n-${{ github.ref }}
@@ -51,7 +54,7 @@ jobs:
         run: npm run i18n:freshness
 
       - name: Open PR for translation changes
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         run: |
           if git diff --quiet; then
             echo "no translation changes"
