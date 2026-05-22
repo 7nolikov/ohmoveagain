@@ -214,6 +214,107 @@ async function translatePayload(englishPayload, existingRuPayload) {
   }
 }
 
+// ── Chunked translation ───────────────────────────────────────────────────────
+// GitHub Models caps a request at 8000 tokens. Large stage files (pre-flight.md)
+// exceed that once the English + existing Russian payloads are sent together, so
+// the payload is split into smaller partial payloads, translated, and merged.
+
+const MAX_PAYLOAD_CHARS = 6500;
+
+const isMap = (v) => v && typeof v === 'object' && !Array.isArray(v);
+const valueSize = (v) => JSON.stringify(v ?? null).length;
+
+// Split a payload into partial payloads below the char budget. A map-valued key
+// that exceeds the budget on its own is split entry-by-entry under the same key.
+function chunkPayload(payload) {
+  const chunks = [];
+  let current = {};
+  let currentSize = 0;
+
+  const flush = () => {
+    if (Object.keys(current).length) {
+      chunks.push(current);
+      current = {};
+      currentSize = 0;
+    }
+  };
+
+  for (const [key, value] of Object.entries(payload)) {
+    const size = valueSize(value);
+
+    if (isMap(value) && size > MAX_PAYLOAD_CHARS) {
+      flush();
+      let batch = {};
+      let batchSize = 0;
+      for (const [entryKey, entryValue] of Object.entries(value)) {
+        const entrySize = valueSize(entryValue);
+        if (batchSize + entrySize > MAX_PAYLOAD_CHARS && Object.keys(batch).length) {
+          chunks.push({ [key]: batch });
+          batch = {};
+          batchSize = 0;
+        }
+        batch[entryKey] = entryValue;
+        batchSize += entrySize;
+      }
+      if (Object.keys(batch).length) chunks.push({ [key]: batch });
+      continue;
+    }
+
+    if (currentSize + size > MAX_PAYLOAD_CHARS && Object.keys(current).length) flush();
+    current[key] = value;
+    currentSize += size;
+  }
+  flush();
+  return chunks;
+}
+
+// Extract the slice of an existing Russian payload matching a chunk, so the
+// model can still improve prior wording instead of rewriting from scratch.
+function sliceExisting(chunk, existingRuPayload) {
+  if (!existingRuPayload) return null;
+  const slice = {};
+  for (const [key, value] of Object.entries(chunk)) {
+    const ruValue = existingRuPayload[key];
+    if (ruValue === undefined) continue;
+    if (isMap(value) && isMap(ruValue)) {
+      const sub = {};
+      for (const entryKey of Object.keys(value)) {
+        if (ruValue[entryKey] !== undefined) sub[entryKey] = ruValue[entryKey];
+      }
+      slice[key] = sub;
+    } else {
+      slice[key] = ruValue;
+    }
+  }
+  return Object.keys(slice).length ? slice : null;
+}
+
+// Merge a translated chunk into the accumulator. A split map key appears across
+// multiple chunks, so its entries are combined rather than overwritten.
+function mergeTranslatedChunk(target, chunk) {
+  for (const [key, value] of Object.entries(chunk)) {
+    if (isMap(value) && isMap(target[key])) {
+      Object.assign(target[key], value);
+    } else {
+      target[key] = value;
+    }
+  }
+}
+
+async function translatePayloadChunked(englishPayload, existingRuPayload) {
+  const chunks = chunkPayload(englishPayload);
+  if (chunks.length <= 1) {
+    return translatePayload(englishPayload, existingRuPayload);
+  }
+  console.log(`payload split into ${chunks.length} chunks`);
+  const merged = {};
+  for (const chunk of chunks) {
+    const translatedChunk = await translatePayload(chunk, sliceExisting(chunk, existingRuPayload));
+    mergeTranslatedChunk(merged, translatedChunk);
+  }
+  return merged;
+}
+
 const commit = gitSha();
 
 for (const file of listEnglishStageFiles()) {
@@ -234,7 +335,7 @@ for (const file of listEnglishStageFiles()) {
 
   let translated;
   try {
-    translated = await translatePayload(enPayload, existingPayload);
+    translated = await translatePayloadChunked(enPayload, existingPayload);
     validateTranslatedPayload(translated, enPayload);
   } catch (error) {
     if (existingPayload) {
@@ -305,7 +406,7 @@ for (const surface of PAGE_CONTENT_SURFACES) {
 
   let translated;
   try {
-    translated = await translatePayload(enPayload, existingPayload);
+    translated = await translatePayloadChunked(enPayload, existingPayload);
     validateTranslatedPayload(translated, enPayload);
   } catch (error) {
     if (existingPayload) {
@@ -388,7 +489,7 @@ for (const surface of I18N_DATA_SURFACES) {
 
   let translated;
   try {
-    translated = await translatePayload(enPayload, existingPayload);
+    translated = await translatePayloadChunked(enPayload, existingPayload);
     validateTranslatedPayload(translated, enPayload);
   } catch (error) {
     if (existingPayload) {
