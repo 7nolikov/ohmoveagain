@@ -5,7 +5,9 @@ sitemap:
   priority: 0.9
 title: Переезд
 subtitle: "Совершите переезд: пересечение границы, первые 72 часа на месте, отмены нет."
-description: "Этап переезда в Хорватию: пересечение границы, временное жильё, первые 72 часа на месте. Все оригиналы документов держите при себе, не в зарегистрированном багаже."
+description: "Этап переезда в Хорватию: пересечение границы, временное жильё,
+  первые 72 часа на месте. Все оригиналы документов держите при себе, не в
+  зарегистрированном багаже."
 duration: 3–10 дней
 requires:
   - "Этап 2 завершён: все апостилированные документы, переводы и визовые бумаги
@@ -129,8 +131,8 @@ translationMeta:
   sourceLang: en
   targetLang: ru
   sourceFile: content/stages/migration.md
-  sourceHash: c8a5cac6ffab49a28a01304db0c0a3d8703aa3e40c195570c8698faa184b7e55
-  sourceCommit: ab40a23ef76472a4459174e8168f6ee85d257a20
+  sourceHash: 81567ad355d2a536df4c14e94eeaf5bbd4dcadd61582e197b9b2a24c48e60cff
+  sourceCommit: 524b16469a4e541372d7317398caacb31e74ebf7
   status: auto-updated
 ---
 
