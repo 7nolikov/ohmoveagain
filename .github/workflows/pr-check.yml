@@ -5,10 +5,12 @@ on:
     branches: [main]
     paths-ignore:
       - 'i18n/**'
-      - 'content/**'
       - 'data/i18n/**'
       - 'launch/**'
-      - '**.md'
+      # Root-level docs only (README, DECISIONS, etc.).
+      # content/**/*.md is NOT ignored — translation/content edits render and
+      # must run the a11y + Lighthouse + E2E gate.
+      - '*.md'
 
 concurrency:
   group: pr-check-${{ github.ref }}
