@@ -69,7 +69,10 @@ jobs:
           git commit -m "chore(i18n): auto-sync translations"
           git push origin "$BRANCH" --force
 
-          if ! gh pr view "$BRANCH" --json number -q .number 2>/dev/null; then
+          # Filter by state=open — gh pr view returns merged PRs too, so a
+          # previously-merged PR on this fixed branch would otherwise block
+          # every future re-sync from opening a new PR.
+          if [ -z "$(gh pr list --state open --head "$BRANCH" --json number -q '.[].number')" ]; then
             gh pr create \
               --title "chore(i18n): auto-sync translations" \
               --body "Automated translation sync. Review translated strings before merging — LLM output flows into \`safeHTML\`/\`safeJS\` templates." \
