@@ -1,0 +1,70 @@
+name: Staleness watch
+
+# Runs weekly. Opens a GitHub issue listing sources within 30d of their tier
+# staleness threshold (or already past it), so the maintainer can re-verify
+# before the next build-break. Build-break on CI remains the hard safety net.
+#
+# Tiers and their fail thresholds (A-TR7):
+#   official      365d   →  warn at 335d
+#   supranational 180d   →  warn at 150d
+#   community      90d   →  warn at  60d
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'   # every Monday 09:00 UTC
+  workflow_dispatch:       # manual trigger for testing
+
+permissions:
+  issues: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Run staleness check (JSON)
+        id: check
+        run: |
+          node scripts/check-staleness.mjs --json > /tmp/staleness.json
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+        # Do not fail the workflow — issues are opened instead
+        continue-on-error: true
+
+      - name: Open issue if sources need attention
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          FAILS=$(node -e "const d=require('/tmp/staleness.json'); process.stdout.write(String(d.fails.length))")
+          WARNS=$(node -e "const d=require('/tmp/staleness.json'); process.stdout.write(String(d.warns.length))")
+
+          if [ "$FAILS" -eq 0 ] && [ "$WARNS" -eq 0 ]; then
+            echo "No staleness findings — skipping issue creation."
+            exit 0
+          fi
+
+          BODY=$(node -e "
+            const d = require('/tmp/staleness.json');
+            const fmt = (f) => {
+              const tier = f.tier ? \` (\${f.tier})\` : '';
+              const ctx = f.source ? \` — source: \${f.source}\` : f.claim ? \` — claim: \${f.claim}\` : '';
+              return \`- \${f.level} \${f.file}\${tier}: \${f.kind}=\${f.date || ''}, age=\${f.age}d\${ctx}\`;
+            };
+            const lines = [...d.fails.map(fmt), ...d.warns.map(fmt)];
+            process.stdout.write(lines.join('\n'));
+          ")
+
+          WEEK=$(date +%Y-W%V)
+          TITLE="Staleness watch ${WEEK}: ${FAILS} failed, ${WARNS} approaching"
+
+          gh issue create \
+            --title "\$TITLE" \
+            --body "$(printf "Sources that need re-verification before they break the build.\n\n%s\n\nRun \`node scripts/check-staleness.mjs\` locally for full output." "$BODY")" \
+            --label "staleness"
