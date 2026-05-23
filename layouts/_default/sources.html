@@ -78,7 +78,7 @@
 </section>
 {{- end }}
 
-<div x-data="sourcesTable()" x-cloak>
+<div x-data="sourcesTable()" style="visibility:hidden;min-height:{{ add 80 (mul (len $allRows) 40) }}px" x-init="$el.style.visibility=''">
   <div class="sources-controls">
     <button class="btn-ghost" type="button" @click="toggleSort()">
       <span x-text="ascending ? {{ i18n "sources_sort_oldest" | jsonify }} : {{ i18n "sources_sort_newest" | jsonify }}"></span>

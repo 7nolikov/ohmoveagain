@@ -35,7 +35,6 @@ html, body {
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  overflow-x: hidden;
 }
 
 a { color: var(--link); text-decoration: none; }
@@ -59,7 +58,7 @@ code, pre, kbd {
   background: var(--bg-alt);
   border-radius: 4px;
 }
-code { padding: 1px 6px; font-size: 0.95em; color: var(--accent); }
+code { padding: 1px 6px; font-size: 0.95em; color: var(--accent); overflow-wrap: break-word; }
 pre  { padding: 12px 14px; overflow-x: auto; border: 1px solid var(--border); font-size: 0.9rem; }
 
 hr { border: 0; border-top: 1px solid var(--border); margin: 2em 0; }
@@ -84,9 +83,7 @@ header.top {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgba(11, 14, 15, 0.92);
-  backdrop-filter: saturate(1.2) blur(6px);
-  -webkit-backdrop-filter: saturate(1.2) blur(6px);
+  background: rgba(11, 14, 15, 0.96);
   border-bottom: 1px solid var(--border);
 }
 .top-inner {
@@ -585,7 +582,7 @@ header.top {
   margin: 10px 0;
 }
 .result .delta.neg { color: var(--err); }
-.result .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .result table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.9rem; }
 @media (max-width: 640px) {
   .result table th, .result table td { padding: 5px 6px; font-size: 0.82rem; }
@@ -1227,12 +1224,13 @@ html.hk-open { overflow: hidden; }
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 14px 16px;
+  min-width: 0;
 }
 .office-authority { font-size: 0.75rem; color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
 .office-name { font-size: 0.95rem; margin: 0 0 10px; color: var(--accent); }
 .office-details { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 0.85rem; margin: 0; }
 .office-details dt { color: var(--fg-muted); font-weight: 500; }
-.office-details dd { margin: 0; color: var(--fg); }
+.office-details dd { margin: 0; color: var(--fg); min-width: 0; overflow-wrap: break-word; }
 .office-note { font-size: 0.8rem; color: var(--fg-dim); }
 .office-verified { font-size: 0.75rem; color: var(--fg-muted); margin: 10px 0 0; }
 
