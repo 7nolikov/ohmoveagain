@@ -1755,6 +1755,31 @@ header.top {
     top: 104px;
   }
 }
+
+/* More menu: collapses Resources + GitHub + Lang into one tap target at narrow widths */
+.more-menu { display: none; }
+
+@media (max-width: 430px) {
+  .resources-menu,
+  .nav-star,
+  .lang-menu { display: none; }
+
+  .more-menu { display: inline-flex; }
+
+  .nav {
+    grid-template-columns: 1fr 1fr auto;
+  }
+}
+
+.more-panel-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 4px 0;
+}
+
+.more-github-link {
+  gap: 8px;
+}
 /* Home page overview and tool routing. */
 .home-map {
   display: grid;

@@ -6,6 +6,7 @@ import { STAGES_DIR, listEnglishStageFiles, localizedPath, loadStage, saveStage,
 const token = process.env.GITHUB_TOKEN;
 const model = process.env.GITHUB_MODELS_MODEL || 'openai/gpt-4.1';
 const glossary = JSON.parse(fs.readFileSync('data/i18n/glossary.ru.json', 'utf8'));
+const POLISH = process.argv.includes('--polish');
 
 if (!token) {
   console.error('GITHUB_TOKEN is required');
@@ -315,6 +316,68 @@ async function translatePayloadChunked(englishPayload, existingRuPayload) {
   return merged;
 }
 
+// ── Polish pass (--polish flag) ───────────────────────────────────────────────
+// Second LLM call that critiques the first-pass Russian output for stilted
+// phrasing, calques, and unnatural word order; returns revised JSON.
+
+async function polishOnce(russianPayload, englishPayload) {
+  const topKeys = Object.keys(russianPayload || {}).join(', ');
+  const system = [
+    'You are a senior Russian editor reviewing a machine translation for a relocation guide.',
+    'Critique the Russian text for stilted phrasing, calques from English, and unnatural word order.',
+    'Return improved JSON with identical structure — same keys, same types, same array lengths.',
+    `Top-level keys must be exactly: ${topKeys}.`,
+    'Return the JSON object directly — no wrapper key.',
+    '',
+    'Common issues to fix:',
+    '- Nominal/passive constructions where the translation should be imperative (Считайте, Подавайте, Берите, …)',
+    '- English calques: "является обязательным" → "обязателен", "в случае если" → "если", "осуществить" → "сделать"',
+    '- Bureaucratic filler that bloats a terse original',
+    '- Unnatural compound nouns or Anglicisms that have common Russian equivalents',
+    '',
+    'Keep unchanged:',
+    '- All glossary-locked terms (apostille, sworn translation, OIB, HZZO, MUP, paušalni obrt, d.o.o., etc.)',
+    '- Product names: ohmoveagain, Pipeline',
+    '- All i18n template variables such as {{.SomeName}} or {{ .Value }}',
+    '',
+    'Output must be valid JSON.',
+  ].join('\n');
+
+  const user = JSON.stringify({ english: englishPayload, russian: russianPayload }, null, 2);
+
+  const res = await fetch('https://models.github.ai/inference/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ model, temperature: 0.1, messages: [{ role: 'system', content: system }, { role: 'user', content: user }] })
+  });
+
+  if (!res.ok) throw new Error(`polish request failed: ${res.status} ${await res.text()}`);
+  const data = await res.json();
+  let text = data?.choices?.[0]?.message?.content?.trim();
+  if (!text) throw new Error('empty polish response');
+  if (text.startsWith('```')) text = text.replace(/^```[a-z]*\n?/i, '').replace(/```$/, '').trim();
+  const firstBrace = text.indexOf('{');
+  const lastBrace = text.lastIndexOf('}');
+  if (firstBrace !== -1 && lastBrace !== -1) text = text.slice(firstBrace, lastBrace + 1);
+  let parsed;
+  try { parsed = JSON.parse(text); } catch { throw new Error('Invalid JSON from polish model'); }
+  const normalized = normalizeTranslatedPayload(parsed, russianPayload);
+  return enforceGlossary(cleanStrings(normalized));
+}
+
+async function polishPayloadChunked(russianPayload, englishPayload) {
+  const chunks = chunkPayload(englishPayload);
+  if (chunks.length <= 1) return polishOnce(russianPayload, englishPayload);
+  console.log(`polish: payload split into ${chunks.length} chunks`);
+  const merged = {};
+  for (const chunk of chunks) {
+    const ruSlice = sliceExisting(chunk, russianPayload) || chunk;
+    const polishedChunk = await polishOnce(ruSlice, chunk);
+    mergeTranslatedChunk(merged, polishedChunk);
+  }
+  return merged;
+}
+
 const commit = gitSha();
 
 for (const file of listEnglishStageFiles()) {
@@ -355,6 +418,15 @@ for (const file of listEnglishStageFiles()) {
     console.error(`shape mismatch for ${file}`);
     for (const e of shapeErrors) console.error(`- ${e}`);
     process.exit(1);
+  }
+
+  if (POLISH) {
+    try {
+      translated = await polishPayloadChunked(translated, enPayload);
+      console.log('polished', ruPath);
+    } catch (error) {
+      console.warn(`polish failed for ${file}; keeping unpolished: ${error.message}`);
+    }
   }
 
   const { body: translatedBody, ...translatedFrontmatter } = translated;
@@ -426,6 +498,15 @@ for (const surface of PAGE_CONTENT_SURFACES) {
     console.error(`shape mismatch for ${enPath}`);
     for (const e of shapeErrors) console.error(`- ${e}`);
     process.exit(1);
+  }
+
+  if (POLISH) {
+    try {
+      translated = await polishPayloadChunked(translated, enPayload);
+      console.log('polished', ruPath);
+    } catch (error) {
+      console.warn(`polish failed for ${enPath}; keeping unpolished: ${error.message}`);
+    }
   }
 
   const { body: translatedBody, [surface.stringsKey]: translatedStrings, title: translatedTitle, description: translatedDescription } = translated;
@@ -509,6 +590,15 @@ for (const surface of I18N_DATA_SURFACES) {
     console.error(`shape mismatch for ${enPath}`);
     for (const e of shapeErrors) console.error(`- ${e}`);
     process.exit(1);
+  }
+
+  if (POLISH) {
+    try {
+      translated = await polishPayloadChunked(translated, enPayload);
+      console.log('polished', ruPath);
+    } catch (error) {
+      console.warn(`polish failed for ${enPath}; keeping unpolished: ${error.message}`);
+    }
   }
 
   const out = {
