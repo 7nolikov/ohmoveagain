@@ -155,7 +155,7 @@ Pull from based on launch signal:
 
 **Components:**
 - `scripts/i18n-lib.mjs` — shared: `translationPayload`, `sourceHash` (SHA-256 over normalized payload), `compareShape` (recursive structural diff)
-- `scripts/sync-ru-translations.mjs` — walks `content/stages/*.md`, skips if `<slug>.ru.md`'s `translationMeta.sourceHash` matches; otherwise calls GitHub Models `openai/gpt-4o`, normalizes wrapper keys (`translatedPayload`, `translation`, `ru`), fills missing top-level keys from the English payload, enforces glossary via regex pass, validates shape, writes with `{ slug, weight, sitemap, ...frontMatter, translationMeta }` preserving machine keys
+- `scripts/sync-ru-translations.mjs` — walks `content/stages/*.md`, skips if `<slug>.ru.md`'s `translationMeta.sourceHash` matches; otherwise calls GitHub Models (`openai/gpt-4.1` by default, override via `GITHUB_MODELS_MODEL`), normalizes wrapper keys (`translatedPayload`, `translation`, `ru`), fills missing top-level keys from the English payload, enforces glossary via regex pass, validates shape, writes with `{ slug, weight, sitemap, ...frontMatter, translationMeta }` preserving machine keys
 - `scripts/check-i18n-parity.mjs` — build guard: per-language shape must match English
 - `scripts/check-i18n-freshness.mjs` — build guard: `translationMeta.sourceHash` must match current English hash
 - `data/i18n/glossary.ru.json` — terminology pins applied both as model prompt and post-response regex
@@ -167,11 +167,11 @@ Pull from based on launch signal:
 
 **Why no human-in-the-loop:** solo-maintained project. Every manual gate is a broken promise waiting to happen. Quality is guarded structurally: glossary pins + shape validation + freshness checks. Human edits go into `<slug>.ru.md` directly and survive until the English hash next changes.
 
-**Known gap:** `translationPayload` does NOT cover `data/stages/*.yaml` strings (`impact`, `explanation`, `conflictNote` on trust claims; `i18n/ru.yaml` UI strings; `content/_index.ru.md` body). RU pages leak English in trust details and nav. Tracked in `EXECUTION_PLAN.md` Sprints 7 + 8.
+**Known gap:** `translationPayload` does NOT cover `data/stages/*.yaml` trust-claim strings (`impact`, `explanation`, `conflictNote`). UI chrome (`i18n/ru.yaml`) and `content/_index.ru.md` body are now covered; `data/countries.yaml` + `data/fees.yaml` strings were closed by §10A. Trust-claim strings remain open; same fix pattern as §10A applies and is tracked as a P2 item in `EXECUTION_PLAN.md` (A-TR11 family).
 
 ---
 
-## 11. Reference-data translation pattern — addendum to §9 (locked 2026-05-04, Fix A)
+## 10A. Reference-data translation pattern — addendum to §9–§10 (locked 2026-05-04, Fix A)
 
 **Context:** The Q6 Track B QA pass surfaced English content rendering on `/ru/forms/`, `/ru/offices/`, `/ru/calculator/` (country `note` cells), and `/ru/freshness/` (country names). Root cause was the same in every case: layouts read translatable strings (`title`, `note`, `name`, etc.) directly from language-agnostic `data/*.yaml` files. The §9 parity rule covers template strings; it didn't have an opinion on translatable *data* fields, so the gap accumulated quietly until launch QA.
 

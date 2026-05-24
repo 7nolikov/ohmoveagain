@@ -173,7 +173,7 @@ scripts/
   i18n-lib.mjs                  # shared helpers (translationPayload, hash, shape compare)
 
 static/                         # CSS, favicons, OG image
-.github/workflows/              # deploy.yml, i18n.yml, linkcheck.yml, pr-check.yml
+.github/workflows/              # deploy.yml, i18n.yml, linkcheck.yml, pr-check.yml, staleness-watch.yml
 ```
 
 ## Content model
@@ -194,7 +194,7 @@ The project separates **structural facts** from **translatable strings**.
 
 The template (`layouts/stages/single.html`) merges the two at build time via item ID lookup. A URL fix is a single YAML edit that propagates to every language; a translation is a strings-only change with zero drift surface.
 
-> Current gap: trust-layer free-form strings (`impact`, `explanation`, `conflictNote` on claims) still live in the data YAML and render in English on `/ru/` pages. Tracked in `EXECUTION_PLAN.md` Sprint 8.
+> Current gap: trust-layer free-form strings (`impact`, `explanation`, `conflictNote` on claims) still live in the data YAML and render in English on `/ru/` pages. See `DECISIONS.md` §10A for the pattern that closed the same gap on `data/countries.yaml` and `data/fees.yaml`; the trust-claim equivalent is tracked as a P2 item in `EXECUTION_PLAN.md`.
 
 ## i18n pipeline
 
@@ -281,6 +281,9 @@ flowchart TD
 - `i18n.yml` — runs when `content/stages/**` or `data/i18n/**` change; opens an auto-sync PR via `github-actions[bot]`.
 - `pr-check.yml` — fast structural checks on pull requests.
 - `linkcheck.yml` — weekly lychee-action; broken links auto-open an issue.
+- `staleness-watch.yml` — scheduled job that opens GitHub issues ~30 days before any `lastChecked` / `asOf` date crosses its tier-based threshold, so the build-fail in `check-staleness.mjs` is preceded by a tracking issue rather than a surprise CI failure.
+
+All `uses:` references in these workflows are pinned to 40-char commit SHAs per `DECISIONS.md` §16, with the human-readable tag in a trailing comment. Dependabot keeps the pins current.
 
 ## Contributing
 
