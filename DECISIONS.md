@@ -287,6 +287,24 @@ Pull from based on launch signal:
 
 ---
 
+## 16. GitHub Actions — pin every third-party action to a commit SHA (2026-05-23)
+
+**Decision:** every `uses:` line in `.github/workflows/*.yml` references a full 40-char commit SHA, with the human-readable tag in a trailing comment. Mutable tag refs (`@v4`, `@main`, `@latest`) are not allowed, including for first-party `actions/*` actions.
+
+**Format:**
+```yaml
+- uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # actions/checkout@v6.0.2
+```
+
+**Why:** the May 2026 `actions-cool/issues-helper` supply chain attack worked by moving every release tag of a popular action to an attacker-controlled "imposter commit" outside the repo's branch history. Every workflow referencing the action by tag pulled the malicious code on its next run, exfiltrating workflow secrets from runner memory. SHA pinning is the only mitigation: a SHA can't be moved, so a compromised tag is a no-op for pinned workflows. The repo's other four workflows were already pinned; `staleness-watch.yml` was the lone outlier and got fixed in the same commit as this lock.
+
+**How to apply:**
+- Any new `uses:` line in a workflow file uses `<owner>/<repo>@<40-char-sha> # <owner>/<repo>@<tag>`. Reviewers reject `@v4`-style refs even from first-party actions.
+- Dependabot (`.github/dependabot.yml`, `package-ecosystem: github-actions`, weekly) keeps SHAs current and preserves the version comment when it opens PRs.
+- When manually bumping, copy the SHA from GitHub's release page or `gh api repos/<owner>/<repo>/git/refs/tags/<tag>` and update the comment to match. Comment and SHA must agree — a stale comment makes the next audit unreadable.
+
+---
+
 ## Meta rule
 
 **Don't re-open a decision without traction data.** Four reassessments in 24 hours on 2026-04-18→19 produced plans, not launches. The next scope change waits for signal.
