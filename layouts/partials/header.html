@@ -51,36 +51,6 @@
         </div>
       </details>
       {{- end }}
-
-      {{- /* More menu: visible only at ≤430px; consolidates Resources + GitHub + Lang */ -}}
-      <details class="nav-menu more-menu">
-        <summary class="nav-link{{ if $isResource }} active{{ end }}" aria-label="{{ i18n "nav_more" }}">
-          <span aria-hidden="true">⋯</span>
-        </summary>
-        <div class="nav-menu-panel more-menu-panel" role="list" aria-label="{{ i18n "nav_more" }}">
-          <a role="listitem" href="{{ site.Params.githubURL }}" rel="noopener noreferrer" class="more-github-link">
-            <svg class="nav-star-icon" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
-            {{ i18n "nav_support" }}
-          </a>
-          {{- if gt (len $translations) 1 }}
-          <div class="more-panel-divider" role="separator" aria-hidden="true"></div>
-          {{- range $translations }}
-          <a role="listitem" href="{{ .RelPermalink }}" lang="{{ .Language.Lang }}" hreflang="{{ .Language.Lang }}" class="{{ if eq .Language.Lang site.Language.Lang }}active{{ end }}"{{ if eq .Language.Lang site.Language.Lang }} aria-current="page"{{ end }}>
-            <span class="nav-lang-code">{{ .Language.Lang | upper }}</span>
-            <span>{{ .Language.LanguageName }}</span>
-          </a>
-          {{- end }}
-          {{- end }}
-          <div class="more-panel-divider" role="separator" aria-hidden="true"></div>
-          <a role="listitem" class="{{ if eq $pageKey "sources" }}active{{ end }}" href="{{ "sources/" | relLangURL }}"{{ if eq $pageKey "sources" }} aria-current="page"{{ end }}>{{ i18n "nav_sources" }}</a>
-          <a role="listitem" class="{{ if eq $pageKey "offices" }}active{{ end }}" href="{{ "offices/" | relLangURL }}"{{ if eq $pageKey "offices" }} aria-current="page"{{ end }}>{{ i18n "nav_offices" }}</a>
-          <a role="listitem" class="{{ if eq $pageKey "forms" }}active{{ end }}" href="{{ "forms/" | relLangURL }}"{{ if eq $pageKey "forms" }} aria-current="page"{{ end }}>{{ i18n "nav_forms" }}</a>
-          <a role="listitem" class="{{ if eq $pageKey "arrival" }}active{{ end }}" href="{{ "arrival/" | relLangURL }}"{{ if eq $pageKey "arrival" }} aria-current="page"{{ end }}>{{ i18n "nav_arrival" }}</a>
-          <a role="listitem" class="{{ if eq $pageKey "exit" }}active{{ end }}" href="{{ "exit/" | relLangURL }}"{{ if eq $pageKey "exit" }} aria-current="page"{{ end }}>{{ i18n "nav_exit" }}</a>
-          <a role="listitem" class="{{ if eq $pageKey "contribute" }}active{{ end }}" href="{{ "contribute/" | relLangURL }}"{{ if eq $pageKey "contribute" }} aria-current="page"{{ end }}>{{ i18n "nav_contribute" }}</a>
-          <a role="listitem" class="{{ if eq $pageKey "subscribe" }}active{{ end }}" href="{{ "subscribe/" | relLangURL }}"{{ if eq $pageKey "subscribe" }} aria-current="page"{{ end }}>{{ i18n "nav_subscribe" }}</a>
-        </div>
-      </details>
     </nav>
   </div>
 </header>
