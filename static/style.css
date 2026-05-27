@@ -1755,6 +1755,17 @@ header.top {
     top: 104px;
   }
 }
+
+@media (max-width: 460px) {
+  .nav {
+    grid-template-columns: 1fr 1fr 1fr;
+    row-gap: 6px;
+  }
+
+  .nav-star {
+    justify-self: center;
+  }
+}
 /* Home page overview and tool routing. */
 .home-map {
   display: grid;
