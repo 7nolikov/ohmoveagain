@@ -20,6 +20,34 @@
   "logo"     $logo
   "sameAs"   (slice $github) | jsonify -}}
 {{ printf "<script type=\"application/ld+json\">%s</script>" $org | safeHTML }}
+{{- /* Home: WebApplication — the interactive relocation tool itself */ -}}
+{{- $app := dict
+  "@context"            "https://schema.org"
+  "@type"               "WebApplication"
+  "name"                $brand
+  "url"                 $home
+  "description"         site.Params.description
+  "applicationCategory" "TravelApplication"
+  "operatingSystem"     "Web browser"
+  "inLanguage"          (slice "en" "ru")
+  "isAccessibleForFree" true
+  "offers"              (dict "@type" "Offer" "price" "0" "priceCurrency" "USD")
+  "sameAs"              (slice $github)
+  "author"              (dict "@type" "Person" "name" "Dmitrii Novikov" "url" "https://7nolikov.dev/about/") | jsonify -}}
+{{ printf "<script type=\"application/ld+json\">%s</script>" $app | safeHTML }}
+{{- /* Home: FAQPage — built from the same faq_* i18n keys rendered on the page */ -}}
+{{- $faqItems := slice -}}
+{{- range (slice "1" "2" "3" "4" "5") -}}
+  {{- $faqItems = $faqItems | append (dict
+    "@type"          "Question"
+    "name"           (i18n (printf "faq_q%s" .))
+    "acceptedAnswer" (dict "@type" "Answer" "text" (i18n (printf "faq_a%s" .)))) -}}
+{{- end -}}
+{{- $faq := dict
+  "@context"   "https://schema.org"
+  "@type"      "FAQPage"
+  "mainEntity" $faqItems | jsonify -}}
+{{ printf "<script type=\"application/ld+json\">%s</script>" $faq | safeHTML }}
 {{- end -}}
 
 {{- /* Pipeline page: HowTo with proper stage steps */ -}}

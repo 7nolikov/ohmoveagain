@@ -1145,6 +1145,8 @@ html.hk-open { overflow: hidden; }
   .checklist input[type=checkbox] { appearance: auto; width: 12pt; height: 12pt; }
   details > summary { display: none; }
   details[open] > summary { display: block; }
+  .faq details > summary { display: block; }
+  .faq details > p { display: block; }
 
   /* Stage header */
   .stage-head h1 { font-size: 18pt; margin-bottom: 4pt; }
@@ -2445,4 +2447,47 @@ a.verified-blame:focus-visible {
 @media (max-width: 600px) {
   .sources-table th:nth-child(3),
   .sources-table td:nth-child(3) { display: none; }
+}
+
+/* ---------- FAQ (home page) ---------- */
+
+.faq details {
+  border-bottom: 1px solid var(--border);
+}
+
+.faq details:first-of-type {
+  border-top: 1px solid var(--border);
+}
+
+.faq details > summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 14px 0;
+  color: var(--fg);
+  font-size: 0.95rem;
+  font-weight: 600;
+  user-select: none;
+}
+
+.faq details > summary::-webkit-details-marker { display: none; }
+
+.faq details > summary::before {
+  content: "+";
+  flex-shrink: 0;
+  color: var(--accent);
+  font-weight: 700;
+  width: 14px;
+  text-align: center;
+}
+
+.faq details[open] > summary::before { content: "−"; }
+
+.faq details > p {
+  margin: 0 0 14px 24px;
+  color: var(--fg-dim);
+  font-size: 0.9rem;
+  line-height: 1.6;
 }

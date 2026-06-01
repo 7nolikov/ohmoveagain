@@ -69,6 +69,16 @@
   </p>
 </section>
 
+<section aria-labelledby="faq-h" class="faq">
+  <h2 id="faq-h">{{ i18n "faq_h2" }}</h2>
+  {{- range $i := slice "1" "2" "3" "4" "5" }}
+  <details>
+    <summary>{{ i18n (printf "faq_q%s" $i) }}</summary>
+    <p>{{ i18n (printf "faq_a%s" $i) }}</p>
+  </details>
+  {{- end }}
+</section>
+
 <section aria-labelledby="cta-h">
   <h2 id="cta-h">{{ i18n "stay_in_loop_h2" }}</h2>
   <p class="dim">{{ i18n "stay_in_loop_desc" }}</p>
