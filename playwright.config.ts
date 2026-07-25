@@ -31,16 +31,25 @@ export default defineConfig({
       },
 
   projects: [
+    // Device projects run the viewport-dependent suite only — the same
+    // reasoning the no-js project below already applies. smoke/security/i18n
+    // are DOM assertions with no viewport dependency, so running them on
+    // every device was four identical copies of the same work (753 tests
+    // total, of which ~62% were duplicates). `desktop` remains the canonical
+    // full run.
     {
       name: 'iphone-se',
+      testMatch: /mobile\.spec\.ts$/,
       use: { ...devices['iPhone SE'] },
     },
     {
       name: 'pixel-7',
+      testMatch: /mobile\.spec\.ts$/,
       use: { ...devices['Pixel 7'] },
     },
     {
       name: 'ipad-mini',
+      testMatch: /mobile\.spec\.ts$/,
       use: { ...devices['iPad Mini'] },
     },
     {
