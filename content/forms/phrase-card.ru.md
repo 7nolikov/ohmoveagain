@@ -1,8 +1,14 @@
 ---
-title: "Карточка хорватских фраз — приёмы в государственных органах"
+title: Карточка хорватских фраз — приёмы в государственных органах
 layout: printable
 sitemap:
   priority: 0.5
+translationMeta:
+  sourceLang: en
+  targetLang: ru
+  sourceFile: content/forms/phrase-card.md
+  sourceHash: 01b668a75eb12a80911d5d24a57dc1aea19bb64053d9a2795c880c76b04a64c3
+  status: hand-maintained
 ---
 
 **Инструкции:** распечатайте и носите эту карточку на приёмы в MUP, FINA, Porezna uprava и HZZO. Покажите соответствующий раздел сотруднику, если не можете объясниться на хорватском или английском.

@@ -1,7 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { enforceGlossaryInString, enforceGlossaryDeep, localizeInternalLinks } from '../../scripts/i18n-lib.mjs';
+import path from 'node:path';
+import os from 'node:os';
+import { enforceGlossaryInString, enforceGlossaryDeep, localizeInternalLinks, splitFrontMatter, pageSourceHash } from '../../scripts/i18n-lib.mjs';
 
 const glossary = JSON.parse(fs.readFileSync('data/i18n/glossary.ru.json', 'utf8'));
 
@@ -86,4 +88,37 @@ test('leaves external, anchor and already-localized links alone', () => {
 test('link localization is idempotent', () => {
   const once = localizeInternalLinks('See [forms](/forms/) and [home](/).', 'ru');
   assert.equal(localizeInternalLinks(once, 'ru'), once);
+});
+
+// content/_index.ru.md is "---\n---\n" — empty front matter, no body, because
+// the home page renders from templates and the file exists only to make Hugo
+// emit the localized route. splitFrontMatter searched from index 4 and so
+// skipped past the closing delimiter, reporting the file as unterminated.
+test('splitFrontMatter handles empty front matter', () => {
+  const r = splitFrontMatter('---\n---\n');
+  assert.equal(r.frontMatterRaw, '');
+  assert.equal(r.body, '');
+});
+
+test('splitFrontMatter still handles normal and body-less files', () => {
+  assert.deepEqual(splitFrontMatter('---\ntitle: x\n---\nbody here'),
+    { frontMatterRaw: 'title: x', body: 'body here' });
+  assert.deepEqual(splitFrontMatter('---\na: 1\n---\n'),
+    { frontMatterRaw: 'a: 1', body: '' });
+});
+
+test('splitFrontMatter rejects malformed files', () => {
+  assert.throws(() => splitFrontMatter('---\nno close'), /missing closing front matter/);
+  assert.throws(() => splitFrontMatter('no front matter at all'), /missing front matter/);
+});
+
+// A page's hash must ignore its own translationMeta, or stamping a file would
+// change the hash that was just stamped.
+test('pageSourceHash ignores translationMeta', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'i18n-'));
+  const a = path.join(dir, 'a.md');
+  const b = path.join(dir, 'b.md');
+  fs.writeFileSync(a, '---\ntitle: x\n---\nbody\n');
+  fs.writeFileSync(b, '---\ntitle: x\ntranslationMeta:\n  sourceHash: deadbeef\n---\nbody\n');
+  assert.equal(pageSourceHash(a), pageSourceHash(b));
 });
