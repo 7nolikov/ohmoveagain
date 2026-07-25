@@ -12,6 +12,12 @@ permissions:
   contents: read
   issues: write
 
+# Both triggers can fire at once — a manual dispatch while the Sunday cron
+# run is in flight would have two runs filing the same broken-link issue.
+concurrency:
+  group: linkcheck
+  cancel-in-progress: true
+
 # Kept in the same shape as deploy.yml and pr-check.yml — the version was
 # hardcoded here while the other two read an env var, which is exactly how a
 # link check ends up silently auditing a different build than it ships.

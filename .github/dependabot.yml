@@ -1,4 +1,18 @@
 version: 2
+
+# Grouping is defined twice per ecosystem on purpose.
+#
+# `applies-to` defaults to `version-updates`, so the original single group only
+# ever collapsed the weekly version bumps. Security updates were left ungrouped
+# — and `open-pull-requests-limit` does not apply to them and has no ceiling.
+#
+# The result, the first time security alerts were switched on: five separate
+# security PRs at once. Combined with `strict: true` branch protection (a PR
+# must be current with main to merge), every merge put the other four behind,
+# each needing a branch update and a full re-run of the quality suite. Six
+# dependency PRs cost 16 CI runs in one afternoon.
+#
+# Grouping security updates too makes that one PR and one run.
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -7,6 +21,11 @@ updates:
     open-pull-requests-limit: 1
     groups:
       github-actions:
+        applies-to: version-updates
+        patterns:
+          - "*"
+      github-actions-security:
+        applies-to: security-updates
         patterns:
           - "*"
 
@@ -17,5 +36,10 @@ updates:
     open-pull-requests-limit: 1
     groups:
       npm-all:
+        applies-to: version-updates
+        patterns:
+          - "*"
+      npm-security:
+        applies-to: security-updates
         patterns:
           - "*"
