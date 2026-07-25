@@ -30,5 +30,10 @@
     "@resvg/resvg-js": "^2.6.2",
     "browser-driver-manager": "^2.0.1",
     "serve": "^14.2.6"
+  },
+  "overrides": {
+    "tmp": "^0.2.6",
+    "uuid": "^11.1.1",
+    "js-yaml": "^3.15.0"
   }
 }
