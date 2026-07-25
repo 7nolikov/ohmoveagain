@@ -171,7 +171,7 @@ export default defineConfig({
   timeout: 30_000,
   retries: process.env.CI ? 2 : 0,
   reporter: [['list'], ['html', { open: 'never' }]],
-  use: { baseURL: 'http://localhost:4000/ohmoveagain/', trace: 'retain-on-failure' },
+  use: { baseURL: 'http://localhost:4000/', trace: 'retain-on-failure' },
   projects: [
     { name: 'iphone-se',  use: { ...devices['iPhone SE'] } },
     { name: 'pixel-7',    use: { ...devices['Pixel 7'] } },
@@ -217,7 +217,7 @@ Triggered manually pre-launch and on a weekly cron. Lower-fidelity, higher-cover
 ```
 You are a strict QA engineer doing exploratory testing of ohmoveagain.
 
-Site: http://localhost:4000/ohmoveagain/
+Site: http://localhost:4000/
 Viewport: iPhone SE (375×667) unless stated otherwise
 Spec: tests/QA_PLAN.md §2
 
@@ -260,7 +260,7 @@ Append after the Lighthouse step:
       - name: Run E2E (Track A)
         run: npm run qa:e2e
         env:
-          BASE_URL: http://localhost:${{ env.PORT }}/ohmoveagain/
+          BASE_URL: http://localhost:${{ env.PORT }}/
 
       - name: Upload Playwright report on failure
         if: failure()
@@ -273,7 +273,7 @@ Append after the Lighthouse step:
 
 ### 5.2 New nightly workflow `.github/workflows/qa-nightly.yml`
 
-- Runs full Track A matrix against the **deployed** `7nolikov.dev/ohmoveagain/` (catches deploy drift, CDN cache bugs, real network).
+- Runs full Track A matrix against the **deployed** `ohmoveagain.com` (catches deploy drift, CDN cache bugs, real network).
 - Optionally: triggers Track B agent pass (Claude API call) with a 10-minute budget.
 - Opens an issue if any blocker is reported.
 

@@ -90,9 +90,9 @@ jobs:
       - name: Axe accessibility audit
         run: |
           npx @axe-core/cli \
-            http://localhost:${{ env.PORT }}/ohmoveagain/ \
-            http://localhost:${{ env.PORT }}/ohmoveagain/pipeline/ \
-            http://localhost:${{ env.PORT }}/ohmoveagain/calculator/ \
+            http://localhost:${{ env.PORT }}/ \
+            http://localhost:${{ env.PORT }}/pipeline/ \
+            http://localhost:${{ env.PORT }}/calculator/ \
             --exit \
             --disable color-contrast
 
@@ -100,9 +100,9 @@ jobs:
         run: |
           npx lhci autorun \
             --config=.lighthouserc.json \
-            --collect.url="http://localhost:${{ env.PORT }}/ohmoveagain/" \
-            --collect.url="http://localhost:${{ env.PORT }}/ohmoveagain/pipeline/" \
-            --collect.url="http://localhost:${{ env.PORT }}/ohmoveagain/calculator/"
+            --collect.url="http://localhost:${{ env.PORT }}/" \
+            --collect.url="http://localhost:${{ env.PORT }}/pipeline/" \
+            --collect.url="http://localhost:${{ env.PORT }}/calculator/"
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
 
@@ -113,9 +113,9 @@ jobs:
         run: |
           npx lhci autorun \
             --config=.lighthouserc.mobile.json \
-            --collect.url="http://localhost:${{ env.PORT }}/ohmoveagain/" \
-            --collect.url="http://localhost:${{ env.PORT }}/ohmoveagain/pipeline/" \
-            --collect.url="http://localhost:${{ env.PORT }}/ohmoveagain/calculator/"
+            --collect.url="http://localhost:${{ env.PORT }}/" \
+            --collect.url="http://localhost:${{ env.PORT }}/pipeline/" \
+            --collect.url="http://localhost:${{ env.PORT }}/calculator/"
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
 
@@ -165,7 +165,9 @@ jobs:
         run: npx playwright test
         env:
           BASE_URL: http://localhost:${{ env.PORT }}
-          SITE_SUBPATH: /ohmoveagain
+          # SITE_SUBPATH intentionally unset — the site is served at the root
+          # since the move to ohmoveagain.com. tests/e2e/helpers.ts defaults
+          # it to '', so site('/pipeline/') stays '/pipeline/'.
           CI: true
 
       - name: Summarise results

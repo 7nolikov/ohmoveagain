@@ -45,7 +45,7 @@ The full source lives on GitHub. Three ways to send a change, in order of fricti
 
 1. **Open an issue.** Describe the change you would like to see. Fastest path if you are not comfortable editing files directly. Include a source link if you have one.
 2. **Edit a file on GitHub and open a pull request.** Every stage page has an "edit on GitHub" link. Click it, make the change in the browser, and GitHub will walk you through the pull request. No local setup required.
-3. **Clone, edit, and open a pull request.** Standard Hugo project. `hugo server` runs the site locally at `http://localhost:1313/ohmoveagain/`. Structural facts (URLs, `asOf` dates, persona filters) live in `data/stages/*.yaml`. Translatable strings (labels, notes, source labels) live in `content/stages/*.md` front-matter under `itemStrings.<item-id>`. Templates merge the two by item ID at build time.
+3. **Clone, edit, and open a pull request.** Standard Hugo project. `hugo server` runs the site locally at `http://localhost:1313/`. Structural facts (URLs, `asOf` dates, persona filters) live in `data/stages/*.yaml`. Translatable strings (labels, notes, source labels) live in `content/stages/*.md` front-matter under `itemStrings.<item-id>`. Templates merge the two by item ID at build time.
 
 Every pull request is reviewed publicly. Expect a response within a few days.
 

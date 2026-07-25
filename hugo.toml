@@ -1,4 +1,4 @@
-baseURL = "https://7nolikov.dev/ohmoveagain/"
+baseURL = "https://ohmoveagain.com/"
 defaultContentLanguage = "en"
 defaultContentLanguageInSubdir = false
 title = "ohmoveagain — the open-source Pipeline for moving to Croatia"
@@ -16,8 +16,10 @@ title = "ohmoveagain — the open-source Pipeline for moving to Croatia"
     [languages.ru.params]
       description = "Открытый пошаговый Pipeline для переезда в Хорватию: пять этапов, чеклисты с источниками, документы, калькулятор запаса. Поддерживается сообществом. Бесплатно."
 
-# canonifyURLs = false is the default. All internal links must use
-# relURL/absURL helpers so they resolve correctly under the /ohmoveagain/ subpath.
+# canonifyURLs = false is the default. All internal links must still use
+# relURL/absURL helpers: the site served under a /ohmoveagain/ subpath until
+# 2026-07-25 and hardcoded absolute paths are what made that move a 40-file
+# change. Keep them relative so the next base change is a one-liner.
 relativeURLs = false
 
 enableRobotsTXT = true

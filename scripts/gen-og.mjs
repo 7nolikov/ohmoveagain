@@ -75,7 +75,7 @@ writePng(path.join(ROOT, 'static', 'og.png'), card({
   tag: null,
   title: 'Relocate to Croatia without guessing.',
   subtitle: 'Five stages · sourced checklists · official links · runway calculator · open-source',
-  url: '7nolikov.dev/ohmoveagain/',
+  url: 'ohmoveagain.com/',
   items: [],
 }));
 
@@ -84,7 +84,7 @@ writePng(path.join(STATIC_OG, 'calculator.png'), card({
   tag: 'Runway calculator',
   title: 'How many months does the move buy you?',
   subtitle: 'Same gross income — compare tax + cost of living across 12 countries.',
-  url: '7nolikov.dev/ohmoveagain/calculator/',
+  url: 'ohmoveagain.com/calculator/',
   items: [],
 }));
 
@@ -102,7 +102,7 @@ for (const s of STAGES) {
     tag: `Stage ${s.n} of 5 · the Pipeline`,
     title: s.title,
     subtitle: s.subtitle,
-    url: `7nolikov.dev/ohmoveagain/stage/${s.slug}/`,
+    url: `ohmoveagain.com/stage/${s.slug}/`,
     items: [],
   }));
 }

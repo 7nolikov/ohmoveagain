@@ -8,7 +8,7 @@
  *
  * Usage:
  *   node scripts/agent-qa.mjs
- *   BASE_URL=https://7nolikov.dev/ohmoveagain/ node scripts/agent-qa.mjs --no-server
+ *   BASE_URL=https://ohmoveagain.com/ node scripts/agent-qa.mjs --no-server
  */
 
 import { execSync, spawn } from 'node:child_process';
@@ -23,7 +23,7 @@ const REPORTS_DIR = resolve(ROOT, 'tests/reports');
 const PROMPT_FILE = resolve(__dirname, 'agent-qa-prompt.md');
 
 const PORT = process.env.QA_PORT ?? '4000';
-const BASE_URL = process.env.BASE_URL ?? `http://localhost:${PORT}/ohmoveagain/`;
+const BASE_URL = process.env.BASE_URL ?? `http://localhost:${PORT}/`;
 const NO_SERVER = process.argv.includes('--no-server');
 const DATE = new Date().toISOString().slice(0, 10);
 const REPORT_PATH = resolve(REPORTS_DIR, `agent-qa-${DATE}.md`);
@@ -58,7 +58,7 @@ if (!NO_SERVER) {
 
 const promptTemplate = readFileSync(PROMPT_FILE, 'utf8');
 const prompt = promptTemplate.replace(
-  'http://localhost:4000/ohmoveagain/',
+  'http://localhost:4000/',
   BASE_URL
 );
 

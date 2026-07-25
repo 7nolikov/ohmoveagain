@@ -2,7 +2,7 @@
 
 You are a strict QA engineer doing exploratory testing of ohmoveagain.
 
-**Site:** http://localhost:4000/ohmoveagain/ (or the URL passed as BASE_URL)
+**Site:** http://localhost:4000/ (or the URL passed as BASE_URL)
 **Primary viewport:** iPhone SE (375×667)
 **Secondary viewport:** Desktop 1280×800
 **Spec reference:** tests/QA_PLAN.md §2
