@@ -24,10 +24,10 @@ jobs:
           hugo-version: "0.160.1"
           extended: true
 
-      # Built at the domain root, not under /ohmoveagain/, so that the
-      # root-relative hrefs Hugo emits line up with --root-dir below.
-      # Only external URLs matter here; internal routing is covered by the
-      # deploy build and the Playwright suite.
+      # Built at the domain root so the root-relative hrefs Hugo emits line
+      # up with --root-dir below. This job only judges external URLs
+      # (--scheme https/http); internal routing is covered by the deploy
+      # build and the Playwright suite.
       - name: Build site
         run: hugo --gc --minify --baseURL "https://7nolikov.dev/"
 
@@ -44,6 +44,8 @@ jobs:
             --accept 200,206,403,429
             --timeout 20
             --root-dir ${{ github.workspace }}/public
+            --scheme https
+            --scheme http
             './public/**/*.html'
           fail: false
           output: ./lychee/out.md
