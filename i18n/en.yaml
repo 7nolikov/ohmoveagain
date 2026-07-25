@@ -487,3 +487,17 @@ pg_dependency_note: "<strong>Dependency order:</strong> microchip first, then ra
 pg_legend_normal: "normal required step"
 pg_legend_risk: "hard timing risk"
 pg_footer: "<strong>Unlisted country?</strong> Check the <a href=\"https://food.ec.europa.eu/animals/movement-pets/non-eu-countries-listed_en\" target=\"_blank\" rel=\"noopener noreferrer\">EU listed-countries table</a> first. If your origin is <em>not</em> listed, start the vaccine-and-titer process at least 16 weeks before the planned flight. Use the <a href=\"#pet-countdown\">pet deadline calculator</a> below to compute exact dates."
+
+# FAQ (home page) — also emitted as schema.org FAQPage in partials/jsonld.html.
+# Keep questions/answers here in sync with the faq_keys list in that partial.
+faq_h2: "Frequently asked questions"
+faq_q1: "What is ohmoveagain?"
+faq_a1: "ohmoveagain is a free, open-source, community-maintained pipeline and guide for IT professionals relocating to Croatia. It breaks the move into five ordered stages — assessment, pre-flight, migration, initialization, and scaling — each with sourced checklists, required documents, and a runway calculator."
+faq_q2: "Is ohmoveagain free?"
+faq_a2: "Yes. ohmoveagain is completely free and open-source. It is maintained by the community, and the content is published openly on GitHub so anyone can read, reuse, or improve it."
+faq_q3: "Which visas and routes does it cover?"
+faq_a3: "It covers the main legal routes for moving to Croatia: the EU Blue Card, work permit, digital nomad residence, self-employment, and family reunification, as well as the path for EU/EEA citizens. Checklists reference MUP (immigration), Porezna uprava (tax), and HZZO (health insurance)."
+faq_q4: "Is this legal or immigration advice?"
+faq_a4: "No. ohmoveagain is an informational guide, not legal advice. Source links are verified on the dates shown, but immigration rules change — confirm critical steps with MUP, Porezna uprava, HZZO, or a licensed local professional before acting."
+faq_q5: "How is the information kept up to date?"
+faq_a5: "Every source is dated and verified, and the project tracks freshness automatically: a staleness check flags outdated items and a freshness feed lists recent updates. Anyone can submit corrections through GitHub."
