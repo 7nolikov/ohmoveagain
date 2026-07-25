@@ -1,0 +1,14 @@
+# Default owner for everything.
+*                       @7nolikov
+
+# Load-bearing infrastructure — see DECISIONS.md §16 (SHA pinning) and
+# §17 (`quality` is a required context).
+/.github/workflows/     @7nolikov
+/.github/scripts/       @7nolikov
+
+# Facts readers act on. Changes here need a primary source and a checked date.
+/data/                  @7nolikov
+/content/stages/        @7nolikov
+
+# Locked decisions.
+/DECISIONS.md           @7nolikov

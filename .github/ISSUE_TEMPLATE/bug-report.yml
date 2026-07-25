@@ -1,0 +1,59 @@
+name: "Bug report"
+description: "Something on the site is broken — layout, a link, the calculator, the language switcher"
+title: "Bug: [short description]"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For a wrong *fact* rather than a broken *thing*, use **Source
+        correction** instead.
+
+  - type: input
+    id: url
+    attributes:
+      label: Page URL
+      placeholder: "https://ohmoveagain.com/calculator/"
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected to happen
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: What actually happened
+      description: "Screenshots help a lot, especially for layout problems."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Go to …
+        2. Select …
+        3. …
+
+  - type: input
+    id: environment
+    attributes:
+      label: Browser and device
+      description: "Mobile layout issues are hard to reproduce without this."
+      placeholder: "Safari 18, iPhone 15 / Firefox 130, Windows 11"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: language
+    attributes:
+      label: Which language version?
+      options: ["English", "Русский", "Both", "Not language-specific"]
+    validations:
+      required: true
