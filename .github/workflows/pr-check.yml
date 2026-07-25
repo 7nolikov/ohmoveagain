@@ -3,17 +3,12 @@ name: PR quality check (a11y + Lighthouse)
 on:
   pull_request:
     branches: [main]
-    paths-ignore:
-      - 'launch/**'
-      # Root-level docs only (README, DECISIONS, etc.).
-      # content/**/*.md is NOT ignored — translation/content edits render and
-      # must run the a11y + Lighthouse + E2E gate.
-      #
-      # i18n/** and data/i18n/** are NOT ignored either: those files hold
-      # rendered markup and live external URLs (i18n/en.yaml carries <a href>
-      # to government sources), so a change there can break the page or ship
-      # a dead link without any gate running.
-      - '*.md'
+    # Deliberately no `paths-ignore`. Branch protection on main requires the
+    # `quality` context; a workflow skipped by a path filter never reports it,
+    # so such a PR sits pending forever and gets merged by admin override —
+    # which quietly turns the gate off for exactly the changes nobody
+    # reviewed. Running everything costs ~3 min, so the filter is not worth
+    # the failure mode. See DECISIONS.md §17.
 
 concurrency:
   group: pr-check-${{ github.ref }}

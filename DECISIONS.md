@@ -305,6 +305,25 @@ Pull from based on launch signal:
 
 ---
 
+## 17. CI gates — `quality` is a load-bearing context name (2026-07-25)
+
+**Rule:** branch protection on `main` requires the status check named exactly **`quality`**. `pr-check.yml` must always produce a job with that name, and it must fail whenever any sub-job fails. `pr-check.yml` must not use `paths-ignore`.
+
+**Why:** three separate ways this gate can silently stop gating, all of which have happened or nearly happened:
+
+1. **Renaming the job.** The required context lives in repo settings, not in the repo, and was recorded nowhere. Splitting the monolithic `quality` job into `gates` / `audit` / `e2e` would have left the required check permanently unreported — with `enforce_admins: false`, that means merging by override, i.e. no gate. The three jobs are kept for diagnosis and a `quality` aggregator preserves the context.
+
+2. **A skipped job counts as success.** GitHub treats a *skipped* required check as passing. The aggregator therefore runs `if: always()` and fails explicitly on `contains(needs.*.result, 'failure')` — it never relies on being skipped for the right reason.
+
+3. **`paths-ignore` prevents the check from ever reporting.** A workflow skipped by a path filter reports nothing, so the PR sits pending and gets merged by override. That is worse than no protection, because the badge implies coverage that was never run. Doc-only PRs run the full suite; it costs ~3 minutes.
+
+**How to apply:**
+- Never rename the `quality` job without updating `required_status_checks.contexts` in the same change.
+- Never add `paths-ignore` to `pr-check.yml`. If a class of change is genuinely exempt, make the gate itself cheap for that case rather than skipping the workflow.
+- New check categories become new jobs listed in the aggregator's `needs:`, not new required contexts.
+
+---
+
 ## Meta rule
 
 **Don't re-open a decision without traction data.** Four reassessments in 24 hours on 2026-04-18→19 produced plans, not launches. The next scope change waits for signal.

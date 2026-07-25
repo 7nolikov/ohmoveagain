@@ -5,8 +5,12 @@ const IS_CI = !!process.env.CI;
 
 export default defineConfig({
   testDir: './tests/e2e',
-  // Static Hugo site renders in <100ms; 10s surfaces broken selectors fast.
-  timeout: 10_000,
+  // Static Hugo site renders in <100ms; 10s surfaces broken selectors fast
+  // while developing. In CI the first tests of a run also absorb cold browser
+  // launch — two webkit tests timed out at exactly 10.1s, then passed on
+  // retry in 4.0s and 6.6s. 30s in CI is headroom for that, not tolerance for
+  // a slow page: a broken selector still fails, just later.
+  timeout: IS_CI ? 30_000 : 10_000,
   retries: IS_CI ? 1 : 0,
   // ubuntu-latest has 4 vCPU; 2 left ~50% throughput on the table.
   workers: IS_CI ? 4 : undefined,

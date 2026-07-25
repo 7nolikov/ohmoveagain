@@ -85,7 +85,66 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    # Exposed so the verify job below can smoke-check the real published URL
+    # rather than a hardcoded guess (which would silently go stale on the
+    # move to ohmoveagain.com).
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # actions/deploy-pages@v5.0.0
+
+  # Every gate up to here judges a build artifact, not the running site.
+  # A green deploy has so far meant "upload succeeded", which is not the same
+  # as "the site works". This checks the real URL after publish.
+  verify:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Smoke-check the deployed site
+        env:
+          SITE: ${{ needs.deploy.outputs.page_url || 'https://7nolikov.dev/ohmoveagain/' }}
+        run: |
+          set -euo pipefail
+          echo "Verifying ${SITE}"
+
+          # Pages propagation is not instant; give it a bounded window.
+          for attempt in $(seq 1 10); do
+            code=$(curl -sS -o /tmp/home.html -w '%{http_code}' -L --max-time 20 "${SITE}" || echo 000)
+            [ "$code" = "200" ] && break
+            echo "attempt ${attempt}: HTTP ${code}, retrying in 15s"
+            sleep 15
+          done
+
+          if [ "$code" != "200" ]; then
+            echo "::error::Home page returned HTTP ${code} after deploy"
+            exit 1
+          fi
+
+          # A 200 that renders an empty shell is still a broken deploy.
+          for needle in "ohmoveagain" "<html" "</body>"; do
+            if ! grep -qi -- "$needle" /tmp/home.html; then
+              echo "::error::Deployed home page is missing expected content: ${needle}"
+              exit 1
+            fi
+          done
+
+          # Key routes must resolve too — a partial build breaks these first.
+          fail=0
+          for path in "pipeline/" "calculator/" "ru/" "sitemap.xml"; do
+            c=$(curl -sS -o /dev/null -w '%{http_code}' -L --max-time 20 "${SITE}${path}" || echo 000)
+            if [ "$c" = "200" ]; then
+              echo "ok   ${c}  ${path}"
+            else
+              echo "FAIL ${c}  ${path}"; fail=$((fail+1))
+            fi
+          done
+
+          if [ "$fail" -gt 0 ]; then
+            echo "::error::${fail} key route(s) failed after deploy"
+            exit 1
+          fi
+
+          echo "Deploy verified: home + $(echo 'pipeline calculator ru sitemap' | wc -w | tr -d ' ') key routes serving." \
+            >> "$GITHUB_STEP_SUMMARY"
