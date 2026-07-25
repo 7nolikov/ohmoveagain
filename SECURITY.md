@@ -49,5 +49,14 @@ committing to `main`, so generated markup is reviewed before it ships. If you
 find a way to get executable content through that path, it is in scope and we
 want to hear about it.
 
-There is no Content-Security-Policy header — GitHub Pages cannot set response
-headers. This is a known gap, not an oversight.
+A Content-Security-Policy **is** enforced, via a `<meta http-equiv>` tag in
+`layouts/partials/head.html`: `default-src 'self'`, `object-src 'none'`,
+`base-uri 'self'`, and `form-action` limited to the form handler.
+
+Two limits are accepted rather than overlooked:
+
+- `script-src` includes `'unsafe-eval'` and `'unsafe-inline'`, required by
+  Alpine.js. Removing them needs a tested CSP build, not a one-line change.
+- Delivered as a meta tag, not a response header, because GitHub Pages cannot
+  set headers. That means no `frame-ancestors` and no HSTS. HTTPS is enforced
+  at the Pages level instead.
