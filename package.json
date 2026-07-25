@@ -6,6 +6,7 @@
     "i18n:parity": "node scripts/check-i18n-parity.mjs",
     "i18n:ui:parity": "node scripts/check-ui-i18n-parity.mjs",
     "i18n:freshness": "node scripts/check-i18n-freshness.mjs",
+    "test:unit": "node --test \"tests/unit/*.test.mjs\"",
     "i18n:sync:ru": "node scripts/sync-ru-translations.mjs --all",
     "i18n:sync:ru:polish": "node scripts/sync-ru-translations.mjs --all --polish",
     "gen:og": "node scripts/gen-og.mjs",

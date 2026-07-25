@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { execFileSync } from 'child_process';
 import YAML from 'yaml';
-import { STAGES_DIR, listEnglishStageFiles, localizedPath, loadStage, saveStage, sourceHash, payloadHash, translationPayload, pageContentPayload, dataI18nPayload, compareShape } from './i18n-lib.mjs';
+import { STAGES_DIR, listEnglishStageFiles, localizedPath, loadStage, saveStage, sourceHash, payloadHash, translationPayload, pageContentPayload, dataI18nPayload, compareShape, enforceGlossaryDeep } from './i18n-lib.mjs';
 
 const token = process.env.GITHUB_TOKEN;
 const model = process.env.GITHUB_MODELS_MODEL || 'openai/gpt-4.1';
@@ -38,25 +38,10 @@ function cleanStrings(value) {
   return value;
 }
 
-function enforceGlossaryInString(text) {
-  let out = text;
-  for (const [source, target] of Object.entries(glossary)) {
-    const escaped = source.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    out = out.replace(new RegExp(escaped, 'g'), target);
-  }
-  return out;
-}
-
-function enforceGlossary(value) {
-  if (Array.isArray(value)) return value.map(enforceGlossary);
-  if (value && typeof value === 'object') {
-    const out = {};
-    for (const [key, nested] of Object.entries(value)) out[key] = enforceGlossary(nested);
-    return out;
-  }
-  if (typeof value === 'string') return enforceGlossaryInString(value);
-  return value;
-}
+// enforceGlossaryInString / enforceGlossary live in i18n-lib.mjs so they can be
+// unit-tested — this file runs the whole sync at import time, so it cannot be
+// imported from a test.
+const enforceGlossary = (value) => enforceGlossaryDeep(value, glossary);
 
 function unwrapTranslatedPayload(payload) {
   if (!payload || typeof payload !== 'object' || Array.isArray(payload)) return payload;
