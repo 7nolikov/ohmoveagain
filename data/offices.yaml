@@ -10,7 +10,7 @@
   city: "Zagreb"
   address: "Petrinjska 30, 10000 Zagreb"
   phone: "+385 1 3788 100"
-  booking: "https://e-uprava.gov.hr/"
+  booking: "https://gov.hr/en"
   mapUrl: "https://maps.google.com/?q=Petrinjska+30+Zagreb"
   lastChecked: "2026-03-15"
 
@@ -18,7 +18,7 @@
   city: "Split"
   address: "Trg Hrvatske bratske zajednice 9, 21000 Split"
   phone: "+385 21 307 100"
-  booking: "https://e-uprava.gov.hr/"
+  booking: "https://gov.hr/en"
   mapUrl: "https://maps.google.com/?q=Trg+Hrvatske+bratske+zajednice+9+Split"
   lastChecked: "2026-03-15"
 
@@ -26,7 +26,7 @@
   city: "Rijeka"
   address: "Verdijeva 4, 51000 Rijeka"
   phone: "+385 51 214 101"
-  booking: "https://e-uprava.gov.hr/"
+  booking: "https://gov.hr/en"
   mapUrl: "https://maps.google.com/?q=Verdijeva+4+Rijeka"
   lastChecked: "2026-03-15"
 
@@ -34,7 +34,7 @@
   city: "Zagreb"
   address: "Ulica grada Vukovara 70, 10000 Zagreb"
   phone: "+385 1 4688 900"
-  booking: "https://www.fina.hr/kontakt"
+  booking: "https://www.fina.hr/kontakti"
   mapUrl: "https://maps.google.com/?q=Ulica+grada+Vukovara+70+Zagreb"
   lastChecked: "2026-03-01"
 
@@ -50,7 +50,7 @@
   city: "Zagreb"
   address: "Margaretska 3, 10000 Zagreb"
   phone: "+385 1 4806 333"
-  booking: "https://hzzo.hr/en/contact"
+  booking: "https://hzzo.hr/en"
   mapUrl: "https://maps.google.com/?q=Margaretska+3+Zagreb"
   lastChecked: "2026-02-15"
 
@@ -58,7 +58,7 @@
   city: "Split"
   address: "Livanjska 1, 21000 Split"
   phone: "+385 21 303 080"
-  booking: "https://hzzo.hr/en/contact"
+  booking: "https://hzzo.hr/en"
   mapUrl: "https://maps.google.com/?q=Livanjska+1+Split"
   lastChecked: "2026-02-15"
 
@@ -74,6 +74,6 @@
   city: "Zagreb"
   address: "Ilica 1a, 10000 Zagreb"
   phone: null
-  booking: "https://sudskit umaci.pravosudje.gov.hr/"
+  booking: "https://mpudt.gov.hr/istaknute-teme/stalni-sudski-tumaci/26654"
   mapUrl: null
-  lastChecked: "2026-02-01"
+  lastChecked: "2026-07-25"
