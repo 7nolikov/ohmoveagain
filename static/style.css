@@ -1525,8 +1525,13 @@ header.top {
 .nav a,
 .nav-menu > summary {
   min-height: 44px;
+  /* Width matters as much as height: the icon-only star link measured 30px
+     and the language summary 43px, both under the 44px tap target the
+     mobile suite enforces. Only affects controls narrower than 44px. */
+  min-width: 44px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   padding: 7px 10px;
   border-radius: var(--radius);

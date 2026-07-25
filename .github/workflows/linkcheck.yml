@@ -12,6 +12,12 @@ permissions:
   contents: read
   issues: write
 
+# Kept in the same shape as deploy.yml and pr-check.yml — the version was
+# hardcoded here while the other two read an env var, which is exactly how a
+# link check ends up silently auditing a different build than it ships.
+env:
+  HUGO_VERSION: "0.160.1"
+
 jobs:
   link-check:
     runs-on: ubuntu-latest
@@ -21,7 +27,7 @@ jobs:
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@2752ce1d29631191ea3f27c23495fa06139a5b78 # peaceiris/actions-hugo@v3
         with:
-          hugo-version: "0.160.1"
+          hugo-version: ${{ env.HUGO_VERSION }}
           extended: true
 
       - name: Build site

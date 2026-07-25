@@ -3,14 +3,12 @@ name: PR quality check (a11y + Lighthouse)
 on:
   pull_request:
     branches: [main]
-    paths-ignore:
-      - 'i18n/**'
-      - 'data/i18n/**'
-      - 'launch/**'
-      # Root-level docs only (README, DECISIONS, etc.).
-      # content/**/*.md is NOT ignored — translation/content edits render and
-      # must run the a11y + Lighthouse + E2E gate.
-      - '*.md'
+    # Deliberately no `paths-ignore`. Branch protection on main requires the
+    # `quality` context; a workflow skipped by a path filter never reports it,
+    # so such a PR sits pending forever and gets merged by admin override —
+    # which quietly turns the gate off for exactly the changes nobody
+    # reviewed. Running everything costs ~3 min, so the filter is not worth
+    # the failure mode. See DECISIONS.md §17.
 
 concurrency:
   group: pr-check-${{ github.ref }}
@@ -24,9 +22,43 @@ env:
   TZ: UTC
   PORT: 4000
 
+# Three independent jobs run in parallel so the Actions UI shows which class
+# of check failed at a glance, and wall time is max(job) rather than sum(job).
+# `quality` at the bottom aggregates them — it is the name branch protection
+# requires, so it must keep reporting.
 jobs:
-  quality:
-    if: github.actor != 'dependabot[bot]'
+  # ── 1. Data + translation gates (seconds, no browser needed) ──────────────
+  gates:
+    name: Gates (sources + i18n)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # actions/checkout@v7.0.0
+
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # actions/setup-node@v7.0.0
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Source freshness (asOf / validUntil)
+        run: node scripts/check-staleness.mjs | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: i18n parity (stage + data surfaces)
+        run: node scripts/check-i18n-parity.mjs | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: UI i18n parity (i18n/en.yaml vs ru.yaml)
+        run: node scripts/check-ui-i18n-parity.mjs | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Translation freshness (sourceHash)
+        run: node scripts/check-i18n-freshness.mjs | tee -a "$GITHUB_STEP_SUMMARY"
+
+  # ── 2. Accessibility + performance ────────────────────────────────────────
+  audit:
+    name: A11y + Lighthouse
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -49,34 +81,8 @@ jobs:
       - name: Install Node dependencies
         run: npm ci
 
-      - name: Check source freshness (asOf dates)
-        run: node scripts/check-staleness.mjs
-
-      - name: Check i18n parity
-        run: node scripts/check-i18n-parity.mjs
-
-      - name: Generate source-line map (for GitHub blame links)
-        run: node scripts/gen-source-lines.mjs
-
-      - name: Generate build data (stats + changelog)
-        run: node scripts/gen-build-data.mjs
-
-      - name: Build site (localhost base URL for audit)
-        run: |
-          hugo --gc --minify --baseURL "http://localhost:${{ env.PORT }}/ohmoveagain/"
-          # Mirror the subpath so that /ohmoveagain/* resolves under the static
-          # server (matches production layout at https://7nolikov.dev/ohmoveagain/).
-          mkdir _serve
-          mv public _serve/ohmoveagain
-          # `serve` (serve-handler) auto-serves /404.html for missing paths.
-          # Copy Hugo's 404 to the root so the test sees the real page, not
-          # serve's bare default. Mirrors production (Cloudflare Pages 404).
-          cp _serve/ohmoveagain/404.html _serve/404.html
-
-      - name: Start static file server
-        run: |
-          npx serve ./_serve -l ${{ env.PORT }} &
-          sleep 4
+      - name: Build + serve site
+        run: ./.github/scripts/build-and-serve.sh
 
       - name: Install matching Chrome + ChromeDriver
         run: npx browser-driver-manager install chrome
@@ -90,14 +96,56 @@ jobs:
             --exit \
             --disable color-contrast
 
-      - name: Lighthouse CI audit
+      - name: Lighthouse CI audit (desktop)
         run: |
           npx lhci autorun \
+            --config=.lighthouserc.json \
             --collect.url="http://localhost:${{ env.PORT }}/ohmoveagain/" \
             --collect.url="http://localhost:${{ env.PORT }}/ohmoveagain/pipeline/" \
             --collect.url="http://localhost:${{ env.PORT }}/ohmoveagain/calculator/"
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+      # Mobile was never audited — .lighthouserc.json pins preset=desktop, so
+      # a mobile-only regression could not fail this job. Measured 99/100/96
+      # locally, so the same thresholds apply without special-casing.
+      - name: Lighthouse CI audit (mobile)
+        run: |
+          npx lhci autorun \
+            --config=.lighthouserc.mobile.json \
+            --collect.url="http://localhost:${{ env.PORT }}/ohmoveagain/" \
+            --collect.url="http://localhost:${{ env.PORT }}/ohmoveagain/pipeline/" \
+            --collect.url="http://localhost:${{ env.PORT }}/ohmoveagain/calculator/"
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+  # ── 3. End-to-end behaviour ───────────────────────────────────────────────
+  e2e:
+    name: E2E (desktop + no-js + mobile)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # actions/checkout@v7.0.0
+        with:
+          fetch-depth: 0
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@2752ce1d29631191ea3f27c23495fa06139a5b78 # peaceiris/actions-hugo@v3
+        with:
+          hugo-version: ${{ env.HUGO_VERSION }}
+          extended: true
+
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # actions/setup-node@v7.0.0
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Build + serve site
+        run: ./.github/scripts/build-and-serve.sh
 
       - name: Cache Playwright browsers
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # actions/cache@v6.1.0
@@ -105,15 +153,30 @@ jobs:
           path: ~/.cache/ms-playwright
           key: pw-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
+      # webkit is needed for the iphone-se and ipad-mini projects; pixel-7 and
+      # the desktop projects run on chromium.
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium webkit
 
-      - name: Run E2E tests (desktop + no-js only)
-        run: npx playwright test --project desktop --project no-js
+      # Device projects are scoped to mobile.spec.ts in playwright.config.ts,
+      # so this is ~285 tests rather than the 753 that resulted from running
+      # every viewport-independent suite on every viewport.
+      - name: Run Playwright suite
+        run: npx playwright test
         env:
           BASE_URL: http://localhost:${{ env.PORT }}
           SITE_SUBPATH: /ohmoveagain
           CI: true
+
+      - name: Summarise results
+        if: always()
+        run: |
+          {
+            echo "### E2E"
+            if [ -f playwright-report/index.html ]; then
+              echo "Report uploaded as an artifact on failure."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload Playwright report on failure
         if: failure()
@@ -122,3 +185,26 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 7
+
+  # ── Aggregator ────────────────────────────────────────────────────────────
+  # `quality` is the context required by branch protection on main. It must
+  # report on every run, so it uses `if: always()` and fails explicitly when
+  # any upstream job failed or was cancelled — a *skipped* required check is
+  # treated as passing by GitHub, which would silently disable the gate.
+  quality:
+    name: quality
+    if: always()
+    needs: [gates, audit, e2e]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check upstream results
+        run: |
+          echo "gates=${{ needs.gates.result }}"
+          echo "audit=${{ needs.audit.result }}"
+          echo "e2e=${{ needs.e2e.result }}"
+          if [ "${{ contains(needs.*.result, 'failure') }}" = "true" ] \
+             || [ "${{ contains(needs.*.result, 'cancelled') }}" = "true" ]; then
+            echo "::error::One or more quality jobs failed."
+            exit 1
+          fi
+          echo "All quality jobs passed." >> "$GITHUB_STEP_SUMMARY"
