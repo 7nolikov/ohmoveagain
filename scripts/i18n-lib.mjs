@@ -173,3 +173,28 @@ export function enforceGlossaryDeep(value, glossary) {
   if (typeof value === 'string') return enforceGlossaryInString(value, glossary);
   return value;
 }
+
+/**
+ * Prefix root-relative internal links with the target language.
+ *
+ * The translator is given the English body, whose links are root-relative
+ * ("/forms/phrase-card/"). It returns them verbatim, so a Russian page ends up
+ * linking to the English one. Nothing downstream catches this: the links are
+ * valid URLs that return 200, so the link checker is happy and only a reader
+ * notices they switched language mid-journey.
+ *
+ * Left alone: external URLs, protocol-relative URLs, anchors, mailto, and
+ * paths already carrying the prefix (so this is idempotent).
+ */
+export function localizeInternalLinks(markdown, lang) {
+  if (!markdown || !lang) return markdown;
+
+  const prefix = `/${lang}/`;
+
+  // Markdown links and images: ](/path) — capture the target only.
+  return markdown.replace(/(!?\]\()(\/[^)\s]*)/g, (match, open, target) => {
+    if (target.startsWith('//')) return match;            // protocol-relative
+    if (target === prefix.slice(0, -1) || target.startsWith(prefix)) return match; // already localized
+    return `${open}${prefix}${target.slice(1)}`;
+  });
+}

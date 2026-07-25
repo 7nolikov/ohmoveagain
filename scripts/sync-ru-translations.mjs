@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { execFileSync } from 'child_process';
 import YAML from 'yaml';
-import { STAGES_DIR, listEnglishStageFiles, localizedPath, loadStage, saveStage, sourceHash, payloadHash, translationPayload, pageContentPayload, dataI18nPayload, compareShape, enforceGlossaryDeep } from './i18n-lib.mjs';
+import { STAGES_DIR, listEnglishStageFiles, localizedPath, loadStage, saveStage, sourceHash, payloadHash, translationPayload, pageContentPayload, dataI18nPayload, compareShape, enforceGlossaryDeep, localizeInternalLinks } from './i18n-lib.mjs';
 
 const token = process.env.GITHUB_TOKEN;
 const model = process.env.GITHUB_MODELS_MODEL || 'openai/gpt-4.1';
@@ -431,7 +431,7 @@ for (const file of listEnglishStageFiles()) {
     }
   };
 
-  saveStage(ruPath, out, translatedBody);
+  saveStage(ruPath, out, localizeInternalLinks(translatedBody, 'ru'));
   console.log('updated', ruPath);
 }
 
@@ -513,7 +513,7 @@ for (const surface of PAGE_CONTENT_SURFACES) {
     }
   };
 
-  saveStage(ruPath, out, translatedBody);
+  saveStage(ruPath, out, localizeInternalLinks(translatedBody, 'ru'));
   console.log('updated', ruPath);
 }
 

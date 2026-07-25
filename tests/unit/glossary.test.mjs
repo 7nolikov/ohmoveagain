@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { enforceGlossaryInString, enforceGlossaryDeep } from '../../scripts/i18n-lib.mjs';
+import { enforceGlossaryInString, enforceGlossaryDeep, localizeInternalLinks } from '../../scripts/i18n-lib.mjs';
 
 const glossary = JSON.parse(fs.readFileSync('data/i18n/glossary.ru.json', 'utf8'));
 
@@ -59,4 +59,31 @@ test('applies recursively through objects and arrays', () => {
   assert.equal(out.items[0], 'MUP (Министерство внутренних дел)');
   assert.equal(out.items[1], 42);
   assert.equal(out.items[2], null);
+});
+
+// Internal links in a translated body came back from the model verbatim, so
+// Russian pages linked to English ones. They return 200, so the link checker
+// never flagged it — only a reader would notice the language switch.
+test('localizes root-relative internal links', () => {
+  assert.equal(localizeInternalLinks('[a](/forms/phrase-card/)', 'ru'), '[a](/ru/forms/phrase-card/)');
+  assert.equal(localizeInternalLinks('![img](/og.png)', 'ru'), '![img](/ru/og.png)');
+  assert.equal(localizeInternalLinks('[home](/)', 'ru'), '[home](/ru/)');
+});
+
+test('leaves external, anchor and already-localized links alone', () => {
+  for (const untouched of [
+    '[a](https://mup.gov.hr/)',
+    '[a](http://example.com/x)',
+    '[a](//cdn.example.com/x)',
+    '[a](#anchor)',
+    '[a](mailto:x@y.z)',
+    '[a](/ru/forms/phrase-card/)',
+  ]) {
+    assert.equal(localizeInternalLinks(untouched, 'ru'), untouched, untouched);
+  }
+});
+
+test('link localization is idempotent', () => {
+  const once = localizeInternalLinks('See [forms](/forms/) and [home](/).', 'ru');
+  assert.equal(localizeInternalLinks(once, 'ru'), once);
 });
