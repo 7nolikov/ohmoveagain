@@ -24,17 +24,21 @@ jobs:
           hugo-version: "0.160.1"
           extended: true
 
-      # Built at the domain root so the root-relative hrefs Hugo emits line
-      # up with --root-dir below. This job only judges external URLs
-      # (--scheme https/http); internal routing is covered by the deploy
-      # build and the Playwright suite.
       - name: Build site
-        run: hugo --gc --minify --baseURL "https://7nolikov.dev/"
+        run: hugo --gc --minify --baseURL "https://7nolikov.dev/ohmoveagain/"
 
       - name: Link Checker
         id: lychee
         uses: lycheeverse/lychee-action@8646ba30535128ac92d33dfc9133794bfdd9b411 # lycheeverse/lychee-action@v2
         with:
+          # This job exists to catch rot in third-party government source
+          # links, so it judges those only:
+          #   --scheme http/https  drops local file:// links (internal routing
+          #                        is covered by the deploy build + Playwright)
+          #   --root-dir           lets root-relative hrefs resolve to files so
+          #                        they can be dropped rather than error out
+          #   --exclude            skips our own pages, which are not yet
+          #                        published at the URL a PR build refers to
           # accept 200/206 (ok), 403/429 (gov sites blocking bots — URL still valid)
           # Mail links are skipped by default; `--exclude-mail` is not a valid
           # lychee flag and made the whole run abort with a usage error.
@@ -46,6 +50,7 @@ jobs:
             --root-dir ${{ github.workspace }}/public
             --scheme https
             --scheme http
+            --exclude '^https://7nolikov\.dev'
             './public/**/*.html'
           fail: false
           output: ./lychee/out.md
