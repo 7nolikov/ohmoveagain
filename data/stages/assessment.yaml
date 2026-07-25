@@ -37,7 +37,7 @@ checklist:
       - id: effective-tax-rate
       - id: runway-delta
         source:
-          url: "https://7nolikov.dev/ohmoveagain/calculator/"
+          url: "https://ohmoveagain.com/calculator/"
           asOf: "2026-04-18"
       - id: exit-taxes
         source:

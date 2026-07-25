@@ -6,7 +6,7 @@ The core product is **the Pipeline** — a five-stage, source-linked framework t
 
 > Think of the Pipeline as CI/CD for relocation: ordered stages, explicit prerequisites, verifiable artifacts, and repeatable progress.
 
-**Live site:** https://7nolikov.dev/ohmoveagain/
+**Live site:** https://ohmoveagain.com/
 
 ![ohmoveagain demo — multi-persona filter and runway calculator](static/og/demo.gif)
 
@@ -79,7 +79,7 @@ Each stage answers four questions: what must be done first, which documents or a
 
 User progress is stored in the browser (localStorage). No personal data is sent to a backend.
 
-The site also ships a [runway calculator](https://7nolikov.dev/ohmoveagain/calculator/) that estimates how many extra months of savings a move buys, based on gross income and country-specific assumptions.
+The site also ships a [runway calculator](https://ohmoveagain.com/calculator/) that estimates how many extra months of savings a move buys, based on gross income and country-specific assumptions.
 
 ## Tech stack
 

@@ -51,8 +51,8 @@ formStrings:
 
 The templates below are plain HTML pages designed for printing. They are not official government forms — they are structured helpers you fill in and bring to your appointment.
 
-- [Accommodation declaration](/ohmoveagain/forms/accommodation-declaration/) — for landlords who need to sign address-registration consent for MUP
-- [Sponsor income letter](/ohmoveagain/forms/sponsor-income-letter/) — income statement for family reunification applications
-- [Croatian phrase card](/ohmoveagain/forms/phrase-card/) — copy-paste phrases for MUP, FINA, and HZZO appointments
+- [Accommodation declaration](/forms/accommodation-declaration/) — for landlords who need to sign address-registration consent for MUP
+- [Sponsor income letter](/forms/sponsor-income-letter/) — income statement for family reunification applications
+- [Croatian phrase card](/forms/phrase-card/) — copy-paste phrases for MUP, FINA, and HZZO appointments
 
 Print these before your appointment. They print clean on A4 — use your browser's print function (Ctrl+P / Cmd+P).
