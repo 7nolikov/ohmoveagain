@@ -17,6 +17,12 @@ on:
 permissions:
   issues: write
 
+# Same reason as linkcheck: a dispatch racing the Monday cron would open
+# the staleness issue twice.
+concurrency:
+  group: staleness-watch
+  cancel-in-progress: true
+
 jobs:
   watch:
     runs-on: ubuntu-latest
