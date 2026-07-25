@@ -1,0 +1,13 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Ask a question or share your move
+    url: https://github.com/7nolikov/ohmoveagain/discussions
+    about: >-
+      Questions, experience reports, and "did anyone else hit this?" belong in
+      Discussions rather than an issue.
+  - name: How to contribute
+    url: https://ohmoveagain.com/contribute/
+    about: What's worth contributing and how the data is structured.
+  - name: Report a security vulnerability
+    url: https://github.com/7nolikov/ohmoveagain/security/advisories/new
+    about: Please report privately, not as a public issue.

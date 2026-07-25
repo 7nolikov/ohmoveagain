@@ -1,0 +1,76 @@
+name: "Source correction"
+description: "A fact, link, or date in the Pipeline is wrong or out of date"
+title: "Source: [what is wrong]"
+labels: ["source-correction"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This is the most valuable kind of report. Every checklist item cites an
+        official source with a verified-on date, and those dates decay.
+
+        If you'd rather fix it directly, each item links to its own line in the
+        data files — see [CONTRIBUTING.md](../blob/main/CONTRIBUTING.md).
+
+  - type: input
+    id: page
+    attributes:
+      label: Where on the site?
+      description: "URL of the page, plus the checklist item if you can name it."
+      placeholder: "https://ohmoveagain.com/stage/pre-flight/ — 'Birth certificate apostilled'"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of problem?
+      options:
+        - "The linked source URL is dead or redirects somewhere else"
+        - "The source is live but the rule it describes has changed"
+        - "The fact stated on the site does not match the source"
+        - "The verified-on date is too old to trust"
+        - "Something else"
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: What the Pipeline currently says
+    validations:
+      required: true
+
+  - type: textarea
+    id: correct
+    attributes:
+      label: What it should say
+      description: "Be as specific as you can — a threshold, a deadline, a document name."
+    validations:
+      required: true
+
+  - type: input
+    id: source
+    attributes:
+      label: Official source
+      description: >
+        A link to the government, EU, or other primary source that supports the
+        correction. Blog posts and forum threads are useful context but cannot
+        be cited in the Pipeline.
+      placeholder: "https://mup.gov.hr/..."
+    validations:
+      required: true
+
+  - type: input
+    id: checked
+    attributes:
+      label: Date you checked that source (YYYY-MM-DD)
+      placeholder: "2026-07-25"
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Anything else
+      description: "First-hand experience is welcome — say so if this bit you during your own move."
