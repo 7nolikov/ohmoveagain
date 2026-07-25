@@ -13,23 +13,23 @@
   rangeMax: 80
   count: 4
   sourceUrl: "https://www.hcch.net/en/instruments/conventions/specialised-sections/apostille"
-  lastChecked: "2026-01-01"
+  lastChecked: "2026-07-25"
 
 - id: court-translation
   amountEUR: 25
   rangeMin: 15
   rangeMax: 40
   count: 10
-  sourceUrl: "https://sudskitumaci.pravosudje.gov.hr/"
-  lastChecked: "2026-02-01"
+  sourceUrl: "https://mpudt.gov.hr/istaknute-teme/stalni-sudski-tumaci/26654"
+  lastChecked: "2026-07-25"
 
 - id: criminal-background
   amountEUR: 20
   rangeMin: 5
   rangeMax: 60
   count: 1
-  sourceUrl: "https://pravosudje.gov.hr/"
-  lastChecked: "2026-02-01"
+  sourceUrl: "https://mpudt.gov.hr/"
+  lastChecked: "2026-07-25"
 
 - id: mup-residency-permit
   amountEUR: 70
@@ -60,5 +60,5 @@
   rangeMin: 0
   rangeMax: 400
   count: 1
-  sourceUrl: "https://hzzo.hr/en/how-to-become-insured"
-  lastChecked: "2026-02-15"
+  sourceUrl: "https://hzzo.hr/en"
+  lastChecked: "2026-07-25"

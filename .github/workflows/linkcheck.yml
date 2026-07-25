@@ -31,19 +31,33 @@ jobs:
         id: lychee
         uses: lycheeverse/lychee-action@8646ba30535128ac92d33dfc9133794bfdd9b411 # lycheeverse/lychee-action@v2
         with:
+          # This job exists to catch rot in third-party government source
+          # links, so it judges those only:
+          #   --scheme http/https  drops local file:// links (internal routing
+          #                        is covered by the deploy build + Playwright)
+          #   --root-dir           lets root-relative hrefs resolve to files so
+          #                        they can be dropped rather than error out
+          #   --exclude            skips our own pages, which are not yet
+          #                        published at the URL a PR build refers to
           # accept 200/206 (ok), 403/429 (gov sites blocking bots — URL still valid)
+          # Mail links are skipped by default; `--exclude-mail` is not a valid
+          # lychee flag and made the whole run abort with a usage error.
           args: >-
             --no-progress
             --max-concurrency 4
-            --exclude-mail
             --accept 200,206,403,429
             --timeout 20
+            --root-dir ${{ github.workspace }}/public
+            --scheme https
+            --scheme http
+            --exclude '^https://7nolikov\.dev'
             './public/**/*.html'
           fail: false
           output: ./lychee/out.md
 
       - name: Open issue if links broken
-        if: env.lychee_exit_code != '0'
+        # lychee-action v2 exposes the code as a step output, not an env var.
+        if: steps.lychee.outputs.exit_code != '0'
         uses: peter-evans/create-issue-from-file@fca9117c27cdc29c6c4db3b86c48e4115a786710 # peter-evans/create-issue-from-file@v6.0.0
         with:
           title: "Broken source links detected by weekly link check"

@@ -494,7 +494,7 @@ pg_unlisted_step5_note: "Записывайтесь к официальному 
 pg_dependency_note: "<strong>Порядок зависимостей:</strong> сначала микрочип, затем прививка от бешенства, затем период ожидания и тест (если требуется страной происхождения), затем финальные проверки сертификатов для поездки."
 pg_legend_normal: "обязательный шаг"
 pg_legend_risk: "высокий временной риск"
-pg_footer: "<strong>Непризнанная страна?</strong> Сначала проверьте <a href=\"https://food.ec.europa.eu/animals/movement-pets/non-eu-countries-listed_en\" target=\"_blank\" rel=\"noopener noreferrer\">таблицу признанных стран ЕС</a>. Если страна происхождения <em>не</em> включена, начните процесс прививки и теста не менее чем за 16 недель до вылета. Используйте <a href=\"#pet-countdown\">калькулятор сроков</a> ниже для расчёта точных дат."
+pg_footer: "<strong>Непризнанная страна?</strong> Сначала проверьте <a href=\"https://food.ec.europa.eu/animals/live-animal-movements/dogs-cats-and-ferrets/listing-territories-and-non-eu-countries_en\" target=\"_blank\" rel=\"noopener noreferrer\">таблицу признанных стран ЕС</a>. Если страна происхождения <em>не</em> включена, начните процесс прививки и теста не менее чем за 16 недель до вылета. Используйте <a href=\"#pet-countdown\">калькулятор сроков</a> ниже для расчёта точных дат."
 
 # FAQ (главная страница) — также выводится как schema.org FAQPage в partials/jsonld.html.
 faq_h2: "Частые вопросы"
