@@ -24,8 +24,12 @@ jobs:
           hugo-version: "0.160.1"
           extended: true
 
+      # Built at the domain root, not under /ohmoveagain/, so that the
+      # root-relative hrefs Hugo emits line up with --root-dir below.
+      # Only external URLs matter here; internal routing is covered by the
+      # deploy build and the Playwright suite.
       - name: Build site
-        run: hugo --gc --minify --baseURL "https://7nolikov.dev/ohmoveagain/"
+        run: hugo --gc --minify --baseURL "https://7nolikov.dev/"
 
       - name: Link Checker
         id: lychee
@@ -39,6 +43,7 @@ jobs:
             --max-concurrency 4
             --accept 200,206,403,429
             --timeout 20
+            --root-dir ${{ github.workspace }}/public
             './public/**/*.html'
           fail: false
           output: ./lychee/out.md
