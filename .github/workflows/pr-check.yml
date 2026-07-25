@@ -4,12 +4,15 @@ on:
   pull_request:
     branches: [main]
     paths-ignore:
-      - 'i18n/**'
-      - 'data/i18n/**'
       - 'launch/**'
       # Root-level docs only (README, DECISIONS, etc.).
       # content/**/*.md is NOT ignored — translation/content edits render and
       # must run the a11y + Lighthouse + E2E gate.
+      #
+      # i18n/** and data/i18n/** are NOT ignored either: those files hold
+      # rendered markup and live external URLs (i18n/en.yaml carries <a href>
+      # to government sources), so a change there can break the page or ship
+      # a dead link without any gate running.
       - '*.md'
 
 concurrency:
@@ -26,7 +29,8 @@ env:
 
 jobs:
   quality:
-    if: github.actor != 'dependabot[bot]'
+    # Runs for Dependabot too — a dependency bump is exactly the kind of
+    # change that should have to clear the a11y/Lighthouse/E2E gate.
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -52,8 +56,14 @@ jobs:
       - name: Check source freshness (asOf dates)
         run: node scripts/check-staleness.mjs
 
-      - name: Check i18n parity
+      - name: Check i18n parity (stage + data surfaces)
         run: node scripts/check-i18n-parity.mjs
+
+      - name: Check UI i18n parity (i18n/en.yaml vs ru.yaml)
+        run: node scripts/check-ui-i18n-parity.mjs
+
+      - name: Check translation freshness (sourceHash)
+        run: node scripts/check-i18n-freshness.mjs
 
       - name: Generate source-line map (for GitHub blame links)
         run: node scripts/gen-source-lines.mjs
@@ -76,7 +86,17 @@ jobs:
       - name: Start static file server
         run: |
           npx serve ./_serve -l ${{ env.PORT }} &
-          sleep 4
+          # Poll until the server actually answers. A fixed `sleep` raced the
+          # audit steps on slow runners and failed for no real reason.
+          for i in $(seq 1 60); do
+            if curl -fsS -o /dev/null "http://localhost:${{ env.PORT }}/ohmoveagain/"; then
+              echo "server up after ${i}s"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "static server did not come up within 60s" >&2
+          exit 1
 
       - name: Install matching Chrome + ChromeDriver
         run: npx browser-driver-manager install chrome
@@ -105,11 +125,16 @@ jobs:
           path: ~/.cache/ms-playwright
           key: pw-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
+      # webkit is needed for the iphone-se and ipad-mini projects; pixel-7 and
+      # the desktop projects run on chromium. Both are covered by the cache
+      # step above, so repeat runs do not re-download.
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium webkit
 
-      - name: Run E2E tests (desktop + no-js only)
-        run: npx playwright test --project desktop --project no-js
+      # All five projects: mobile tap-target regressions only surface on the
+      # phone viewports, and mobile is a launch gate.
+      - name: Run E2E tests (desktop + no-js + mobile)
+        run: npx playwright test
         env:
           BASE_URL: http://localhost:${{ env.PORT }}
           SITE_SUBPATH: /ohmoveagain

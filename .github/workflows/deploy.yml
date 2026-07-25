@@ -45,6 +45,17 @@ jobs:
       - name: Check source freshness (asOf dates)
         run: node scripts/check-staleness.mjs
 
+      # A direct push to main skips pr-check entirely, so the i18n gates run
+      # here too — otherwise a mismatched or stale translation ships.
+      - name: Check i18n parity (stage + data surfaces)
+        run: node scripts/check-i18n-parity.mjs
+
+      - name: Check UI i18n parity (i18n/en.yaml vs ru.yaml)
+        run: node scripts/check-ui-i18n-parity.mjs
+
+      - name: Check translation freshness (sourceHash)
+        run: node scripts/check-i18n-freshness.mjs
+
       - name: Generate source-line map (for GitHub blame links)
         run: node scripts/gen-source-lines.mjs
 
