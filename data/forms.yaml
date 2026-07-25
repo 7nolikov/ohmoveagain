@@ -27,23 +27,23 @@
 
 - id: hzzo-t1
   category: health-insurance
-  url: "https://hzzo.hr/en/how-to-become-insured"
-  lastChecked: "2026-02-15"
+  url: "https://hzzo.hr/en"
+  lastChecked: "2026-07-25"
 
 - id: hzzo-t2
   category: health-insurance
-  url: "https://hzzo.hr/en/how-to-become-insured"
-  lastChecked: "2026-02-15"
+  url: "https://hzzo.hr/en"
+  lastChecked: "2026-07-25"
 
 - id: mup-criminal-background
   category: documents
-  url: "https://pravosudje.gov.hr/UserDocsImages/dokumenti/Pristup%20informacijama/Ispisi%20iz%20kaznene%20evidencije/Zahtjev%20za%20ispis%20iz%20kaznene%20evidencije.pdf"
-  lastChecked: "2026-02-01"
+  url: "https://mpudt.gov.hr/gdje-se-moze-ishoditi-uvjerenje-potvrda-o-nekaznjavanju-u-svrhu-zaposlenja/6684"
+  lastChecked: "2026-07-25"
 
 - id: hcch-apostille
   category: documents
   url: "https://www.hcch.net/en/instruments/conventions/specialised-sections/apostille"
-  lastChecked: "2026-01-01"
+  lastChecked: "2026-07-25"
 
 - id: eu-pet-passport
   category: pets
@@ -52,5 +52,5 @@
 
 - id: fina-business-registration
   category: business
-  url: "https://www.fina.hr/en/start-business"
-  lastChecked: "2026-02-15"
+  url: "https://www.fina.hr/en"
+  lastChecked: "2026-07-25"

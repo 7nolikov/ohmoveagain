@@ -64,7 +64,15 @@ jobs:
           WEEK=$(date +%Y-W%V)
           TITLE="Staleness watch ${WEEK}: ${FAILS} failed, ${WARNS} approaching"
 
+          # Create the label if it is missing — gh aborts the whole issue
+          # creation with "label not found", which silently swallowed the
+          # weekly warning for five consecutive runs.
+          gh label create staleness \
+            --color "d4c5f9" \
+            --description "Sources approaching or past their re-verification threshold" \
+            --force
+
           gh issue create \
-            --title "\$TITLE" \
+            --title "$TITLE" \
             --body "$(printf "Sources that need re-verification before they break the build.\n\n%s\n\nRun \`node scripts/check-staleness.mjs\` locally for full output." "$BODY")" \
             --label "staleness"

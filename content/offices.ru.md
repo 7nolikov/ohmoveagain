@@ -74,7 +74,7 @@ officeStrings:
     hours: По записи
     note: "Используйте только переводчиков, внесённых в официальный реестр судебных
       переводчиков (sudski tumači). Переводы вне реестра отклоняются MUP. Поиск
-      по реестру: https://sudskitumaci.pravosudje.gov.hr/"
+      по реестру: https://mpudt.gov.hr/istaknute-teme/stalni-sudski-tumaci/26654"
 translationMeta:
   sourceLang: en
   targetLang: ru

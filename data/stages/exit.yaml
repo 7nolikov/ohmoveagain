@@ -9,7 +9,7 @@ countries:
         label: "Deregister with Finanzamt (Abmeldung der Steuerpflicht)"
         note: "File a Wohnsitzabmeldung at your local Bürgeramt. Tax residence ends on departure date — get a written confirmation for Croatia DTA purposes."
         source:
-          url: "https://www.bundesfinanzministerium.de/Content/EN/Standardartikel/Topics/Taxation/tax-return.html"
+          url: "https://www.bundesfinanzministerium.de/Web/EN/Topics/Taxation/taxation.html"
           asOf: "2026-03-01"
       - id: de-address-deregister
         label: "Deregister address (Abmeldung) at Bürgeramt"
@@ -27,7 +27,7 @@ countries:
         label: "Cancel statutory health insurance (GKV) from departure date"
         note: "Notify your Krankenkasse in writing with your departure date. You remain covered until the end of the membership month."
         source:
-          url: "https://www.gkv-spitzenverband.de/english/gkv_in_brief/gkv_in_brief.jsp"
+          url: "https://www.bundesgesundheitsministerium.de/en/topics/health-insurance"
           asOf: "2026-02-01"
       - id: de-bank-notify
         label: "Notify German banks of new address; keep IBAN for 90 days"
@@ -91,7 +91,7 @@ countries:
         label: "Set up mail forwarding or use a US virtual address service"
         note: "IRS notices, state tax correspondence, and financial mail often cannot be forwarded internationally. A US-based virtual mailbox service is the standard solution."
         source:
-          url: "https://www.usps.com/manage/forward-mail-change-of-address.htm"
+          url: "https://moversguide.usps.com/"
           asOf: "2026-01-01"
 
   - code: NL
@@ -102,7 +102,7 @@ countries:
         label: "Deregister from BRP (Basisregistratie Personen) at your municipality"
         note: "Report your emigration at the gemeentehuis. You receive a BRP emigration confirmation — keep it for the Dutch tax authority and bank."
         source:
-          url: "https://www.government.nl/topics/personal-data/brp-personal-records-database"
+          url: "https://www.government.nl/topics/personal-data"
           asOf: "2026-03-01"
       - id: nl-belastingdienst
         label: "Notify Belastingdienst of emigration date"
@@ -120,7 +120,7 @@ countries:
         label: "Cancel zorgtoeslag (healthcare allowance) on departure"
         note: "Notify Belastingdienst Toeslagen immediately — continuing to receive zorgtoeslag after emigrating constitutes fraud and must be repaid."
         source:
-          url: "https://www.belastingdienst.nl/wps/wcm/connect/en/healthcare-benefit/healthcare-benefit"
+          url: "https://www.toeslagen.nl/"
           asOf: "2026-02-01"
 
   - code: RS
@@ -149,5 +149,5 @@ countries:
         label: "Cancel RFZO health insurance if switching to HZZO"
         note: "Your RFZO coverage ends with your employment contract or voluntary cancellation. Once you have HZZO in Croatia, notify RFZO in writing to avoid continued contribution obligations."
         source:
-          url: "https://www.rfzo.rs/index.php/en/"
+          url: "https://www.rfzo.rs/"
           asOf: "2026-01-01"

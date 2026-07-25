@@ -58,5 +58,5 @@ officeStrings:
     name: "Sudski tumač — example Zagreb translator office"
     bookingNote: "Use the official Ministry of Justice registry to find a certified court translator for your language pair."
     hours: "By appointment"
-    note: "Only use translators listed in the official court translator registry (sudski tumači). Translations not from the registry are rejected by MUP. Registry search: https://sudskitumaci.pravosudje.gov.hr/"
+    note: "Only use translators listed in the official court translator registry (sudski tumači). Translations not from the registry are rejected by MUP. Registry search: https://mpudt.gov.hr/istaknute-teme/stalni-sudski-tumaci/26654"
 ---
