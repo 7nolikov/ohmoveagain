@@ -10,17 +10,17 @@ sources:
     type: official
     lastChecked: "2026-03-01"
   - id: eu-blue-card
-    url: "https://home-affairs.ec.europa.eu/policies/migration-and-asylum/legal-migration-and-integration/work_en"
+    url: "https://home-affairs.ec.europa.eu/policies/migration-and-asylum/legal-migration-and-resettlement/work_en"
     type: supranational
-    lastChecked: "2026-01-01"
+    lastChecked: "2026-07-25"
   - id: mup-stay
     url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
     type: official
     lastChecked: "2026-02-15"
   - id: eu-vat
-    url: "https://taxation-customs.ec.europa.eu/vat-rules-by-country/croatia_en"
+    url: "https://taxation-customs.ec.europa.eu/taxation/vat/vat-directive/vat-rates/country-specific-information-vat_en"
     type: supranational
-    lastChecked: "2026-01-01"
+    lastChecked: "2026-07-25"
   - id: regos
     url: "https://www.regos.hr/en/"
     type: official

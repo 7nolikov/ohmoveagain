@@ -32,7 +32,7 @@ itemStrings:
     sourceLabel: "Porezna uprava — business taxation"
   blue-card-sideincome:
     label: "Verify Blue Card does not restrict side-income or second employment"
-    note: "Blue Card ties you to a specific employer for the first 2 years. Side projects may require separate authorisation."
+    note: "For the first 12 months a change of employer can be checked and opposed by the authorities. Parallel self-employment is allowed only where national law permits it, and must stay subsidiary to your main job — confirm with MUP."
     sourceLabel: "EU Commission — Blue Card conditions"
   dnv-renewal:
     label: "Confirm Digital Nomad Visa renewal conditions (income + non-HR employer)"
@@ -44,7 +44,7 @@ itemStrings:
     sourceLabel: "MUP — residence permit renewal"
   blue-card-renewal:
     label: "Re-verify Blue Card salary threshold + employer continuity at renewal"
-    note: "Salary floor is rechecked at renewal (threshold updates yearly). Employer-tie sunsets after 18 months — intra-EU mobility opens after that. Long-term EU residence unlocks at 5 years aggregated across member states."
+    note: "Salary floor is rechecked at renewal (threshold updates yearly). Employer-change restrictions lift after 12 months, and mobility to a second member state opens at the same 12-month mark. Long-term EU residence can aggregate 5 years across member states, but needs 2 continuous years in the country where you apply."
     sourceLabel: "EU Commission — Blue Card renewal"
   work-permit-renewal:
     label: "Plan annual work-permit renewal + labour-market re-test"
@@ -89,7 +89,7 @@ claimStrings:
     explanation: "Structure decisions compound over years and are hard to reverse cleanly."
     conflictNote: "Best structure depends on income profile and liability tolerance."
   blue-card-sideincome:
-    consequence: "Blue Card revoked for unauthorised income — single-employer rule is strict"
+    consequence: "Permit conditions breached if side income goes beyond what Croatian law allows — check before you invoice"
     impact: "legal-noncompliance"
     explanation: "Secondary work may conflict with permit conditions."
     conflictNote: "Interpretation differs across member states and contracts."

@@ -8,7 +8,7 @@ sources:
   - id: hcch-apostille
     url: "https://www.hcch.net/en/instruments/conventions/specialised-sections/apostille"
     type: supranational
-    lastChecked: "2026-01-01"
+    lastChecked: "2026-07-25"
   - id: hr-justice
     url: "https://pravosudje.gov.hr/"
     type: official
@@ -22,9 +22,9 @@ sources:
     type: official
     lastChecked: "2026-04-22"
   - id: eu-blue-card
-    url: "https://home-affairs.ec.europa.eu/policies/migration-and-asylum/legal-migration-and-integration/work_en"
+    url: "https://home-affairs.ec.europa.eu/policies/migration-and-asylum/legal-migration-and-resettlement/work_en"
     type: supranational
-    lastChecked: "2026-01-01"
+    lastChecked: "2026-07-25"
   - id: porezna
     url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
     type: official
@@ -44,11 +44,11 @@ sources:
   - id: iata-live-animals
     url: "https://www.iata.org/en/programs/cargo/live-animals/"
     type: supranational
-    lastChecked: "2026-01-01"
+    lastChecked: "2026-07-25"
   - id: cites
     url: "https://cites.org/eng/disc/what.php"
     type: supranational
-    lastChecked: "2026-01-01"
+    lastChecked: "2026-07-25"
 
 claims:
   - id: passport-validity
