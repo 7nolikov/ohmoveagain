@@ -4,7 +4,7 @@ sources:
   - id: eu-schengen
     url: "https://home-affairs.ec.europa.eu/policies/schengen_en"
     type: supranational
-    lastChecked: "2026-01-01"
+    lastChecked: "2026-07-25"
   - id: hr-customs
     url: "https://carina.gov.hr/en"
     type: official
@@ -20,7 +20,7 @@ sources:
   - id: iata-live-animals
     url: "https://www.iata.org/en/programs/cargo/live-animals/"
     type: supranational
-    lastChecked: "2026-01-01"
+    lastChecked: "2026-07-25"
 
 claims:
   - id: border-method
