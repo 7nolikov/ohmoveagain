@@ -121,3 +121,55 @@ export function compareShape(reference, candidate, currentPath = '') {
   if (typeof reference !== typeof candidate) return [`${currentPath || '<root>'}: expected ${typeof reference}, got ${typeof candidate}`];
   return [];
 }
+
+// ── Glossary enforcement ─────────────────────────────────────────────────────
+
+/**
+ * Apply the glossary to a single string.
+ *
+ * Must be idempotent: it runs on every sync, over text a previous sync already
+ * processed. Several glossary entries gloss a term in place ("MUP" ->
+ * "MUP (МВД Хорватии)"), so a naive global replace re-expands the term inside
+ * its own gloss and the parentheticals stack on every run:
+ *
+ *   run 1: "MUP (Министерство внутренних дел)"
+ *       -> "MUP (МВД Хорватии) (Министерство внутренних дел)"
+ *   run 2: -> "MUP (МВД Хорватии) (МВД Хорватии) (Министерство внутренних дел)"
+ *
+ * That shipped once; see the regression test in tests/unit/glossary.test.mjs.
+ */
+export function enforceGlossaryInString(text, glossary) {
+  let out = text;
+
+  // Longest source first, so a multi-word term wins over its own substring
+  // ("runway calculator" before "calculator") regardless of key order in the
+  // JSON file.
+  const entries = Object.entries(glossary).sort((a, b) => b[0].length - a[0].length);
+
+  for (const [source, target] of entries) {
+    const escaped = source.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+    if (target.startsWith(source)) {
+      // Self-referential gloss: only expand a bare occurrence. If the term is
+      // already followed by a parenthetical — ours from a previous run, or one
+      // the translator wrote — leave it alone rather than adding a second.
+      out = out.replace(new RegExp(`${escaped}(?!\\s*\\()`, 'g'), target);
+    } else {
+      out = out.replace(new RegExp(escaped, 'g'), target);
+    }
+  }
+
+  return out;
+}
+
+/** Recursively apply the glossary to every string in a payload. */
+export function enforceGlossaryDeep(value, glossary) {
+  if (Array.isArray(value)) return value.map((v) => enforceGlossaryDeep(v, glossary));
+  if (value && typeof value === 'object') {
+    const out = {};
+    for (const [key, nested] of Object.entries(value)) out[key] = enforceGlossaryDeep(nested, glossary);
+    return out;
+  }
+  if (typeof value === 'string') return enforceGlossaryInString(value, glossary);
+  return value;
+}

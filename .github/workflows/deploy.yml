@@ -56,6 +56,9 @@ jobs:
       - name: Check translation freshness (sourceHash)
         run: node scripts/check-i18n-freshness.mjs
 
+      - name: Unit tests
+        run: npm run test:unit
+
       - name: Generate source-line map (for GitHub blame links)
         run: node scripts/gen-source-lines.mjs
 

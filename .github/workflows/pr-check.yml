@@ -56,6 +56,9 @@ jobs:
       - name: Translation freshness (sourceHash)
         run: node scripts/check-i18n-freshness.mjs | tee -a "$GITHUB_STEP_SUMMARY"
 
+      - name: Unit tests
+        run: npm run test:unit
+
   # ── 2. Accessibility + performance ────────────────────────────────────────
   audit:
     name: A11y + Lighthouse
