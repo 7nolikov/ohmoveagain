@@ -1,0 +1,21 @@
+{
+  "//": "Mobile counterpart to .lighthouserc.json. Lighthouse defaults to a throttled mobile form factor, so this config simply omits the desktop preset. Assertion policy is deliberately identical to the desktop config — see DECISIONS.md §17 for the open question about warn-vs-error on performance.",
+  "ci": {
+    "collect": {
+      "numberOfRuns": 1,
+      "settings": {
+        "onlyCategories": ["performance", "accessibility", "best-practices"]
+      }
+    },
+    "assert": {
+      "assertions": {
+        "categories:accessibility": ["error", { "minScore": 0.9 }],
+        "categories:performance": ["warn", { "minScore": 0.9 }],
+        "categories:best-practices": ["warn", { "minScore": 0.9 }]
+      }
+    },
+    "upload": {
+      "target": "temporary-public-storage"
+    }
+  }
+}

@@ -96,9 +96,23 @@ jobs:
             --exit \
             --disable color-contrast
 
-      - name: Lighthouse CI audit
+      - name: Lighthouse CI audit (desktop)
         run: |
           npx lhci autorun \
+            --config=.lighthouserc.json \
+            --collect.url="http://localhost:${{ env.PORT }}/ohmoveagain/" \
+            --collect.url="http://localhost:${{ env.PORT }}/ohmoveagain/pipeline/" \
+            --collect.url="http://localhost:${{ env.PORT }}/ohmoveagain/calculator/"
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+      # Mobile was never audited — .lighthouserc.json pins preset=desktop, so
+      # a mobile-only regression could not fail this job. Measured 99/100/96
+      # locally, so the same thresholds apply without special-casing.
+      - name: Lighthouse CI audit (mobile)
+        run: |
+          npx lhci autorun \
+            --config=.lighthouserc.mobile.json \
             --collect.url="http://localhost:${{ env.PORT }}/ohmoveagain/" \
             --collect.url="http://localhost:${{ env.PORT }}/ohmoveagain/pipeline/" \
             --collect.url="http://localhost:${{ env.PORT }}/ohmoveagain/calculator/"
