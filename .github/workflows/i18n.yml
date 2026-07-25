@@ -65,7 +65,20 @@ jobs:
 
           BRANCH="i18n/auto-sync"
           git checkout -B "$BRANCH"
-          git add content/stages
+
+          # Stage every surface sync-ru-translations.mjs writes, not just the
+          # stage files. It also regenerates the page-content surfaces
+          # (content/forms/_index.<lang>.md, content/offices.<lang>.md) and the
+          # reference-data surfaces (data/i18n/*.<lang>.yaml). Staging only
+          # content/stages meant a sync that touched just those left nothing
+          # staged, so `git commit` exited 1 and failed the whole run.
+          git add content/stages content/forms content/offices.*.md data/i18n
+
+          if git diff --cached --quiet; then
+            echo "sync produced no changes on a tracked translation surface"
+            exit 0
+          fi
+
           git commit -m "chore(i18n): auto-sync translations"
           git push origin "$BRANCH" --force
 
