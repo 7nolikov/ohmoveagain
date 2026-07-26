@@ -1703,16 +1703,14 @@ header.top {
        LEFT edge, where it is both clipped and unreachable by scrolling; start
        keeps the row scrollable in the direction the scroller can actually go. */
     justify-content: start;
-    /* Last-resort affordance below ~360px, where the labels genuinely cannot
-       all fit: scroll the row rather than crush or wrap it. */
-    overflow-x: auto;
-    scrollbar-width: none;
+    /* Deliberately NOT a scroll container at these widths. The dropdown panels
+       are absolutely positioned DOM descendants of this element, and wrapping a
+       popup in a scroller is exactly the arrangement browsers disagree about
+       (clipping, hit-testing, scroll-anchoring). The row fits on one line from
+       360px up, so the scroller is confined to the block below. */
+    overflow: visible;
     -webkit-mask-image: none;
     mask-image: none;
-  }
-
-  .nav::-webkit-scrollbar {
-    display: none;
   }
 
   .nav-spacer {
@@ -1815,6 +1813,21 @@ header.top {
   .nav-menu > summary {
     padding-left: 2px;
     padding-right: 2px;
+  }
+}
+
+/* Under 360px the five controls cannot all fit: the icon controls are pinned at
+   44px by the tap-target rule and the three labels need ~228px between them.
+   Only here does the row become scrollable, so no wider viewport pays the cost
+   of having a popup inside a scroll container. */
+@media (max-width: 359px) {
+  .nav {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nav::-webkit-scrollbar {
+    display: none;
   }
 }
 

@@ -392,13 +392,49 @@ test('arrival page Day 1 / Week 1 / Month 1 tabs switch', async ({ page }) => {
 
 // ── Resources menu opens on tap ──────────────────────────────────────────────
 
-test('Resources nav menu opens on tap', async ({ page }) => {
+// toBeVisible() alone passes the instant the panel paints, so a menu that opens
+// and then closes a moment later still satisfied it. Both nav menus have to
+// stay open until something actually dismisses them, so assert that they
+// survive a settle delay and that a click inside the panel does not dismiss it.
+for (const menu of ['.resources-menu', '.lang-menu']) {
+  test(`${menu} nav menu opens on tap and stays open`, async ({ page }) => {
+    await page.goto(site('/'));
+
+    const details = page.locator(menu);
+    const panel = details.locator('.nav-menu-panel').first();
+
+    await details.locator('summary').click();
+    await expect(panel).toBeVisible();
+
+    await page.waitForTimeout(600);
+    await expect(panel, `${menu} closed on its own after opening`).toBeVisible();
+    expect(await details.evaluate(e => e.hasAttribute('open')),
+      `${menu} lost its open attribute without an outside click`).toBe(true);
+  });
+}
+
+test('clicking inside a nav menu panel does not dismiss it', async ({ page }) => {
   await page.goto(site('/'));
 
-  const resourcesMenu = page.locator('.resources-menu');
-  const summary = resourcesMenu.locator('summary');
-
-  await summary.click();
-  const panel = resourcesMenu.locator('.nav-menu-panel').first();
+  const details = page.locator('.resources-menu');
+  await details.locator('summary').click();
+  const panel = details.locator('.nav-menu-panel').first();
   await expect(panel).toBeVisible();
+
+  // Press inside the panel on a non-link gap, so the outside-click handler in
+  // baseof.html is exercised without navigating away.
+  const box = (await panel.boundingBox())!;
+  await page.mouse.click(box.x + box.width - 4, box.y + 4);
+  await expect(panel, 'Panel dismissed by a click on its own surface').toBeVisible();
+});
+
+test('clicking outside still dismisses an open nav menu', async ({ page }) => {
+  await page.goto(site('/'));
+
+  const details = page.locator('.resources-menu');
+  await details.locator('summary').click();
+  await expect(details.locator('.nav-menu-panel').first()).toBeVisible();
+
+  await page.locator('h1').first().click({ force: true });
+  await expect(details.locator('.nav-menu-panel').first()).toBeHidden();
 });
