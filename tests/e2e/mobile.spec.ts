@@ -108,6 +108,37 @@ test('language switcher summary has ≥44px height', async ({ page, viewport }) 
   await assertTapTarget(page, '.lang-menu summary', 44);
 });
 
+// Height alone missed a real bug: the 44px min-width on nav controls replaces
+// the grid's automatic min-content floor, so the 1fr tracks could collapse
+// narrower than their own nowrap labels and the text spilled across
+// neighbouring links while every box still measured 44px tall.
+test('nav labels fit inside their own box', async ({ page }) => {
+  await page.goto(site('/'));
+  const overflowing = await page.$$eval(
+    '.nav > .nav-link, .nav > .nav-menu > summary',
+    els => els.filter(e => {
+      const range = document.createRange();
+      range.selectNodeContents(e);
+      // 0.5px tolerance for sub-pixel text measurement
+      return range.getBoundingClientRect().width > e.getBoundingClientRect().width + 0.5;
+    }).map(e => (e.textContent || '').trim().replace(/\s+/g, ' '))
+  );
+  expect(overflowing, `Nav labels wider than their box: ${overflowing.join(', ')}`).toEqual([]);
+});
+
+// Only meaningful below 960px, where the panel goes full-width and is anchored
+// to the header box. On desktop it hangs from its own summary button inside the
+// header, so starting above the header's bottom edge is the intended design.
+test('open nav dropdown clears the header instead of overlapping it', async ({ page, viewport }) => {
+  test.skip(!!viewport && viewport.width > 960, 'Header-anchored panel is the small-viewport layout');
+  await page.goto(site('/'));
+  await page.click('.resources-menu > summary');
+  const headerBottom = await page.$eval('header.top', e => e.getBoundingClientRect().bottom);
+  const panelTop = await page.$eval('.resources-menu .nav-menu-panel', e => e.getBoundingClientRect().top);
+  expect(panelTop, `Dropdown top ${panelTop.toFixed(1)} sits above header bottom ${headerBottom.toFixed(1)}`)
+    .toBeGreaterThanOrEqual(headerBottom - 0.5);
+});
+
 test('hotkeys-help button has ≥44×44px', async ({ page, viewport }) => {
   test.skip(!isMobileViewport(viewport), 'Tap-target rule is mobile-only');
   await page.goto(site('/pipeline/'));

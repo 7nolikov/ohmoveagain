@@ -1727,11 +1727,18 @@ header.top {
     min-height: 44px;
   }
 
+  /* Anchored to the header box, not a hardcoded offset: the header changes
+     height whenever the nav wraps, and the fixed pixel values this replaces
+     had already drifted ~8px under the header they were meant to clear. */
+  .nav-menu {
+    position: static;
+  }
+
   .nav-menu-panel {
-    position: fixed;
+    position: absolute;
     left: 16px;
     right: 16px;
-    top: 96px;
+    top: calc(100% + 8px);
     min-width: 0;
   }
 
@@ -1757,9 +1764,25 @@ header.top {
     padding-left: 8px;
     padding-right: 8px;
   }
+}
 
-  .nav-menu-panel {
-    top: 104px;
+/* Five columns stop fitting around 480px. The 44px min-width on nav controls
+   replaces the grid's automatic min-content floor, so the 1fr tracks keep
+   collapsing past the label width instead of holding it — and because the
+   labels are nowrap they spill out of their own boxes and collide. Drop to
+   three columns so the icon controls wrap to a second row; RU sets the
+   breakpoint, since "Калькулятор" is wider than "Calculator". */
+@media (max-width: 480px) {
+  .nav {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .nav-star {
+    justify-self: start;
+  }
+
+  .lang-menu {
+    grid-column: 3 / -1;
   }
 }
 /* Home page overview and tool routing. */
