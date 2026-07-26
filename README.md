@@ -55,9 +55,15 @@ Two-track data: **structural facts** (URLs, dates, risk metadata) live in YAML a
 
 ### Source freshness
 
-`scripts/check-staleness.mjs` runs on every build and inspects every `asOf` / `lastChecked` date in `data/`:
-- **>6 months old** → warning
-- **>12 months old** → build fails
+`scripts/check-staleness.mjs` runs on every build and inspects every `asOf` / `lastChecked` date in `data/`. Sources in `data/stages/*.yaml` are held to a cadence set by their tier — the less authoritative the source, the sooner it must be re-checked:
+
+| Source tier | Warns at | Build fails at |
+|---|---|---|
+| `official` (MUP, Porezna, HZZO) | 335 days | 365 days |
+| `supranational` (EU, HCCH, IATA) | 150 days | 180 days |
+| `community` | 60 days | 90 days |
+
+Everything else under `data/` (offices, fees, countries) uses the default 180-day warning and 365-day failure. Each tier warns 30 days before it fails, which is the window `staleness-watch.yml` uses to open a tracking issue.
 
 Items can also declare `appliesTo: { visa, family, pets }` so the rendered checklist filters by persona — a digital-nomad applicant without dependents sees a different list than a Blue Card applicant moving with family and pets.
 
@@ -167,7 +173,7 @@ scripts/
   sync-ru-translations.mjs      # GitHub Models → content/stages/*.ru.md
   check-i18n-parity.mjs         # structural shape diff, en vs <lang>
   check-i18n-freshness.mjs      # sourceHash drift detector
-  check-staleness.mjs           # warn >6mo, fail >12mo on data/**.asOf
+  check-staleness.mjs           # tier-aware age gate on data/**.asOf
   gen-build-data.mjs            # build-time contributor / commit stats
   gen-og.mjs                    # OG image generation
   i18n-lib.mjs                  # shared helpers (translationPayload, hash, shape compare)
@@ -264,7 +270,7 @@ flowchart TD
     Cron["weekly cron"] --> LC["linkcheck.yml<br/>lychee-action → issue on break"]
 
     subgraph DeployJob["deploy.yml"]
-        S1["check-staleness.mjs<br/>asOf > 12mo → fail"]
+        S1["check-staleness.mjs<br/>asOf past tier threshold → fail"]
         S2["gen-build-data.mjs<br/>contributor + commit stats"]
         S3["gen-og.mjs<br/>OG images"]
         S4["hugo --gc --minify"]

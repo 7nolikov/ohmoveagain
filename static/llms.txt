@@ -1,6 +1,6 @@
 # ohmoveagain — open-source pipeline for moving to Croatia
 
-> ohmoveagain is a free, open-source, community-maintained pipeline and guide
+> ohmoveagain is a free, open-source pipeline and guide
 > for IT professionals relocating to Croatia (and along Eastern-European
 > routes). It breaks the move into five ordered stages — assessment,
 > pre-flight, migration, initialization, scaling — each with sourced
@@ -10,22 +10,19 @@
 > Porezna uprava (tax), and HZZO (health insurance). Available in English and
 > Russian. Not legal advice — confirm critical steps with the relevant
 > authorities. Maintained by Dmitrii Novikov (https://7nolikov.dev/about/).
->
-> MIGRATION NOTE: URLs below assume the /ohmoveagain/ subpath on 7nolikov.dev.
-> Update them if the project moves to its own domain.
 
 ## Key pages
 
-- [Home](https://7nolikov.dev/ohmoveagain/): what ohmoveagain is and how the pipeline works.
-- [Pipeline](https://7nolikov.dev/ohmoveagain/pipeline/): the five relocation stages in order.
-- [Stage 1 — Assessment](https://7nolikov.dev/ohmoveagain/stage/assessment/): model tax residency, cost of living, and whether to move at all.
-- [Stage 2 — Pre-flight](https://7nolikov.dev/ohmoveagain/stage/pre-flight/): documents, visa route, and preparation before leaving.
-- [Stage 3 — Migration](https://7nolikov.dev/ohmoveagain/stage/migration/): the move itself and border/entry steps.
-- [Stage 4 — Initialization](https://7nolikov.dev/ohmoveagain/stage/initialization/): MUP registration, OIB, residence, and health insurance on arrival.
-- [Stage 5 — Scaling](https://7nolikov.dev/ohmoveagain/stage/scaling/): settling in and longer-term steps.
-- [Calculator](https://7nolikov.dev/ohmoveagain/calculator/): runway / financial-buffer calculator.
-- [Sources](https://7nolikov.dev/ohmoveagain/sources/): the verified source links behind every checklist item.
-- [Contribute](https://7nolikov.dev/ohmoveagain/contribute/): how to submit corrections.
+- [Home](https://ohmoveagain.com/): what ohmoveagain is and how the pipeline works.
+- [Pipeline](https://ohmoveagain.com/pipeline/): the five relocation stages in order.
+- [Stage 1 — Assessment](https://ohmoveagain.com/stage/assessment/): model tax residency, cost of living, and whether to move at all.
+- [Stage 2 — Pre-flight](https://ohmoveagain.com/stage/pre-flight/): documents, visa route, and preparation before leaving.
+- [Stage 3 — Migration](https://ohmoveagain.com/stage/migration/): the move itself and border/entry steps.
+- [Stage 4 — Initialization](https://ohmoveagain.com/stage/initialization/): MUP registration, OIB, residence, and health insurance on arrival.
+- [Stage 5 — Scaling](https://ohmoveagain.com/stage/scaling/): settling in and longer-term steps.
+- [Calculator](https://ohmoveagain.com/calculator/): runway / financial-buffer calculator.
+- [Sources](https://ohmoveagain.com/sources/): the verified source links behind every checklist item.
+- [Contribute](https://ohmoveagain.com/contribute/): how to submit corrections.
 
 ## Project
 
@@ -34,5 +31,5 @@
 
 ## Machine-readable
 
-- Sitemap: https://7nolikov.dev/ohmoveagain/sitemap.xml
-- Robots: https://7nolikov.dev/ohmoveagain/robots.txt
+- Sitemap: https://ohmoveagain.com/sitemap.xml
+- Robots: https://ohmoveagain.com/robots.txt
