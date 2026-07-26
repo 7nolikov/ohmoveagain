@@ -108,22 +108,42 @@ test('language switcher summary has ≥44px height', async ({ page, viewport }) 
   await assertTapTarget(page, '.lang-menu summary', 44);
 });
 
-// Height alone missed a real bug: the 44px min-width on nav controls replaces
-// the grid's automatic min-content floor, so the 1fr tracks could collapse
-// narrower than their own nowrap labels and the text spilled across
-// neighbouring links while every box still measured 44px tall.
-test('nav labels fit inside their own box', async ({ page }) => {
+// The header nav stays a single row at every width. Two separate bugs have
+// broken it and neither is visible to the other's check, so assert both:
+//  - a label wider than its own box (grid track collapsing under its label,
+//    so the text spills across its neighbours)
+//  - an item outside the nav box (the row overflowing, so an end gets cut)
+// The second is the nastier one: under justify-content flex-end the overflow
+// went off the LEFT edge, where no amount of scrolling could reach it.
+test('nav stays one row with every control reachable', async ({ page }) => {
   await page.goto(site('/'));
-  const overflowing = await page.$$eval(
-    '.nav > .nav-link, .nav > .nav-menu > summary',
-    els => els.filter(e => {
-      const range = document.createRange();
-      range.selectNodeContents(e);
-      // 0.5px tolerance for sub-pixel text measurement
-      return range.getBoundingClientRect().width > e.getBoundingClientRect().width + 0.5;
-    }).map(e => (e.textContent || '').trim().replace(/\s+/g, ' '))
-  );
-  expect(overflowing, `Nav labels wider than their box: ${overflowing.join(', ')}`).toEqual([]);
+  const r = await page.evaluate(() => {
+    const navEl = document.querySelector('.nav') as HTMLElement;
+    const nav = navEl.getBoundingClientRect();
+    const els = [...document.querySelectorAll('.nav > .nav-link, .nav > .nav-menu > summary')];
+    const label = (e: Element) => (e.textContent || '').trim().replace(/\s+/g, ' ') || 'github';
+    const range = document.createRange();
+    return {
+      rows: new Set(els.map(e => Math.round(e.getBoundingClientRect().y))).size,
+      // 0.5px tolerance throughout for sub-pixel layout
+      tooNarrow: els.filter(e => {
+        range.selectNodeContents(e);
+        return range.getBoundingClientRect().width > e.getBoundingClientRect().width + 0.5;
+      }).map(label),
+      clippedLeft: els.filter(e => e.getBoundingClientRect().left < nav.left - 0.5).map(label),
+      overflowsRight: els.some(e => e.getBoundingClientRect().right > nav.right + 0.5),
+      scrollable: navEl.scrollWidth > navEl.clientWidth + 1,
+    };
+  });
+  expect(r.rows, 'Header nav must stay on a single row').toBe(1);
+  expect(r.tooNarrow, `Nav labels wider than their box: ${r.tooNarrow.join(', ')}`).toEqual([]);
+  expect(r.clippedLeft, `Nav items off the left edge (unreachable): ${r.clippedLeft.join(', ')}`).toEqual([]);
+  // At 320px five controls cannot fit one line without breaking the 44px tap
+  // target or dropping text under ~10px, so the row is allowed to overflow —
+  // but only rightward, and only if it is genuinely scrollable to.
+  if (r.overflowsRight) {
+    expect(r.scrollable, 'Overflowing nav row must be scrollable, not clipped').toBe(true);
+  }
 });
 
 // Only meaningful below 960px, where the panel goes full-width and is anchored

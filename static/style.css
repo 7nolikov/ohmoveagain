@@ -1689,14 +1689,30 @@ header.top {
     order: 2;
     flex-basis: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr auto 1fr;
+    /* Plain 1fr tracks force every column to the width of the widest label, so
+       five columns demanded ~400px of track for ~272px of text and collapsed
+       below their own nowrap labels once the viewport dipped under ~480px.
+       The min-content floor holds a track at its label width (the 44px
+       min-width on the controls counts toward that floor); 1fr still spreads
+       them evenly whenever there is room to spare. */
+    grid-template-columns: repeat(3, minmax(min-content, 1fr)) auto minmax(min-content, auto);
     gap: 6px;
     align-items: stretch;
     padding-bottom: 2px;
-    overflow: visible;
-    scrollbar-width: auto;
+    /* Must not stay flex-end here. End-alignment pushes any overflow off the
+       LEFT edge, where it is both clipped and unreachable by scrolling; start
+       keeps the row scrollable in the direction the scroller can actually go. */
+    justify-content: start;
+    /* Last-resort affordance below ~360px, where the labels genuinely cannot
+       all fit: scroll the row rather than crush or wrap it. */
+    overflow-x: auto;
+    scrollbar-width: none;
     -webkit-mask-image: none;
     mask-image: none;
+  }
+
+  .nav::-webkit-scrollbar {
+    display: none;
   }
 
   .nav-spacer {
@@ -1766,25 +1782,42 @@ header.top {
   }
 }
 
-/* Five columns stop fitting around 480px. The 44px min-width on nav controls
-   replaces the grid's automatic min-content floor, so the 1fr tracks keep
-   collapsing past the label width instead of holding it — and because the
-   labels are nowrap they spill out of their own boxes and collide. Drop to
-   three columns so the icon controls wrap to a second row; RU sets the
-   breakpoint, since "Калькулятор" is wider than "Calculator". */
-@media (max-width: 480px) {
+/* Below ~430px the five labels stop fitting at the 520px sizing, so buy the
+   room back from padding and tracking rather than wrapping the row. RU sets
+   this budget, not EN: "Калькулятор" is wider than "Calculator". */
+@media (max-width: 430px) {
   .nav {
-    grid-template-columns: 1fr 1fr 1fr;
+    gap: 3px;
+  }
+
+  .nav-link,
+  .nav a,
+  .nav-menu > summary {
+    font-size: 0.76rem;
+    padding-left: 3px;
+    padding-right: 3px;
   }
 
   .nav-star {
-    justify-self: start;
-  }
-
-  .lang-menu {
-    grid-column: 3 / -1;
+    padding-left: 4px;
+    padding-right: 4px;
   }
 }
+
+/* 360px phones are still common enough to be worth the last few pixels. */
+@media (max-width: 380px) {
+  .nav {
+    gap: 2px;
+  }
+
+  .nav-link,
+  .nav a,
+  .nav-menu > summary {
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+}
+
 /* Home page overview and tool routing. */
 .home-map {
   display: grid;
