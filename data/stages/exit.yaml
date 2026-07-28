@@ -12,8 +12,8 @@ countries:
     items:
       - id: de-tax-deregister
         source:
-          url: "https://www.bundesfinanzministerium.de/Web/EN/Topics/Taxation/taxation.html"
-          asOf: "2026-03-01"
+          url: "https://www.bzst.de/EN/Home/home_node.html"
+          asOf: "2026-07-28"
       - id: de-address-deregister
         source:
           url: "https://www.bundesregierung.de/breg-en"

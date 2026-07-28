@@ -18,7 +18,7 @@ countries:
 items:
   de-tax-deregister:
     label: "Deregister with Finanzamt (Abmeldung der Steuerpflicht)"
-    note: "Unlimited tax liability ends with your address deregistration (next item) — there is no separate Finanzamt form. File a final partial-year tax return for the departure year and keep written confirmation of your departure date for Croatia DTA purposes."
+    note: "Unlimited tax liability ends when you give up your German residence, which happens through the address deregistration in the next item — there is no separate Finanzamt deregistration form to file. Submit a final partial-year return for the year you leave and keep written confirmation of your departure date for Croatia DTA purposes. Your local Finanzamt handles the return; the BZSt is the federal authority for cross-border tax questions."
   de-address-deregister:
     label: "Deregister address (Abmeldung) at Bürgeramt"
     note: "Required by law within two weeks of moving out. Get the Abmeldebestätigung — landlords and banks often require it."
