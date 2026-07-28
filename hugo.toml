@@ -38,7 +38,7 @@ disableKinds = ["taxonomy", "term"]
   ogImage = "og.png"
   githubURL = "https://github.com/7nolikov/ohmoveagain"
   twitterHandle = "@7nolikov"
-  cfAnalyticsToken = "0813f8e9b0fe443ea2b3fb64f64f9893"
+  cfAnalyticsToken = "f657cd1fc06c41148d534f69dea429df"
   trustAlgoVersion = "1.0"
   maintainer = "@7nolikov"
   # Formspree form endpoint — email waitlist. Remove this line to switch to Watch-on-GitHub + RSS.
