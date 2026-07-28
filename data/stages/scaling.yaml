@@ -76,6 +76,10 @@ checklist:
   - id: renewals
     items:
       - id: permit-renewal-window
+      - id: absence-notification
+        source:
+          url: "https://mup.gov.hr/aliens-281621/stay-and-work/temporary-stay-of-third-country-nationals/281661"
+          asOf: "2026-07-28"
       - id: dnv-renewal
         appliesTo:
           visa: [digital-nomad]
@@ -93,6 +97,10 @@ checklist:
     items:
       - id: invoicing-bookkeeping
       - id: pension-strategy
+      - id: driving-licence-exchange
+        source:
+          url: "https://mup.gov.hr/promet-281589/37-pod-kojim-uvjetima-stranac-moze-voziti-automobil-na-podrucju-rh/281785"
+          asOf: "2026-07-28"
 
   - id: community
     items:

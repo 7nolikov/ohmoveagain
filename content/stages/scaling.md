@@ -42,6 +42,10 @@ itemStrings:
     label: "File renewal 30–60 days before expiry — never after"
     note: "Renewal isn't automatic. Family-reunification dependents follow the primary holder — their renewal is filed as part of the same packet, with the sponsor's continued income proof attached."
     sourceLabel: "MUP — residence permit renewal"
+  absence-notification:
+    label: "Notify the police before any absence longer than 30 days"
+    note: "A temporary stay permit is withdrawn if you spend more than 30 days abroad on a single occasion, or more than 90 days in total, within one year (over two years: 60 single / 180 total). There is an escape hatch and almost nobody uses it — an absence of up to 90 days on a single occasion for justified reasons does not cost you the permit *if you notify your police administration before you leave*. Long client trips, a parent's illness, a winter spent working from elsewhere: tell them first, in writing."
+    sourceLabel: "MUP — temporary stay of third-country nationals"
   blue-card-renewal:
     label: "Re-verify Blue Card salary threshold + employer continuity at renewal"
     note: "Salary floor is rechecked at renewal (threshold updates yearly). Employer-change restrictions lift after 12 months, and mobility to a second member state opens at the same 12-month mark. Long-term EU residence can aggregate 5 years across member states, but needs 2 continuous years in the country where you apply."
@@ -62,6 +66,10 @@ itemStrings:
     label: "Pension contribution strategy set"
     note: "Voluntary second pillar top-ups are a legitimate tax-deferral lever."
     sourceLabel: "REGOS — central registry of insured persons"
+  driving-licence-exchange:
+    label: "Exchange your foreign driving licence within 1 year of entry"
+    note: "A non-EU licence is valid here for one year from the date you entered Croatia. The exchange runs through a police administration and needs a Croatian medical fitness certificate less than 6 months old, plus a translation if the categories or validity are not readable from the licence. Applying for a Croatian licence also assumes at least 185 days of residence in the calendar year."
+    sourceLabel: "MUP — driving on a foreign licence"
   permanent-residence-path:
     label: "Plan the 5-year path to permanent residence (stalni boravak)"
     note: "After 5 years of continuous legal residence: B1 Croatian (language + Latin-script exam), clean criminal record, stable means of subsistence, valid health insurance. Continuous = absences under 6 months in any year and under 10 months total over the 5-year window. Breaks reset the clock."

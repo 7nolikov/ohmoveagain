@@ -50,6 +50,10 @@ checklist:
         source:
           url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
           asOf: "2026-02-15"
+      - id: filing-location
+        source:
+          url: "https://mup.gov.hr/aliens-281621/stay-and-work/temporary-stay-of-third-country-nationals/281661"
+          asOf: "2026-07-28"
       - id: blue-card-salary
         appliesTo:
           visa: [blue-card]

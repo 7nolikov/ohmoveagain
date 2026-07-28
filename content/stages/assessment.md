@@ -33,6 +33,10 @@ itemStrings:
     label: "Audit visa / residency pathway for your situation"
     note: "Blue Card, Digital Nomad Visa, or employer sponsorship. Each has a different SLA."
     sourceLabel: "MUP — stay in Croatia"
+  filing-location:
+    label: "Confirm where your application must be filed — consulate abroad or police station in Croatia"
+    note: "Visa-required nationals generally file at a Croatian embassy or consulate before travelling. Visa-exempt nationals can file at a police administration inside Croatia. A few categories (family members of Croatian citizens, students, researchers) are exceptions. Getting this wrong means flying home to refile."
+    sourceLabel: "MUP — temporary stay of third-country nationals"
   blue-card-salary:
     label: "Confirm EU Blue Card gross salary threshold"
     note: "Thresholds update annually — verify the current minimum before assuming eligibility. Employer must be based in HR or willing to sponsor."

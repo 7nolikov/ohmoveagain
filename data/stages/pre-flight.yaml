@@ -121,6 +121,10 @@ checklist:
       - id: passport-validity
       - id: birth-cert-apostilled
       - id: criminal-background
+      - id: driving-licence-prep
+        source:
+          url: "https://mup.gov.hr/gradjani-281562/moji-dokumenti-281563/vozacka-dozvola-332/zamjena-vozacke-dozvole/281743"
+          asOf: "2026-07-28"
   - id: eligibility-proof
     items:
       - id: diploma-recognition

@@ -36,6 +36,10 @@ itemStrings:
     label: "Residency permit card issued"
     note: "Plastic card; biometric appointment may be needed."
     sourceLabel: "MUP — residency permits"
+  e-gradjani-credentials:
+    label: "e-Građani credentials obtained (NIAS login)"
+    note: "The national e-services portal is how you book MUP appointments, file with e-Porezna, and reach HZZO records. Credentials are issued against your OIB — pick a credential from the accepted list (bank eID works for most people once the account is open). Doing this early removes a hidden prerequisite from half the steps below."
+    sourceLabel: "gov.hr — e-Građani portal"
   bank-account:
     label: "Local bank account opened"
     note: "Revolut / Wise work as bridges but aren't SEPA-native for salary. Zagrebačka, Erste, PBZ are EU-friendly."
@@ -44,6 +48,10 @@ itemStrings:
     label: "Health insurance (HZZO) enrolled"
     note: "Mandatory. Kicks in from registration date."
     sourceLabel: "HZZO — Croatian health insurance"
+  dopunsko-insurance:
+    label: "Decide on dopunsko (supplemental) insurance"
+    note: "Compulsory HZZO cover still leaves you paying a co-payment on most visits, referrals, and diagnostics. HZZO's own dopunsko policy removes that co-payment for €15 per month (€180 per year) as of 1 February 2026 — up from €9.29. Private insurers sell competing policies. This is optional, but decide deliberately rather than discovering it at the first bill."
+    sourceLabel: "HZZO — dopunsko premium notice"
   tax-residency:
     label: "Tax residency status confirmed (certificate only if you need one)"
     note: "Residency is determined by the 183-day rule + center-of-life test, not by requesting a certificate. You only need a written certificate for specific situations: claiming a double-taxation treaty, proving non-residency to your origin country, or reporting foreign income. If all your income is Croatian and you live here full-time, don't default to asking — the office may (correctly) tell you it's unnecessary."
@@ -79,6 +87,7 @@ itemStrings:
 gotchas:
   - "Sign the work contract before you open the bank account — without it, banks offer non-resident accounts only (no salary, limited features)."
   - "Bring a notarized landlord signature to address registration — some municipalities reject anything less."
+  - "Enrol in HZZO on time. Register late and you do not simply start late: cover is granted only once you pay the missed contributions back to the date the obligation arose, as a single lump sum, for up to 12 months. That bill is the reason the first-year cost estimate carries a retroactive-contributions line."
 claimStrings:
   oib-issued:
     consequence: "Bank account, lease, healthcare all blocked — OIB is the keystone for every Croatian admin step"

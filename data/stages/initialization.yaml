@@ -52,6 +52,11 @@ checklist:
         phase: arrival-w1
       - id: residency-card
         phase: arrival-w1
+      - id: e-gradjani-credentials
+        phase: arrival-m1
+        source:
+          url: "https://gov.hr/en"
+          asOf: "2026-07-28"
 
   - id: financial-medical
     items:
@@ -59,6 +64,11 @@ checklist:
         phase: arrival-m1
       - id: hzzo-enrolled
         phase: arrival-m1
+      - id: dopunsko-insurance
+        phase: arrival-m1
+        source:
+          url: "https://hzzo.hr/novosti/dzo/obavijest-osiguranicima-dopunskog-zdravstvenog-osiguranja-2"
+          asOf: "2026-07-28"
       - id: tax-residency
         phase: arrival-m1
 

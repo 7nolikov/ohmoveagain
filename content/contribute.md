@@ -117,7 +117,7 @@ Every pull request is reviewed publicly. Automated checks run first and catch br
 
 To keep the Pipeline trustworthy, contributions should meet a few ground rules:
 
-- **Cite an official source** — government, EU, or internationally recognised body. Reddit threads, blog posts, and personal forums do not count as sources.
+- **Cite an official source** — government, EU, or internationally recognised body. Reddit threads, blog posts, and personal forums do not count as sources. A small number of items rest on public registries or survey data instead; those are tagged as the `community` tier, are re-verified far more often, and are only acceptable where no official body publishes the fact at all.
 - **Set the `asOf` date** to the day you verified the link. This is how readers know how fresh a rule is.
 - **Be specific.** "Apostilled birth certificate" is better than "birth certificate paperwork." "≥ 21 days before travel" is better than "a few weeks before travel."
 - **Write in plain English.** Short sentences. Active voice. No jargon that a non-native English speaker would have to look up.

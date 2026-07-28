@@ -1,6 +1,7 @@
 # Stage template
 stage_of_5: "Этап {{ . }} из 5"
 checklist: "Чеклист"
+common_pitfalls: "Частые ошибки"
 reset_stage_confirm: "Сбросить прогресс этапа?"
 reset_stage: "Сбросить"
 export_stage: "↓ Экспорт этапа"

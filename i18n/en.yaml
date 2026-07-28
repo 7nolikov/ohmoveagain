@@ -1,6 +1,7 @@
 # Stage template
 stage_of_5: "Stage {{ . }} of 5"
 checklist: "Checklist"
+common_pitfalls: "Common pitfalls"
 reset_stage_confirm: "Reset this stage?"
 reset_stage: "Reset"
 export_stage: "↓ Export stage"

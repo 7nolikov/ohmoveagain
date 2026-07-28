@@ -53,10 +53,10 @@ officeStrings:
     bookingNote: "Walk-in only. No appointment system."
     hours: "Mon–Fri 08:00–14:00"
     note: "Croatian courts issue apostilles for documents originating in Croatia. For foreign documents, apostilles are issued in the country of origin — not here."
-  translator-zagreb-hofmann:
-    authority: "Court translator (sudski tumač)"
-    name: "Sudski tumač — example Zagreb translator office"
-    bookingNote: "Use the official Ministry of Justice registry to find a certified court translator for your language pair."
-    hours: "By appointment"
-    note: "Only use translators listed in the official court translator registry (sudski tumači). Translations not from the registry are rejected by MUP. Registry search: https://mpudt.gov.hr/istaknute-teme/stalni-sudski-tumaci/26654"
+  sudski-tumaci-registry:
+    authority: "Court translators (sudski tumači)"
+    name: "Official registry of permanent court translators"
+    bookingNote: "Search the Ministry of Justice registry by language pair, then contact the translator directly — each keeps their own hours and rates."
+    hours: "Varies by translator"
+    note: "Not an office you visit: this is the national registry. Only translators listed here produce translations MUP accepts, so check the register before paying anyone. Rates are per page and set individually."
 ---

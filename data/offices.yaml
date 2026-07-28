@@ -70,10 +70,10 @@
   mapUrl: "https://maps.google.com/?q=Trg+sv.+Marka+4+Zagreb"
   lastChecked: "2026-02-01"
 
-- id: translator-zagreb-hofmann
-  city: "Zagreb"
-  address: "Ilica 1a, 10000 Zagreb"
+- id: sudski-tumaci-registry
+  city: "Nationwide"
+  address: null
   phone: null
   booking: "https://mpudt.gov.hr/istaknute-teme/stalni-sudski-tumaci/26654"
   mapUrl: null
-  lastChecked: "2026-07-25"
+  lastChecked: "2026-07-28"

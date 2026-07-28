@@ -38,6 +38,10 @@ itemStrings:
     label: "Criminal background check — apostilled, < 6 months old"
     note: "Clock starts the day it's issued, not the day you use it."
     sourceLabel: "Ministry of Justice (HR)"
+  driving-licence-prep:
+    label: "Driving licence: carry the original and, if it is not self-explanatory, an official translation"
+    note: "You may drive on a non-EU licence for one year from the date you enter Croatia, then it must be exchanged. Croatia asks for a translation when the categories or validity are not readable from the licence itself — that translation is far easier to arrange while you are still in the issuing country."
+    sourceLabel: "MUP — exchanging a foreign driving licence"
   diploma-recognition:
     label: "Diploma apostille + recognition (if regulated profession)"
     note: "Software is typically unregulated. Double-check your specific title."
@@ -113,6 +117,7 @@ itemStrings:
 gotchas:
   - "Apostille the document, then translate — most consulates reject the reverse order."
   - "Pack originals and notarized copies — some consulates demand both at intake."
+  - "Keep your old phone number alive for 6–12 months. Origin-country banks, brokers, and tax portals send one-time codes by SMS to the number you are about to cancel — and many will not accept a foreign number as a replacement. Port it to a cheap prepaid or eSIM plan before you leave, not after you are locked out."
 claimStrings:
   passport-validity:
     consequence: "Boarding refused or permit blocked late in the chain — months lost on a rebook"

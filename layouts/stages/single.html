@@ -190,6 +190,13 @@
   {{ end }}
 </section>
 
+{{ with $.Params.gotchas }}
+<section class="gotchas">
+  <h3>{{ i18n "common_pitfalls" }}</h3>
+  <ul>{{ range . }}<li>{{ . }}</li>{{ end }}</ul>
+</section>
+{{ end }}
+
 {{/* Stage navigation */}}
 {{- $allStages := (where site.RegularPages "Section" "stages").ByWeight -}}
 {{- $prev := index (where $allStages "Weight" "lt" $w) (sub (len (where $allStages "Weight" "lt" $w)) 1) -}}
