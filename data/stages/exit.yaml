@@ -7,7 +7,7 @@ countries:
     items:
       - id: de-tax-deregister
         label: "Deregister with Finanzamt (Abmeldung der Steuerpflicht)"
-        note: "File a Wohnsitzabmeldung at your local Bürgeramt. Tax residence ends on departure date — get a written confirmation for Croatia DTA purposes."
+        note: "Unlimited tax liability ends with your address deregistration (next item) — there is no separate Finanzamt form. File a final partial-year tax return for the departure year and keep written confirmation of your departure date for Croatia DTA purposes."
         source:
           url: "https://www.bundesfinanzministerium.de/Web/EN/Topics/Taxation/taxation.html"
           asOf: "2026-03-01"
@@ -48,7 +48,7 @@ countries:
           asOf: "2026-03-01"
       - id: gb-ni-voluntary
         label: "Consider voluntary National Insurance contributions"
-        note: "You need 35 qualifying years for a full State Pension. Voluntary Class 2 or 3 NI contributions from abroad are significantly cheaper than Class 3."
+        note: "You need 35 qualifying years for a full State Pension. If you work abroad you may qualify for Class 2 voluntary contributions, which cost a fraction of Class 3 — check eligibility before defaulting to Class 3."
         source:
           url: "https://www.gov.uk/voluntary-national-insurance-contributions"
           asOf: "2026-02-01"
@@ -71,7 +71,7 @@ countries:
     items:
       - id: us-fbar
         label: "File FBAR (FinCEN 114) if foreign accounts exceed $10K"
-        note: "US citizens must file FBAR annually regardless of residence. Failure to file carries penalties up to $10K per violation. Croatia-US DTA does not exempt FBAR."
+        note: "US citizens must file FBAR annually regardless of residence. Non-willful failure carries an inflation-adjusted penalty (five figures per unfiled report). Note: the US–Croatia tax treaty signed in 2022 is not yet in force — and no treaty exempts FBAR anyway."
         source:
           url: "https://www.fincen.gov/report-foreign-bank-and-financial-accounts"
           asOf: "2026-03-01"
@@ -112,7 +112,7 @@ countries:
           asOf: "2026-03-01"
       - id: nl-aow-pension
         label: "Contact SVB about AOW (state pension) entitlements"
-        note: "Your AOW pension accrues 2% per year of Dutch residency (ages 15–67). Contact SVB to verify your accrual record and understand how Croatian residence affects future payments."
+        note: "Your AOW pension accrues 2% per year of Dutch residency during the 50 years before your AOW age. Contact SVB to verify your accrual record and understand how Croatian residence affects future payments."
         source:
           url: "https://www.svb.nl/en/aow"
           asOf: "2026-02-01"

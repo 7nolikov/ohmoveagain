@@ -7,8 +7,8 @@ translationMeta:
   sourceLang: en
   targetLang: ru
   sourceFile: content/forms/phrase-card.md
-  sourceHash: 01b668a75eb12a80911d5d24a57dc1aea19bb64053d9a2795c880c76b04a64c3
-  status: hand-maintained
+  sourceHash: 7dbf63dd08e591361df0947b8ffe2f4e578e755b87ee403fb05dbe637cc60ce2
+  status: hand-updated
 ---
 
 **Инструкции:** распечатайте и носите эту карточку на приёмы в MUP, FINA, Porezna uprava и HZZO. Покажите соответствующий раздел сотруднику, если не можете объясниться на хорватском или английском.
@@ -19,11 +19,11 @@ translationMeta:
 
 | Хорватский | Русский |
 |---|---|
-| Trebam registrirati boravište, molim. | Мне нужно зарегистрировать место жительства, пожалуйста. |
+| Trebam prijaviti boravište, molim. | Мне нужно зарегистрировать место жительства, пожалуйста. |
 | Imam termin za ___. | У меня запись на ___. |
 | Trebam dozvolu boravka. | Мне нужно разрешение на пребывание. |
 | Gdje je šalter za strance? | Где окно для иностранцев? |
-| Imam sva potrebna dokumenta. | У меня есть все необходимые документы. |
+| Imam sve potrebne dokumente. | У меня есть все необходимые документы. |
 | Trebam tumača, molim. | Мне нужен переводчик, пожалуйста. |
 | Mogu li dobiti potvrdu? | Можно получить квитанцию-подтверждение? |
 

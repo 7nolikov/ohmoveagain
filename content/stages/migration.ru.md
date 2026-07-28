@@ -131,9 +131,9 @@ translationMeta:
   sourceLang: en
   targetLang: ru
   sourceFile: content/stages/migration.md
-  sourceHash: 81567ad355d2a536df4c14e94eeaf5bbd4dcadd61582e197b9b2a24c48e60cff
+  sourceHash: cfb1df00306443efedd03c9b26ed8921d74bfcc3448a3bed6a5a995664281cb8
   sourceCommit: 524b16469a4e541372d7317398caacb31e74ebf7
-  status: auto-updated
+  status: hand-updated
 ---
 
 Пересечение границы, временное жильё, первые 72 часа на месте. Все оригиналы документов держите при себе, не в зарегистрированном багаже. Ожидайте задержки, растерянных сотрудников и неожиданные расходы — планируйте вдвое больше хлопот, чем рассчитываете.

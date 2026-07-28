@@ -73,7 +73,7 @@ gotchas:
   - "Watch your day count — 183 days OR Croatian center-of-life triggers tax residency before you intend it."
   - "File in both countries — the treaty caps tax exposure, not paperwork."
 artifactNames:
-  runway-calc: "Runway calculator (HR / MNE / DE / PT / EE)"
+  runway-calc: "Runway calculator (12 countries)"
 claimStrings:
   effective-tax-rate:
     impact: "financial-cost"

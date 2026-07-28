@@ -42,7 +42,7 @@ itemStrings:
     note: "eSIM on arrival beats airport kiosks."
   emergency-cash:
     label: "Emergency cash buffer (€2–3K) in local currency"
-    note: "Card fraud geo-locks happen. Croatia uses EUR since 2023."
+    note: "Card fraud geo-locks happen. Croatia has used the euro since 2023."
     sourceLabel: "HNB — Croatian National Bank"
   vet-health-cert:
     label: "Vet health certificate signed within 10 days of travel date"

@@ -13,11 +13,11 @@ sitemap:
 
 | Croatian | English |
 |---|---|
-| Trebam registrirati boravište, molim. | I need to register my place of residence, please. |
+| Trebam prijaviti boravište, molim. | I need to register my place of residence, please. |
 | Imam termin za ___. | I have an appointment for ___. |
 | Trebam dozvolu boravka. | I need a residence permit. |
 | Gdje je šalter za strance? | Where is the foreigners' counter? |
-| Imam sva potrebna dokumenta. | I have all the required documents. |
+| Imam sve potrebne dokumente. | I have all the required documents. |
 | Trebam tumača, molim. | I need an interpreter, please. |
 | Mogu li dobiti potvrdu? | Can I get a confirmation receipt? |
 

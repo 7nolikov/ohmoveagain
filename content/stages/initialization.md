@@ -77,7 +77,7 @@ itemStrings:
     note: "Annual registration fee applies. Fine for non-compliance is significant."
     sourceLabel: "City of Zagreb — dog registration"
 gotchas:
-  - "Sign the work contract before you open the bank — without it, banks offer non-resident accounts only (no salary, limited features)."
+  - "Sign the work contract before you open the bank account — without it, banks offer non-resident accounts only (no salary, limited features)."
   - "Bring a notarized landlord signature to address registration — some municipalities reject anything less."
 claimStrings:
   oib-issued:

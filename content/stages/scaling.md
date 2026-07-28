@@ -64,11 +64,11 @@ itemStrings:
     sourceLabel: "REGOS — central registry of insured persons"
   permanent-residence-path:
     label: "Plan the 5-year path to permanent residence (stalni boravak)"
-    note: "After 5 years of continuous legal residence: A2 Croatian, clean criminal record, stable means of subsistence, valid health insurance. Continuous = absences under 6 months in any year and under 10 months total over the 5-year window. Breaks reset the clock."
+    note: "After 5 years of continuous legal residence: B1 Croatian (language + Latin-script exam), clean criminal record, stable means of subsistence, valid health insurance. Continuous = absences under 6 months in any year and under 10 months total over the 5-year window. Breaks reset the clock."
     sourceLabel: "MUP — permanent residence"
   citizenship-path:
     label: "Map the citizenship path (~8 years to Croatian passport)"
-    note: "Naturalization typically requires 8 years of legal residence (or 5 with stalni boravak), B1 Croatian, integration test, and clean record. Croatia generally allows dual citizenship — but check whether your origin country revokes on naturalization. Plan early; document continuity matters."
+    note: "Naturalization typically requires 8 years of legal residence (or 5 with stalni boravak), B1 Croatian, integration test, and clean record. Standard naturalization also requires renouncing your current citizenship unless your origin country makes release impossible — dual citizenship is generally reserved for descent and marriage routes. Plan early; document continuity matters."
     sourceLabel: "MUP — Croatian citizenship"
   it-community:
     label: "Local IT community plugged in"

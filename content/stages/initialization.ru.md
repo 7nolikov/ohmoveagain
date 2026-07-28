@@ -146,9 +146,9 @@ translationMeta:
   sourceLang: en
   targetLang: ru
   sourceFile: content/stages/initialization.md
-  sourceHash: 5709fe9d0a7257510c9727e46dbfe810c6051490845cfb8675964058918af8a4
+  sourceHash: d5d867057f1b2e4b1274e6881c854dd0a257605dd3ebacc64e15633a563239b3
   sourceCommit: 4d27954b50afaf25545f923af97b509024d3d363
-  status: auto-updated
+  status: hand-updated
 ---
 
 Оформление местной идентификации. В Хорватии последовательность фиксированная: сначала OIB, затем регистрация адреса, затем банковский счёт, затем медицинская страховка. Каждый шаг открывает следующий — пропустить порядок означает потерять недели.
