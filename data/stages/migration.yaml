@@ -14,9 +14,9 @@ sources:
     type: official
     lastChecked: "2026-01-01"
   - id: eu-pets
-    url: "https://food.ec.europa.eu/animals/movement-pets_en"
+    url: "https://food.ec.europa.eu/animals/live-animal-movements/dogs-cats-and-ferrets/bringing-pet-eu-non-eu-country_en"
     type: supranational
-    lastChecked: "2026-03-01"
+    lastChecked: "2026-07-28"
   - id: iata-live-animals
     url: "https://www.iata.org/en/programs/cargo/live-animals/"
     type: supranational

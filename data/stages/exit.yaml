@@ -29,7 +29,7 @@ countries:
       - id: de-bank-notify
         source:
           url: "https://www.bafin.de/EN/Homepage/homepage_node.html"
-          asOf: "2026-01-01"
+          asOf: "2026-07-28"
   - code: GB
     flag: "🇬🇧"
     items:
@@ -44,11 +44,11 @@ countries:
       - id: gb-bank-notify
         source:
           url: "https://www.fca.org.uk"
-          asOf: "2026-01-01"
+          asOf: "2026-07-28"
       - id: gb-council-tax
         source:
-          url: "https://www.gov.uk/council-tax"
-          asOf: "2026-01-01"
+          url: "https://www.gov.uk/moving-or-retiring-abroad"
+          asOf: "2026-07-28"
   - code: US
     flag: "🇺🇸"
     items:
@@ -66,8 +66,8 @@ countries:
           asOf: "2026-02-01"
       - id: us-mail-forward
         source:
-          url: "https://moversguide.usps.com/"
-          asOf: "2026-01-01"
+          url: "https://www.usps.com/manage/forward.htm"
+          asOf: "2026-07-28"
   - code: NL
     flag: "🇳🇱"
     items:
@@ -105,4 +105,4 @@ countries:
       - id: rs-rfzo-cancel
         source:
           url: "https://www.rfzo.rs/"
-          asOf: "2026-01-01"
+          asOf: "2026-07-28"
