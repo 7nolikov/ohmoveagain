@@ -2,7 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   {{- range .Data.Pages }}
-  {{- if and (not .Params.noindex) (ne .Sitemap.Disable true) }}
+  {{- /* Mirror the noindex condition in partials/head.html exactly: a page that
+         renders <meta name="robots" content="noindex"> must never be submitted in
+         a sitemap. Checking .Kind as well as .Params.noindex means a translation
+         that is missing its front matter (and so inherits no noindex param) still
+         gets excluded. */ -}}
+  {{- if and (not .Params.noindex) (ne .Sitemap.Disable true) (not (in (slice "taxonomy" "term") .Kind)) }}
   {{- $lm := .Lastmod }}
   {{- if $lm.IsZero }}{{ with .GitInfo }}{{ $lm = .AuthorDate }}{{ end }}{{ end }}
   {{- if $lm.IsZero }}{{ with .File }}{{ with .FileInfo }}{{ $lm = .ModTime }}{{ end }}{{ end }}{{ end }}

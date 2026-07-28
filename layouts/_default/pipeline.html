@@ -8,6 +8,11 @@
   <p class="subtitle">{{ i18n "pipeline_page_subtitle" }}</p>
 </section>
 
+{{/* The checklist itself is client-rendered from the JSON output, so without
+     this the crawled HTML is only the hero plus five stage-card links. Body
+     copy from content/pipeline.md is what gives the page indexable substance. */}}
+{{ with .Content }}<section>{{ . }}</section>{{ end }}
+
 <section id="pipeline" aria-labelledby="pipeline-h">
   <h2 id="pipeline-h">{{ i18n "pipeline_h2" }}</h2>
   <p class="dim">{{ i18n "pipeline_desc_1" }} <span class="acc">{{ i18n "pipeline_desc_locally" }}</span> {{ i18n "pipeline_desc_2" }}</p>
