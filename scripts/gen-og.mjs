@@ -26,7 +26,21 @@ const BG = '#0b0e0f', BG2 = '#0f1519', BORDER = '#1f2a31';
 const GREEN = '#7ee787', DIM = '#8a969e', MUTED = '#5c6770', ACCENT_DIM = '#4a8953';
 const FONT = `ui-monospace, 'Courier New', Courier, monospace`;
 
+// The subtitle renders on one line with no wrapping or textLength squeeze, so
+// an over-long string silently runs off the right edge of the card — which is
+// exactly what had happened to stage-4 and stage-5. Card inner width is
+// ~1060px and the monospace face is ~0.6em wide at font-size 22, giving ~80
+// characters. Fail the build rather than ship a truncated share image.
+const MAX_SUBTITLE_CHARS = 78;
+
 function card({ tag, title, subtitle, url, items }) {
+  if (subtitle && subtitle.length > MAX_SUBTITLE_CHARS) {
+    throw new Error(
+      `OG subtitle is ${subtitle.length} chars, over the ${MAX_SUBTITLE_CHARS} that fit on one line `
+      + `— it would run off the card edge. Shorten it:\n  "${subtitle}"`
+    );
+  }
+
   const itemLines = (items || []).map((item, i) =>
     `<text x="80" y="${300 + i * 44}" font-size="20" font-family="${FONT}">` +
     `<tspan fill="${MUTED}">  → </tspan>` +
@@ -74,7 +88,7 @@ console.log('Generating OG images…');
 writePng(path.join(ROOT, 'static', 'og.png'), card({
   tag: null,
   title: 'Relocate to Croatia without guessing.',
-  subtitle: 'Five stages · sourced checklists · official links · runway calculator · open-source',
+  subtitle: 'Five stages · sourced checklists · official links · open-source',
   url: 'ohmoveagain.com/',
   items: [],
 }));
@@ -90,11 +104,11 @@ writePng(path.join(STATIC_OG, 'calculator.png'), card({
 
 // Per-stage
 const STAGES = [
-  { n: 1, slug: 'assessment',     title: 'Assessment',     subtitle: '183 days or Croatian center-of-life triggers tax residency before you intend it.' },
+  { n: 1, slug: 'assessment',     title: 'Assessment',     subtitle: '183 days or center-of-life triggers tax residency before you intend it.' },
   { n: 2, slug: 'pre-flight',     title: 'Pre-Flight',     subtitle: 'Apostille first, then translate — consulates reject the reverse order.' },
-  { n: 3, slug: 'migration',      title: 'Migration',      subtitle: 'Notify your bank before you fly — geo-change triggers card freezes mid-arrival.' },
-  { n: 4, slug: 'initialization', title: 'Initialization', subtitle: 'Sign the work contract before you open the bank — without it, non-resident account only.' },
-  { n: 5, slug: 'scaling',        title: 'Scaling',        subtitle: 'Watch the paušalni obrt revenue ceiling — crossing mid-year forces a messy structure switch.' },
+  { n: 3, slug: 'migration',      title: 'Migration',      subtitle: 'Notify your bank before you fly — geo-change triggers card freezes.' },
+  { n: 4, slug: 'initialization', title: 'Initialization', subtitle: 'Open the bank account after signing the work contract, not before.' },
+  { n: 5, slug: 'scaling',        title: 'Scaling',        subtitle: 'Cross the paušalni obrt revenue ceiling mid-year and you must restructure.' },
 ];
 
 for (const s of STAGES) {

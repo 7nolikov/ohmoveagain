@@ -27,8 +27,8 @@ itemStrings:
     sourceLabel: "ohmoveagain — runway calculator"
   exit-taxes:
     label: "Audit exit taxes from source jurisdiction"
-    note: "Some countries tax unrealized gains on departure. Model before you trigger."
-    sourceLabel: "OECD — tax policy centre"
+    note: "There are no EU-wide rules here — how leaving is taxed is set entirely by national law, and some countries tax unrealised gains the moment you cease residence. Ask your own tax administration that specific question before you trigger anything."
+    sourceLabel: "EU — taxes when living or working abroad"
   visa-audit:
     label: "Audit visa / residency pathway for your situation"
     note: "Blue Card, Digital Nomad Visa, or employer sponsorship. Each has a different SLA."

@@ -18,7 +18,7 @@ countries:
 items:
   de-tax-deregister:
     label: "Deregister with Finanzamt (Abmeldung der Steuerpflicht)"
-    note: "Unlimited tax liability ends with your address deregistration (next item) — there is no separate Finanzamt form. File a final partial-year tax return for the departure year and keep written confirmation of your departure date for Croatia DTA purposes."
+    note: "Unlimited tax liability ends when you give up your German residence, which happens through the address deregistration in the next item — there is no separate Finanzamt deregistration form to file. Submit a final partial-year return for the year you leave and keep written confirmation of your departure date for Croatia DTA purposes. Your local Finanzamt handles the return; the BZSt is the federal authority for cross-border tax questions."
   de-address-deregister:
     label: "Deregister address (Abmeldung) at Bürgeramt"
     note: "Required by law within two weeks of moving out. Get the Abmeldebestätigung — landlords and banks often require it."
@@ -30,7 +30,7 @@ items:
     note: "Notify your Krankenkasse in writing with your departure date. You remain covered until the end of the membership month."
   de-bank-notify:
     label: "Notify German banks of new address; keep IBAN for 90 days"
-    note: "German IBANs keep working after emigration. Keep the account open until your Croatian salary and direct debits migrate fully."
+    note: "Keep the account open until your Croatian salary and every direct debit have fully migrated — closing early strands standing orders you have forgotten about. Whether a German bank keeps you as a non-resident customer varies, so get your bank's position in writing; BaFin is the supervisor to escalate to if an account is closed without proper notice."
   gb-hmrc-notify:
     label: "Notify HMRC of departure (P85 form)"
     note: "Complete form P85 to establish non-UK-resident status. This determines how your final UK income is taxed and stops incorrect PAYE deductions."
@@ -39,10 +39,10 @@ items:
     note: "You need 35 qualifying years for a full State Pension. If you work abroad you may qualify for Class 2 voluntary contributions, which cost a fraction of Class 3 — check eligibility before defaulting to Class 3."
   gb-bank-notify:
     label: "Notify UK banks of overseas move; update correspondence address"
-    note: "Most UK banks allow non-resident accounts but require an overseas address. Some will close accounts — check your bank's policy before moving."
+    note: "Update your correspondence address before you go, not after. Policy on non-resident customers differs sharply between banks and some will close the account outright, so ask yours for its position in writing rather than assuming; the FCA is the regulator to escalate to."
   gb-council-tax:
     label: "Cancel council tax registration on departure date"
-    note: "Notify your local council in writing with your last day of UK residence. Overpayments are refunded; underpayments create a debt."
+    note: "GOV.UK is explicit: contact your local council when you move abroad and give them a forwarding address. Councils bill locally, so do it in writing with your last day of UK residence — overpayments are refunded, underpayments become a debt that follows you."
   us-fbar:
     label: "File FBAR (FinCEN 114) if foreign accounts exceed $10K"
     note: "US citizens must file FBAR annually regardless of residence. Non-willful failure carries an inflation-adjusted penalty (five figures per unfiled report). Note: the US–Croatia tax treaty signed in 2022 is not yet in force — and no treaty exempts FBAR anyway."
@@ -54,7 +54,7 @@ items:
     note: "File Form 8822 to update your address with IRS. Your SSN remains valid and is required for annual tax filings and FBAR."
   us-mail-forward:
     label: "Set up mail forwarding or use a US virtual address service"
-    note: "IRS notices, state tax correspondence, and financial mail often cannot be forwarded internationally. A US-based virtual mailbox service is the standard solution."
+    note: "USPS forwarding is built for US destinations, and for a move abroad you must file the change of address in person at a Post Office before you leave. Forwarding also runs 12 months (18 paid) and skips marketing mail. For IRS notices and state tax correspondence that keep coming for years, a US virtual mailbox is the standard answer."
   nl-brp-deregister:
     label: "Deregister from BRP (Basisregistratie Personen) at your municipality"
     note: "Report your emigration at the gemeentehuis. You receive a BRP emigration confirmation — keep it for the Dutch tax authority and bank."
@@ -78,4 +78,4 @@ items:
     note: "Get your pension contribution record from the PIO Fund before leaving. A Serbia-Croatia social security agreement is in force — contributions may count toward Croatian entitlements."
   rs-rfzo-cancel:
     label: "Cancel RFZO health insurance if switching to HZZO"
-    note: "Your RFZO coverage ends with your employment contract or voluntary cancellation. Once you have HZZO in Croatia, notify RFZO in writing to avoid continued contribution obligations."
+    note: "Once HZZO cover starts in Croatia, notify RFZO in writing so contribution obligations stop accruing. RFZO documents enrolment far better than exit, so ask your branch for the termination procedure directly rather than expecting to find it online."

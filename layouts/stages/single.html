@@ -190,6 +190,23 @@
   {{ end }}
 </section>
 
+{{/* Stage artifacts — tools that belong to this stage (e.g. the runway
+     calculator on Assessment). Rendered only when the artifact has both a
+     translated name and a real destination, so a placeholder href can never
+     ship as a dead button. */}}
+{{- $arts := $data.artifacts | default slice -}}
+{{- $artNames := $.Params.artifactNames | default dict -}}
+{{- if $arts }}
+<div class="artifacts">
+  {{- range $arts }}
+    {{- $name := index $artNames .id -}}
+    {{- if and $name .href (ne .href "#") }}
+    <a href="{{ .href | relLangURL }}">{{ $name }}</a>
+    {{- end }}
+  {{- end }}
+</div>
+{{- end }}
+
 {{ with $.Params.gotchas }}
 <section class="gotchas">
   <h3>{{ i18n "common_pitfalls" }}</h3>

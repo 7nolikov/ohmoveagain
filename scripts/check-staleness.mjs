@@ -72,6 +72,29 @@ function recordValidUntil(date, meta) {
 
 // ── Tier-aware stage YAML check (A-TR7) ──────────────────────────────────────
 
+// Recursively record every inline `source: { asOf, validUntil }` in a stage
+// document, wherever the schema happens to put it. The top-level `sources:`
+// list is skipped — it carries an explicit tier and is checked separately.
+export function walkInlineSources(node, file, ownerId = null) {
+  if (Array.isArray(node)) {
+    for (const child of node) walkInlineSources(child, file, ownerId);
+    return;
+  }
+  if (!node || typeof node !== 'object') return;
+
+  const id = typeof node.id === 'string' ? node.id : ownerId;
+  const src = node.source;
+  if (src && typeof src === 'object' && !Array.isArray(src)) {
+    if (src.asOf) recordDate(src.asOf, WARN_DAYS, FAIL_DAYS, { file, item: id });
+    if (src.validUntil) recordValidUntil(src.validUntil, { file, item: id });
+  }
+
+  for (const [key, value] of Object.entries(node)) {
+    if (key === 'sources' || key === 'source') continue;
+    walkInlineSources(value, file, id);
+  }
+}
+
 function checkStageYaml(file) {
   let doc;
   try { doc = parseYaml(readFileSync(file, 'utf8')); } catch { return; }
@@ -94,18 +117,16 @@ function checkStageYaml(file) {
     }
   }
 
-  // Claim-level inline sources — no explicit tier; use defaults
-  if (Array.isArray(doc.claims)) {
-    for (const claim of doc.claims) {
-      if (!Array.isArray(claim.items)) continue;
-      for (const item of claim.items) {
-        const src = item.source;
-        if (!src) continue;
-        if (src.asOf) recordDate(src.asOf, WARN_DAYS, FAIL_DAYS, { file, claim: claim.id, item: item.id });
-        if (src.validUntil) recordValidUntil(src.validUntil, { file, claim: claim.id, item: item.id });
-      }
-    }
-  }
+  // Inline per-item sources — no explicit tier, so the defaults apply.
+  //
+  // This used to hard-code the path doc.claims[].items[].source. The schema
+  // moved (v2 puts checklist items under checklist[].items[], and exit.yaml
+  // uses countries[].items[]), and when it moved this check silently stopped
+  // matching anything at all — 45 of 76 sources, including every source on the
+  // exit page, went unchecked while the build still reported OK. Walk the
+  // document instead of naming one path, so the next schema change cannot
+  // quietly re-open the same hole.
+  walkInlineSources(doc, file);
 }
 
 // ── Line-by-line check for other files ───────────────────────────────────────
@@ -155,7 +176,8 @@ if (JSON_MODE) {
     } else {
       const loc = f.line ? `:${f.line}` : '';
       const ctx = f.tier ? `  tier=${f.tier}` : '';
-      const src = f.source ? `  source=${f.source}` : (f.claim ? `  claim=${f.claim}` : '');
+      const src = f.source ? `  source=${f.source}`
+        : (f.claim ? `  claim=${f.claim}` : (f.item ? `  item=${f.item}` : ''));
       console.log(`${f.level}: ${f.file}${loc}  asOf=${f.date}  age=${f.age}d${ctx}${src}`);
     }
   }
@@ -165,5 +187,7 @@ if (JSON_MODE) {
   );
 }
 
-if (fails.length > 0) process.exit(1);
-process.exit(0);
+// Set exitCode rather than calling process.exit(): stdout is asynchronous when
+// piped, and exiting immediately truncates it at ~8KB. Both pr-check.yml
+// (`| tee`) and staleness-watch.yml (`--json >`) read this output.
+process.exitCode = fails.length > 0 ? 1 : 0;

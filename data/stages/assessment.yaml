@@ -41,8 +41,8 @@ checklist:
           asOf: "2026-04-18"
       - id: exit-taxes
         source:
-          url: "https://www.oecd.org/tax/tax-policy/"
-          asOf: "2026-01-01"
+          url: "https://europa.eu/youreurope/citizens/work/taxes/index_en.htm"
+          asOf: "2026-07-28"
 
   - id: visa-pathway
     items:
