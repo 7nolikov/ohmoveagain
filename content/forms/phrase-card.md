@@ -64,7 +64,7 @@ sitemap:
 | Govorite li engleski? | Do you speak English? |
 | Molim, polako. | Please, slowly. |
 | Razumijem. | I understand. |
-| Ne razumijem. | I don't understand. |
+| Ne razumijem. | I do not understand. |
 | Hvala. | Thank you. |
 | Gdje je ___? | Where is ___? |
 | Koliko dugo traje? | How long does it take? |

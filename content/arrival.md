@@ -1,5 +1,5 @@
 ---
-title: "After Landing"
+title: "After landing"
 subtitle: "Your first 30 days in Croatia — sequenced by when things must happen."
 description: "A tactical view of what to do in the first month after arriving in Croatia, filtered from Stage 3 (Migration) and Stage 4 (Initialization) by arrival phase."
 layout: arrival

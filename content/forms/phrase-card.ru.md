@@ -7,7 +7,7 @@ translationMeta:
   sourceLang: en
   targetLang: ru
   sourceFile: content/forms/phrase-card.md
-  sourceHash: 7dbf63dd08e591361df0947b8ffe2f4e578e755b87ee403fb05dbe637cc60ce2
+  sourceHash: 4ce90cd4e44a3ac684528c0c3cf169c6f2949eab8fc089e17fe327d85805f51f
   status: hand-updated
 ---
 

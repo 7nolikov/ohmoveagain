@@ -96,7 +96,7 @@ itemStrings:
     sourceLabel: "CITES — permit requirements"
   marriage-cert:
     label: "Marriage / civil partnership certificate — apostilled + sworn translation, issued within the last 6 months"
-    note: "MUP rejects marriage certificates older than 6 months from the DATE OF ISSUE (not the apostille date — 2023 policy update). Order a fresh copy from your civil registry right before you apply. Apostille goes on the original, not the translation."
+    note: "MUP counts the 6 months from the date the certificate was issued — not from the date it was apostilled (2023 policy update). Order a fresh copy from your civil registry right before you apply. Apostille goes on the original, not the translation."
     sourceLabel: "MUP — family reunification document rules"
   child-birth-certs:
     label: "Birth certificate for each child — apostilled + sworn translation"

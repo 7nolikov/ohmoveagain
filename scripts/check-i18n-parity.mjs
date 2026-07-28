@@ -8,6 +8,9 @@
 //   • offices.yaml    ← strings in content/offices.<lang>.md     (officeStrings)
 //   • countries.yaml  ← strings in data/i18n/countries.<lang>.yaml
 //   • fees.yaml       ← strings in data/i18n/fees.<lang>.yaml
+//   • stages/exit.yaml ← strings in data/i18n/exit.<lang>.yaml (nested shape,
+//                        so it gets its own check below rather than the flat
+//                        id→object helper the others share)
 //
 // Uses the real YAML parser via i18n-lib to avoid false positives on
 // line-wrapped list items produced by yaml.stringify.
@@ -248,5 +251,65 @@ for (const spec of I18N_DATA_STRINGS) {
   }
 }
 
-console.log(`\ni18n parity: ${translated.length} stage file(s), ${pageChecked} page-string surface(s), ${i18nDataChecked} i18n-data surface(s) checked — ${errors} error(s).`);
+// ── Exit-stage parity (nested: countries[].items[]) ───────────────────────────
+// exit.yaml is structural only; every country code needs a `name` and every
+// item id needs `label` + `note` in each language file.
+
+const EXIT_DATA = 'data/stages/exit.yaml';
+const exitPattern = (lang) => `data/i18n/exit.${lang}.yaml`;
+let exitChecked = 0;
+
+if (!fs.existsSync(EXIT_DATA)) {
+  console.log(`FAIL ${EXIT_DATA}: file missing`);
+  errors++;
+} else {
+  const exitDoc = YAML.parse(fs.readFileSync(EXIT_DATA, 'utf8')) || {};
+  const codes = (exitDoc.countries || []).map((c) => c.code).filter(Boolean);
+  const itemIds = (exitDoc.countries || []).flatMap((c) => (c.items || []).map((i) => i.id)).filter(Boolean);
+
+  const langs = detectLangs(exitPattern);
+  if (!langs.includes('en')) langs.push('en');
+
+  for (const lang of langs) {
+    const file = exitPattern(lang);
+    if (!fs.existsSync(file)) {
+      console.log(`FAIL [${lang}] exit: ${file} missing`);
+      errors++;
+      continue;
+    }
+    const doc = YAML.parse(fs.readFileSync(file, 'utf8')) || {};
+    const countryMap = doc.countries || {};
+    const itemMap = doc.items || {};
+
+    for (const code of codes) {
+      if (!countryMap[code]?.name) {
+        console.log(`FAIL [${lang}] exit: missing countries.${code}.name`);
+        errors++;
+      }
+    }
+    for (const code of Object.keys(countryMap)) {
+      if (!codes.includes(code)) {
+        console.log(`FAIL [${lang}] exit: unexpected country "${code}"`);
+        errors++;
+      }
+    }
+    for (const id of itemIds) {
+      for (const k of ['label', 'note']) {
+        if (!itemMap[id]?.[k]) {
+          console.log(`FAIL [${lang}] exit: missing items.${id}.${k}`);
+          errors++;
+        }
+      }
+    }
+    for (const id of Object.keys(itemMap)) {
+      if (!itemIds.includes(id)) {
+        console.log(`FAIL [${lang}] exit: unexpected item "${id}"`);
+        errors++;
+      }
+    }
+    exitChecked++;
+  }
+}
+
+console.log(`\ni18n parity: ${translated.length} stage file(s), ${pageChecked} page-string surface(s), ${i18nDataChecked} i18n-data surface(s), ${exitChecked} exit surface(s) checked — ${errors} error(s).`);
 process.exit(errors > 0 ? 1 : 0);

@@ -1,5 +1,5 @@
 ---
-title: "Leaving Your Country"
+title: "Leaving your country"
 subtitle: "Stage 0 — what to do in your origin country before you go."
 description: "Exit-side checklist for relocating from Germany, UK, US, Netherlands, or Serbia. Deregister tax residency, port pension records, and close out health insurance and banking."
 layout: exit

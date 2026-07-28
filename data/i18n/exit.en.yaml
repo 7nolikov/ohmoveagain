@@ -1,0 +1,81 @@
+# Translatable strings for data/stages/exit.yaml.
+# Country display names keyed by code; item label/note keyed by item id.
+# Every code and every item id in exit.yaml must have a matching entry here.
+# URLs and asOf dates stay canonical in data/stages/exit.yaml — never duplicated here.
+# scripts/check-i18n-parity.mjs enforces id-set + key-set parity across languages.
+
+countries:
+  DE:
+    name: "Germany"
+  GB:
+    name: "United Kingdom"
+  US:
+    name: "United States"
+  NL:
+    name: "Netherlands"
+  RS:
+    name: "Serbia"
+items:
+  de-tax-deregister:
+    label: "Deregister with Finanzamt (Abmeldung der Steuerpflicht)"
+    note: "Unlimited tax liability ends with your address deregistration (next item) — there is no separate Finanzamt form. File a final partial-year tax return for the departure year and keep written confirmation of your departure date for Croatia DTA purposes."
+  de-address-deregister:
+    label: "Deregister address (Abmeldung) at Bürgeramt"
+    note: "Required by law within two weeks of moving out. Get the Abmeldebestätigung — landlords and banks often require it."
+  de-pension-transfer:
+    label: "Request Deutsche Rentenversicherung contribution statement"
+    note: "Request a Rentenauskunft for your contribution record. Contributions may be partially refundable after 24+ months outside the EU/EEA, or portable under a DTA."
+  de-health-cancel:
+    label: "Cancel statutory health insurance (GKV) from departure date"
+    note: "Notify your Krankenkasse in writing with your departure date. You remain covered until the end of the membership month."
+  de-bank-notify:
+    label: "Notify German banks of new address; keep IBAN for 90 days"
+    note: "German IBANs keep working after emigration. Keep the account open until your Croatian salary and direct debits migrate fully."
+  gb-hmrc-notify:
+    label: "Notify HMRC of departure (P85 form)"
+    note: "Complete form P85 to establish non-UK-resident status. This determines how your final UK income is taxed and stops incorrect PAYE deductions."
+  gb-ni-voluntary:
+    label: "Consider voluntary National Insurance contributions"
+    note: "You need 35 qualifying years for a full State Pension. If you work abroad you may qualify for Class 2 voluntary contributions, which cost a fraction of Class 3 — check eligibility before defaulting to Class 3."
+  gb-bank-notify:
+    label: "Notify UK banks of overseas move; update correspondence address"
+    note: "Most UK banks allow non-resident accounts but require an overseas address. Some will close accounts — check your bank's policy before moving."
+  gb-council-tax:
+    label: "Cancel council tax registration on departure date"
+    note: "Notify your local council in writing with your last day of UK residence. Overpayments are refunded; underpayments create a debt."
+  us-fbar:
+    label: "File FBAR (FinCEN 114) if foreign accounts exceed $10K"
+    note: "US citizens must file FBAR annually regardless of residence. Non-willful failure carries an inflation-adjusted penalty (five figures per unfiled report). Note: the US–Croatia tax treaty signed in 2022 is not yet in force — and no treaty exempts FBAR anyway."
+  us-state-tax:
+    label: "Establish state tax non-residency (state-specific)"
+    note: "Some US states (CA, NY, NJ) aggressively assert residency even after physical departure. Follow your state's domicile change procedure and keep documentation."
+  us-irs-address:
+    label: "Update IRS address (Form 8822); keep SSN active"
+    note: "File Form 8822 to update your address with IRS. Your SSN remains valid and is required for annual tax filings and FBAR."
+  us-mail-forward:
+    label: "Set up mail forwarding or use a US virtual address service"
+    note: "IRS notices, state tax correspondence, and financial mail often cannot be forwarded internationally. A US-based virtual mailbox service is the standard solution."
+  nl-brp-deregister:
+    label: "Deregister from BRP (Basisregistratie Personen) at your municipality"
+    note: "Report your emigration at the gemeentehuis. You receive a BRP emigration confirmation — keep it for the Dutch tax authority and bank."
+  nl-belastingdienst:
+    label: "Notify Belastingdienst of emigration date"
+    note: "Tax residency in the Netherlands ends on the emigration date. File an M-form (partial-year return) for the year you leave. The Belastingdienst will send you one automatically."
+  nl-aow-pension:
+    label: "Contact SVB about AOW (state pension) entitlements"
+    note: "Your AOW pension accrues 2% per year of Dutch residency during the 50 years before your AOW age. Contact SVB to verify your accrual record and understand how Croatian residence affects future payments."
+  nl-zorgtoeslag:
+    label: "Cancel zorgtoeslag (healthcare allowance) on departure"
+    note: "Notify Belastingdienst Toeslagen immediately — continuing to receive zorgtoeslag after emigrating constitutes fraud and must be repaid."
+  rs-tax-deregister:
+    label: "File tax residency termination with the Tax Administration (Poreska uprava)"
+    note: "Submit a request to cancel your tax residency certificate. Serbia uses a 183-day rule plus center-of-life test. Keep documentation to prove Croatian residency started."
+  rs-address-deregister:
+    label: "Deregister from residents' register (MUP)"
+    note: "Notify MUP of your permanent departure. You can hold a Serbian passport without Serbian tax residency — these are separate registrations."
+  rs-pio-pension:
+    label: "Request PIO Fund contribution extract"
+    note: "Get your pension contribution record from the PIO Fund before leaving. A Serbia-Croatia social security agreement is in force — contributions may count toward Croatian entitlements."
+  rs-rfzo-cancel:
+    label: "Cancel RFZO health insurance if switching to HZZO"
+    note: "Your RFZO coverage ends with your employment contract or voluntary cancellation. Once you have HZZO in Croatia, notify RFZO in writing to avoid continued contribution obligations."

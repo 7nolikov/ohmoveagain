@@ -1,5 +1,12 @@
 {{ define "main" }}
+{{- /* Structural data (codes, flags, item ids, source URLs + asOf) lives in
+       data/stages/exit.yaml; per-language strings in data/i18n/exit.<lang>.yaml.
+       Parity is enforced by scripts/check-i18n-parity.mjs. */ -}}
 {{- $exitData := hugo.Data.stages.exit -}}
+{{- $exitStrings := index hugo.Data.i18n (printf "exit.%s" site.Language.Lang) -}}
+{{- if not $exitStrings }}{{- $exitStrings = index hugo.Data.i18n "exit.en" -}}{{- end -}}
+{{- $countryStrings := $exitStrings.countries -}}
+{{- $itemStrings := $exitStrings.items -}}
 
 <section>
   {{ with .Params.tagline }}<div class="tagline">{{ . }}</div>{{ end }}
@@ -20,7 +27,7 @@
               :aria-selected="country === '{{ .code }}'"
               @click="country = country === '{{ .code }}' ? '' : '{{ .code }}'"
               :class="country === '{{ .code }}' ? 'active' : ''">
-        {{ .flag }} {{ .name }}
+        {{ .flag }} {{ (index $countryStrings .code).name }}
       </button>
       {{ end }}
     </div>
@@ -30,14 +37,15 @@
     <div x-show="country === '{{ $c.code }}'" x-cloak>
       <ul class="checklist">
         {{ range $i, $item := $c.items }}
+        {{- $s := index $itemStrings $item.id -}}
         <li>
           <label>
             <input type="checkbox">
             <div class="label-text">
-              <span class="label">{{ $item.label }}</span>
+              <span class="label">{{ $s.label }}</span>
             </div>
           </label>
-          {{ with $item.note }}<div class="trust-microcopy">{{ . }}</div>{{ end }}
+          {{ with $s.note }}<div class="trust-microcopy">{{ . }}</div>{{ end }}
           {{ with $item.source }}<a class="source" href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ i18n "exit_source_label" }} · {{ .asOf }}</a>{{ end }}
         </li>
         {{ end }}
