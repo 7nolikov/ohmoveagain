@@ -2,6 +2,8 @@
 stage_of_5: "Этап {{ . }} из 5"
 checklist: "Чеклист"
 common_pitfalls: "Частые ошибки"
+before_you_start: "Прежде чем начать"
+documents_you_will_need: "Документы, которые будут у вас к концу этапа"
 reset_stage_confirm: "Сбросить прогресс этапа?"
 reset_stage: "Сбросить"
 export_stage: "↓ Экспорт этапа"

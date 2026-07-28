@@ -2,6 +2,8 @@
 stage_of_5: "Stage {{ . }} of 5"
 checklist: "Checklist"
 common_pitfalls: "Common pitfalls"
+before_you_start: "Before you start"
+documents_you_will_need: "Documents you will have by the end"
 reset_stage_confirm: "Reset this stage?"
 reset_stage: "Reset"
 export_stage: "↓ Export stage"

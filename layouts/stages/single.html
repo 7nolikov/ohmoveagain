@@ -66,6 +66,26 @@
 </p>
 {{- end }}
 
+{{/* Prerequisites and end-state documents. Both are promised by name on the
+     Pipeline page, the stage index, and the home page ("each stage lists its
+     prerequisites, the documents you will need"), and both were dropped from
+     this template in the trust-UI refactor — 78 authored, translated entries
+     that no reader could see. check-i18n-parity.mjs enforces their list length
+     across languages, so they were being maintained the whole time. */}}
+{{ with $.Params.requires }}
+<section>
+  <h2>{{ i18n "before_you_start" }}</h2>
+  <ul>{{ range . }}<li>{{ . }}</li>{{ end }}</ul>
+</section>
+{{ end }}
+
+{{ with $.Params.documents }}
+<section>
+  <h2>{{ i18n "documents_you_will_need" }}</h2>
+  <ul>{{ range . }}<li>{{ . }}</li>{{ end }}</ul>
+</section>
+{{ end }}
+
 {{ with $data }}{{ with .checklist }}
 
 {{/* Build meta array and export data in one pass */}}
