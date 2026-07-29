@@ -26,7 +26,7 @@
   "devDependencies": {
     "@axe-core/cli": "^4.12.1",
     "@lhci/cli": "^0.15.1",
-    "@playwright/test": "^1.61.1",
+    "@playwright/test": "^1.62.0",
     "@resvg/resvg-js": "^2.6.2",
     "browser-driver-manager": "^2.0.1",
     "serve": "^14.2.6"
