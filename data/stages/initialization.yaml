@@ -112,7 +112,7 @@ checklist:
           pets: [dog-cat]
         source:
           url: "https://veterinarstvo.mps.hr/"
-          asOf: "2026-02-01"
+          asOf: "2026-08-08"
       - id: dog-municipal-reg
         appliesTo:
           pets: [dog-cat]

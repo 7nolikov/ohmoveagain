@@ -97,11 +97,11 @@ countries:
       - id: rs-address-deregister
         source:
           url: "https://www.mup.gov.rs/wps/portal/en"
-          asOf: "2026-02-01"
+          asOf: "2026-08-08"
       - id: rs-pio-pension
         source:
           url: "https://www.pio.rs/en"
-          asOf: "2026-02-01"
+          asOf: "2026-08-08"
       - id: rs-rfzo-cancel
         source:
           url: "https://www.rfzo.rs/"
