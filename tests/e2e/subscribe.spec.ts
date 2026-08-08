@@ -151,15 +151,19 @@ test('form shows network error when Formspree is unreachable', async ({ page }) 
 test('form POST goes only to formspree.io — no other host', async ({ page }) => {
   const postUrls: string[] = [];
   // Cloudflare beacon RUM endpoint is analytics, not user data — exclude it from the host check
-  const isAnalytics = (u: string) =>
-    u.includes('cloudflareinsights') || u.includes('cdn-cgi/rum');
+  const isAnalytics = (u: string) => {
+    const parsed = new URL(u);
+    return parsed.hostname === 'cloudflareinsights.com' || parsed.pathname.includes('/cdn-cgi/rum');
+  };
 
   await page.route('**', (route: Route) => {
     const req = route.request();
-    if (req.method() === 'POST' && !isAnalytics(req.url())) {
-      postUrls.push(req.url());
+    const reqUrl = req.url();
+    const parsed = new URL(reqUrl);
+    if (req.method() === 'POST' && !isAnalytics(reqUrl)) {
+      postUrls.push(reqUrl);
     }
-    if (req.url().includes('formspree.io')) {
+    if (parsed.hostname === 'formspree.io') {
       route.fulfill({ status: 200, body: JSON.stringify({ ok: true }) });
     } else {
       route.continue();
@@ -172,10 +176,11 @@ test('form POST goes only to formspree.io — no other host', async ({ page }) =
   await page.waitForTimeout(500);
 
   for (const url of postUrls) {
+    const host = new URL(url).hostname;
     expect(
-      url,
+      host,
       `POST to unexpected host: ${url}`
-    ).toContain('formspree.io');
+    ).toBe('formspree.io');
   }
 });
 
