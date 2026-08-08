@@ -150,20 +150,26 @@ test('form shows network error when Formspree is unreachable', async ({ page }) 
 
 test('form POST goes only to formspree.io — no other host', async ({ page }) => {
   const postUrls: string[] = [];
-  // Cloudflare beacon RUM endpoint is analytics, not user data — exclude it from the host check
-  const isAnalytics = (u: string) => {
-    const parsed = new URL(u);
-    return parsed.hostname === 'cloudflareinsights.com' || parsed.pathname.includes('/cdn-cgi/rum');
+  // Cloudflare beacon RUM endpoint is analytics, not user data — exclude it from the
+  // host check. Match on host only: a path test like '/cdn-cgi/rum' is attacker-controlled
+  // and would let any host opt itself out of this assertion.
+  const ANALYTICS_HOSTS = new Set(['cloudflareinsights.com', 'static.cloudflareinsights.com']);
+  const hostOf = (u: string) => {
+    try {
+      return new URL(u).hostname;
+    } catch {
+      return '';
+    }
   };
 
   await page.route('**', (route: Route) => {
     const req = route.request();
     const reqUrl = req.url();
-    const parsed = new URL(reqUrl);
-    if (req.method() === 'POST' && !isAnalytics(reqUrl)) {
+    const host = hostOf(reqUrl);
+    if (req.method() === 'POST' && !ANALYTICS_HOSTS.has(host)) {
       postUrls.push(reqUrl);
     }
-    if (parsed.hostname === 'formspree.io') {
+    if (host === 'formspree.io') {
       route.fulfill({ status: 200, body: JSON.stringify({ ok: true }) });
     } else {
       route.continue();
@@ -175,10 +181,14 @@ test('form POST goes only to formspree.io — no other host', async ({ page }) =
   await page.click('form.subscribe-form button[type="submit"]');
   await page.waitForTimeout(500);
 
+  // Guard against a vacuous pass: if the submit stopped POSTing at all, the loop
+  // below would assert nothing and the test would go green while checking nothing.
+  expect(postUrls.length, 'no POST was captured — the assertion below is vacuous')
+    .toBeGreaterThan(0);
+
   for (const url of postUrls) {
-    const host = new URL(url).hostname;
     expect(
-      host,
+      hostOf(url),
       `POST to unexpected host: ${url}`
     ).toBe('formspree.io');
   }
