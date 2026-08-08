@@ -64,11 +64,11 @@
 
 - id: opcinski-sud-zagreb
   city: "Zagreb"
-  address: "Trg sv. Marka 4, 10000 Zagreb"
-  phone: "+385 1 4891 888"
+  address: "Ulica grada Vukovara 84, 10000 Zagreb"
+  phone: "+385 1 6126 666"
   booking: null
-  mapUrl: "https://maps.google.com/?q=Trg+sv.+Marka+4+Zagreb"
-  lastChecked: "2026-02-01"
+  mapUrl: "https://maps.google.com/?q=Ulica+grada+Vukovara+84+Zagreb"
+  lastChecked: "2026-08-08"
 
 - id: sudski-tumaci-registry
   city: "Nationwide"

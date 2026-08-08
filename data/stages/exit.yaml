@@ -20,12 +20,12 @@ countries:
           asOf: "2026-03-01"
       - id: de-pension-transfer
         source:
-          url: "https://www.deutsche-rentenversicherung.de/DRV/EN/Home/home_node.html"
-          asOf: "2026-02-01"
+          url: "https://www.deutsche-rentenversicherung.de/DRV/DE/Rente/Allgemeine-Informationen/Wissenswertes-zur-Rente/FAQs/International/Erstattung.html"
+          asOf: "2026-08-08"
       - id: de-health-cancel
         source:
-          url: "https://www.bundesgesundheitsministerium.de/en/topics/health-insurance"
-          asOf: "2026-02-01"
+          url: "https://europa.eu/youreurope/citizens/health/when-living-abroad/health-insurance-cover/index_en.htm"
+          asOf: "2026-08-08"
       - id: de-bank-notify
         source:
           url: "https://www.bafin.de/EN/Homepage/homepage_node.html"
@@ -39,8 +39,8 @@ countries:
           asOf: "2026-03-01"
       - id: gb-ni-voluntary
         source:
-          url: "https://www.gov.uk/voluntary-national-insurance-contributions"
-          asOf: "2026-02-01"
+          url: "https://www.gov.uk/voluntary-national-insurance-contributions/if-you-live-or-work-abroad"
+          asOf: "2026-08-08"
       - id: gb-bank-notify
         source:
           url: "https://www.fca.org.uk"
@@ -63,7 +63,7 @@ countries:
       - id: us-irs-address
         source:
           url: "https://www.irs.gov/forms-pubs/about-form-8822"
-          asOf: "2026-02-01"
+          asOf: "2026-08-08"
       - id: us-mail-forward
         source:
           url: "https://www.usps.com/manage/forward.htm"
@@ -81,12 +81,12 @@ countries:
           asOf: "2026-03-01"
       - id: nl-aow-pension
         source:
-          url: "https://www.svb.nl/en/aow"
-          asOf: "2026-02-01"
+          url: "https://www.svb.nl/en/aow-pension/what-is-aow/building-up-an-aow-pension"
+          asOf: "2026-08-08"
       - id: nl-zorgtoeslag
         source:
-          url: "https://www.toeslagen.nl/"
-          asOf: "2026-02-01"
+          url: "https://www.belastingdienst.nl/wps/wcm/connect/nl/toeslagen/toeslagen"
+          asOf: "2026-08-08"
   - code: RS
     flag: "🇷🇸"
     items:
@@ -97,11 +97,11 @@ countries:
       - id: rs-address-deregister
         source:
           url: "https://www.mup.gov.rs/wps/portal/en"
-          asOf: "2026-02-01"
+          asOf: "2026-08-08"
       - id: rs-pio-pension
         source:
           url: "https://www.pio.rs/en"
-          asOf: "2026-02-01"
+          asOf: "2026-08-08"
       - id: rs-rfzo-cancel
         source:
           url: "https://www.rfzo.rs/"

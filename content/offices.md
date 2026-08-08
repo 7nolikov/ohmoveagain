@@ -48,11 +48,11 @@ officeStrings:
     hours: "Mon–Fri 08:00–15:30"
     note: "Regional HZZO office for Dalmatia."
   opcinski-sud-zagreb:
-    authority: "Općinski sud Zagreb (Municipal Court)"
-    name: "Zagreb Municipal Court — apostille certification"
+    authority: "Općinski građanski sud u Zagrebu (Municipal Civil Court)"
+    name: "Zagreb Municipal Civil Court — apostille certification"
     bookingNote: "Walk-in only. No appointment system."
-    hours: "Mon–Fri 08:00–14:00"
-    note: "Croatian courts issue apostilles for documents originating in Croatia. For foreign documents, apostilles are issued in the country of origin — not here."
+    hours: "Mon–Fri 08:00–13:00 (break 11:00–11:30)"
+    note: "Apostilles are issued in room 305, third floor. Croatian courts apostille documents originating in Croatia, and each municipal court covers only bodies seated in its own jurisdiction. For foreign documents, apostilles are issued in the country of origin — not here."
   sudski-tumaci-registry:
     authority: "Court translators (sudski tumači)"
     name: "Official registry of permanent court translators"

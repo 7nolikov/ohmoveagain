@@ -43,7 +43,7 @@
   validUntil: "2026-12-31"
   source:
     url: "https://www.portaldasfinancas.gov.pt/at/html/index.html"
-    asOf: "2026-02-01"
+    asOf: "2026-08-08"
 - code: EE
   flag: "🇪🇪"
   effectiveTaxRate: 0.22
@@ -59,7 +59,7 @@
   validUntil: "2026-12-31"
   source:
     url: "https://www.gov.uk/income-tax-rates"
-    asOf: "2026-02-01"
+    asOf: "2026-08-08"
 - code: US
   flag: "🇺🇸"
   effectiveTaxRate: 0.35

@@ -73,9 +73,9 @@ itemStrings:
     note: "Skip if your spouse is an EU/EEA citizen (they register independently). Otherwise: apply after the primary applicant has the residency card. Spouse can remain on tourist exemption (90 days) while waiting."
     sourceLabel: "MUP — family reunification application"
   vet-visit-10d:
-    label: "Croatian official vet visit within 10 days of arrival"
-    note: "Required for any follow-up vaccinations. Also establishes your local vet relationship."
-    sourceLabel: "Veterinary Directorate (HR)"
+    label: "Register with a local Croatian vet after arrival"
+    note: "There is no 10-day deadline once you are here — the 10-day window is how long the health certificate stays valid before you reach the border, and the pet check happens at the crossing itself. Book a licensed local vet once you are settled: they hold your pet's Croatian records, give boosters when the rabies vaccination runs out, and are who you go through for an EU pet passport if you arrived on a third-country certificate. That passport needs your Croatian residence registered first."
+    sourceLabel: "Customs Administration (HR) — movement of pets"
   microchip-registered:
     label: "Microchip registered in Croatian database (Lysacan)"
     note: "Even with an EU Pet Passport, you must register the chip in HR's national database."

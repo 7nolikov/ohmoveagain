@@ -90,8 +90,8 @@ checklist:
         appliesTo:
           family: [kids, spouse-kids]
         source:
-          url: "https://mzo.gov.hr/"
-          asOf: "2026-02-01"
+          url: "https://mzom.gov.hr/"
+          asOf: "2026-08-08"
       - id: non-eu-spouse-reunification
         appliesTo:
           family: [spouse, spouse-kids]
@@ -105,14 +105,14 @@ checklist:
         appliesTo:
           pets: [dog-cat, other]
         source:
-          url: "https://veterinarstvo.mps.hr/"
-          asOf: "2026-02-01"
+          url: "https://carina.gov.hr/featured/information-for-passengers-natural-persons/movement-of-animals/6713"
+          asOf: "2026-08-08"
       - id: microchip-registered
         appliesTo:
           pets: [dog-cat]
         source:
           url: "https://veterinarstvo.mps.hr/"
-          asOf: "2026-02-01"
+          asOf: "2026-08-08"
       - id: dog-municipal-reg
         appliesTo:
           pets: [dog-cat]

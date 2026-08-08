@@ -107,6 +107,6 @@ checklist:
       - id: it-community
         source:
           url: "https://www.meetup.com/find/?location=hr--zagreb&source=EVENTS&keywords=tech"
-          asOf: "2026-02-01"
+          asOf: "2026-08-08"
 
 artifacts: []
