@@ -36,7 +36,7 @@ items:
     note: "Complete form P85 to establish non-UK-resident status. This determines how your final UK income is taxed and stops incorrect PAYE deductions."
   gb-ni-voluntary:
     label: "Consider voluntary National Insurance contributions"
-    note: "You need 35 qualifying years for a full State Pension. If you work abroad you may qualify for Class 2 voluntary contributions, which cost a fraction of Class 3 — check eligibility before defaulting to Class 3."
+    note: "You need 10 qualifying years for any new State Pension and 35 for the full rate — more than 35 if your record started before April 2016. Class 2 voluntary contributions for periods abroad were abolished on 6 April 2026: for 2026-27 onward only Class 3 is available, and a new application needs 10 continuous years of UK residence or 10 qualifying years on your record. If you were already paying Class 2 abroad, you can move to Class 3 without meeting that test."
   gb-bank-notify:
     label: "Notify UK banks of overseas move; update correspondence address"
     note: "Update your correspondence address before you go, not after. Policy on non-resident customers differs sharply between banks and some will close the account outright, so ask yours for its position in writing rather than assuming; the FCA is the regulator to escalate to."

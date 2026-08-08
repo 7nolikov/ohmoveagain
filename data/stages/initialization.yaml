@@ -90,8 +90,8 @@ checklist:
         appliesTo:
           family: [kids, spouse-kids]
         source:
-          url: "https://mzo.gov.hr/"
-          asOf: "2026-02-01"
+          url: "https://mzom.gov.hr/"
+          asOf: "2026-08-08"
       - id: non-eu-spouse-reunification
         appliesTo:
           family: [spouse, spouse-kids]
