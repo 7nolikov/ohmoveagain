@@ -20,12 +20,12 @@ countries:
           asOf: "2026-03-01"
       - id: de-pension-transfer
         source:
-          url: "https://www.deutsche-rentenversicherung.de/DRV/EN/Home/home_node.html"
-          asOf: "2026-02-01"
+          url: "https://www.deutsche-rentenversicherung.de/DRV/DE/Rente/Allgemeine-Informationen/Wissenswertes-zur-Rente/FAQs/International/Erstattung.html"
+          asOf: "2026-08-08"
       - id: de-health-cancel
         source:
-          url: "https://www.bundesgesundheitsministerium.de/en/topics/health-insurance"
-          asOf: "2026-02-01"
+          url: "https://europa.eu/youreurope/citizens/health/when-living-abroad/health-insurance-cover/index_en.htm"
+          asOf: "2026-08-08"
       - id: de-bank-notify
         source:
           url: "https://www.bafin.de/EN/Homepage/homepage_node.html"

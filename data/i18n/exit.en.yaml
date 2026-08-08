@@ -23,11 +23,11 @@ items:
     label: "Deregister address (Abmeldung) at Bürgeramt"
     note: "Required by law within two weeks of moving out. Get the Abmeldebestätigung — landlords and banks often require it."
   de-pension-transfer:
-    label: "Request Deutsche Rentenversicherung contribution statement"
-    note: "Request a Rentenauskunft for your contribution record. Contributions may be partially refundable after 24+ months outside the EU/EEA, or portable under a DTA."
+    label: "Get your Deutsche Rentenversicherung insurance record (Versicherungsverlauf)"
+    note: "Ask for a Versicherungsverlauf — the list of every period on your pension account — and close any gaps with a Kontenklärung while German paperwork is still easy to chase. A Rentenauskunft is a different document, the detailed projection sent from age 55, so most people leaving will not have one. Do not plan on cashing out: a refund under §210 SGB VI requires both that you are no longer compulsorily insured and that you have no right to insure voluntarily, which rules it out for EU/EEA citizens living in the EU and for anyone lawfully resident in another member state, and 60 months of contributions earns you a pension instead. German and Croatian periods are added together under EU Regulation 883/2004 — the double taxation treaty is a separate instrument that only decides which country taxes the pension."
   de-health-cancel:
-    label: "Cancel statutory health insurance (GKV) from departure date"
-    note: "Notify your Krankenkasse in writing with your departure date. You remain covered until the end of the membership month."
+    label: "Tell your Krankenkasse you are leaving — German cover ends when Croatian cover starts"
+    note: "Do not simply cancel from your departure date. Inside the EU you are covered by one country's system at a time, and which one follows your residence and economic status rather than your nationality, so German statutory cover gives way once you are insured through HZZO. Notify your Krankenkasse in writing with your departure date and your Abmeldebestätigung, and keep the confirmation — it is what proves when German cover ended if HZZO questions a gap. If you draw a German pension and have no Croatian income, ask for an S1 instead of cancelling: that keeps Germany paying for the cover you use in Croatia."
   de-bank-notify:
     label: "Notify German banks of new address; keep IBAN for 90 days"
     note: "Keep the account open until your Croatian salary and every direct debit have fully migrated — closing early strands standing orders you have forgotten about. Whether a German bank keeps you as a non-resident customer varies, so get your bank's position in writing; BaFin is the supervisor to escalate to if an account is closed without proper notice."
