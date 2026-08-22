@@ -55,7 +55,7 @@ itemStrings:
     sourceLabel: "Porezna uprava — self-employment registration"
   eu-eea-free-movement:
     label: "EU/EEA citizens: right of free movement applies — no visa required"
-    note: "Register at MUP within 8 days of arrival. No quota, no employer test, no income threshold."
+    note: "No quota, no employer test, no income threshold. Registration is only required if you stay longer than 3 months — file within 8 days of that 3-month period expiring, not within 8 days of arrival. Once temporary stay is granted, register your address within 15 days."
     sourceLabel: "MUP — EU citizen registration"
   family-reunification-income:
     label: "Confirm family reunification sponsor income requirement"
