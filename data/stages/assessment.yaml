@@ -64,8 +64,8 @@ checklist:
         appliesTo:
           visa: [work-permit]
         source:
-          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
-          asOf: "2026-02-15"
+          url: "https://mup.gov.hr/aliens-281621/stay-and-work/work-of-third-country-nationals/281663"
+          asOf: "2026-08-21"
       - id: self-employment-register
         appliesTo:
           visa: [self-employment]
@@ -76,8 +76,8 @@ checklist:
         appliesTo:
           visa: [eu-eea]
         source:
-          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
-          asOf: "2026-02-15"
+          url: "https://mup.gov.hr/aliens-281621/stay-and-work/stay-and-work-of-eea-nationals-and-their-family-members-281689/281689"
+          asOf: "2026-08-21"
       - id: family-reunification-income
         appliesTo:
           visa: [family-reunification]
