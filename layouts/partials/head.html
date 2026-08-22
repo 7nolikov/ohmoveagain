@@ -54,8 +54,12 @@
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="google-site-verification" content="nWhMkPqTERFTWAxzrR4mZ2r7E6M5ZtnQbvZFqizGvwQ">
 
-{{- with site.Params.cfAnalyticsToken }}
+{{/* Production only: the token is committed to a public repo, so without this guard the
+     beacon fires on every contributor's `hugo server` and localhost dominates the stats. */}}
+{{- if hugo.IsProduction }}
+  {{- with site.Params.cfAnalyticsToken }}
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"{{ . }}"}'></script>
+  {{- end }}
 {{- end }}
 
 {{ with .OutputFormats.Get "RSS" -}}
