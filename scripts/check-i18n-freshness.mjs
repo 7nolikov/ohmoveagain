@@ -7,17 +7,25 @@
 //   2. sync-managed page surfaces   — same, using the page-content payload
 //      (content/forms/_index.md, content/offices.md)
 //   3. every other translated page  — free prose; hash the whole English file
+//   4. data/i18n/*.<lang>.yaml      — structured; hash the whole map
 //
 // Only (1) was checked before, which left 13 translated pages able to drift
 // silently — including /contribute/ and the home page.
+//
+// (4) was the same hole one layer down: countries.ru.yaml and fees.ru.yaml
+// already carried a translationMeta.sourceHash that nothing verified, and
+// exit.ru.yaml carried none at all. Editing an English note in exit.en.yaml
+// left the Russian site serving the superseded text with every check green.
 //
 // Re-stamp after translating: `npm run i18n:stamp`.
 
 import fs from 'node:fs';
 import path from 'node:path';
+import YAML from 'yaml';
 import {
   STAGES_DIR, listEnglishStageFiles, localizedPath, loadStage, sourceHash,
   listTranslatedPagePairs, pageSourceHash, pageContentPayload, payloadHash,
+  I18N_DATA_SURFACES, dataI18nPayload,
 } from './i18n-lib.mjs';
 
 const LANGS = ['ru'];
@@ -74,6 +82,32 @@ for (const { en, translations } of listTranslatedPagePairs()) {
       report('page', ruPath, 'no translationMeta.sourceHash — run `npm run i18n:stamp`');
     } else if (actual !== expected) {
       report('page', ruPath, 'English source changed since this was translated');
+    }
+  }
+}
+
+// ── 4. Shared i18n-data surfaces ─────────────────────────────────────────────
+const loadDataYaml = (file) => {
+  const parsed = YAML.parse(fs.readFileSync(file, 'utf8'));
+  return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
+};
+
+for (const { en, localized } of I18N_DATA_SURFACES) {
+  if (!fs.existsSync(en)) {
+    report('i18n-data', en, 'English source missing');
+    continue;
+  }
+  const expected = payloadHash(dataI18nPayload(loadDataYaml(en)));
+
+  for (const lang of LANGS) {
+    const ruPath = localized(lang);
+    if (!fs.existsSync(ruPath)) continue;
+    checked++;
+    const actual = loadDataYaml(ruPath).translationMeta?.sourceHash;
+    if (!actual) {
+      report('i18n-data', ruPath, 'no translationMeta.sourceHash — run `npm run i18n:stamp`');
+    } else if (actual !== expected) {
+      report('i18n-data', ruPath, 'English source changed since this was translated');
     }
   }
 }

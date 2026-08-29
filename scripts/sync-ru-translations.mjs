@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { execFileSync } from 'child_process';
 import YAML from 'yaml';
-import { STAGES_DIR, listEnglishStageFiles, localizedPath, loadStage, saveStage, sourceHash, payloadHash, translationPayload, pageContentPayload, dataI18nPayload, compareShape, enforceGlossaryDeep, localizeInternalLinks } from './i18n-lib.mjs';
+import { STAGES_DIR, listEnglishStageFiles, localizedPath, loadStage, saveStage, sourceHash, payloadHash, translationPayload, pageContentPayload, dataI18nPayload, I18N_DATA_SURFACES, leadingComments, compareShape, enforceGlossaryDeep, localizeInternalLinks } from './i18n-lib.mjs';
 
 const token = process.env.GITHUB_TOKEN;
 const model = process.env.GITHUB_MODELS_MODEL || 'openai/gpt-4.1';
@@ -519,11 +519,6 @@ for (const surface of PAGE_CONTENT_SURFACES) {
 
 // ── Shared i18n-data surfaces (countries, fees) ───────────────────────────────
 
-const I18N_DATA_SURFACES = [
-  { en: 'data/i18n/countries.en.yaml', ruFile: (lang) => `data/i18n/countries.${lang}.yaml` },
-  { en: 'data/i18n/fees.en.yaml',     ruFile: (lang) => `data/i18n/fees.${lang}.yaml` },
-];
-
 function loadDataYaml(path) {
   const parsed = YAML.parse(fs.readFileSync(path, 'utf8'));
   return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
@@ -536,7 +531,7 @@ function saveDataYaml(path, data, header) {
 
 for (const surface of I18N_DATA_SURFACES) {
   const enPath = surface.en;
-  const ruPath = surface.ruFile('ru');
+  const ruPath = surface.localized('ru');
   if (!fs.existsSync(enPath)) {
     console.warn(`i18n-data: ${enPath} missing — skipping`);
     continue;
@@ -598,6 +593,6 @@ for (const surface of I18N_DATA_SURFACES) {
     ...translated
   };
 
-  saveDataYaml(ruPath, out);
+  saveDataYaml(ruPath, out, leadingComments(ruPath) || leadingComments(enPath));
   console.log('updated', ruPath);
 }

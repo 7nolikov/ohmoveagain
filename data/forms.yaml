@@ -17,8 +17,8 @@
 
 - id: porezna-oib1
   category: registration
-  url: "https://www.porezna-uprava.hr/en/Pages/oib.aspx"
-  lastChecked: "2026-03-01"
+  url: "https://porezna-uprava.gov.hr/en/assigning-pin-oib/7870"
+  lastChecked: "2026-08-29"
 
 - id: mup-address-registration
   category: registration
@@ -47,8 +47,8 @@
 
 - id: eu-pet-passport
   category: pets
-  url: "https://food.ec.europa.eu/animals/movement-pets_en"
-  lastChecked: "2026-03-01"
+  url: "https://food.ec.europa.eu/animals/live-animal-movements/dogs-cats-and-ferrets_en"
+  lastChecked: "2026-08-29"
 
 - id: fina-business-registration
   category: business

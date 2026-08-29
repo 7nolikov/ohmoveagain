@@ -63,14 +63,14 @@ itemStrings:
   hzzo-family:
     label: "HZZO family coverage registered for spouse and children"
     note: "Dependents must be added explicitly — they don't inherit your coverage automatically."
-    sourceLabel: "HZZO — family health insurance"
+    sourceLabel: "HZZO — compulsory health insurance"
   school-enrolment:
     label: "Children enrolled in school (requires OIB + registered address)"
     note: "Public school: OIB + address + health card. International school: waiting list may already be long."
     sourceLabel: "Ministry of Education — enrolment"
   non-eu-spouse-reunification:
     label: "If your spouse is non-EU: family reunification application submitted to MUP"
-    note: "Skip if your spouse is an EU/EEA citizen (they register independently). Otherwise: apply after the primary applicant has the residency card. Spouse can remain on tourist exemption (90 days) while waiting."
+    note: "Skip if your spouse is an EU/EEA citizen (they register independently). Otherwise: apply after the primary applicant has the residency card — but if that card is a one-year stay and work permit under Article 97, your spouse cannot be granted family reunification until you have held temporary stay for at least a year. Plan for that gap rather than assuming the card is the green light. Spouse can remain on tourist exemption (90 days) while waiting."
     sourceLabel: "MUP — family reunification application"
   vet-visit-10d:
     label: "Register with a local Croatian vet after arrival"
@@ -81,9 +81,9 @@ itemStrings:
     note: "Even with an EU Pet Passport, you must register the chip in HR's national database."
     sourceLabel: "Lysacan — HR pet microchip registry"
   dog-municipal-reg:
-    label: "Dog registered with local municipality (e.g. City of Zagreb)"
-    note: "Annual registration fee applies. Fine for non-compliance is significant."
-    sourceLabel: "City of Zagreb — dog registration"
+    label: "Unsterilised dog or cat entered in the municipal register (e.g. City of Zagreb)"
+    note: "Separate from the national microchip record. Zagreb registers owners of unsterilised dogs and cats with the City Office for Agriculture and Forestry; there is no annual dog fee. You can claim an exemption for a pedigree animal you breed yourself, if you prevent reproduction by other means, or if sterilisation would endanger the animal's health."
+    sourceLabel: "City of Zagreb — register of unsterilised pets"
 gotchas:
   - "Sign the work contract before you open the bank account — without it, banks offer non-resident accounts only (no salary, limited features)."
   - "Bring a notarized landlord signature to address registration — some municipalities reject anything less."

@@ -6,7 +6,7 @@ sources:
     type: official
     lastChecked: "2026-02-01"
   - id: porezna
-    url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
+    url: "https://porezna-uprava.gov.hr/en/home/7296"
     type: official
     lastChecked: "2026-03-01"
   - id: eu-blue-card

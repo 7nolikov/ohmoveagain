@@ -21,7 +21,7 @@ items:
     note: "Unlimited tax liability ends when you give up your German residence, which happens through the address deregistration in the next item — there is no separate Finanzamt deregistration form to file. Submit a final partial-year return for the year you leave and keep written confirmation of your departure date for Croatia DTA purposes. Your local Finanzamt handles the return; the BZSt is the federal authority for cross-border tax questions."
   de-address-deregister:
     label: "Deregister address (Abmeldung) at Bürgeramt"
-    note: "Required by law within two weeks of moving out. Get the Abmeldebestätigung — landlords and banks often require it."
+    note: "§17(2) BMG gives you two weeks after moving out, and only if you are not taking another address inside Germany. You cannot go early to get it over with: the earliest a Bürgeramt may deregister you is one week before your move-out date. Get the Abmeldebestätigung — landlords and banks often require it."
   de-pension-transfer:
     label: "Get your Deutsche Rentenversicherung insurance record (Versicherungsverlauf)"
     note: "Ask for a Versicherungsverlauf — the list of every period on your pension account — and close any gaps with a Kontenklärung while German paperwork is still easy to chase. A Rentenauskunft is a different document, the detailed projection sent from age 55, so most people leaving will not have one. Do not plan on cashing out: a refund under §210 SGB VI requires both that you are no longer compulsorily insured and that you have no right to insure voluntarily, which rules it out for EU/EEA citizens living in the EU and for anyone lawfully resident in another member state, and 60 months of contributions earns you a pension instead. German and Croatian periods are added together under EU Regulation 883/2004 — the double taxation treaty is a separate instrument that only decides which country taxes the pension."
@@ -33,7 +33,7 @@ items:
     note: "Keep the account open until your Croatian salary and every direct debit have fully migrated — closing early strands standing orders you have forgotten about. Whether a German bank keeps you as a non-resident customer varies, so get your bank's position in writing; BaFin is the supervisor to escalate to if an account is closed without proper notice."
   gb-hmrc-notify:
     label: "Notify HMRC of departure (P85 form)"
-    note: "Complete form P85 to establish non-UK-resident status. This determines how your final UK income is taxed and stops incorrect PAYE deductions."
+    note: "Form P85 tells HMRC you have left and reclaims overpaid tax, which stops incorrect PAYE deductions. Skip it if you are filing a Self Assessment return for the tax year you leave — contractors and company directors usually are, and HMRC does not want both. If you have not left yet, P85 has to go by post; the online service only accepts filings from people already abroad."
   gb-ni-voluntary:
     label: "Consider voluntary National Insurance contributions"
     note: "You need 10 qualifying years for any new State Pension and 35 for the full rate — more than 35 if your record started before April 2016. Class 2 voluntary contributions for periods abroad were abolished on 6 April 2026: for 2026-27 onward only Class 3 is available, and a new application needs 10 continuous years of UK residence or 10 qualifying years on your record. If you were already paying Class 2 abroad, you can move to Class 3 without meeting that test."
@@ -57,7 +57,7 @@ items:
     note: "USPS forwarding is built for US destinations, and for a move abroad you must file the change of address in person at a Post Office before you leave. Forwarding also runs 12 months (18 paid) and skips marketing mail. For IRS notices and state tax correspondence that keep coming for years, a US virtual mailbox is the standard answer."
   nl-brp-deregister:
     label: "Deregister from BRP (Basisregistratie Personen) at your municipality"
-    note: "Report your emigration at the gemeentehuis. You receive a BRP emigration confirmation — keep it for the Dutch tax authority and bank."
+    note: "Deregistration is mandatory once you will be abroad more than 8 months in any 12, continuous or not. You must go in person, and no earlier than 5 days before you leave — this is a last-week errand, not something to get done in advance. You receive a BRP emigration confirmation — keep it for the Dutch tax authority and bank; the BRP also notifies the tax office and pension funds for you."
   nl-belastingdienst:
     label: "Notify Belastingdienst of emigration date"
     note: "Tax residency in the Netherlands ends on the emigration date. File an M-form (partial-year return) for the year you leave. The Belastingdienst will send you one automatically."
@@ -78,4 +78,4 @@ items:
     note: "Get your pension contribution record from the PIO Fund before leaving. A Serbia-Croatia social security agreement is in force — contributions may count toward Croatian entitlements."
   rs-rfzo-cancel:
     label: "Cancel RFZO health insurance if switching to HZZO"
-    note: "Once HZZO cover starts in Croatia, notify RFZO in writing so contribution obligations stop accruing. RFZO documents enrolment far better than exit, so ask your branch for the termination procedure directly rather than expecting to find it online."
+    note: "Once HZZO cover starts in Croatia, notify RFZO in writing so contribution obligations stop accruing. RFZO documents enrolment far better than exit and its website is frequently unreachable, so ask your branch for the termination procedure directly rather than expecting to find it online. The Serbia–Croatia social security agreement, which decides which fund covers you, is administered by the Social Insurance Institute (ZSO)."

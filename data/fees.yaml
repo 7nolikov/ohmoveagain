@@ -52,8 +52,8 @@
   rangeMin: 0
   rangeMax: 0
   count: 1
-  sourceUrl: "https://www.porezna-uprava.hr/en/Pages/oib.aspx"
-  lastChecked: "2026-03-01"
+  sourceUrl: "https://porezna-uprava.gov.hr/en/assigning-pin-oib/7870"
+  lastChecked: "2026-08-29"
 
 - id: hzzo-retroactive
   amountEUR: 120
