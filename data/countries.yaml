@@ -18,8 +18,8 @@
   costOfLivingEUR: 2100
   validUntil: "2026-12-31"
   source:
-    url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
-    asOf: "2026-03-01"
+    url: "https://porezna-uprava.gov.hr/en/income-t-ax-information-on-the-general-rules-rates-taxpayer-and-submitting-annual-income-tax-return/7322"
+    asOf: "2026-08-29"
 - code: MNE
   flag: "🇲🇪"
   effectiveTaxRate: 0.15

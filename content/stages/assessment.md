@@ -51,7 +51,7 @@ itemStrings:
     sourceLabel: "MUP — work permits"
   self-employment-register:
     label: "Register obrt or d.o.o. scope and income structure"
-    note: "Self-employed path bypasses employer sponsorship. Paušalni obrt is the simplest structure under the revenue cap."
+    note: "Self-employed path bypasses employer sponsorship. Paušalni obrt is the simplest structure under the €60,000 revenue cap, taxed at 12% of an assessed flat-rate income. Register with the tax register within 8 days of the craft-registry decision; the annual PO-SD report is due 15 January."
     sourceLabel: "Porezna uprava — self-employment registration"
   eu-eea-free-movement:
     label: "EU/EEA citizens: right of free movement applies — no visa required"
@@ -59,7 +59,7 @@ itemStrings:
     sourceLabel: "MUP — EU citizen registration"
   family-reunification-income:
     label: "Confirm family reunification sponsor income requirement"
-    note: "Primary applicant must show sufficient stable income to cover all dependents. Threshold is per MUP and adjusts annually."
+    note: "Primary applicant must show sufficient stable income to cover all dependents. MUP publishes no figure — \"funds to support themselves\" is a general condition of temporary stay that the police administration assesses case by case, so ask your administration what it wants to see before you assemble the file."
     sourceLabel: "MUP — family reunification"
   career-market:
     label: "Audit career market density (local + remote)"

@@ -12,7 +12,7 @@ sources:
     lastChecked: "2026-07-25"
 
   - id: porezna
-    url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
+    url: "https://porezna-uprava.gov.hr/en/home/7296"
     type: official
     lastChecked: "2026-03-01"
 
@@ -48,8 +48,8 @@ checklist:
     items:
       - id: visa-audit
         source:
-          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
-          asOf: "2026-02-15"
+          url: "https://mup.gov.hr/aliens-281621/stay-and-work/281622"
+          asOf: "2026-08-29"
       - id: filing-location
         source:
           url: "https://mup.gov.hr/aliens-281621/stay-and-work/temporary-stay-of-third-country-nationals/281661"
@@ -70,8 +70,8 @@ checklist:
         appliesTo:
           visa: [self-employment]
         source:
-          url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
-          asOf: "2026-03-01"
+          url: "https://porezna-uprava.gov.hr/hr/obrtnici-pausalisti/4564"
+          asOf: "2026-08-29"
       - id: eu-eea-free-movement
         appliesTo:
           visa: [eu-eea]
@@ -82,8 +82,8 @@ checklist:
         appliesTo:
           visa: [family-reunification]
         source:
-          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
-          asOf: "2026-02-15"
+          url: "https://mup.gov.hr/aliens-281621/stay-and-work/temporary-stay-for-the-purpose-of-family-reunification/281662"
+          asOf: "2026-08-29"
 
   - id: reality-check
     items:
