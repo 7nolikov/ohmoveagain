@@ -48,19 +48,19 @@
 
 - id: hzzo-zagreb
   city: "Zagreb"
-  address: "Margaretska 3, 10000 Zagreb"
-  phone: "+385 1 4806 333"
-  booking: "https://hzzo.hr/en"
-  mapUrl: "https://maps.google.com/?q=Margaretska+3+Zagreb"
-  lastChecked: "2026-02-15"
+  address: "Mihanovićeva 3, 10000 Zagreb"
+  phone: "+385 1 4577 150"
+  booking: "https://hzzo.hr/kontakt/zagreb/podrucni-ured-zagreb"
+  mapUrl: "https://maps.google.com/?q=Mihanoviceva+3+Zagreb"
+  lastChecked: "2026-08-29"
 
 - id: hzzo-split
   city: "Split"
-  address: "Livanjska 1, 21000 Split"
-  phone: "+385 21 303 080"
-  booking: "https://hzzo.hr/en"
-  mapUrl: "https://maps.google.com/?q=Livanjska+1+Split"
-  lastChecked: "2026-02-15"
+  address: "Obala kneza Branimira 14, 21000 Split"
+  phone: "+385 21 408 900"
+  booking: "https://hzzo.hr/kontakt/split"
+  mapUrl: "https://maps.google.com/?q=Obala+kneza+Branimira+14+Split"
+  lastChecked: "2026-08-29"
 
 - id: opcinski-sud-zagreb
   city: "Zagreb"

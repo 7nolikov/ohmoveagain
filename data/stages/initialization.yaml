@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - id: porezna
-    url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
+    url: "https://porezna-uprava.gov.hr/en/home/7296"
     type: official
     lastChecked: "2026-03-01"
   - id: mup-stay
@@ -78,14 +78,14 @@ checklist:
         appliesTo:
           family: [spouse, kids, spouse-kids]
         source:
-          url: "https://www.porezna-uprava.hr/en/Pages/default.aspx"
-          asOf: "2026-03-01"
+          url: "https://porezna-uprava.gov.hr/en/assigning-pin-oib/7870"
+          asOf: "2026-08-29"
       - id: hzzo-family
         appliesTo:
           family: [spouse, kids, spouse-kids]
         source:
-          url: "https://hzzo.hr/en"
-          asOf: "2026-02-15"
+          url: "https://hzzo.hr/en/national-contact-point-ncp/health-insurance-republic-croatia"
+          asOf: "2026-08-29"
       - id: school-enrolment
         appliesTo:
           family: [kids, spouse-kids]
@@ -96,8 +96,8 @@ checklist:
         appliesTo:
           family: [spouse, spouse-kids]
         source:
-          url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
-          asOf: "2026-02-15"
+          url: "https://mup.gov.hr/aliens-281621/stay-and-work/temporary-stay-for-the-purpose-of-family-reunification/281662"
+          asOf: "2026-08-29"
 
   - id: pets-post-arrival
     items:
@@ -117,7 +117,7 @@ checklist:
         appliesTo:
           pets: [dog-cat]
         source:
-          url: "https://www.zagreb.hr/"
-          asOf: "2026-03-01"
+          url: "https://www.zagreb.hr/upis-u-evidenciju-vlasnika-pasa-i-macaka/138637"
+          asOf: "2026-08-29"
 
 artifacts: []

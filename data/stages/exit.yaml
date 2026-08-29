@@ -16,8 +16,8 @@ countries:
           asOf: "2026-07-28"
       - id: de-address-deregister
         source:
-          url: "https://www.bundesregierung.de/breg-en"
-          asOf: "2026-03-01"
+          url: "https://www.gesetze-im-internet.de/bmg/__17.html"
+          asOf: "2026-08-29"
       - id: de-pension-transfer
         source:
           url: "https://www.deutsche-rentenversicherung.de/DRV/DE/Rente/Allgemeine-Informationen/Wissenswertes-zur-Rente/FAQs/International/Erstattung.html"
@@ -35,8 +35,8 @@ countries:
     items:
       - id: gb-hmrc-notify
         source:
-          url: "https://www.gov.uk/tax-foreign-income/non-residents"
-          asOf: "2026-03-01"
+          url: "https://www.gov.uk/guidance/get-your-income-tax-right-if-youre-leaving-the-uk-p85"
+          asOf: "2026-08-29"
       - id: gb-ni-voluntary
         source:
           url: "https://www.gov.uk/voluntary-national-insurance-contributions/if-you-live-or-work-abroad"
@@ -55,11 +55,11 @@ countries:
       - id: us-fbar
         source:
           url: "https://www.fincen.gov/report-foreign-bank-and-financial-accounts"
-          asOf: "2026-03-01"
+          asOf: "2026-08-29"
       - id: us-state-tax
         source:
           url: "https://www.irs.gov/individuals/international-taxpayers/us-citizens-and-resident-aliens-abroad"
-          asOf: "2026-03-01"
+          asOf: "2026-08-29"
       - id: us-irs-address
         source:
           url: "https://www.irs.gov/forms-pubs/about-form-8822"
@@ -73,12 +73,12 @@ countries:
     items:
       - id: nl-brp-deregister
         source:
-          url: "https://www.government.nl/topics/personal-data"
-          asOf: "2026-03-01"
+          url: "https://www.government.nl/faq/when-should-i-deregister-from-the-personal-records-database"
+          asOf: "2026-08-29"
       - id: nl-belastingdienst
         source:
           url: "https://www.belastingdienst.nl/wps/wcm/connect/en/individuals/individuals"
-          asOf: "2026-03-01"
+          asOf: "2026-08-29"
       - id: nl-aow-pension
         source:
           url: "https://www.svb.nl/en/aow-pension/what-is-aow/building-up-an-aow-pension"
@@ -93,7 +93,7 @@ countries:
       - id: rs-tax-deregister
         source:
           url: "https://www.purs.gov.rs/en.html"
-          asOf: "2026-03-01"
+          asOf: "2026-08-29"
       - id: rs-address-deregister
         source:
           url: "https://www.mup.gov.rs/wps/portal/en"
@@ -104,5 +104,5 @@ countries:
           asOf: "2026-08-08"
       - id: rs-rfzo-cancel
         source:
-          url: "https://www.rfzo.rs/"
-          asOf: "2026-07-28"
+          url: "https://www.zso.gov.rs/"
+          asOf: "2026-08-29"

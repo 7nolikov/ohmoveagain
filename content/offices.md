@@ -37,16 +37,16 @@ officeStrings:
     note: "Tax registration, OIB application for foreign nationals, paušalni obrt tax filing."
   hzzo-zagreb:
     authority: "HZZO — Croatian Health Insurance Fund"
-    name: "HZZO Zagreb — Regional Office"
+    name: "HZZO Zagreb — Regional Office (Područni ured)"
     bookingNote: "Walk-in. Employer submits T-1 on your behalf; self-employed submit directly."
-    hours: "Mon–Fri 08:00–15:30"
+    hours: "Mon–Fri 08:00–16:00"
     note: "Health insurance enrollment (T-1/T-2), switching from private to state coverage, European Health Insurance Card (EHIC) requests."
   hzzo-split:
     authority: "HZZO — Croatian Health Insurance Fund"
-    name: "HZZO Split — Regional Office"
+    name: "HZZO Split — Regional Office (Područni ured)"
     bookingNote: "Walk-in."
-    hours: "Mon–Fri 08:00–15:30"
-    note: "Regional HZZO office for Dalmatia."
+    hours: "Mon–Fri 07:00–15:00"
+    note: "Regional HZZO office for Dalmatia. Note the early close — it shuts an hour before Zagreb's."
   opcinski-sud-zagreb:
     authority: "Općinski građanski sud u Zagrebu (Municipal Civil Court)"
     name: "Zagreb Municipal Civil Court — apostille certification"
