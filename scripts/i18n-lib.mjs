@@ -72,6 +72,30 @@ export function pageContentPayload(doc, stringsKey) {
   };
 }
 
+// The data/i18n/<thing>.<lang>.yaml surfaces. The sync script translates these
+// and the freshness check verifies them, so the list lives here — when it was
+// duplicated in sync-ru-translations.mjs the two drifted, and exit.*.yaml ended
+// up in neither.
+export const I18N_DATA_SURFACES = [
+  { en: 'data/i18n/countries.en.yaml', localized: (lang) => `data/i18n/countries.${lang}.yaml` },
+  { en: 'data/i18n/fees.en.yaml', localized: (lang) => `data/i18n/fees.${lang}.yaml` },
+  { en: 'data/i18n/exit.en.yaml', localized: (lang) => `data/i18n/exit.${lang}.yaml` },
+];
+
+// The leading `#` comment block of a YAML file, so rewriting a translation does
+// not throw away the contributor guidance at the top of it.
+export function leadingComments(filePath) {
+  if (!fs.existsSync(filePath)) return '';
+  const lines = fs.readFileSync(filePath, 'utf8').split('\n');
+  const header = [];
+  for (const line of lines) {
+    if (line.startsWith('#') || (header.length && line.trim() === '')) header.push(line);
+    else break;
+  }
+  while (header.length && header[header.length - 1].trim() === '') header.pop();
+  return header.join('\n');
+}
+
 // Generic i18n-data payload (data/i18n/<thing>.<lang>.yaml). The whole map
 // is translatable; structural metadata (translationMeta) is excluded.
 export function dataI18nPayload(parsedYaml) {
