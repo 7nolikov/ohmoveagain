@@ -55,11 +55,25 @@ jobs:
           # Mail links are skipped by default; `--exclude-mail` is not a valid
           # lychee flag and made the whole run abort with a usage error.
           #
-          # Timeout is 45s, not 20s: gesetze-im-internet.de answers in under a
-          # second from a desktop but intermittently blew the 20s budget from
-          # the runner, filing a broken-link issue for a page that was never
-          # broken. A link check that cries wolf gets ignored, which is worse
-          # than a slow one.
+          # Timeout is 45s rather than the default. It is not what fixed
+          # gesetze-im-internet.de — see that exclusion below — but a longer
+          # budget costs nothing on a weekly cron and removes one class of
+          # false alarm before the re-check step has to adjudicate it.
+          #
+          # gesetze-im-internet.de is excluded on evidence, not suspicion. The
+          # re-check in run 34777759007 hit it three times, 15s apart, from the
+          # runner and got HTTP 000 every time — the connection never
+          # completed. The same three requests from a desktop return 200 in
+          # 0.13s, and the page still carries the "zwei Wochen" deadline the
+          # citation depends on. The Bundesamt für Justiz does not accept
+          # traffic from this datacenter; that is not something a link check
+          # can fix or should keep reporting. The §17 BMG text stays the source
+          # because it is the law, and no mirror of it is `official` tier.
+          #
+          # Both exclusions are covered by something else: every URL here also
+          # carries an asOf date in data/stages/*.yaml, and the staleness watch
+          # forces a human to open it and re-read the rule on a fixed cadence.
+          # Excluding a URL from the automated check does not make it unwatched.
           #
           # zso.gov.rs is excluded on a TLS technicality, not because it rotted.
           # It answers 200 and its certificate covers the hostname, but it
@@ -79,6 +93,7 @@ jobs:
             --scheme http
             --exclude '^https://ohmoveagain\.com'
             --exclude '^https?://(www\.)?zso\.gov\.rs'
+            --exclude '^https?://(www\.)?gesetze-im-internet\.de'
             './public/**/*.html'
           fail: false
           output: ./lychee/out.md
