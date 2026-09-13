@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import YAML from 'yaml';
 
-import { I18N_DATA_SURFACES, dataI18nPayload, payloadHash, leadingComments } from '../../scripts/i18n-lib.mjs';
+import { I18N_DATA_SURFACES, dataI18nPayload, payloadHash, leadingComments, SYNC_PAGE_SURFACES } from '../../scripts/i18n-lib.mjs';
 
 // The bug this guards against: check-i18n-freshness.mjs covered stage files and
 // page surfaces but not data/i18n/*.<lang>.yaml. countries.ru.yaml and
@@ -76,4 +76,55 @@ test('leadingComments preserves the contributor header, and stamping keeps it', 
   // --check must be idempotent on a stamped tree.
   const out = execFileSync('node', ['scripts/stamp-i18n-hash.mjs', '--check'], { encoding: 'utf8' });
   assert.match(out, /0 would change/, 'stamp --check is not idempotent');
+});
+
+// ── Sync-managed page surfaces ───────────────────────────────────────────────
+// These two pages are translated by the LLM sync, which is why the stamper used
+// to refuse them. When GitHub Models went into its retirement brownout that
+// refusal became a wall: an English string on /offices/ could not be changed at
+// all without the freshness gate failing and no way to clear it. The escape
+// hatch has to stay opt-in, or the gate stops meaning anything.
+
+const runStamp = (...args) => {
+  try {
+    return { code: 0, out: execFileSync('node', ['scripts/stamp-i18n-hash.mjs', ...args], { encoding: 'utf8' }) };
+  } catch (e) {
+    return { code: e.status, out: e.stdout || '' };
+  }
+};
+
+test('every sync-managed page surface exists in both languages', () => {
+  assert.ok(SYNC_PAGE_SURFACES.length > 0, 'no page surfaces registered');
+  for (const { en, localized, stringsKey } of SYNC_PAGE_SURFACES) {
+    assert.ok(fs.existsSync(en), `${en} is registered but missing`);
+    assert.ok(fs.existsSync(localized('ru')), `${localized('ru')} is missing`);
+    assert.ok(stringsKey, `${en} has no stringsKey`);
+  }
+});
+
+test('a hand-edited sync-managed page is stampable only with --include-sync-managed', () => {
+  const target = 'content/offices.md';
+  const original = fs.readFileSync(target, 'utf8');
+
+  assert.equal(runFreshness().code, 0, 'expected a clean tree before the edit');
+  assert.match(original, /hours: "/, 'offices.md no longer has the string this test edits');
+
+  try {
+    fs.writeFileSync(target, original.replace(/hours: "/, 'hours: "drift '), 'utf8');
+
+    const { code, out } = runFreshness();
+    assert.notEqual(code, 0, 'freshness passed despite the English page changing');
+    assert.match(out, /offices\.ru\.md/, 'the stale page was not named in the output');
+
+    const plain = runStamp('--check');
+    assert.match(plain.out, /0 would change/, 'the default stamp touched a sync-managed page');
+
+    const optIn = runStamp('--check', '--include-sync-managed');
+    assert.notEqual(optIn.code, 0, '--include-sync-managed did not report the drift');
+    assert.match(optIn.out, /would stamp: content\/offices\.ru\.md/, 'the drifted page was not offered');
+  } finally {
+    fs.writeFileSync(target, original, 'utf8');
+  }
+
+  assert.equal(runFreshness().code, 0, 'the tree was not restored');
 });

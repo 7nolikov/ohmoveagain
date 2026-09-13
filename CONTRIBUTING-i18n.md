@@ -97,6 +97,31 @@ Source tier guide — `type` must be one of:
 - `supranational` — EU institutions, treaty bodies, intergovernmental organisations (HCCH, IATA, WHO, CITES)
 - `community` — Public registries, surveys, contributor reports. Supporting context only, not primary authority
 
+## Translating by hand
+
+Russian is normally produced by `npm run i18n:sync:ru`, which calls an LLM and stamps `translationMeta.sourceHash` on what it wrote. `npm run i18n:freshness` then fails if the English moves and the Russian does not.
+
+The sync needs a provider. It defaults to GitHub Models, which is being retired and currently answers `410 github_models_retirement_brownout` to every request. Point it somewhere else with three environment variables — any OpenAI-compatible `/chat/completions` endpoint will do:
+
+```sh
+export TRANSLATE_API_URL=https://api.example.com/v1/chat/completions
+export TRANSLATE_API_KEY=...
+export TRANSLATE_MODEL=...
+npm run i18n:sync:ru
+```
+
+In CI these come from the `TRANSLATE_API_URL` / `TRANSLATE_API_KEY` secrets and the `TRANSLATE_MODEL` variable. With none of them set and GitHub Models gone, the sync step now fails the run instead of warning once per file and exiting 0.
+
+Without a provider, translate by hand and stamp the result yourself:
+
+```sh
+# edit the English, then write the Russian in content/offices.ru.md
+npm run i18n:stamp          # hand-maintained pages and data/i18n/*.ru.yaml
+npm run i18n:stamp:sync     # also the stage files and sync-owned index pages
+```
+
+`i18n:stamp:sync` is deliberately a separate command. Stamping records that a translation *was* revisited; it cannot tell whether you actually revisited it. Run it after writing the Russian, never instead.
+
 ## Maintenance commitment
 
 When you merge a country, you become the content owner for that country. That means:

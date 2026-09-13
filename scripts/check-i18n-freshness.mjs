@@ -25,16 +25,10 @@ import YAML from 'yaml';
 import {
   STAGES_DIR, listEnglishStageFiles, localizedPath, loadStage, sourceHash,
   listTranslatedPagePairs, pageSourceHash, pageContentPayload, payloadHash,
-  I18N_DATA_SURFACES, dataI18nPayload,
+  I18N_DATA_SURFACES, dataI18nPayload, SYNC_PAGE_SURFACES,
 } from './i18n-lib.mjs';
 
 const LANGS = ['ru'];
-
-// content path -> front-matter key holding that page's translatable strings
-const SYNC_SURFACES = [
-  { en: 'content/forms/_index.md', stringsKey: 'formStrings' },
-  { en: 'content/offices.md', stringsKey: 'officeStrings' },
-];
 
 let stale = 0;
 let checked = 0;
@@ -58,12 +52,12 @@ for (const file of listEnglishStageFiles()) {
 }
 
 // ── 2. Sync-managed page surfaces ────────────────────────────────────────────
-for (const { en, stringsKey } of SYNC_SURFACES) {
+for (const { en, stringsKey, localized } of SYNC_PAGE_SURFACES) {
   if (!fs.existsSync(en)) continue;
   const expected = payloadHash(pageContentPayload(loadStage(en), stringsKey));
 
   for (const lang of LANGS) {
-    const ruPath = en.replace(/\.md$/, `.${lang}.md`);
+    const ruPath = localized(lang);
     if (!fs.existsSync(ruPath)) continue;
     checked++;
     const actual = loadStage(ruPath).frontMatter?.translationMeta?.sourceHash;

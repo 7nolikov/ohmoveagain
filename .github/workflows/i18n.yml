@@ -42,9 +42,17 @@ jobs:
       - name: Install dependencies
         run: npm ci || npm install
 
+      # TRANSLATE_* override the GitHub Models defaults baked into the script.
+      # Set them as repository secrets to point the sync at any OpenAI-compatible
+      # /chat/completions endpoint; leave them unset and it uses GitHub Models,
+      # which currently answers 410 for its own retirement. The step now fails
+      # loudly in that case instead of warning per file and exiting 0.
       - name: Sync translations (AI)
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+          TRANSLATE_API_URL: ${{ secrets.TRANSLATE_API_URL }}
+          TRANSLATE_API_KEY: ${{ secrets.TRANSLATE_API_KEY }}
+          TRANSLATE_MODEL: ${{ vars.TRANSLATE_MODEL }}
         run: npm run i18n:sync:ru
 
       - name: Validate translation structure (parity)

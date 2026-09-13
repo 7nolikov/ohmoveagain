@@ -82,6 +82,16 @@ export const I18N_DATA_SURFACES = [
   { en: 'data/i18n/exit.en.yaml', localized: (lang) => `data/i18n/exit.${lang}.yaml` },
 ];
 
+// The page surfaces the sync script owns: index pages whose translatable strings
+// sit under a frontmatter key rather than in the body. Same reasoning as the
+// list above — this was written out three times, in the sync, the freshness
+// check and the stamper, which is two copies too many for a list that decides
+// whether a translation is allowed to go stale.
+export const SYNC_PAGE_SURFACES = [
+  { en: 'content/forms/_index.md', stringsKey: 'formStrings', localized: (lang) => `content/forms/_index.${lang}.md` },
+  { en: 'content/offices.md', stringsKey: 'officeStrings', localized: (lang) => `content/offices.${lang}.md` },
+];
+
 // The leading `#` comment block of a YAML file, so rewriting a translation does
 // not throw away the contributor guidance at the top of it.
 export function leadingComments(filePath) {

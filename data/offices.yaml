@@ -8,43 +8,43 @@
 
 - id: mup-zagreb-central
   city: "Zagreb"
-  address: "Petrinjska 30, 10000 Zagreb"
-  phone: "+385 1 3788 100"
+  address: "Remetinečki gaj 13, 10000 Zagreb"
+  phone: "+385 1 4563 609"
   booking: "https://gov.hr/en"
-  mapUrl: "https://maps.google.com/?q=Petrinjska+30+Zagreb"
-  lastChecked: "2026-03-15"
+  mapUrl: "https://maps.google.com/?q=Remetinecki+gaj+13+Zagreb"
+  lastChecked: "2026-09-13"
 
 - id: mup-split
   city: "Split"
   address: "Trg Hrvatske bratske zajednice 9, 21000 Split"
-  phone: "+385 21 307 100"
+  phone: "+385 21 307 313"
   booking: "https://gov.hr/en"
   mapUrl: "https://maps.google.com/?q=Trg+Hrvatske+bratske+zajednice+9+Split"
-  lastChecked: "2026-03-15"
+  lastChecked: "2026-09-13"
 
 - id: mup-rijeka
   city: "Rijeka"
-  address: "Verdijeva 4, 51000 Rijeka"
-  phone: "+385 51 214 101"
+  address: "Žrtava fašizma 3, 51000 Rijeka"
+  phone: "+385 51 430 503"
   booking: "https://gov.hr/en"
-  mapUrl: "https://maps.google.com/?q=Verdijeva+4+Rijeka"
-  lastChecked: "2026-03-15"
+  mapUrl: "https://maps.google.com/?q=Zrtava+fasizma+3+Rijeka"
+  lastChecked: "2026-09-13"
 
 - id: fina-zagreb
   city: "Zagreb"
   address: "Ulica grada Vukovara 70, 10000 Zagreb"
-  phone: "+385 1 4688 900"
+  phone: "+385 1 6001 540"
   booking: "https://www.fina.hr/kontakti"
   mapUrl: "https://maps.google.com/?q=Ulica+grada+Vukovara+70+Zagreb"
-  lastChecked: "2026-03-01"
+  lastChecked: "2026-09-13"
 
 - id: porezna-zagreb
   city: "Zagreb"
   address: "Avenija Dubrovnik 32, 10000 Zagreb"
-  phone: "+385 1 6307 999"
+  phone: "+385 1 6501 111"
   booking: "https://e-porezna.porezna-uprava.hr/"
   mapUrl: "https://maps.google.com/?q=Avenija+Dubrovnik+32+Zagreb"
-  lastChecked: "2026-03-01"
+  lastChecked: "2026-09-13"
 
 - id: hzzo-zagreb
   city: "Zagreb"
@@ -52,7 +52,7 @@
   phone: "+385 1 4577 150"
   booking: "https://hzzo.hr/kontakt/zagreb/podrucni-ured-zagreb"
   mapUrl: "https://maps.google.com/?q=Mihanoviceva+3+Zagreb"
-  lastChecked: "2026-08-29"
+  lastChecked: "2026-09-13"
 
 - id: hzzo-split
   city: "Split"
@@ -60,7 +60,7 @@
   phone: "+385 21 408 900"
   booking: "https://hzzo.hr/kontakt/split"
   mapUrl: "https://maps.google.com/?q=Obala+kneza+Branimira+14+Split"
-  lastChecked: "2026-08-29"
+  lastChecked: "2026-09-13"
 
 - id: opcinski-sud-zagreb
   city: "Zagreb"
@@ -68,7 +68,7 @@
   phone: "+385 1 6126 666"
   booking: null
   mapUrl: "https://maps.google.com/?q=Ulica+grada+Vukovara+84+Zagreb"
-  lastChecked: "2026-08-08"
+  lastChecked: "2026-09-13"
 
 - id: sudski-tumaci-registry
   city: "Nationwide"
@@ -76,4 +76,4 @@
   phone: null
   booking: "https://mpudt.gov.hr/istaknute-teme/stalni-sudski-tumaci/26654"
   mapUrl: null
-  lastChecked: "2026-07-28"
+  lastChecked: "2026-09-13"
