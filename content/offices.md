@@ -8,21 +8,21 @@ officeStrings:
   mup-zagreb-central:
     authority: "MUP — Ministry of Interior"
     name: "MUP Zagreb — Foreigners' Department (Odjel za strance)"
-    bookingNote: "Appointments via e-Građani portal (eID or NIAS required). Walk-in slots limited."
-    hours: "Mon–Fri 08:00–16:00"
-    note: "Main office for residency permits, Digital Nomad Visa, EU Blue Card, address registration. Bring all documents in originals + copies."
+    bookingNote: "No published online booking — walk in during counter hours. Written questions go to zg.drzavljanstvo.stranci@mup.hr."
+    hours: "Mon–Fri 08:00–14:00"
+    note: "Main office for residency permits, Digital Nomad Visa, EU Blue Card, address registration. Foreigners' status matters left Petrinjska 30 on 6 March 2023 — Petrinjska still handles Croatian ID cards and passports, so directions older than that send you to the wrong building. Bring all documents in originals + copies."
   mup-split:
     authority: "MUP — Ministry of Interior"
     name: "MUP Split — Foreigners' Department"
-    bookingNote: "Appointments via e-Građani portal."
-    hours: "Mon–Fri 08:00–16:00"
-    note: "Regional MUP office for Dalmatia. Handles all residency permit types."
+    bookingNote: "By prior appointment only, arranged over email at st.sidup@mup.hr."
+    hours: "Counters Mon–Fri 07:30–14:00"
+    note: "Handles all residency permit types, but only for people living in Split, Podstrana or Šolta. Anywhere else in Dalmatia, your own police station is the competent one."
   mup-rijeka:
     authority: "MUP — Ministry of Interior"
     name: "MUP Rijeka — Foreigners' Department"
-    bookingNote: "Appointments via e-Građani portal."
-    hours: "Mon–Fri 08:00–16:00"
-    note: "Regional MUP office for Kvarner region."
+    bookingNote: "No published online booking — phone the counter before travelling. Note the split shift."
+    hours: "Mon, Tue, Fri 08:00–15:00; Wed, Thu 12:00–19:00"
+    note: "Regional MUP office for Kvarner. Covers Rijeka, Bakar, Kastav and Kraljevica, plus the Čavle, Jelenje, Kostrena, Klana and Viškovo municipalities. Outside those, go to your own police station."
   fina-zagreb:
     authority: "FINA — Financial Agency"
     name: "FINA Zagreb — main office"
@@ -33,8 +33,8 @@ officeStrings:
     authority: "Porezna uprava — Tax Administration"
     name: "Porezna uprava Zagreb — Regional Office"
     bookingNote: "Many services via e-Porezna portal. Walk-in for OIB applications (Form OIB-1)."
-    hours: "Mon–Fri 08:00–16:00"
-    note: "Tax registration, OIB application for foreign nationals, paušalni obrt tax filing."
+    hours: "Mon–Fri 08:00–15:00 (counter)"
+    note: "Tax registration, OIB application for foreign nationals, paušalni obrt tax filing. Building works started on 15 September 2025 and the entrance moved to the back of the block, from Viktora Kovačića — the Avenija Dubrovnik door may still be shut."
   hzzo-zagreb:
     authority: "HZZO — Croatian Health Insurance Fund"
     name: "HZZO Zagreb — Regional Office (Područni ured)"
@@ -45,8 +45,8 @@ officeStrings:
     authority: "HZZO — Croatian Health Insurance Fund"
     name: "HZZO Split — Regional Office (Područni ured)"
     bookingNote: "Walk-in."
-    hours: "Mon–Fri 07:00–15:00"
-    note: "Regional HZZO office for Dalmatia. Note the early close — it shuts an hour before Zagreb's."
+    hours: "Mon–Fri 08:00–16:00"
+    note: "Regional HZZO office for Dalmatia. Same hours as Zagreb — an earlier close was listed here and HZZO publishes none."
   opcinski-sud-zagreb:
     authority: "Općinski građanski sud u Zagrebu (Municipal Civil Court)"
     name: "Zagreb Municipal Civil Court — apostille certification"
@@ -56,7 +56,7 @@ officeStrings:
   sudski-tumaci-registry:
     authority: "Court translators (sudski tumači)"
     name: "Official registry of permanent court translators"
-    bookingNote: "Search the Ministry of Justice registry by language pair, then contact the translator directly — each keeps their own hours and rates."
+    bookingNote: "The ministry publishes a downloadable list, not a searchable database — open the Popis stalnih sudskih tumača and read it, then contact the translator directly. Questions go to tumaci@mpudt.hr, or by phone Mon, Wed and Fri 14:00–16:00."
     hours: "Varies by translator"
-    note: "Not an office you visit: this is the national registry. Only translators listed here produce translations MUP accepts, so check the register before paying anyone. Rates are per page and set individually."
+    note: "Not an office you visit: this is the national registry. Only translators listed here produce translations MUP accepts, so check the list before paying anyone. Rates are per page and set individually."
 ---
