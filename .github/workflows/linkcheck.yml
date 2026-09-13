@@ -55,11 +55,25 @@ jobs:
           # Mail links are skipped by default; `--exclude-mail` is not a valid
           # lychee flag and made the whole run abort with a usage error.
           #
-          # Timeout is 45s, not 20s: gesetze-im-internet.de answers in under a
-          # second from a desktop but intermittently blew the 20s budget from
-          # the runner, filing a broken-link issue for a page that was never
-          # broken. A link check that cries wolf gets ignored, which is worse
-          # than a slow one.
+          # Timeout is 45s rather than the default. It is not what fixed
+          # gesetze-im-internet.de — see that exclusion below — but a longer
+          # budget costs nothing on a weekly cron and removes one class of
+          # false alarm before the re-check step has to adjudicate it.
+          #
+          # gesetze-im-internet.de is excluded on evidence, not suspicion. The
+          # re-check in run 34777759007 hit it three times, 15s apart, from the
+          # runner and got HTTP 000 every time — the connection never
+          # completed. The same three requests from a desktop return 200 in
+          # 0.13s, and the page still carries the "zwei Wochen" deadline the
+          # citation depends on. The Bundesamt für Justiz does not accept
+          # traffic from this datacenter; that is not something a link check
+          # can fix or should keep reporting. The §17 BMG text stays the source
+          # because it is the law, and no mirror of it is `official` tier.
+          #
+          # Both exclusions are covered by something else: every URL here also
+          # carries an asOf date in data/stages/*.yaml, and the staleness watch
+          # forces a human to open it and re-read the rule on a fixed cadence.
+          # Excluding a URL from the automated check does not make it unwatched.
           #
           # zso.gov.rs is excluded on a TLS technicality, not because it rotted.
           # It answers 200 and its certificate covers the hostname, but it
@@ -79,9 +93,42 @@ jobs:
             --scheme http
             --exclude '^https://ohmoveagain\.com'
             --exclude '^https?://(www\.)?zso\.gov\.rs'
+            --exclude '^https?://(www\.)?gesetze-im-internet\.de'
             './public/**/*.html'
           fail: false
           output: ./lychee/out.md
+
+      # lychee's verdict is a first opinion, not the finding. Four consecutive
+      # weekly runs each named a different government site as broken and every
+      # one of them answered 200 minutes later; gov.me was observed returning
+      # 404 and then 200 to back-to-back requests from the same machine. This
+      # re-checks only what failed, several times, with real gaps — see the
+      # script for why lychee's own retries do not cover it.
+      - name: Confirm the failures before filing anything
+        id: confirm
+        if: steps.lychee.outputs.exit_code != '0'
+        run: |
+          # Not `script | tee`: without pipefail `if` would read tee's status,
+          # which is always 0, and every run would look clean.
+          set +e
+          .github/scripts/confirm-broken-links.sh ./lychee/out.md ./lychee/confirmed.md \
+            > ./lychee/confirm.log 2>&1
+          status=$?
+          set -e
+
+          cat ./lychee/confirm.log
+          {
+            echo '### Link re-check'
+            echo '```'
+            cat ./lychee/confirm.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          case "$status" in
+            0) echo "dead=true"  >> "$GITHUB_OUTPUT" ;;
+            1) echo "dead=false" >> "$GITHUB_OUTPUT" ;;
+            *) echo "::error::confirm-broken-links.sh failed with status $status"; exit "$status" ;;
+          esac
 
       # create-issue-from-file opens a NEW issue every time it runs, and this
       # job runs every Sunday. One unfixable link therefore produced one
@@ -90,7 +137,7 @@ jobs:
       # link on the site, so the newest overwrite loses nothing.
       - name: Find the open broken-links issue
         id: existing
-        if: steps.lychee.outputs.exit_code != '0'
+        if: steps.confirm.outputs.dead == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -101,23 +148,22 @@ jobs:
           echo "number=${number}" >> "$GITHUB_OUTPUT"
           echo "reusing issue: ${number:-none, will open a new one}"
 
-      - name: Open or update issue if links broken
-        # lychee-action v2 exposes the code as a step output, not an env var.
-        if: steps.lychee.outputs.exit_code != '0'
+      - name: Open or update issue if links are still broken
+        if: steps.confirm.outputs.dead == 'true'
         uses: peter-evans/create-issue-from-file@fca9117c27cdc29c6c4db3b86c48e4115a786710 # peter-evans/create-issue-from-file@v6.0.0
         with:
           issue-number: ${{ steps.existing.outputs.number }}
           title: "Broken source links detected by weekly link check"
-          content-filepath: ./lychee/out.md
+          content-filepath: ./lychee/confirmed.md
           labels: |
             broken-links
             maintenance
 
       # The other half of the churn: nothing ever closed these. An issue that
-      # outlives the breakage it reports turns the label into noise, so a clean
-      # run closes whatever the last dirty run opened.
-      - name: Close broken-links issues when the check is clean
-        if: steps.lychee.outputs.exit_code == '0'
+      # outlives the breakage it reports turns the label into noise, so a run
+      # that ends up with nothing confirmed closes whatever the last one opened.
+      - name: Close broken-links issues when nothing is confirmed
+        if: steps.lychee.outputs.exit_code == '0' || steps.confirm.outputs.dead == 'false'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -128,5 +174,5 @@ jobs:
           | while read -r number; do
               [ -n "$number" ] || continue
               gh issue close "$number" --repo "$GITHUB_REPOSITORY" \
-                --comment "Weekly link check is clean as of run ${GITHUB_RUN_ID}. Closing automatically."
+                --comment "No link failed both lychee and the re-check in run ${GITHUB_RUN_ID}. Closing automatically."
             done
