@@ -9,6 +9,7 @@
     "i18n:stamp": "node scripts/stamp-i18n-hash.mjs",
     "i18n:stamp:sync": "node scripts/stamp-i18n-hash.mjs --include-sync-managed",
     "test:unit": "node --test tests/unit/*.test.mjs",
+    "sources:urls": "node scripts/check-source-urls.mjs",
     "i18n:sync:ru": "node scripts/sync-ru-translations.mjs --all",
     "i18n:sync:ru:polish": "node scripts/sync-ru-translations.mjs --all --polish",
     "gen:og": "node scripts/gen-og.mjs",

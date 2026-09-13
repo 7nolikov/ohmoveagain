@@ -36,6 +36,15 @@ jobs:
           hugo-version: ${{ env.HUGO_VERSION }}
           extended: true
 
+      # check-source-urls.mjs parses the YAML with the `yaml` package, so this
+      # job needs Node now. It did not before.
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # actions/setup-node@v7.0.0
+        with:
+          node-version: '22'
+
+      - name: Install Node dependencies
+        run: npm ci
+
       - name: Build site
         run: hugo --gc --minify --baseURL "https://ohmoveagain.com/"
 
@@ -98,6 +107,34 @@ jobs:
           fail: false
           output: ./lychee/out.md
 
+      # A different question from lychee's, and the one it structurally cannot
+      # answer: not "does this URL respond" but "does it still respond from
+      # where the repo says it lives". See scripts/check-source-urls.mjs — on
+      # 2026-09-13 all 92 URLs passed lychee while Poland's income-tax source
+      # was a redirect to gov.pl's homepage.
+      - name: Source URLs must resolve to themselves
+        id: sourceurls
+        run: |
+          mkdir -p ./lychee
+          set +e
+          node scripts/check-source-urls.mjs > ./lychee/source-urls.txt 2>&1
+          status=$?
+          set -e
+
+          cat ./lychee/source-urls.txt
+          {
+            echo '### Source URL drift'
+            echo '```'
+            cat ./lychee/source-urls.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          case "$status" in
+            0) echo "moved=false" >> "$GITHUB_OUTPUT" ;;
+            1) echo "moved=true"  >> "$GITHUB_OUTPUT" ;;
+            *) echo "::error::check-source-urls.mjs failed with status $status"; exit "$status" ;;
+          esac
+
       # lychee's verdict is a first opinion, not the finding. Four consecutive
       # weekly runs each named a different government site as broken and every
       # one of them answered 200 minutes later; gov.me was observed returning
@@ -135,9 +172,39 @@ jobs:
       # identical issue per week — three were open at once by 2026-09-13.
       # Reuse the open one instead: the report is a full snapshot of every
       # link on the site, so the newest overwrite loses nothing.
+      # One issue covers both findings. They are the same maintenance job —
+      # a URL in data/ no longer points at the page the claim was read from —
+      # and splitting them would just recreate the churn #75 removed.
+      - name: Assemble the issue body
+        id: body
+        if: steps.confirm.outputs.dead == 'true' || steps.sourceurls.outputs.moved == 'true'
+        run: |
+          : > ./lychee/issue.md
+
+          if [ "${{ steps.sourceurls.outputs.moved }}" = "true" ]; then
+            {
+              echo "# Source URLs that moved"
+              echo
+              echo "These URLs answer, but not from where \`data/\` says they live."
+              echo "Either update the URL or replace the source — a redirect to a"
+              echo "landing page means the cited page is gone."
+              echo
+              echo '```'
+              cat ./lychee/source-urls.txt
+              echo '```'
+              echo
+            } >> ./lychee/issue.md
+          fi
+
+          if [ "${{ steps.confirm.outputs.dead }}" = "true" ]; then
+            cat ./lychee/confirmed.md >> ./lychee/issue.md
+          fi
+
+          cat ./lychee/issue.md
+
       - name: Find the open broken-links issue
         id: existing
-        if: steps.confirm.outputs.dead == 'true'
+        if: steps.confirm.outputs.dead == 'true' || steps.sourceurls.outputs.moved == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -148,13 +215,13 @@ jobs:
           echo "number=${number}" >> "$GITHUB_OUTPUT"
           echo "reusing issue: ${number:-none, will open a new one}"
 
-      - name: Open or update issue if links are still broken
-        if: steps.confirm.outputs.dead == 'true'
+      - name: Open or update issue if anything survived
+        if: steps.confirm.outputs.dead == 'true' || steps.sourceurls.outputs.moved == 'true'
         uses: peter-evans/create-issue-from-file@fca9117c27cdc29c6c4db3b86c48e4115a786710 # peter-evans/create-issue-from-file@v6.0.0
         with:
           issue-number: ${{ steps.existing.outputs.number }}
-          title: "Broken source links detected by weekly link check"
-          content-filepath: ./lychee/confirmed.md
+          title: "Source links need attention (weekly check)"
+          content-filepath: ./lychee/issue.md
           labels: |
             broken-links
             maintenance
@@ -163,7 +230,9 @@ jobs:
       # outlives the breakage it reports turns the label into noise, so a run
       # that ends up with nothing confirmed closes whatever the last one opened.
       - name: Close broken-links issues when nothing is confirmed
-        if: steps.lychee.outputs.exit_code == '0' || steps.confirm.outputs.dead == 'false'
+        if: >-
+          steps.sourceurls.outputs.moved == 'false'
+          && (steps.lychee.outputs.exit_code == '0' || steps.confirm.outputs.dead == 'false')
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -174,5 +243,5 @@ jobs:
           | while read -r number; do
               [ -n "$number" ] || continue
               gh issue close "$number" --repo "$GITHUB_REPOSITORY" \
-                --comment "No link failed both lychee and the re-check in run ${GITHUB_RUN_ID}. Closing automatically."
+                --comment "Every source URL resolves to itself, and no link failed both lychee and the re-check, in run ${GITHUB_RUN_ID}. Closing automatically."
             done

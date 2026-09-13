@@ -28,7 +28,7 @@ countries:
           asOf: "2026-08-08"
       - id: de-bank-notify
         source:
-          url: "https://www.bafin.de/EN/Homepage/homepage_node.html"
+          url: "https://www.bafin.de/EN/home_node_en.html"
           asOf: "2026-07-28"
   - code: GB
     flag: "🇬🇧"
