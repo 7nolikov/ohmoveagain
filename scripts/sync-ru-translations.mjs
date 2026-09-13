@@ -1,17 +1,57 @@
 import fs from 'fs';
 import { execFileSync } from 'child_process';
 import YAML from 'yaml';
-import { STAGES_DIR, listEnglishStageFiles, localizedPath, loadStage, saveStage, sourceHash, payloadHash, translationPayload, pageContentPayload, dataI18nPayload, I18N_DATA_SURFACES, leadingComments, compareShape, enforceGlossaryDeep, localizeInternalLinks } from './i18n-lib.mjs';
+import { STAGES_DIR, listEnglishStageFiles, localizedPath, loadStage, saveStage, sourceHash, payloadHash, translationPayload, pageContentPayload, dataI18nPayload, I18N_DATA_SURFACES, SYNC_PAGE_SURFACES, leadingComments, compareShape, enforceGlossaryDeep, localizeInternalLinks } from './i18n-lib.mjs';
 
-const token = process.env.GITHUB_TOKEN;
-const model = process.env.GITHUB_MODELS_MODEL || 'openai/gpt-4.1';
+// The provider is configurable because the original one went away. GitHub
+// Models entered a scheduled retirement brownout and now answers 410
+// github_models_retirement_brownout to every request, including the catalog.
+// Any OpenAI-compatible /chat/completions endpoint works in its place — set
+// TRANSLATE_API_URL, TRANSLATE_MODEL and TRANSLATE_API_KEY. The GitHub Models
+// defaults are kept so nothing changes for anyone still able to reach it.
+const endpoint = process.env.TRANSLATE_API_URL || 'https://models.github.ai/inference/chat/completions';
+const token = process.env.TRANSLATE_API_KEY || process.env.GITHUB_TOKEN;
+const model = process.env.TRANSLATE_MODEL || process.env.GITHUB_MODELS_MODEL || 'openai/gpt-4.1';
 const glossary = JSON.parse(fs.readFileSync('data/i18n/glossary.ru.json', 'utf8'));
 const POLISH = process.argv.includes('--polish');
 
 if (!token) {
-  console.error('GITHUB_TOKEN is required');
+  console.error('No API key: set TRANSLATE_API_KEY (or GITHUB_TOKEN for GitHub Models)');
   process.exit(1);
 }
+
+// Per-file translation failures are tolerated below — the existing Russian copy
+// is kept and the run goes on. That is the right call for one bad payload and
+// exactly the wrong one for a dead provider: every file fails, every file keeps
+// its stale copy, and the run exits 0. These statuses mean the endpoint itself
+// is the problem, so they abort instead.
+const PROVIDER_DEAD = new Set([401, 403, 404, 410, 501]);
+
+function requestFailed(kind, status, body) {
+  const err = new Error(`${kind} request failed: ${status} ${body}`);
+  err.providerDead = PROVIDER_DEAD.has(status);
+  return err;
+}
+
+// This file runs its whole sync at import time under top-level await, so a
+// throw surfaces as a bare stack trace nobody reads. A dead endpoint is a
+// configuration problem, not a bug — say so and stop. Both events are wired
+// because a top-level-await rejection arrives as an uncaught exception, not as
+// an unhandled rejection.
+function die(err) {
+  if (err?.providerDead) {
+    console.error(`\nTranslation provider is unusable: ${err.message}`);
+    console.error('Set TRANSLATE_API_URL, TRANSLATE_API_KEY and TRANSLATE_MODEL to an OpenAI-compatible');
+    console.error('/chat/completions endpoint, or translate by hand and run `npm run i18n:stamp:sync`.');
+    console.error('See CONTRIBUTING-i18n.md — "Translating by hand".');
+  } else {
+    console.error(err);
+  }
+  process.exit(1);
+}
+
+process.on('unhandledRejection', die);
+process.on('uncaughtException', die);
 
 function gitSha() {
   try {
@@ -142,7 +182,7 @@ async function translatePayloadOnce(englishPayload, existingRuPayload) {
     2
   );
 
-  const res = await fetch('https://models.github.ai/inference/chat/completions', {
+  const res = await fetch(endpoint, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -158,7 +198,7 @@ async function translatePayloadOnce(englishPayload, existingRuPayload) {
     })
   });
 
-  if (!res.ok) throw new Error(`models request failed: ${res.status} ${await res.text()}`);
+  if (!res.ok) throw requestFailed('translate', res.status, await res.text());
   const data = await res.json();
 
   let text = data?.choices?.[0]?.message?.content?.trim();
@@ -330,13 +370,13 @@ async function polishOnce(russianPayload, englishPayload) {
 
   const user = JSON.stringify({ english: englishPayload, russian: russianPayload }, null, 2);
 
-  const res = await fetch('https://models.github.ai/inference/chat/completions', {
+  const res = await fetch(endpoint, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
     body: JSON.stringify({ model, temperature: 0.1, messages: [{ role: 'system', content: system }, { role: 'user', content: user }] })
   });
 
-  if (!res.ok) throw new Error(`polish request failed: ${res.status} ${await res.text()}`);
+  if (!res.ok) throw requestFailed('polish', res.status, await res.text());
   const data = await res.json();
   let text = data?.choices?.[0]?.message?.content?.trim();
   if (!text) throw new Error('empty polish response');
@@ -386,6 +426,7 @@ for (const file of listEnglishStageFiles()) {
     translated = await translatePayloadChunked(enPayload, existingPayload);
     validateTranslatedPayload(translated, enPayload);
   } catch (error) {
+    if (error.providerDead) throw error;
     if (existingPayload) {
       console.warn(`translation failed for ${file}; keeping existing Russian copy: ${error.message}`);
       continue;
@@ -437,14 +478,9 @@ for (const file of listEnglishStageFiles()) {
 
 // ── Page-content surfaces (forms, offices) ────────────────────────────────────
 
-const PAGE_CONTENT_SURFACES = [
-  { en: 'content/forms/_index.md', ruFile: (lang) => `content/forms/_index.${lang}.md`, stringsKey: 'formStrings' },
-  { en: 'content/offices.md',     ruFile: (lang) => `content/offices.${lang}.md`,     stringsKey: 'officeStrings' },
-];
-
-for (const surface of PAGE_CONTENT_SURFACES) {
+for (const surface of SYNC_PAGE_SURFACES) {
   const enPath = surface.en;
-  const ruPath = surface.ruFile('ru');
+  const ruPath = surface.localized('ru');
   if (!fs.existsSync(enPath)) {
     console.warn(`page-content: ${enPath} missing — skipping`);
     continue;
@@ -466,6 +502,7 @@ for (const surface of PAGE_CONTENT_SURFACES) {
     translated = await translatePayloadChunked(enPayload, existingPayload);
     validateTranslatedPayload(translated, enPayload);
   } catch (error) {
+    if (error.providerDead) throw error;
     if (existingPayload) {
       console.warn(`translation failed for ${enPath}; keeping existing copy: ${error.message}`);
       continue;
@@ -553,6 +590,7 @@ for (const surface of I18N_DATA_SURFACES) {
     translated = await translatePayloadChunked(enPayload, existingPayload);
     validateTranslatedPayload(translated, enPayload);
   } catch (error) {
+    if (error.providerDead) throw error;
     if (existingPayload) {
       console.warn(`translation failed for ${enPath}; keeping existing copy: ${error.message}`);
       continue;
