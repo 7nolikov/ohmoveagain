@@ -14,7 +14,7 @@ sources:
     type: official
     lastChecked: "2026-02-01"
   - id: hr-education
-    url: "https://mzo.gov.hr/"
+    url: "https://mzom.gov.hr/"
     type: official
     lastChecked: "2026-02-01"
   - id: mup-stay

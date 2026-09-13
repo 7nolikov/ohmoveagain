@@ -90,7 +90,7 @@
   costOfLivingEUR: 1700
   validUntil: "2026-12-31"
   source:
-    url: "https://www.gov.pl/web/finanse/podatek-dochodowy-od-osob-fizycznych"
+    url: "https://www.podatki.gov.pl/podatki-osobiste/pit/informacje-podstawowe"
     asOf: "2026-07-25"
 - code: CZ
   flag: "🇨🇿"
@@ -98,7 +98,7 @@
   costOfLivingEUR: 1800
   validUntil: "2026-12-31"
   source:
-    url: "https://www.financnisprava.cz/en/individuals"
+    url: "https://financnisprava.gov.cz/en/individuals"
     asOf: "2026-07-25"
 - code: RS
   flag: "🇷🇸"

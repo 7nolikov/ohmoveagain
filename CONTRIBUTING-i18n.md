@@ -92,6 +92,21 @@ This is a manual read, not a URL ping or a build check. If the page is live but 
 
 Set `lastChecked` (on a `sources[]` entry) or `asOf` (on an inline `source:` block) to today's date in `YYYY-MM-DD` format. Do not backdate.
 
+A source URL must also resolve to itself:
+
+```sh
+npm run sources:urls
+```
+
+This is not the weekly link check. That one follows redirects and asks for a
+200, which a deleted page still gives you once its site has swallowed it into a
+landing page — on 2026-09-13 all 92 URLs passed it while Poland's income-tax
+source was a redirect to the `gov.pl` homepage. If this check reports a URL as
+moved, update it or replace the source; do not bump the date and move on.
+
+If a URL is genuinely expected to redirect forever, put `redirectOk: true` next
+to it with a comment saying why. Per source, written down.
+
 Source tier guide — `type` must be one of:
 - `official` — Government authority directly responsible for the rule (ministry, tax authority, social insurance body)
 - `supranational` — EU institutions, treaty bodies, intergovernmental organisations (HCCH, IATA, WHO, CITES)

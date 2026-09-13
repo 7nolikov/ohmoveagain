@@ -93,7 +93,7 @@ checklist:
           asOf: "2026-04-01"
       - id: partner-alignment
         source:
-          url: "https://www.oecd.org/els/mig/World-Migration-in-Figures.pdf"
+          url: "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/international-migration-trends/world-migration-in-figures.pdf"
           asOf: "2026-04-01"
       - id: medical-baseline
         source:
