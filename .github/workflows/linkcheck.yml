@@ -54,26 +54,79 @@ jobs:
           # accept 200/206 (ok), 403/429 (gov sites blocking bots — URL still valid)
           # Mail links are skipped by default; `--exclude-mail` is not a valid
           # lychee flag and made the whole run abort with a usage error.
+          #
+          # Timeout is 45s, not 20s: gesetze-im-internet.de answers in under a
+          # second from a desktop but intermittently blew the 20s budget from
+          # the runner, filing a broken-link issue for a page that was never
+          # broken. A link check that cries wolf gets ignored, which is worse
+          # than a slow one.
+          #
+          # zso.gov.rs is excluded on a TLS technicality, not because it rotted.
+          # It answers 200 and its certificate covers the hostname, but it
+          # serves the leaf alone with no Let's Encrypt intermediate. Browsers
+          # and curl paper over that from cache; lychee's rustls trust store
+          # will not, so every run reports "SSL certificate not trusted". The
+          # fix belongs to the Serbian government, and the alternative source
+          # is worse — rfzo.rs currently closes the connection outright, which
+          # is exactly why the RS health-insurance item points at ZSO.
           args: >-
             --no-progress
             --max-concurrency 4
             --accept 200,206,403,429
-            --timeout 20
+            --timeout 45
             --root-dir ${{ github.workspace }}/public
             --scheme https
             --scheme http
             --exclude '^https://ohmoveagain\.com'
+            --exclude '^https?://(www\.)?zso\.gov\.rs'
             './public/**/*.html'
           fail: false
           output: ./lychee/out.md
 
-      - name: Open issue if links broken
+      # create-issue-from-file opens a NEW issue every time it runs, and this
+      # job runs every Sunday. One unfixable link therefore produced one
+      # identical issue per week — three were open at once by 2026-09-13.
+      # Reuse the open one instead: the report is a full snapshot of every
+      # link on the site, so the newest overwrite loses nothing.
+      - name: Find the open broken-links issue
+        id: existing
+        if: steps.lychee.outputs.exit_code != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          number=$(gh issue list \
+            --repo "$GITHUB_REPOSITORY" \
+            --state open --label broken-links \
+            --limit 1 --json number --jq '.[0].number // empty')
+          echo "number=${number}" >> "$GITHUB_OUTPUT"
+          echo "reusing issue: ${number:-none, will open a new one}"
+
+      - name: Open or update issue if links broken
         # lychee-action v2 exposes the code as a step output, not an env var.
         if: steps.lychee.outputs.exit_code != '0'
         uses: peter-evans/create-issue-from-file@fca9117c27cdc29c6c4db3b86c48e4115a786710 # peter-evans/create-issue-from-file@v6.0.0
         with:
+          issue-number: ${{ steps.existing.outputs.number }}
           title: "Broken source links detected by weekly link check"
           content-filepath: ./lychee/out.md
           labels: |
             broken-links
             maintenance
+
+      # The other half of the churn: nothing ever closed these. An issue that
+      # outlives the breakage it reports turns the label into noise, so a clean
+      # run closes whatever the last dirty run opened.
+      - name: Close broken-links issues when the check is clean
+        if: steps.lychee.outputs.exit_code == '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue list \
+            --repo "$GITHUB_REPOSITORY" \
+            --state open --label broken-links \
+            --json number --jq '.[].number' \
+          | while read -r number; do
+              [ -n "$number" ] || continue
+              gh issue close "$number" --repo "$GITHUB_REPOSITORY" \
+                --comment "Weekly link check is clean as of run ${GITHUB_RUN_ID}. Closing automatically."
+            done
