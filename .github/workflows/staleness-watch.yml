@@ -39,20 +39,40 @@ jobs:
       - name: Run staleness check (JSON)
         id: check
         run: |
+          # `set -e` would abort here the moment anything is past its threshold
+          # — which is the case this workflow exists for. The old `echo $?`
+          # after the redirect was therefore unreachable on every run that had
+          # something to report.
+          set +e
           node scripts/check-staleness.mjs --json > /tmp/staleness.json
           echo "exit_code=$?" >> "$GITHUB_OUTPUT"
-        # Do not fail the workflow — issues are opened instead
-        continue-on-error: true
 
-      - name: Open issue if sources need attention
+      - name: Open, update or close the staleness issue
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           FAILS=$(node -e "const d=require('/tmp/staleness.json'); process.stdout.write(String(d.fails.length))")
           WARNS=$(node -e "const d=require('/tmp/staleness.json'); process.stdout.write(String(d.warns.length))")
 
+          # One issue per week, and nothing ever closed them: #68 and #71 were
+          # both open on 2026-09-13 listing the same two offices.yaml entries,
+          # a week apart, after the entries had been fixed. Reuse the open one
+          # and close it when the tree is clean — a weekly reminder that
+          # outlives the thing it reminds you of is not a reminder.
+          EXISTING=$(gh issue list \
+            --state open --label staleness \
+            --limit 1 --json number --jq '.[0].number // empty')
+
           if [ "$FAILS" -eq 0 ] && [ "$WARNS" -eq 0 ]; then
-            echo "No staleness findings — skipping issue creation."
+            echo "No staleness findings."
+            if [ -n "$EXISTING" ]; then
+              gh issue list --state open --label staleness --json number --jq '.[].number' \
+              | while read -r number; do
+                  [ -n "$number" ] || continue
+                  gh issue close "$number" \
+                    --comment "Every source is inside its re-verification threshold as of run ${GITHUB_RUN_ID}. Closing automatically."
+                done
+            fi
             exit 0
           fi
 
@@ -78,7 +98,11 @@ jobs:
             --description "Sources approaching or past their re-verification threshold" \
             --force
 
-          gh issue create \
-            --title "$TITLE" \
-            --body "$(printf "Sources that need re-verification before they break the build.\n\n%s\n\nRun \`node scripts/check-staleness.mjs\` locally for full output." "$BODY")" \
-            --label "staleness"
+          ISSUE_BODY=$(printf "Sources that need re-verification before they break the build.\n\n%s\n\nRun \`node scripts/check-staleness.mjs\` locally for full output." "$BODY")
+
+          if [ -n "$EXISTING" ]; then
+            gh issue edit "$EXISTING" --title "$TITLE" --body "$ISSUE_BODY"
+            echo "updated issue #${EXISTING}"
+          else
+            gh issue create --title "$TITLE" --body "$ISSUE_BODY" --label "staleness"
+          fi
