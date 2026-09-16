@@ -23,12 +23,12 @@
     "qa:agent": "node scripts/agent-qa.mjs"
   },
   "dependencies": {
-    "yaml": "2.9.0"
+    "yaml": "2.9.1"
   },
   "devDependencies": {
     "@axe-core/cli": "^4.13.0",
     "@lhci/cli": "^0.15.1",
-    "@playwright/test": "^1.62.1",
+    "@playwright/test": "^1.63.0",
     "@resvg/resvg-js": "^2.6.2",
     "browser-driver-manager": "^2.0.1",
     "serve": "^14.2.6"
