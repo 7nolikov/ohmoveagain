@@ -37,7 +37,7 @@
       {{- $translations := .AllTranslations -}}
       {{- if gt (len $translations) 1 }}
       <details class="nav-menu lang-menu">
-        <summary class="nav-link nav-lang-summary" aria-label="{{ i18n "nav_language" }}: {{ site.Language.LanguageName }}">
+        <summary class="nav-link nav-lang-summary" aria-label="{{ site.Language.Lang | upper }}, {{ i18n "nav_language" }}: {{ site.Language.LanguageName }}">
           <span class="nav-lang-current">{{ site.Language.Lang | upper }}</span>
           <span class="nav-caret" aria-hidden="true">⌄</span>
         </summary>
