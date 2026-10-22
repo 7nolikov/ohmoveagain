@@ -13,10 +13,10 @@ criminal-background:
   note: "Fee varies widely by country. May require a notary or apostille."
 mup-residency-permit:
   label: "Residence permit fee (MUP)"
-  note: "Fee depends on permit type and duration. Digital Nomad Visa approx. 70–100 EUR."
+  note: "Depends on permit type and where you apply. Digital Nomad temporary stay: 46.45 EUR at a police administration, 55.74 EUR at an embassy or consulate. EU Blue Card: 74.32 EUR."
 biometric-card:
   label: "Biometric residence card"
-  note: "Issued separately from the permit decision. Paid at FINA."
+  note: "Issued separately from the permit decision. 31.85 EUR (59.73 EUR accelerated), paid with a slip from the police station at a post office, FINA or bank — plus a 9.29 EUR administrative fee."
 oib-registration:
   label: "OIB registration"
   note: "Free of charge."

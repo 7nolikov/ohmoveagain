@@ -1,10 +1,13 @@
+# Translatable strings for data/fees.yaml — keyed by `id`.
+# Every id in fees.yaml must have a matching entry here.
+# scripts/check-i18n-parity.mjs enforces id-set + key-set parity across languages.
 translationMeta:
   sourceLang: en
   targetLang: ru
   sourceFile: data/i18n/fees.en.yaml
-  sourceHash: 9b07a8ab8c816b7d5251887f31295dce1f1910f755e1247a4d3ac06d900a8fc9
+  sourceHash: a5b9b80f55f138ae366cf2ac83d3afdfdd531f7727bae3bab2bebed799fcd94c
   sourceCommit: 90fb6519fdb93822681b844f7871b9e53b0ce623
-  status: manual-baseline
+  status: hand-updated
 apostille-origin:
   label: Апостили (в стране происхождения, за документ)
   note: Зависит от страны происхождения и выдающего органа. Закладывайте 3–4
@@ -18,11 +21,14 @@ criminal-background:
     апостиль.
 mup-residency-permit:
   label: Сбор за разрешение на резидентство (MUP)
-  note: Сбор зависит от типа разрешения и срока. Digital Nomad Visa — примерно
-    70–100 EUR.
+  note: "Зависит от типа разрешения и места подачи. Временное пребывание для
+    цифровых кочевников: 46,45 EUR в полицейском управлении, 55,74 EUR в
+    посольстве или консульстве. EU Blue Card: 74,32 EUR."
 biometric-card:
   label: Биометрическая карта резидента
-  note: Выдаётся отдельно от решения по разрешению. Оплачивается в FINA.
+  note: Выдаётся отдельно от решения по разрешению. 31,85 EUR (59,73 EUR в
+    ускоренном порядке) — по квитанции из полиции на почте, в FINA или банке,
+    плюс административный сбор 9,29 EUR.
 oib-registration:
   label: Регистрация OIB
   note: Бесплатно.

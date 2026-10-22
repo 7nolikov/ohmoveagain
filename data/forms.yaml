@@ -7,13 +7,13 @@
 
 - id: mup-dn-application
   category: visa
-  url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
-  lastChecked: "2026-04-22"
+  url: "https://mup.gov.hr/aliens-281621/stay-and-work/temporary-stay-of-digital-nomads/286833"
+  lastChecked: "2026-10-22"
 
 - id: mup-blue-card-application
   category: visa
-  url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
-  lastChecked: "2026-04-22"
+  url: "https://mup.gov.hr/aliens-281621/stay-and-work/stay-and-work-of-highly-qualified-third-country-nationals/281692"
+  lastChecked: "2026-10-22"
 
 - id: porezna-oib1
   category: registration
@@ -22,8 +22,8 @@
 
 - id: mup-address-registration
   category: registration
-  url: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
-  lastChecked: "2026-04-22"
+  url: "https://mup.gov.hr/aliens-281621/stay-and-work/temporary-stay-of-third-country-nationals/281661"
+  lastChecked: "2026-10-22"
 
 - id: hzzo-t1
   category: health-insurance

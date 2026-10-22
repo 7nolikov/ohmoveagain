@@ -38,7 +38,7 @@ checklist:
       - id: runway-delta
         source:
           url: "https://ohmoveagain.com/calculator/"
-          asOf: "2026-04-18"
+          asOf: "2026-10-22"
       - id: exit-taxes
         source:
           url: "https://europa.eu/youreurope/citizens/work/taxes/index_en.htm"
@@ -90,11 +90,11 @@ checklist:
       - id: career-market
         source:
           url: "https://survey.stackoverflow.co/"
-          asOf: "2026-04-01"
+          asOf: "2026-10-22"
       - id: partner-alignment
         source:
-          url: "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/international-migration-trends/world-migration-in-figures.pdf"
-          asOf: "2026-04-01"
+          url: "https://mup.gov.hr/aliens-281621/stay-and-work/temporary-stay-for-the-purpose-of-family-reunification/281662"
+          asOf: "2026-10-22"
       - id: medical-baseline
         source:
           url: "https://www.who.int/health-topics/travel-and-health"

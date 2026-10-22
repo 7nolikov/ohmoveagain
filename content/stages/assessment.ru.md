@@ -102,9 +102,11 @@ itemStrings:
     sourceLabel: Stack Overflow developer survey
   partner-alignment:
     label: Проверьте решение с партнёром / иждивенцами
-    note: Несовпадение ожиданий — главная причина неудачных переездов, чаще чем
-      отказ в визе или налоговые проблемы.
-    sourceLabel: OECD — международная миграция
+    note: "Договоритесь о красных линиях до решения: чья карьера в приоритете, школа
+      и язык для детей, расстояние до родных, что заставит вернуться. Супруг,
+      партнёр или ребёнок не получают статус автоматически вместе с вами — они
+      подают на временное пребывание для воссоединения семьи."
+    sourceLabel: MUP — воссоединение семьи
   medical-baseline:
     label: Зафиксируйте медицинский базис до отъезда
     note: Полный чекап, стоматология и плановые процедуры — в стране проживания.
@@ -145,8 +147,7 @@ translationMeta:
   sourceLang: en
   targetLang: ru
   sourceFile: content/stages/assessment.md
-  sourceHash: cd2bb6c5785209bd317f03b726b7524a3d450405f59effea229f99caae10bde4
-  sourceCommit: f3fa1392f741e9b74fc14158d0e561e6cfd009c2
+  sourceHash: e8a4ca8ea77681de017f4dabf52d3d9a08f5bfce03a4dffb2d3f70c7070058e3
   status: hand-updated
 ---
 

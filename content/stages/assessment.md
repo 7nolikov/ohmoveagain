@@ -67,8 +67,8 @@ itemStrings:
     sourceLabel: "Stack Overflow developer survey"
   partner-alignment:
     label: "Stress-test decision with partner / dependents"
-    note: "Misaligned expectations are the leading cause of failed relocations — more common than visa rejections or tax issues."
-    sourceLabel: "OECD — international migration patterns"
+    note: "Agree on the deal-breakers before you commit: whose career leads, schooling and language for children, distance from family, what would make you move back. A spouse, partner or child doesn't get status through you automatically — they apply for temporary stay for family reunification."
+    sourceLabel: "MUP — family reunification"
   medical-baseline:
     label: "Establish a medical baseline before departure"
     note: "Run a full checkup, dental work, and any pending procedures in your home country. Carry translated records and a 90-day prescription stock — finding a GP and rebuilding care continuity in a new system takes weeks, not days."
