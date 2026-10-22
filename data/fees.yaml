@@ -32,20 +32,20 @@
   lastChecked: "2026-07-25"
 
 - id: mup-residency-permit
-  amountEUR: 70
-  rangeMin: 35
-  rangeMax: 130
+  amountEUR: 50
+  rangeMin: 46
+  rangeMax: 75
   count: 1
-  sourceUrl: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
-  lastChecked: "2026-04-22"
+  sourceUrl: "https://mup.gov.hr/aliens-281621/stay-and-work/temporary-stay-of-digital-nomads/286833"
+  lastChecked: "2026-10-22"
 
 - id: biometric-card
-  amountEUR: 50
-  rangeMin: 40
-  rangeMax: 70
+  amountEUR: 41
+  rangeMin: 41
+  rangeMax: 69
   count: 1
-  sourceUrl: "https://mup.gov.hr/stay-in-the-republic-of-croatia/281621"
-  lastChecked: "2026-04-22"
+  sourceUrl: "https://mup.gov.hr/aliens-281621/stay-and-work/biometric-residence-permit/281683"
+  lastChecked: "2026-10-22"
 
 - id: oib-registration
   amountEUR: 0

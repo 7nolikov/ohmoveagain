@@ -8,11 +8,11 @@ formStrings:
   mup-dn-application:
     title: "Digital Nomad Visa — application form"
     sourceAuthority: "MUP (Ministry of Interior)"
-    note: "Form is not separately downloadable — submitted in person at a MUP office or through an authorised agent. Page lists required documents."
+    note: "Apply online, or in person with the bilingual Form 1a linked from the page — at a Croatian embassy or consulate, or at the police administration for your address if you are already legally in Croatia. Visa-required nationals must apply at an embassy or consulate. Page lists required documents."
   mup-blue-card-application:
-    title: "EU Blue Card — application via employer"
+    title: "EU Blue Card — stay and work permit (Form 4a)"
     sourceAuthority: "MUP (Ministry of Interior)"
-    note: "Employer submits on behalf of the applicant. Link covers the full stay-in-Croatia page with all permit types."
+    note: "You apply, not the employer: at a Croatian embassy or consulate, or at the police administration for your place of stay. Needs an employment contract with a Croatian employer."
   porezna-oib1:
     title: "OIB application — Form OIB-1 (personal identification number)"
     sourceAuthority: "Porezna uprava (Tax Administration)"
@@ -20,7 +20,7 @@ formStrings:
   mup-address-registration:
     title: "Address registration — prijava/odjava boravišta"
     sourceAuthority: "MUP (Ministry of Interior)"
-    note: "Must be done at a MUP office within 3 days of taking up residency. Landlord must be present or provide a signed consent. Bring rental contract."
+    note: "Register your temporary address at the police administration or station within 3 days of entering Croatia. Bring a lease contract, title deed or the owner's statement; the owner need not attend if the documents are notarised."
   hzzo-t1:
     title: "HZZO health insurance enrollment — Form T-1"
     sourceAuthority: "HZZO (Croatian Health Insurance Fund)"
