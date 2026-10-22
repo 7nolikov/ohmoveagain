@@ -90,7 +90,7 @@
   costOfLivingEUR: 1700
   validUntil: "2026-12-31"
   source:
-    url: "https://www.podatki.gov.pl/podatki-osobiste/pit/informacje-podstawowe"
+    url: "https://podatki.gov.pl/podatki-osobiste/pit/informacje-podstawowe"
     asOf: "2026-07-25"
 - code: CZ
   flag: "🇨🇿"
