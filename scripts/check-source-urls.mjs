@@ -59,7 +59,12 @@ async function resolveFinalUrl(url) {
     });
     return { status: res.status, finalUrl: res.url };
   } catch (err) {
-    return { status: 0, finalUrl: null, error: err.name === 'AbortError' ? 'timeout' : err.message };
+    // undici's message is always "fetch failed"; the reason (a bad TLS chain,
+    // DNS, a reset) is on err.cause. Without it a SKIP can't be triaged.
+    const cause = err.cause?.code || err.cause?.message;
+    const error = err.name === 'AbortError' ? 'timeout'
+      : cause ? `${err.message}: ${cause}` : err.message;
+    return { status: 0, finalUrl: null, error };
   } finally {
     clearTimeout(timer);
   }

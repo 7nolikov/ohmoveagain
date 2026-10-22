@@ -73,7 +73,7 @@ countries:
     items:
       - id: nl-brp-deregister
         source:
-          url: "https://www.government.nl/faq/when-should-i-deregister-from-the-personal-records-database"
+          url: "https://www.government.nl/documents/question-and-answer/when-should-i-deregister-from-the-personal-records-database"
           asOf: "2026-08-29"
       - id: nl-belastingdienst
         source:
