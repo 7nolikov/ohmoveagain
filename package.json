@@ -40,7 +40,9 @@
     "@puppeteer/browsers": "^3.2.1",
     "qs": "^6.16.0",
     "compression": "^1.8.2",
-    "ip-address": "^10.7.4"
+    "ip-address": "^10.7.4",
+    "basic-ftp": "^6.2.3",
+    "argparse": "^2.0.1"
   },
   "engines": {
     "node": ">=22.12.0"
